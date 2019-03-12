@@ -113,7 +113,7 @@ sass:
 permalink:   /:categories/:title/
 
 # Amount of post to show on home page
-paginate: 1
+paginate: 3
 
 # if true, shows the floatting share buttons
 #float_share: true
