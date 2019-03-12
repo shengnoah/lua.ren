@@ -12,5 +12,5 @@ image:
 
 
 
-![图1](https://lua.ren/images/news/nxfr5.jpg)
+![图1](https://lua.ren/images/news/nginxfr5.jpg)
 
