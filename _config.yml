@@ -50,8 +50,8 @@ menu:
   - title: 'Lapis'
     url: '#'
     submenu:
-      - title: 'MoonScript参考手册'
-        url: '/documents/moonscript-reference/'
+      - title: 'Lapis快速入门'
+        url: '/topic/lapis-getting-started/'
 
         
 
