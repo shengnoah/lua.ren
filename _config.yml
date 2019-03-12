@@ -70,7 +70,7 @@ owner:
   name:           糖果
   site:           https://lua.ren
   avatar:         images/avatar.jpg
-  bio:            "LUA基础"
+  bio:            "LUA从入门到不放弃"
   email:          49263457@email.com
   # Twitter nick for use in Twitter cards and follow button.
   #twitter: shengyangcandy # if no twitter in this config, the twitter follow button will be removed
