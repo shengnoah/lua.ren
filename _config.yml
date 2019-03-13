@@ -39,7 +39,7 @@ menu:
   - title: 'Moonscript'
     url: '#'
     submenu:
-      - title: 'MoonScript参考手册'
+      - title: '手册'
         url: '/documents/moonscript-reference/'
       - title: 'MoonScript API接口'
         url: '/documents/moonscript-api/'
@@ -47,10 +47,15 @@ menu:
         url: '/documents/moonscript-command-line/'
       - title: 'MoonScript标准库'
         url: '/documents/moonscript-standard-lib/'
-  - title: 'Lapis'
+  - title: '框架'
     url: '#'
     submenu:
       - title: 'Lapis快速入门'
+        url: '/topic/lapis-getting-started/'
+  - title: '教程'
+    url: '#'
+    submenu:
+      - title: 'Lua入门教程'
         url: '/topic/lapis-getting-started/'
 
         
