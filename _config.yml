@@ -36,10 +36,10 @@ menu:
   - title: '分类'
     url: '/categories'
     type: 'categories'
-  - title: 'Moonscript'
+  - title: '手册'
     url: '#'
     submenu:
-      - title: '手册'
+      - title: 'MoonScript用户手册'
         url: '/documents/moonscript-reference/'
       - title: 'MoonScript API接口'
         url: '/documents/moonscript-api/'
