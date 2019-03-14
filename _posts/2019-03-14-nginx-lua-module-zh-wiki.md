@@ -4,7 +4,7 @@ title: Nginx+Lua中文WIKI
 description: Nginx+Lua中文WIKI
 date:   2019-03-14 8:50:18 +0800 
 tags: [nginx]
-categories: [document]
+categories: [documents]
 image:
     feature: feature.jpg
     creditlink: http://orchina.org
