@@ -1,10 +1,10 @@
 ---
 layout: post
-title: nginx_lua中文wiki
-description: nginx_lua中文wiki
+title: Nginx+Lua中文WIKI
+description: Nginx+Lua中文WIKI
 date:   2019-03-14 8:50:18 +0800 
 tags: [nginx]
-categories: [topic]
+categories: [document]
 image:
     feature: feature.jpg
     creditlink: http://orchina.org
