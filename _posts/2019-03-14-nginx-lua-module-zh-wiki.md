@@ -1,16 +1,14 @@
 ---
-title: nginx-lua-module-zh-wiki
-keywords: nginx-lua-module-zh-wiki
-summary: "nginx-lua-module-zh-wiki"
-sidebar: nginx-lua-module-zh-wiki
-permalink: nginx-lua-module-zh-wiki.html
-simple_map: false
-map_name: usermap
-box_number: 1
-folder: nginx-lua-module-zh-wiki
+layout: post
+title: nginx_lua中文wiki
+description: nginx_lua中文wiki
+date:   2019-03-14 8:50:18 +0800 
+tags: [nginx]
+categories: [topic]
+image:
+    feature: feature.jpg
+    creditlink: http://orchina.org
 ---
-
-
 
 Name
 ====
