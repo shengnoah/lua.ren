@@ -40,4 +40,4 @@ image:
 
 当待完成连接队列长度已满，客户端在多次重发SYN包而得不到响应的时候会返回**connection time out**的错误；而当待accept队列长度已满，即使client继续向server发送ACK的包，也会不被响应（当然，具体情况由server端的配置/proc/sys/net/ipv4/tcp_abort_on_overflow来决定如何返回，0表示直接丢弃该ACK，1表示发送RST通知client）相应的，client则会分别返回**connection time out**或者**connection reset by peer**。
 
-最后，可以通过netstat -s | grep LISTEN查看待完成连接队列的溢出丢弃情况；通过netstat -s | grep TCPBacklogDrop查看待accept队列的溢出丢弃情况。
+最后，可以通过`netstat -s | grep LISTEN`查看待完成连接队列的溢出丢弃情况；通过`netstat -s | grep TCPBacklogDrop`查看待accept队列的溢出丢弃情况。
