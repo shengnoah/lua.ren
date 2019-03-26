@@ -10,7 +10,35 @@
 <body id="post-index">
 
 {% include browser-upgrade.html %}
+
 {% include header.html %}
+
+<div style="text-align: center">  
+  <article>
+    <div style="text-align: center">
+      <p>&nbsp;</p>
+      <h3>&nbsp;</h3>
+      <h3>关键字: 标题、标签、分类等。</h3>
+      <input type="text" id="search-input"/>
+    </div>
+    <!--
+    <h3>查询结果:</h3>
+    -->
+    <ul id="results-container">
+    </ul>
+  </article><!-- /.hentry -->
+</div>
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: '{{site.url}}/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  }
+</script>
 
 <div id="main" role="main">
   {{ content }}
