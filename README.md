@@ -1,7 +1,3 @@
-# luaren
-luaren
-
-
 # 原创作者
 
 《keepalive_requests》  作者：tweyseo
