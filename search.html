@@ -3,22 +3,23 @@ layout: home
 title: Search
 comments: false
 ---
-
+<!--
 <article>
   <div style="text-align: center">
     <h3>Finds a post by title, tag, category, date and url.</h3>
-    <input type="text" id="search-input"/>
+    <input type="text" id="search-input-1"/>
   </div>
   <h3>Results:</h3>
 	<ul id="results-container">
 	</ul>
-</article><!-- /.hentry -->
+</article>
+
 
 <script type="text/javascript">
 
   window.onload = function(){
     new SimpleJekyllSearch({
-      searchInput: document.getElementById('search-input'),
+      searchInput: document.getElementById('search-input-1'),
       resultsContainer: document.getElementById('results-container'),
       json: '{{site.url}}/search.json',
       searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
@@ -26,3 +27,4 @@ comments: false
   }
 
 </script>
+-->
