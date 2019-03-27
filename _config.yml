@@ -29,8 +29,8 @@ url: https://lua.ren
 menu:
   - title: '主页'
     url: '/'
-  - title: '项目'
-    url: 'https://github.com/shengnoah/moonscript_for_graylog'
+  - title: '重点文档'
+    url: 'https://doc.lua.ren'
   - title: '标签'
     url: '/tags'
   - title: '分类'
