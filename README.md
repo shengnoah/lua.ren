@@ -10,4 +10,4 @@
 
 # 前端设计
 
-程序与交互设计：hantenglei
+程序与交互设计：[hantenglei](https://github.com/htlhenry)
