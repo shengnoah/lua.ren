@@ -87,6 +87,13 @@ $(document).ready(function(){
   });
 });
 
+$(document).ready(function () {
+    $(".tag").on("click", "a", function (event) {
+        event.preventDefault();
+        console.log("on click tag text ", $("#search-input").val($(this).attr("href")));
+    })
+});
+
 var sharing = function(){
     $(document).ready(function(){
       $("body").floatingSocialShare({
