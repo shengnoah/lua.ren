@@ -6,7 +6,7 @@
 
 ## **b. 准备工作**
 
-首先配置调试LuaJIT-v2.1.0-beta3源码的环境（Windows 64位 + VS 2019）：
+首先配置调试[LuaJIT-v2.1.0-beta3](https://github.com/LuaJIT/LuaJIT/tree/v2.1.0-beta3)源码的环境（Windows 64位 + VS 2019）：
 1. 如果要得到精确的栈，需要修改\src\msvcbuild.bat，将/O2替换为/Od；
 2. 在64位版本的vs命令行里执行msvcbuild.bat debug，生成luajit.exe，luajit.lib和lua51.lib；
 3. 在VS里建立个命令工程（64位），设置\src为工作目录，指定\src为附加包含目录和附加库目录，并且在附加依赖项里加入luajit.lib和lua51.lib
@@ -36,13 +36,13 @@ int main() {
 
 ## **b. LuaJIT的解释模式**
 
-要知道，所有的lua文件都会被LuaJIT编译成**字节码**（BC，bytecode），然后在LuaJIT的**解释模式**（interpreter）下执行。LuaJIT使用一个**指令数组**保存所有编译后生成的BC，在解释执行时，会从数组里逐条取出BC，使用其对应的**操作码**（opcode，在该BC的最低字节）作为索引在[ASMFunction](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_dispatch.h#L99)数组中取出对应内部汇编函数，执行具体操作（使用该BC中指定的寄存器里的内容作为操作参数），这样就把所有的BC都衔接了起来，而且这个过程中大多数操作都是使用机器指令直接编码的，所以，LuaJIT的解释模式比lua原生的解释器效率高好几倍。
+要知道，所有的lua文件都会被LuaJIT编译成**字节码**（BC，bytecode），然后在LuaJIT的**解释模式**（interpreter）下执行。LuaJIT使用一个**指令数组**保存所有编译后生成的BC，在解释执行时，会从数组里逐条取出BC，使用其对应的**操作码**（opcode，在该BC的最低字节）作为索引在[ASMFunction](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_dispatch.h#L99)数组中取出对应内部汇编函数，执行具体操作（使用该BC中指定的寄存器里的内容作为操作参数），这样就把所有的BC都衔接了起来，而且这个过程中大多数操作都是使用机器指令直接编码的，所以，LuaJIT的解释模式比lua原生的解释器效率高好几倍。
 
 ## **c. trace的生成**
 
-解释执行字节码的时同时，LuaJIT会统计一些运行时的信息，如每个循环的实际执行次数，每个函数的实际调用次数等。当这些[**HotCount**](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_dispatch.h#L97)（low-overhead hashed profiling counters）超过某个阈值时（这里其实是先初始化为阈值，然后通过递减来计算的，而且对于（递归）函数和循环有所不同，具体见[commit](https://github.com/LuaJIT/LuaJIT/commit/82eca898db87bde10fbbb14a0f35ef75b6c3dcc6)），便认为对应的代码段足够的“**热**”，此时就会触发[lj_trace_hot](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L727)开始**tracing**（提前是当前LuaJIT没有在做其它tracing）。
+解释执行字节码的时同时，LuaJIT会统计一些运行时的信息，如每个循环的实际执行次数，每个函数的实际调用次数等。当这些[**HotCount**](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_dispatch.h#L97)（low-overhead hashed profiling counters）超过某个阈值时（这里其实是先初始化为阈值，然后通过递减来计算的，而且对于（递归）函数和循环有所不同，具体见[commit](https://github.com/LuaJIT/LuaJIT/commit/82eca898db87bde10fbbb14a0f35ef75b6c3dcc6)），便认为对应的代码段足够的“**热**”，此时就会触发[lj_trace_hot](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L727)开始**tracing**（提前是当前LuaJIT没有在做其它tracing）。
 
-tracing的过程就是通过[lj_trace_ins](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L727)里的循环，驱动[trace_state](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L635)状态机，逐条**记录**（recording）对应代码段内即将执行的BC，其中记录的过程就是把BC转换成LuaJIT自定义**中间码**（[IR](https://en.wikipedia.org/wiki/Intermediate_representation)，Intermediate Representation），引入IR的目的是为了描述便于快速且有效进行优化的代码路径。要注意的是，IR并没有包含对应代码段内的所有BC，而是记录过程中，此代码段内实际执行的代码对应的BC：
+tracing的过程就是通过[lj_trace_ins](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L727)里的循环，驱动[trace_state](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L635)状态机，逐条**记录**（recording）对应代码段内即将执行的BC，其中记录的过程就是把BC转换成LuaJIT自定义**中间码**（[IR](https://en.wikipedia.org/wiki/Intermediate_representation)，Intermediate Representation），引入IR的目的是为了描述便于快速且有效进行优化的代码路径。要注意的是，IR并没有包含对应代码段内的所有BC，而是记录过程中，此代码段内实际执行的代码对应的BC：
 ```
 require("jit.v").on("t1.log")
 ---
@@ -150,9 +150,9 @@ end
 ```
 观察日志可以知道，trace 1在`i == 80`的时候，分支条件发生改变（生成的trace 1的代码路径里没有包含`i == 80`里的代码路径），守卫`0006 >  int NE     0003  +80`失败，此时trace1退出，然后根据快照4里的内容，更新解释模式下的LuaJITVM的状态，然后切换到解释模式，对应`TRACE 1 exit 4`；类似地，trace 1在`i > 100`的时候，分支条件发生改变（生成的trace 1的代码路径里没有包含`i > 100`后的代码路径），守卫`0008 >  int LE     0007  +100`失败，此时trace1退出，然后根据快照5里的内容，更新解释模式下的LuaJITVM的状态，然后切换到解释模式，对应`TRACE 1 exit 5`。
 
-***这里为什么一个if会对应2个guard（1和4，2和5）？***
+***这里为什么if和循环结束都对应了2个guard（1和4，2和5）***
 
-通过调试上述代码，发现[lj_trace_exit](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L830)确实是被调用了2次，而且在此函数中，会调用[lj_snap_restore](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L786)获取对应快照中的内容，然后通过[lj_vmevent_send](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L860)更新相应内容到解释模式下的LuaJITVM的状态，最后带着运行trace产生的返回值（如果有的话）一起切换到解释模式。
+通过调试上述代码，发现[lj_trace_exit](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L830)确实是被调用了2次，而且在此函数中，会调用[lj_snap_restore](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L786)获取对应快照中的内容，然后通过[lj_vmevent_send](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L861)更新相应内容到解释模式下的LuaJITVM的状态，最后带着运行trace产生的返回值（如果有的话）一起切换到解释模式。
 
 实际上，LuaJIT为了效率考虑，并且由于快照的事务性的特点（每个快照就相当于一个提交，在守卫失败，trace退出的时候，只需要获取在这之前的，最后一次提交，进行回滚），所以对那些失败概率比较低的守卫是不会生成快照的，此特性叫做**稀疏快照**（[sparse snapshot](http://lua-users.org/lists/lua-l/2009-11/msg00089.html)）。
 
@@ -162,7 +162,7 @@ end
 [TRACE   2 t1.lua:3 up-recursion]
 [TRACE   3 t1.lua:11 tail-recursion]
 ```
-这里，每个trace的最后（loop，up-recursion和tail-recursion）部分，表示trace的**连接**（link），成功生成trace后，紧接着（的BC）就是该trace的运行，那么这个生成的trace就会连接到该trace的运行(的BC)，当这些trace运行结束后，会有一次（***但是多次非尾递归的情况下，有多次其它出口的该trace退出日志，不大理解***）该trace退出的行为（lj_trace_exit），表现为连接到自身；反之，如果只有trace的生成，没有trace的运行（循环表现为产生leaving loop in root trace的trace abort而生成trace失败；递归则是需要trace的运行次数到达一定阈值的），自然也不会有trace的退出行为，表现为连接到return（对应LJ_TRLINK_RETURN，即return到解释模式）。连接是在[lj_record_stop](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L256)的时候设置的，它有好几种[类型](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L214)。
+这里，每个trace的最后（loop，up-recursion和tail-recursion）部分，表示trace的**连接**（link），成功生成trace后，紧接着（的BC）就是该trace的运行，那么这个生成的trace就会连接到该trace的运行(的BC)，当这些trace全部运行结束后，仅会有一次（***但是多次非尾递归的情况下，有多次其它出口的该trace退出日志，不大理解***）该trace退出的行为（lj_trace_exit），表现为连接到自身；反之，如果只有trace的生成，没有trace的运行（循环表现为产生leaving loop in root trace的trace abort而生成trace失败；递归则是需要trace的运行次数到达一定阈值的），自然也不会有trace的退出行为，表现为连接到return（对应LJ_TRLINK_RETURN，即return到解释模式）。连接是在[lj_record_stop](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L256)的时候设置的，它有好几种[类型](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L214)。
 
 所以，这里的的log表示trace 1，2，3都分别各自连接到自身（循环和递归）。但是注意，如果把f1的调用次数修改为[109, 111]：
 ```
@@ -181,11 +181,11 @@ vlog就会显示连link return：
 ```
 [TRACE   1 t1.lua:3 return]
 ```
-先来分析其生成trace的过程（***要提前说明的是，对于普通递归，在此测试环境编译出来的LuaJIT执行jit.v（jit.v的日志和在此测试环境中调试该LuaJIT时的行为一致）和jit.dump的日志有偏差（jit.dump分别在110，111，112出现link return的日志）的情况，具体原因还没搞明白，这里暂时按照调试的过程来说明***）：普通递归函数触发tracing的阈值是109，可是开始记录的时候，v的值已经为0了，此时就直接走BC RET0对应的处理函数[lj_record_ret](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L784)，设置连接到return后，停止记录和tracing，成功生成trace：
+先来分析其生成trace的过程（***要提前说明的是，对于普通递归，在此测试环境编译出来的LuaJIT执行jit.v（jit.v的日志和在此测试环境中调试该LuaJIT时的行为一致）和jit.dump的日志有偏差（jit.dump分别在110，111，112出现link return的日志）的情况，具体原因还没搞明白，这里暂时按照调试的过程来说明***）：普通递归函数触发tracing的阈值是109，可是开始记录的时候，v的值已经为0了，此时就直接走BC RET0对应的处理函数[lj_record_ret](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L784)，设置连接到return后，停止记录和tracing，成功生成trace：
 ```
 lj_record_stop(J, LJ_TRLINK_RETURN, 0);  /* Return to interpreter. */
 ```
-而在调用值为大于109的时候，在记录的时候，v的值不为0，还会再递归调用f1，所以会在BC CALL对应的处理函数[lj_record_call](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L726)里，递增调用帧的深度以后，再在BC FUNCF对应的处理函数的逻辑中，调用[check_call_unroll](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L1644)。此函数对于非递归调用，会检测调用展开的限制；而对于递归调用，（从记录开始）超过递归调用要求的[最小调用次数2](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L114)（也就是前面提到的需要达到的trace运行次数的最小阈值），就会设置连接到递归自身（Up-recursion），然后停止记录和tracing，成功生成trace（尾递归f2也类似，但由于**尾递归不会在当前函数展开调用堆栈的缘故**，所以对应尾递归会设置连接到尾递归自身，即Tail-rec，具体见BC CALLT对于的处理函数[lj_record_tailcall](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L736)。还有一点是，尾递归触发tracing的阈值是111）：
+而在调用值为大于109的时候，在记录的时候，v的值不为0，还会再递归调用f1，所以会在BC CALL对应的处理函数[lj_record_call](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L726)里，递增调用帧的深度以后，再在BC FUNCF对应的处理函数的逻辑中，调用[check_call_unroll](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L1644)。此函数对于非递归调用，会检测调用展开的限制；而对于递归调用，（从记录开始）超过递归调用要求的[最小调用次数2](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L114)（也就是前面提到的需要达到的trace运行次数的最小阈值），就会设置连接到递归自身（Up-recursion），然后停止记录和tracing，成功生成trace（尾递归f2也类似，但由于**尾递归不会在当前函数展开调用堆栈的缘故**，所以对应尾递归会设置连接到尾递归自身，即Tail-rec，具体见BC CALLT对于的处理函数[lj_record_tailcall](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L736)。还有一点是，尾递归触发tracing的阈值是111）：
 ```
 if (J->framedepth + J->retdepth == 0)
     lj_record_stop(J, LJ_TRLINK_TAILREC, J->cur.traceno);  /* Tail-rec. */
@@ -286,11 +286,11 @@ f1(30)
 
 ## **b. trace abort**
 
-如果tracing的过程中产生了错误，就会导致**trace abort**，从而停止tracing，当然也不会生成trace。一般地，这些错误都是通过[lj_trace_err](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L37)递出来，触发LJ_TRACE_ERR状态以后在[trace_abort](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L551)函数中处理。
+如果tracing的过程中产生了错误，就会导致**trace abort**，从而停止tracing，当然也不会生成trace。一般地，这些错误都是通过[lj_trace_err](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L37)递出来，触发LJ_TRACE_ERR状态以后在[trace_abort](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L551)函数中处理。
 
 当生成roottrace的tracing过程中产生了trace abort，且此tracing起始的BC的操作码不是return类操作码（RETM，RET，RET0，RET1）的情况下，就会对该tracing的起始BC进行“惩罚”。
 
-“惩罚”的过程，即在jit_State的[惩罚数组](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L451)中查找是否对应BC已经被记录过（没有就记录下来），有记录就按[特定算法](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L382)增加其惩罚因子，增加后的惩罚因子如果超过阈值就把该BC列入黑名单，即直接修改该BC的[操作码](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L371)。一旦某个BC被加入黑名单，就不会再对该BC进行解释时的hotcount的统计，而只对该BC做单纯的解释执行（这也意味着比普通的解释会更快）：
+“惩罚”的过程，即在jit_State的[惩罚数组](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L451)中查找是否对应BC已经被记录过（没有就记录下来），有记录就按[特定算法](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L382)增加其惩罚因子，增加后的惩罚因子如果超过阈值就把该BC列入黑名单，即直接修改该BC的[操作码](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L371)。一旦某个BC被加入黑名单，就不会再对该BC进行解释时的hotcount的统计，而只对该BC做单纯的解释执行（这也意味着比普通的解释会更快）：
 ```
 require("jit.v").on("t1.log")--require("jit.dump").on("six", "t1.dlog")--
 ---
@@ -307,7 +307,7 @@ local function f2()
 end
 f2()    -- debug发现不会触发lj_trace_hot
 ```
-而且如果在其它hotcount触发的tracing过程中，遇到被列入黑名单的BC，相应地，也会产生[LJ_TRERR_BLACKL](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2406)的trace abort：
+而且如果在其它hotcount触发的tracing过程中，遇到被列入黑名单的BC，相应地，也会产生[LJ_TRERR_BLACKL](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2406)的trace abort：
 ```
 require("jit.v").on("t1.log")--require("jit.dump").on("six", "t1.dlog")--
 ---
@@ -340,7 +340,7 @@ end
 [TRACE --- t1.lua:4 -- NYI: bytecode 51 at t1.lua:6]
 [TRACE --- t1.lua:11 -- blacklisted at t1.lua:4]
 ```
-还有一点要注意的是，如果该BC的惩罚因子没超过黑名单的阈值，则会修改其对应的hotcount的阈值（也就是说，tracing起始的BC的操作码不是return类操作码，且未进入黑名单的情况下，会更改该BC的hotcount的阈值）：
+还有一点要注意的是，如果该BC的惩罚因子没超过黑名单的阈值，则会修改其对应的[hotcount的阈值](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L397)（也就是说，tracing起始的BC的操作码不是return类操作码，且未进入黑名单的情况下，会更改该BC的hotcount的阈值）：
 ```
 require("jit.v").on("t1.log")--require("jit.dump").on("six", "t1.dlog")--
 ---
@@ -362,16 +362,16 @@ vlog的内容很好的说明了这一点：
 [TRACE --- t1.lua:3 -- NYI: bytecode 51 at t1.lua:10]
 [TRACE   1 t1.lua:3 loop]
 ```
-***[Self-link is blacklisted](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L579)的情况怎么理解***
+***[Self-link is blacklisted](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L579)的情况怎么理解***
 
-trace abort中还有两种特殊的的情况分别是：当引起trace abort的错误是LJ_TRERR_DOWNREC的话，就会尝试调用[trace_downrec](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L535)函数针对down-recursion的情况来生成新的roottrace（过程和生成普通的roottrace一样）；如果TraceError是LJ_TRERR_MCODELM，也会进行重试，不同的是，这种情况是从LJ_TRACE_ASM状态开始重试。
+trace abort中还有两种特殊的的情况分别是：当引起trace abort的错误是LJ_TRERR_DOWNREC的话，就会尝试调用[trace_downrec](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L535)函数针对down-recursion的情况来生成新的roottrace（过程和生成普通的roottrace一样）；如果TraceError是LJ_TRERR_MCODELM，也会进行重试，不同的是，这种情况是从LJ_TRACE_ASM状态开始重试。
 
-导致trace abort的原因很多（具体可以参考lj_traceerr.h），这里主要介绍一些常见的类型以及避免办法：
+导致trace abort的原因很多（具体可以参考[lj_traceerr.h](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_traceerr.h)），这里主要介绍一些常见的类型以及避免办法：
 - **NYI**，这个应该是最常见的trace abort了，NYI也有很多具体很多，具体可以参考[官方的wiki](http://wiki.luajit.org/NYI)。由于vlog提供的NYI都是id，不熟悉的话，可以使用[bc.lua](http://www.freelists.org/post/luajit/frames-and-tail-calls,1)找出对应的BC，然后再去官方[Bytecode-2.0](http://wiki.luajit.org/Bytecode-2.0)中对照查看。
-- **leaving loop in root trace**，往往出现在生成循环类roottrace的时候。虽然循环的hotcount的阈值是56，但是由于额外的[记录闭合循环的](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2031)规则，所以循环次数为56的时候无法成功生成trace；而对于57，虽然满足了记录闭合循环的规则，但是由于for循环对应的trace，其主要工作就是模拟FOR循环迭代器的运行时行为（可以认为循环类的trace，是在`i == 57`的时候生成的，注意和递归的情况的区别），而到达57以后，循环就结束了，模拟也就没有意义，所以这里也无法成功生成trace，具体细节见循环中BC FORL的相关处理函数[rec_for_iter](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L360)。这里要注意区分，与前面提到的递归类trace中的link return的行为的不同。
+- **leaving loop in root trace**，往往出现在生成循环类roottrace的时候。虽然循环的hotcount的阈值是56，但是由于额外的[记录闭合循环的](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2031)规则，所以循环次数为56的时候无法成功生成trace；而对于57，虽然满足了记录闭合循环的规则，但是由于for循环对应的trace，其主要工作就是模拟FOR循环迭代器的运行时行为（可以认为循环类的trace，是在`i == 57`的时候生成的，注意和递归的情况的区别），而到达57以后，循环就结束了，模拟也就没有意义，所以这里也无法成功生成trace，具体细节见循环中BC FORL的相关处理函数[rec_for_iter](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L360)。这里要注意区分，与前面提到的递归类trace中的link return的行为的不同。
 - ***inner loop in root trace，不是很理解。***
-- **loop unroll limit reached**，在tracing的过程（包括用于生成sidetrace的tracing）中，如果遇到了未生成trace的循环或者递归（包括尾递归，如果不希望尾递归，可以使用括号包装返回值来避免，如，`return funccall()`改为`return (funccall())`），就会尝试把循环或者递归展开来记录，如果展开的次数超过了[阈值15](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L112)（减去初始的1次和<的要求，实际值是17），就会产生此trace abort。比较特殊的地方是，导致的该trace abort的循环或者递归，可能在后面生成其它的trace。
-- **call unroll limit reached**，前面提到，在触发tracing的时候，对于非递归的函数调用，会对其做展开限制检查，如果调用帧的深度（在BC CALL对应的处理函数lj_record_call里递增）超过了[阈值3](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L113)，就会产生LJ_TRERR_CUNROLL的trace abort，而无法成功生成trace。
+- **loop unroll limit reached**，在tracing的过程（包括用于生成sidetrace的tracing）中，如果遇到了未生成trace的循环或者递归（包括尾递归，如果不希望尾递归，可以使用括号包装返回值来避免，如，`return funccall()`改为`return (funccall())`），就会尝试把循环或者递归展开来记录，如果展开的次数超过了[阈值15](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L112)（减去初始的1次和<的要求，实际值是17），就会产生此trace abort。比较特殊的地方是，导致的该trace abort的循环或者递归，可能在后面生成其它的trace。
+- **call unroll limit reached**，前面提到，在触发tracing的时候，对于非递归的函数调用，会对其做展开限制检查，如果调用帧的深度（在BC CALL对应的处理函数lj_record_call里递增）超过了[阈值3](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L113)，就会产生LJ_TRERR_CUNROLL的trace abort，而无法成功生成trace。
 - ***down-recursion, restarting，不是很理解。***
 - ***NYI: return to lower frame，不是很理解。***
 - **blacklisted**，tracing中遇到了被列入黑名单的BC而产生的trace abort。要注意的是，被列入黑名单的BC虽然是在纯解释执行，性能会比普通的解释执行要好，但是由它带来的trace abort还是会使得生成trace失败的。
@@ -383,9 +383,9 @@ trace abort中还有两种特殊的的情况分别是：当引起trace abort的�
 
 ## **c. sidetrace**
 
-前面提到的守卫失败，trace退出的时候，在[lj_trace_exit](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L830)函数里，除了从快照恢复VM的状态以外，还会触发[trace_hotside](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L877)检测对应的**side exit**（守卫失败对应的出口）是否达到hot side exit的条件（当前side exit对应的快照里，对于该side exit的计数是否超过[阈值](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L108)），以开始新的tracing生成**sidetrace**。
+前面提到的守卫失败，trace退出的时候，在[lj_trace_exit](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L830)函数里，除了从快照恢复VM的状态以外，还会触发[trace_hotside](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L877)检测对应的**side exit**（守卫失败对应的出口）是否达到hot side exit的条件（当前side exit对应的快照里，对于该side exit的计数是否超过[阈值](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L108)），以开始新的tracing生成**sidetrace**。
 
-tracing生成sidetrace的过程和生成roottrace的过程基本上是一样的，只是tracing开始的[记录设置](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2534)里，会把该side trace对应的快照里的内容用于[初始化](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_snap.c#L456)（[Snapshot Replay](http://wiki.luajit.org/Allocation-Sinking-Optimization#implementation_snapshot-handling_snapshot-replay)）这个side trace的IR。
+tracing生成sidetrace的过程和生成roottrace的过程基本上是一样的，只是tracing开始的[记录设置](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2534)里，会把该side trace对应的快照里的内容用于[初始化](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_snap.c#L456)（[Snapshot Replay](http://wiki.luajit.org/Allocation-Sinking-Optimization#implementation_snapshot-handling_snapshot-replay)）这个side trace的IR。
 
 可以认为生成sidetrace的trace，是该sidetrace的父trace，他们在运行的过程中是连接在一起的，也就是说，运行生成过sidetrace的父trace的过程中守卫失败时，守卫对应的出口不会再退出到解释模式，而且连接到此出口对应的sidetrace上：
 ```
@@ -437,7 +437,7 @@ end
 ```
 观察dumplog可以知道，在trace1在exit3退出超过hot side exit的阈值，而触发tracing（`i == 10`），并且成功生成sidetrace trace2了以后（`i == 11`），后续trace1在守卫`0006 >  int LE     0005  +58`失败，通过出口exit3就不再是退回到解释模式，而是连接到sidetrace trace2了（`i == 12`）。
 
-还有一点就是，对于在生成sidetrace的tracing的记录过程中，遇到非父trace的循环和递归，分别对应BC [JFORL](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2396)（或者BC [JFORI](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2379)，一般是嵌套循环的情况）和BC [JFUNCF](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2424)的处理逻辑来结束记录，并且设置连接到该trace（[***extra loop***](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L603)***和***[***extra tail-recursion***](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L1739)***的情况是怎么出现的***）：
+还有一点就是，对于在生成sidetrace的tracing的记录过程中，遇到非父trace的循环和递归，分别对应BC [JFORL](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2396)（或者BC [JFORI](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2379)，一般是嵌套循环的情况）和BC [JFUNCF](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2424)的处理逻辑来结束记录，并且设置连接到该trace（[***extra loop***](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L603)***和***[***extra tail-recursion***](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L1739)***的情况是怎么出现的***）：
 ```
 require("jit.v").on("t1.log")--require("jit.dump").on("six", "t1.dlog")--
 ---
@@ -767,7 +767,7 @@ f()
 ```
 对比上面2个dumplog可以发现，由于外层循环12的时候，生成了link trace1的sidetrace trace2，所以在第二次调用f的时候，在循环里，trace1和trace2运行结束后是直接连接到下一次循环里的trace1和trace2的，所以在trace2生成以后直到结束，就只有2次（对应2次f调用的）trace2的退出了；而外层循环11的时候，生成的却是link return的sidetrace trace2（***dumplog中虽然是连link trace1的，但是测试和调试trace2的行为却是link return的，不大理解***），所以在第二次调用f的时候，在循环里，trace1和trace2运行结束后是从trace2的exit1退出到解释模式，如此反复，直到在循环的第10里，exit1的退出达到hot side exit的阈值10，从而触发了在循环的第11次里tracing，并成功生成了新的sidetrace trace3（***这里的trace3在生成后，就算再次调用f或者把第二次的f循环次数加大，也都不会被运行到，测试和调试发现trace2的行为，在生成trace3之后变成了真正的link trace1，所以推测是在生成trace3的时候同时也改变了trace2的link行为，但是看源代码并没找到***）。
 
-特别地，在tracing生成sidetrace的过程中，如果trace abort而退出tracing的次数超过[阈值](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_jit.h#L109)，就会在下次触发tracing的时候，记录之前就[直接结束tracing](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_record.c#L2596)，并且生成一个连接到“fallback to interpreter”的sidetrace（注意和上面连接到return的sidetrace的区别）：
+特别地，在tracing生成sidetrace的过程中，如果trace abort而退出tracing的次数超过[阈值](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_jit.h#L109)，就会在下次触发tracing的时候，记录之前就[直接结束tracing](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_record.c#L2596)，并且生成一个连接到“fallback to interpreter”的sidetrace（注意和上面连接到return的sidetrace的区别）：
 ```
 require("jit.v").on("t1.log") -- require("jit.dump").on("six", "t1.dlog")
 ---
@@ -851,7 +851,7 @@ end
 
 ## **d. stitch**
 
-trace stitch是LuaJIT 2.1新增的功能，它允许在tracing的记录过程遇到某个Lua CFunction或者NYI的内置函数的时候（FUNCC和FUNCCW），通过[recff_stitch](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_ffrecord.c#L99)函数完成[在栈上存储此函数的相关信息](https://github.com/LuaJIT/LuaJIT/issues/13#issuecomment-132711024)（为了通俗的理解，把这个函数叫做待缝合函数）的操作后，停止记录和tracing，成功生成[连接到stitch](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_ffrecord.c#L133)的trace；然后待缝合的函数执行次数达到一定阈值后，会通过[lj_dispatch_stitch](https://github.com/LuaJIT/LuaJIT/blob/8271c643c21d1b2f344e339f559f2de6f3663191/src/lj_trace.c#L760)触发tracing生成一个新的trace，连接到前一个trace（或者return）：
+trace stitch是LuaJIT 2.1新增的功能，它允许在tracing的记录过程遇到某个Lua CFunction或者NYI的内置函数的时候（FUNCC和FUNCCW），通过[recff_stitch](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_ffrecord.c#L99)函数完成[在栈上存储此函数的相关信息](https://github.com/LuaJIT/LuaJIT/issues/13#issuecomment-132711024)（为了通俗的理解，把这个函数叫做待缝合函数）的操作后，停止记录和tracing，成功生成[连接到stitch](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_ffrecord.c#L133)的trace；然后待缝合的函数执行次数达到一定阈值后，会通过[lj_dispatch_stitch](https://github.com/LuaJIT/LuaJIT/blob/v2.1.0-beta3/src/lj_trace.c#L760)触发tracing生成一个新的trace，连接到前一个trace（或者return）：
 ```
 require("jit.v").on("t1.log")--require("jit.dump").on("six", "t1.dlog")--
 ---
