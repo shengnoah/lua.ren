@@ -4,7 +4,7 @@ description:      LUA基础入门教程
 
 host: 0.0.0.0
 # the preview server used. Leave as is.
-port: 8080 
+port: 8088
 
 # put your disqus here
 disqus_shortname:
@@ -17,8 +17,8 @@ excerpt_separator: <!--more-->
 
 
 #url: https://shengyang.coding.me/moonbook
-#url: https://lua.ren
-url: https://moonscript.lua.ren
+url: https://lua.ren
+#url: https://moonscript.lua.ren
 #url: https://moonscript.cn
 #url: http://aronbordin.com/neo-hpstr-jekyll-theme
 
