@@ -7,8 +7,8 @@
 ## **b. 准备工作**
 
 首先配置调试[LuaJIT-v2.1.0-beta3](https://github.com/LuaJIT/LuaJIT/tree/v2.1.0-beta3)源码的环境（Windows 64位 + VS 2019）：
-1. 如果要得到精确的栈，需要修改\src\msvcbuild.bat，将/O2替换为/Od；
-2. 在64位版本的vs命令行里执行msvcbuild.bat debug，生成luajit.exe，luajit.lib和lua51.lib；
+1. 如果要得到精确的栈，需要修改\src\msvcbuild.bat，将`/O2`替换为`/Od`；
+2. 在64位版本的vs命令行里执行`msvcbuild.bat debug`，生成luajit.exe，luajit.lib和lua51.lib；
 3. 在VS里建立个命令工程（64位），设置\src为工作目录，指定\src为附加包含目录和附加库目录，并且在附加依赖项里加入luajit.lib和lua51.lib
 4. 新建main.cpp，内容如下：
 ```
