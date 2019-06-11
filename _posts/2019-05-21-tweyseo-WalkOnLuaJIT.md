@@ -1004,7 +1004,23 @@ end
 这里也给出stitch的workflow：![img3](https://github.com/tweyseo/gallery/blob/master/LuaJIT/stitchtrace-workflow.png)
 
 
+
+# **3. 总结**
+
+之前在通过[最佳实践](https://github.com/moonbingbing/openresty-best-practices/blob/master/SUMMARY.md)学习OpenResty的时候，接触到了LuaJIT，[相关章节的例子](https://github.com/moonbingbing/openresty-best-practices/blob/master/lua/what_jit.md)中，一个小小的“魔法”操作，使得效率提示了几十倍，这个时候，我就已经对LuaJIT非常感兴趣了，无奈网上资料太少，LuaJIT的源码也相对比较晦涩（也许是我缺乏编译器，特别是JIT类编译器的相关知识的缘故），所以当时就放弃了。
+
+后来在沉淀自己线上项目的[框架](https://github.com/tweyseo/Mirana)的时候，就想说顺便遵循LuaJIT的特性来优化下自己的框架，于是参照[Performance-Guide](http://wiki.luajit.org/Numerical-Computing-Performance-Guide)的规则，开始着手优化自己的框架。虽然Performance-Guide里给出了不少有效的参考性意见，可是由于太多概念性的东西不是很理解，使得优化的过程比较的痛苦，于是只好又重新借助LuaJIT的源码以及LuaJIT的邮件讨论组，重新再来学习和研究
+LuaJIT，这样才有了这个文章。
+
+大家如果有关注最新版的[OpenResty](https://openresty.org/cn/changelog-1015008.html)就会发现，LuaJIT已经是OpenResty的必选项了，并且同样变为必选项的[resty.core](https://github.com/openresty/lua-resty-core)，也是为了淘汰掉OpenResty现有的一套Lua CFunction接口，而通过更为高效和友好的LuaJIT的FFI实现的，所以LuaJIT离我们并不远，就在我们OpenRestyer的眼前。
+
+这个文章涉及的只是LuaJIT的基础部分的知识点，还有很多其他的高级内容（比如强大的[FFI](http://luajit.org/ext_ffi_tutorial.html)）没涉及到，有空了我也会研究并且整理出相关的文章，分享出来供大家参考学习讨论。
+
+最后，希望这个文章在帮助大家学习了解LuaJIT的同时，大家也能帮忙一起来完善LuaJIT的相关知识，也算是为OR社区做出一点小小的贡献。
+
+
 # **TODO**
-上面的内容都是我个人研究源码和邮件讨论组里讨论总结出来的，难免有一些不是很准准确，甚至错误的地方，希望大家在读这个文章的时候能帮忙指出问题，我会参与讨论并及时修正的。
+
+文章里的内容都是我个人研究LuaJIT的[源码](https://github.com/LuaJIT/LuaJIT/tree/v2.1.0-beta3)和LuaJIT的[邮件讨论组](https://www.freelists.org/archive/luajit/)里讨论总结出来的，难免有一些不是很准确，甚至错误的地方，希望大家在读这个文章的时候能帮忙指出问题，我会参与讨论并及时修正的。
 
 另外，文章中有部分***斜粗体***，是目前为止，我尚未研究透的，也希望大家有思路的话能给我指导，我会参与讨论并及时补充的。
