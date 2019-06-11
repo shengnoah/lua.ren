@@ -1002,3 +1002,9 @@ end
 这里是由于，在tracing生成连接到stitch的trace的过程中，遇到了[VARG的NYI](http://wiki.luajit.org/NYI)而产生trace abort，使得tracing结束，生成trace失败。这一点说明了，tracing stitchtrace的时候，是有记录待缝合函数和其参数的。当然这个VARG的NYI在生成普通trace的tracing中也会产生trace abort。
 
 这里也给出stitch的workflow：![img3](https://github.com/tweyseo/gallery/blob/master/LuaJIT/stitchtrace-workflow.png)
+
+
+# **TODO**
+上面的内容都是我个人研究源码和邮件讨论组里讨论总结出来的，难免有一些不是很准准确，甚至错误的地方，希望大家在读这个文章的时候能帮忙指出问题，我会参与讨论并及时修正的。
+
+另外，文章中有部分***斜粗体***，是目前为止，我尚未研究透的，也希望大家有思路的话能给我指导，我会参与讨论并及时补充的。
