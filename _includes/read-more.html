@@ -1,7 +1,7 @@
 <div class="read-more">
   {% for post in site.related_posts limit:1 %}
     <div class="read-more-header">
-      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">Read More</a>
+      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">更多</a>
     </div><!-- /.read-more-header -->
     <div class="read-more-content">
       <h3><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h3>

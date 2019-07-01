@@ -1,3 +1,16 @@
+---
+layout: post
+title: Walk on Lua JIT 
+description: Walk on Lua JIT 
+date:   2019-05-21 12:50:18 +0800
+tags: [openresty,lua]
+categories: [topic]
+image:
+    feature: feature.jpg
+    creditlink: http://orchina.org
+---
+
+
 # **0. 背景**
 
 ## **a. 目的**
