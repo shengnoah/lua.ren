@@ -48,16 +48,6 @@ menu:
         url: '/documents/moonscript-command-line/'
       - title: 'MoonScript标准库'
         url: '/documents/moonscript-standard-lib/'
-  - title: '框架'
-    url: '#'
-    submenu:
-      - title: 'Lapis快速入门'
-        url: '/topic/lapis-getting-started/'
-  - title: '教程'
-    url: '#'
-    submenu:
-      - title: 'Lua入门教程'
-        url: '/topic/lapis-getting-started/'
 
         
 classical:
