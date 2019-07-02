@@ -60,6 +60,15 @@ menu:
         url: '/topic/lapis-getting-started/'
 
         
+classical:
+  - title: 'Walk on Lua JIT'
+    url: '/topic/tweyseo-WalkOnLuaJIT-1/'
+  - title: '服务器大负载情况下客户端出现Connection reset by peer'
+    url: '/topic/tweyseo-connection-reset-by-peer/'
+  - title: 'Nginx+Lua返回JSON类型数据'
+    url: '/topic/377/'
+  - title: 'Lua的MD5库'
+    url: '/topic/121/'
 
 coding_comments:
   owner: 'shengyang'
@@ -76,7 +85,7 @@ owner:
   name:           糖果
   site:           https://lua.ren
   avatar:         images/avatar.jpg
-  bio:            "LUA从入门到放弃"
+  bio:            "LUA入门教程"
   email:          49263457@email.com
   # Twitter nick for use in Twitter cards and follow button.
   #twitter: shengyangcandy # if no twitter in this config, the twitter follow button will be removed
@@ -119,7 +128,7 @@ sass:
 permalink:   /:categories/:title/
 
 # Amount of post to show on home page
-paginate: 1 
+paginate: 6 
 
 # if true, shows the floatting share buttons
 #float_share: true

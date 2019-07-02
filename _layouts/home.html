@@ -73,15 +73,19 @@
     </section>
 </div><!-- /#main -->
 
+
+
 <div id="main" role="main">
     <section id="disqus_thread" class="read-more">            
     <div class="read-more-header">
       <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">精华文章</a>
     </div><!-- /.read-more-header -->
-    <p><a href="{{ site.url }}/topic/tweyseo-WalkOnLuaJIT-1/" >Walk on LUAJIT</a></p>
-    <p><a href="{{ site.url }}/topic/tweyseo-connection-reset-by-peer/" >服务器大负载情况下客户端出现Connection reset by peer</a></p>
-    <p><a href="{{ site.url }}/topic/377/" >Nginx+Lua返回JSON类型数据</a></p>
+    {% for menu in site.classical %}
+        <li><a href="{{ site.url }}{{menu.url}}" >{{menu.title}}</a></li>
+    {% endfor %}
 </div><!-- /#main -->
+
+
 
 
 <div id="main" role="main">
