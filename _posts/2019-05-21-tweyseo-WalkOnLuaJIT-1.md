@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Walk on Lua JIT 
-description: Walk on Lua JIT 
+title: Walk on LuaJIT 
+description: Walk on LuaJIT 
 date:   2019-05-21 12:50:18 +0800
 tags: [openresty,lua]
 categories: [topic]
