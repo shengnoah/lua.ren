@@ -1,5 +1,5 @@
-title:            LUA入门教程
-description:      LUA入门教程
+title:            LUA教程
+description:      LUA教程:Lua是一门精悍的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。
 
 
 host: 0.0.0.0
@@ -77,7 +77,7 @@ owner:
   name:           糖果
   site:           https://lua.ren
   avatar:         images/avatar.jpg
-  bio:            "LUA入门教程"
+  bio:            "LUA教程"
   email:          49263457@email.com
   # Twitter nick for use in Twitter cards and follow button.
   #twitter: shengyangcandy # if no twitter in this config, the twitter follow button will be removed
