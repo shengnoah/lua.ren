@@ -34,6 +34,8 @@ menu:
     url: 'https://s.lua.ren/news'
   - title: '重点文档'
     url: 'https://doc.lua.ren'
+  - title: '春哥经典'
+    url: 'http://orchina.org'
   - title: '标签'
     url: '/tags'
   - title: '分类'
