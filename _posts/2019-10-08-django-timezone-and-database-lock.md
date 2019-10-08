@@ -2,7 +2,7 @@
 layout: post
 title: Django时区与数据库被锁 
 description: Django数据库锁住与Django时区设定
-date:   2019-10-08 8:50:18 +0800 
+date: 2019-10-08 8:50:18 +0800 
 tags: [datetime,fuser,django]
 categories: [python]
 image:
