@@ -1,0 +1,34 @@
+---
+layout: post
+title: Django时区与数据库被锁 
+description: Django数据库锁住与Django时区设定
+date:   2019-10-08 8:50:18 +0800 
+tags: [datetime,fuser,django]
+categories: [python]
+image:
+    feature: feature.jpg
+    creditlink: http://orchina.org
+---
+
+Django里的时区定义是受到setting.py中的设置影响的，所以你直接在普通的源文件中运行的时间获取函数，同样的代码放到django里的工程得到的时间结果是不一样的， 因为django默认的是UTC的时间区，比中国时间差了8个小时。
+
+```python
+# TIME_ZONE = 'UTC'
+```
+把时区改成你所在的时区。
+
+
+
+RPC和REST同时写数据库， 造成数据库文件被锁了，然后Python现想使用就不可以了， 全部数据库close也不行， 这时用fuser -v看了一下，是谁还有用这个库没有释放资源，就是直接找到这个库文件fuser -k后，数据库可以重新开始使用了。
+
+
+查看使用该文件进程信息。
+```shell
+sudo fuser -v test.data
+```
+
+
+杀掉使用该文件的进程
+```shell
+sudo fuser -k test.data
+```
