@@ -3416,9 +3416,9 @@ var Gitment = function () {
             
       //_utils.http.post('https://gh-oauth.imsun.net', {
       //_utils.http.post('https://auth.baixiaotu.cc', {
-      _utils.http.post('https://github.com/login/oauth/access_token', {
+      //_utils.http.post('https://github.com/login/oauth/access_token', {
       //_utils.http.post('https://bak.smalbox.club', {
-      //_utils.http.post('https://cors.wenjunjiang.win', {
+      _utils.http.post('https://cors.wenjunjiang.win', {
         code: code,
         client_id: client_id,
         client_secret: client_secret
