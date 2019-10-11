@@ -4,7 +4,7 @@ title: 浅析深度学习神经网络的卷积层
 description: 浅析深度学习神经网络的卷积层 
 date: 2019-10-11 8:50:18 +0800 
 tags: [深度学习,神经网络]
-categories: [深度学习]
+categories: [AI]
 image:
     feature: feature.jpg
     creditlink: http://orchina.org
