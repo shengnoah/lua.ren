@@ -32,6 +32,7 @@ systemctl status mysqld.service
 修改root密码
 ```
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'new password';
+grant all on *.* to root@'%' identified by 'password';
 ```
 
 
