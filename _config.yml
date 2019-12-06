@@ -1,5 +1,5 @@
-title:            LUA教程
-description:      LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。
+title:            LUA心经
+description:      LUA心经:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。
 
 
 host: 0.0.0.0
