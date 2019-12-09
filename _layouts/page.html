@@ -17,6 +17,8 @@
     <div class="entry-content">
       {{ content }}
 
+{% include scripts.html %}
+
       {% if page.comments != false and site.disqus_shortname %}<section id="disqus_thread"></section><!-- /#disqus_thread -->{% endif %}
         
       <footer class="entry-meta">
@@ -29,7 +31,7 @@
                 
 </div><!-- /#main -->
 
-{% include scripts.html %}
+
 
 <div class="footer-wrapper">
   <footer role="contentinfo">
