@@ -34,6 +34,19 @@
     {% include author.html %}
     {% if page.comments != false and site.disqus_shortname %}<section id="disqus_thread"></section><!-- /#disqus_thread -->{% endif %}
     {% if site.related_posts.size > 0 %}{% include read-more.html %}{% endif %}
+
+      <script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+      <script>
+            const btw = new BTWPlugin();
+        btw.init({
+                  id: 'container',
+                  blogId: '18349-1575873226778-434',
+                  name: '糖果的实验室',
+                  qrcode: 'https://candylab.net/images/logo/wechat.jpg',
+                  keyword: 'lua',
+              });
+      </script>
+    
   </article>
 </div><!-- /#main -->
 
