@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Apache APISIX在SAE市场发布
-description: Apache APISIX在SAE市场发布
+title: Apache APISIX在SAE应用市场发布
+description: Apache APISIX在SAE应用市场发布
 date: 2019-12-09 8:50:18 +0800 
 tags: [openresty,apisix,gateway,dashboard]
 categories: [网关]
@@ -35,24 +35,32 @@ APISIX的安装， V0.8可以直接用Luarocks安装，但果可能在Dashboard�
 
 在路由创建的时候需要注意一下， 如果创建的路由不指定任何插件和服务，一定要指定上游，不然请求POST会返回400码，创建不成功。
 
+
 ```shell
 curl  -H "Content-Type: application/json"   -X POST -d '{"uris":["asdf"],"plugins":{},"desc":"asdf"}'   0.0.0.0:5050/apisix/admin/routes
+```
 
+```shell
 {"error_msg":"invalid configuration: object matches none of the alternatives"}
+```
 
+```shell
  127.0.0.1 - - [06/Dec/2019:04:07:32 +0000] 0.0.0.0:5050 "POST /apisix/admin/routes HTTP/1.1" 400 90 0.000 "-" "curl/7.29.0" - - -
 ```
+
 
 
  上面的出错的原因就是没有创建upstream，还有一些插件可能报错，这个到时需要动手亲测。
 
 
 ### 参考链接
-[APISIX在云商店上架的链接](https://market.sinacloud.com/#/dashbord/detail?id=158)
-[演示版](http://apisix.applinzi.com/apisix/dashboard)
+[云商店链接](https://market.sinacloud.com/#/dashbord/detail?id=158)
+
+[线上演示版](http://apisix.applinzi.com/apisix/dashboard)
+
 [Lua心经](https://lua.ren)
     
 
 以上略过大量安装细节，有问题大家可以留言，或是在Q群里直接喊，但想想各位老师都是人材， 说话还都好听，估计也不会有啥大问题。
 
-看最新的消息，关注公众号：糖果的实验室
+看最新的消息，关注公众号：[糖果的实验室](https://mp.weixin.qq.com/s?__biz=MjM5NjEzNzU5OQ==&mid=2247483961&idx=1&sn=283949ff5a78292c7506fa019a0ebd1f&chksm=a6ec9d29919b143fec6b7b64bcfb7c3589705563fccb16a713b7a6a2d62372fe1099b49e27a1&token=163358827&lang=zh_CN#rd)
