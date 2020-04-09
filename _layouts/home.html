@@ -35,7 +35,7 @@
     <h3>lua</h3>
     <section id="disqus_thread" class="read-more">            
     <div class="read-more-header">
-      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">标签</a>
+      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">搜索</a>
     </div><!-- /.read-more-header -->
 
       {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
@@ -47,32 +47,48 @@
           <li><a href="#{{ this_word }}" class="tag"><span class="term">{{ this_word }}</span> <span class="count">{{ site.tags[this_word].size }}</span></a></li>
         {% endunless %}{% endfor %}
       </ul>
-    
+   
+      
+    <!--
       <ul class="entry-meta inline-list">
         {% for item in (0..site.categories.size) %}{% unless forloop.last %}
           {% capture this_word %}{{ cats_list[item] | strip_newlines }}{% endcapture %}
           <li><a href="#{{ this_word }}" class="tag"><span class="term">{{ this_word }}</span> <span class="count">{{     site.categories[this_word].size }}</span></a></li>
         {% endunless %}{% endfor %}
       </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
 
     </section>
+
 </div><!-- /#main -->
+
+
+<!--
 
 <div id="main" role="main">
     <section id="disqus_thread" class="read-more">            
     <div class="read-more-header">
       <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">检索</a>
-    </div><!-- /.read-more-header -->
+    </div>
       <div style="text-align: center">
           <h3>关键字: 标题、标签、分类等。</h3>
-        <input type="text" id="search-input"/>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
       </div>
 
       <ul id="results-container">
       </ul>
     </section>
-</div><!-- /#main -->
-
+</div>
+-->
 
 
 <div id="main" role="main">
