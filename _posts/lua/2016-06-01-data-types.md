@@ -1,5 +1,6 @@
 ---
 layout: post
+title: 数据类型
 tags: [lua]
 categories: [lua_guide]
 ---

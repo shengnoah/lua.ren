@@ -96,7 +96,7 @@
     <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">LUA基础教程</a>
   </div><!-- /.read-more-header -->
 
-        {% for post in site.categories.lua_guide limit: 20 %}
+        {% for post in site.categories.lua_guide limit: 31 %}
             {% if post.title != null %}
                 <li class="entry-title"><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
             {% endif %}

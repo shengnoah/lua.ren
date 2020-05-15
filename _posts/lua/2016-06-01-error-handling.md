@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua错误处理
 tags: [lua]
 categories: [lua_guide]
 ---

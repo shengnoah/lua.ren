@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua函数
 tags: [lua]
 categories: [lua_guide]
 ---

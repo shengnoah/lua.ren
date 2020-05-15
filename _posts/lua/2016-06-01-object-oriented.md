@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua面向对象  
 tags: [lua]
 categories: [lua_guide]
 ---

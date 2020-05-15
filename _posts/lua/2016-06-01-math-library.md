@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua数学函数库  
 tags: [lua]
 categories: [lua_guide]
 ---

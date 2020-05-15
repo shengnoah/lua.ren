@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua数据库访问
 tags: [lua]
 categories: [lua_guide]
 ---

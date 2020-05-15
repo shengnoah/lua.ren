@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua标准库  
 tags: [lua]
 categories: [lua_guide]
 ---

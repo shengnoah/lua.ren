@@ -1,5 +1,6 @@
 ---
 layout: post
+title:  Lua基本语法
 tags: [lua]
 categories: [lua_guide]
 ---

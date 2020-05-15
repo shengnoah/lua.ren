@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua垃圾回收机制  
 tags: [lua]
 categories: [lua_guide]
 ---

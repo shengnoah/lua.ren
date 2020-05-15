@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua调试
 tags: [lua]
 categories: [lua_guide]
 ---

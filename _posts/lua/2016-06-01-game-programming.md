@@ -1,5 +1,6 @@
 ---
 layout: post
+title: Lua游戏开发  
 tags: [lua]
 categories: [lua_guide]
 ---
