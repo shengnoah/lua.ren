@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 错误处理  
 
 ## 为什么需要错误处理机制

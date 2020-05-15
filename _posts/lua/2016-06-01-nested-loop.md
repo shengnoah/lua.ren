@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 #Lua 循环嵌套  
 
 Lua 编程语言允许使用循环嵌套。接下来这一节中将用例子来说嵌套循环的使用方法：  

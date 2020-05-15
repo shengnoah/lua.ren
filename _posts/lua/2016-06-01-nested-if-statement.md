@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 #Lua 中的嵌套 if 语句  
 
 在 Lua 语言中，你可以合法的嵌套使用 if-else 语句。这也就是说，你可以在一个 if 或 if-else 语句内再使用一个　if 或 if-else 语句。  

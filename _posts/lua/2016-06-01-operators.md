@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # 操作符  
 
 操作符是用于告诉解释器执行特定的数学或逻辑运算的符号。Lua 语言有丰富的内置操作符，主要包括以下几类：  

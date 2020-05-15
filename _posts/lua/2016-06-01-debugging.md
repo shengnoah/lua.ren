@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 调试  
 
 Lua 提供一个调试库，这个库中提供了创建自己的调试器所需的所有原语函数。虽然，Lua 没有内置调试器，但是开发者们为 Lua 开发了许多的开源调试器。 

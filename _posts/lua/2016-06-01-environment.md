@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 运行环境  
 
 ## 本地环境搭建  

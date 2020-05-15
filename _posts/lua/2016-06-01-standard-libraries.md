@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 标准库  
 
 Lua 标准库利用 C 语言 API 实现并提供了丰富的函数，它们内置于 Lua 语言中。该标准库不仅可以提供 Lua 语言内服务，还能提供外部服务，比如文件或数据库的操作。  

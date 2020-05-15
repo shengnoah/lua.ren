@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 数学函数库  
 
 在科学计算与工程计算领域，我们都需要用到大量的数学函数。在 Lua 的数学库提供了大量的数学函数，如下表所示：  

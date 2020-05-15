@@ -4,7 +4,7 @@ title: LUA基础教程入门-metatables
 description: LUA基础教程入门-metatables
 date:   2016-06-01 22:50:18 +0800 
 tags: [LUA教程]
-categories: [LUA教程]
+categories: [lua_guide]
 ---
 
 # Lua 元表  

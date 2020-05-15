@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # Lua 垃圾回收机制  
 
 Lua 通过特定算法的垃圾回收机制实现自动内存管理。由于自动内存管理机制的存在，作为程序开发人员：  

@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 #repeat...until 循环  
 
 与 for 和 while 循环中先检测条件再决定是否执行循环不同，repeat...until 先执行循环再检测条件判断是否再次执行。  

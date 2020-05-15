@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 #Lua 中的 if 语句  
 
 if　语句包括一个布尔表达式和一个或多个语句。　　

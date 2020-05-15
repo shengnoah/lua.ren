@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # 基本语法  
 
 Lua 学起来非常简单。现在，让我们开始创建我们的第一个 Lua 程序吧！  

@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 # 数据类型  
 
 Lua 是动态类型编程语言，变量没有类型，只有值才有类型。值可以存储在变量中，作为参数传递或者作为返回值。  

@@ -1,3 +1,8 @@
+---
+layout: post
+tags: [lua]
+categories: [lua_guide]
+---
 #Lua 中的 if...else 语句  
 
 如果 if 语句后面跟上 else 语句，那么条件为假时就执行 else 语句的代码。  

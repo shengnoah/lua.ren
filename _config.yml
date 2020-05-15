@@ -80,7 +80,7 @@ owner:
   bio:            "LUA教程"
   email:          49263457@email.com
   # Twitter nick for use in Twitter cards and follow button.
-  twitter: shengyangcandy # if no twitter in this config, the twitter follow button will be removed
+  # twitter: shengyangcandy # if no twitter in this config, the twitter follow button will be removed
   # GitHub nick for use in follow button in author block.
   github: shengnoah
 
