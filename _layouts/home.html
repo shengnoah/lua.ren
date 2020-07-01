@@ -90,24 +90,12 @@
 </div>
 -->
 
-<div id="main" role="main">
-  <section id="disqus_thread" class="read-more">            
-  <div class="read-more-header">
-    <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">LUA基础教程</a>
-  </div><!-- /.read-more-header -->
 
-        {% for post in site.categories.lua_guide limit: 31 %}
-            {% if post.title != null %}
-                <li class="entry-title"><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
-            {% endif %}
-         {% endfor %}
-
-</div><!-- /#main -->
 
 
 <div class="read-more">
   <div class="read-more-header">
-    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">Lua基础</a>
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
   </div><!-- /.read-more-header -->
  
   <div class="read-more-content">
@@ -133,7 +121,7 @@
 
 <div class="read-more">
   <div class="read-more-header">
-    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断控制</a>
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
   </div><!-- /.read-more-header -->
  
   <div class="read-more-content">
@@ -157,12 +145,14 @@
 
 <div class="read-more">
   <div class="read-more-header">
-    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环控制结构</a>
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
   </div><!-- /.read-more-header -->
  
   <div class="read-more-content">
     <h4>第三部分：循环控制</h4>
-    <p>介绍几种的Lua循环控制结构</p>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
   </div><!-- /.read-more-content -->
 
   <div class="read-more-list">
@@ -177,6 +167,9 @@
         <span>loop循环使用</span>
         <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
         <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
       </div><!-- /.list-item -->
   </div><!-- /.read-more-list -->
 </div><!-- /.read-more -->
@@ -184,7 +177,7 @@
 
 <div class="read-more">
   <div class="read-more-header">
-    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级功能</a>
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
   </div><!-- /.read-more-header -->
  
   <div class="read-more-content">
@@ -194,10 +187,19 @@
 
   <div class="read-more-list">
       <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
       </div><!-- /.list-item -->
   </div><!-- /.read-more-list -->
 </div><!-- /.read-more -->
-
 
 
 
@@ -209,6 +211,22 @@
     {% for menu in site.classical %}
         <li><a href="{{ site.url }}{{menu.url}}" >{{menu.title}}</a></li>
     {% endfor %}
+</div><!-- /#main -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">LUA基础教程</a>
+  </div><!-- /.read-more-header -->
+
+        {% for post in site.categories.lua_guide limit: 31 %}
+            {% if post.title != null %}
+                <li class="entry-title"><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
+            {% endif %}
+         {% endfor %}
+
 </div><!-- /#main -->
 
 
