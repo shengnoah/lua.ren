@@ -206,7 +206,7 @@
 <div id="main" role="main">
     <section id="disqus_thread" class="read-more">            
     <div class="read-more-header">
-      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">精华文章</a>
+      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">精华</a>
     </div><!-- /.read-more-header -->
     {% for menu in site.classical %}
         <li><a href="{{ site.url }}{{menu.url}}" >{{menu.title}}</a></li>
@@ -218,7 +218,7 @@
 <div id="main" role="main">
   <section id="disqus_thread" class="read-more">            
   <div class="read-more-header">
-    <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">LUA基础教程</a>
+    <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">基础</a>
   </div><!-- /.read-more-header -->
 
         {% for post in site.categories.lua_guide limit: 31 %}
