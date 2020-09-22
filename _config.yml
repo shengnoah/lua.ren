@@ -191,5 +191,9 @@ plugins:
 #  - jekyll-feed
 #  - jekyll-sitemap
 #  - jekyll-gist
+# If you have any plugins, put them here!
+#  - jekyll-remote-theme
+
 
 theme: neo-hpstr-jekyll-theme
+#remote_theme: benbalter/retlab
