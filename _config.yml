@@ -95,6 +95,8 @@ menu:
 classical:
   - title: 'LUA基础入门教程'
     url: '/categories/#lua_guide'
+  - title: '程序员最爱：NIZ静电空键盘'
+    url: '/静电容键盘/niz静电容键盘怎么样/'
   - title: 'Walk on Lua JIT'
     url: '/topic/tweyseo-WalkOnLuaJIT-1/'
   - title: '服务器大负载情况下客户端出现Connection reset by peer'
