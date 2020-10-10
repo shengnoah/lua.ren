@@ -93,18 +93,18 @@ menu:
 
 
 classical:
-  - title: 'LUA基础入门教程'
-    url: '/categories/#lua_guide'
-  - title: '程序员最爱：NIZ静电容键盘'
+  #- title: 'LUA基础入门教程'
+  #  url: '/categories/#lua_guide'
+  - title: '程序员码代码神器'
     url: '/静电容键盘/niz静电容键盘怎么样/'
-  - title: 'Walk on Lua JIT'
-    url: '/topic/tweyseo-WalkOnLuaJIT-1/'
-  - title: '服务器大负载情况下客户端出现Connection reset by peer'
-    url: '/topic/tweyseo-connection-reset-by-peer/'
-  - title: 'Nginx+Lua返回JSON类型数据'
-    url: '/topic/377/'
-  - title: 'Lua的MD5库'
-    url: '/topic/121/'
+  #- title: 'Walk on Lua JIT'
+  #  url: '/topic/tweyseo-WalkOnLuaJIT-1/'
+  #- title: '服务器大负载情况下客户端出现Connection reset by peer'
+  #  url: '/topic/tweyseo-connection-reset-by-peer/'
+  #- title: 'Nginx+Lua返回JSON类型数据'
+  #  url: '/topic/377/'
+  #- title: 'Lua的MD5库'
+  #  url: '/topic/121/'
 
 coding_comments:
   owner: 'shengyang'
