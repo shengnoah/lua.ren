@@ -95,8 +95,10 @@ menu:
 classical:
   #- title: 'LUA基础入门教程'
   #  url: '/categories/#lua_guide'
-  - title: '程序员码代码神器'
+  - title: '程序员神器'
     url: '/静电容键盘/niz静电容键盘怎么样/'
+  - title: 'Lua基础入门教程（PDF）'
+    url: '/images/download/lua.pdf'
   #- title: 'Walk on Lua JIT'
   #  url: '/topic/tweyseo-WalkOnLuaJIT-1/'
   #- title: '服务器大负载情况下客户端出现Connection reset by peer'
