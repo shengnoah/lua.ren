@@ -1,0 +1,176 @@
+
+---
+layout: post
+title: lua require机制 
+tags: [lua文章]
+categories: [lua文章]
+---
+require(modname)
+
+加载给定的模块.函数首先检查表package.loaded来判定modname是否已经存在.
+
+如果存在,则require返回package.loaded[modname]所存储的值否则它尝试为模块找到一个加载器(loader).
+
+要找到一个加载器,require首先查询package.preloaded[modname].如果它有值,该值(应该是一个函数)就是加载器.
+
+如果没值require使用package.path中存储的路径查找一个Lua的加载器.如果该查找也失败,它使用package.cpath中
+
+存储的路径查找一个C语言加载器(C loader).如果还是失败,它尝试使用all-in-one加载器(如下)
+
+当加载一个C库的时候,require首先使用动态链接工具将应用程序与库连接起来.之后它尝试找到一个该库中的C函数,该函数要被当做加载器使用.这个C函数的名称是字符串”luaopen_”连接着复制的模块名(模块名称中的每个点号”.”都被替换为一个下划线).此外,如果模块名称含有连字符”-“,则第一个连字符的前缀(包括连字符)都被移除.比如,如果模块名称是a.v1-b.c,则函数名称将是luaopen_b_c.
+
+如果require即没有为模块找到一个Lua库也没有为模块找到一个C库,他将调用all-in-
+one加载器.该加载器为给定模块的根名称查找C路径找到对应库(原文:this loader searches the C path for a
+library for the root name of the given module).例如,当require
+a.b.c时,它将为a查找一个库.如果找到,它查询该库内部为子模块找到一个开放函数(open
+function);在我们这个例子中将会是luaopen_a_b_c.使用这个便利机制(facility),一个包可以将几个子模块打包进单个的库中,同时每个子模块保存着它本来的开放函数.
+
+一旦找到一个加载器,require使用单个的参数modname调用加载器.如果加载器返回任何值,require将其赋值给package.loaded[modname].
+
+如果加载器没有返回值且没有给package.loaded[modname]赋与任何值,则require为该条目赋值为true.
+
+无论如何,require返回package.loaded[modname]的最终值.
+
+如果加载或者运行模块有任何错误,或者他不能为模块找到一个加载器,则require发出一个错误信号.
+
+require函数的实现原理如下:
+
+  1. –require 函数的实现 
+  2. function require(name) 
+  3. ​ if not package.loaded[name] then –是否在package.loaded中存在name
+  4. ​ local loader = findloader(name) –不存在则查找加载器 
+  5. ​ if loader == nil then 
+  6. ​ error(“unable to load module” .. name) 
+  7. ​ end 
+  8. ​ package.loaded[name] = true –加载器不存在 设置true
+  9. ​ local res = loader(name) –加载
+  10. ​ if res ~= nil then 
+  11. ​ package.loaded[name] = res –加载返回的值给你 package.loaded
+  12. ​ end 
+  13. ​ end 
+  14. ​ return package.loaded[name] –返回 package.loaded[name]
+  15. end 
+
+package.cpath
+
+由require使用查找C加载器的路径
+
+Lua初始化C路径package.cpath的方法与初始化Lua路径package.path的相同,使用LUA_CPATH中的环境变量(另外一个默认的路径在luaconf.h中定义)
+
+package.loaded
+
+一个用于控制哪些模块已经加载的表,该表由require使用.当require一个模块名为modname的模块且package.loaded[modname]不为false时,require仅返回package.loaded[modname]存储的值.
+
+package.loadlib(libname,funcname)
+
+使用C库libname动态链接到宿主程序.在这个库中,寻找函数funcname并将该函数作为一个C函数返回.(所以,funcname必须遵守协议(参见lua_CFunction)).
+
+这是一个底层函数.它完全绕过了package和module系统.与require不同,它不执行任何路径查找且不自动添加扩展名.libname必须是C库中完整的文件名,如果必要的话还要包含路径和扩展名.funcname必须是原封不动的C库中导出的名字(这可能取决于使用的C编译器和链接器).
+
+这个函数不被ANSI C支持.就其本身而言,它只在一些平台上才能使用(Windows,Linux,Mac OS
+X,Solaris,BSD,加上其他支持dlfcn标准的Unix系统)
+
+package.path
+
+require用于查找Lua加载器的路径
+
+在启动时,Lua使用环境变量LUA_PATH或者如果环境变量未定义就使用luaconf.h中定义的默认值来初始化该值.环境变量中的任何”::”都被替换为默认路径.
+
+路径是一系列由分号隔开的模板(templates).对于每个模板,require将每个模板中的问号替换为filename,filename是modname中每个点都被替换成”目录分隔符”(比如Unix中的”/“)(这句感觉翻译不准确,原文:For
+each template,require will change each interrogation mark in the template by
+filename,which is modname with each dot replaced by a “directory
+separator”(such as “/“ in
+Unix));之后他将加载产生的文件名.因此,举个例子,如果Lua路径是”./?.lua;./?.lc;/usr/local/?/init.lua”,为模块foo查找一个Lua加载器将会尝试以如下顺序加载文件./foo.lua,./foo.lc和/usr/local/foo/init.lua
+
+package.preload
+
+为特定模块存储加载器的一个表(参见require)
+
+package.seeall(module)
+
+为module设置一个元表,module的__index只想全局环境(global
+environment),以便该module继承全局环境中的值.作为函数module中的一个选项来使用.
+
+在Programming Lua中是这么讲的:
+
+默认情况下,module不提供外部访问.必须在调用它之前,为需要访问的外部函数或模块声明适当的局部变量.也可以通过继承来实现外部访问,只需在调用module时附加一个选项package.seeall.这个选项等价于如下代码:
+
+  1. setmetatable(M,{__index = _G}) 
+
+因而只需这么做:
+
+  1. module(…,package.seeall) 
+
+module(name,[,…])
+
+创建一个模块.如果在package.loaded[name]中有表,该表便是创建的模块.否则,如果有一个全局表t其名称与给定名称相同,则该全局表便是创建的模块.否则创建一个新的表t
+
+lua中import和require的区别
+
+载入一个模块
+
+import() 与 require() 功能相同，但具有一定程度的自动化特性。
+
+假设有如下的目录结构：
+
+app/
+
+app/classes/
+
+app/classes/MyClass.luaapp/classes/MyClassBase.luaapp/classes/data/Data1.luaapp/classes/data/Data2.lua
+
+MyClass 中需要载入 MyClassBase 和 MyClassData。如果用 require()，MyClass 内的代码如下：
+
+local MyClassBase = require(“app.classes.MyClassBase”)
+
+local MyClass = class(“MyClass”, MyClassBase)
+
+local Data1 = require(“app.classes.data.Data1”)
+
+local Data2 = require(“app.classes.data.Data2”)
+
+假如将 MyClass 及其相关文件换一个目录存放，那么就必须修改 MyClass 中的 require() 命令，否则将找不到模块文件。
+
+而使用 import()，只需要如下写：
+
+local MyClassBase = import(“.MyClassBase”)
+
+local MyClass = class(“MyClass”, MyClassBase)
+
+local Data1 = import(“.data.Data1”)
+
+local Data2 = import(“.data.Data2”)
+
+当在模块名前面有一个”.” 时，import() 会从当前模块所在目录中查找其他模块。因此 MyClass 及其相关文件不管存放到什么目录里，都不再需要修改
+MyClass 中的 import() 命令。这在开发一些重复使用的功能组件时，会非常方便。
+
+可以在模块名前添加多个”.” ，这样 import() 会从更上层的目录开始查找模块。
+
+不过 import() 只有在模块级别调用（也就是没有将 import() 写在任何函数中）时，才能够自动得到当前模块名。如果需要在函数中调用
+import()，那么就需要指定当前模块名：
+
+# MyClass.lua
+
+# 这里的 … 是隐藏参数，包含了当前模块的名字，所以最好将这行代码写在模块的第一行
+
+local CURRENT_MODULE_NAME = …
+
+local function testLoad() local MyClassBase = import(“.MyClassBase”,
+CURRENT_MODULE_NAME)
+
+# 更多代码
+
+end
+
+Parameters
+
+string moduleName 要载入的模块的名字
+
+[string currentModuleName]
+
+当前模块名
+
+Returns
+
+module
+
