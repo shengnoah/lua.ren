@@ -103,7 +103,7 @@ nginx安装路径假设为:/usr/local/nginx/conf/
 
 ###效果图如下：
 
-![sec](https://smile921.github.io/images/nginx-lua-waf.png)
+![sec](https://himle.github.io/images/nginx-lua-waf.png)
 
 ###规则更新：
 

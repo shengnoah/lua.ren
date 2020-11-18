@@ -6,7 +6,7 @@ categories: [lua文章]
 ---
 火云邪神语录：天下武功，无坚不破，唯快不破！Nginx 的看家本领就是速度，Lua 的拿手好戏亦是速度，这两者的结合在速度上无疑有基因上的优势。
 
-![](https://img.dazhuanlan.com/2019/11/27/5dde43d365d47.gif)  
+![](http://www.lua.org/images/lua.gif)  
   
 最近一直再折腾这个，干脆就稍微整理下。以防后面继续跳坑！
 
@@ -334,4 +334,4 @@ a.txt
   
 **原因** ：最开始的那些依赖没安装
 
-![](https://img.dazhuanlan.com/2019/11/27/5dde43d44bee1.jpg)
+![](https://ws3.sinaimg.cn/large/006tNc79gy1fp3jkmizmpj30o00didgn.jpg)

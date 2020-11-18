@@ -1,0 +1,362 @@
+---
+layout: post
+title: Lua_on_Nginx 
+tags: [lua文章]
+categories: [lua文章]
+---
+Nginx的高并发是它的一大显著优势，Lua则是一门较为轻便的脚本语言。把他们组合在一起，则极大的增强了Nginx的能力（灵活性，扩展性）。  
+Nginx-Lua模块是由淘宝开发的第三方模块，使用它可以把Lua内嵌到Nginx中。
+
+nginx 地址：<http://www.nginx.org>
+
+luajit 地址：<http://luajit.org/download.html>
+
+HttpLuaModule 地址：<http://wiki.nginx.org/HttpLuaModule>
+
+## [](http://www.leocook.org/#1-%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83
+"1.系统环境")1.系统环境
+
+必须的编译环境，需要提前准备好。我这里的环境是ubuntu14.04，用的apt source是官方的源，使用163 source的时候有问题。
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    
+
+|
+
+    
+    
+    apt-get install make  
+    apt-get install gcc  
+    apt-get install libpcre3 libpcre3-dev  
+    apt-get install libssl-dev  
+      
+  
+---|---  
+  
+##
+[](http://www.leocook.org/#2-Lua%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE
+"2.Lua的运行时环境配置")2.Lua的运行时环境配置
+
+###
+[](http://www.leocook.org/#2-1-%E4%B8%8B%E8%BD%BDLua%E7%9A%84%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83
+"2.1.下载Lua的运行环境")2.1.下载Lua的运行环境
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    5  
+    
+
+|
+
+    
+    
+    cd /opt/  
+      
+    wget http://luajit.org/download/LuaJIT-2.0.4.tar.gz  
+      
+    tar zxvf LuaJIT-2.0.4.tar.gz  
+      
+  
+---|---  
+  
+### [](http://www.leocook.org/#2-2-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85
+"2.2.编译安装")2.2.编译安装
+
+    
+    
+    1  
+    2  
+    3  
+    
+
+|
+
+    
+    
+    cd /opt/LuaJIT-2.0.4  
+    make  
+    make install  
+      
+  
+---|---  
+  
+##
+[](http://www.leocook.org/#3-%E4%B8%8B%E8%BD%BDNginx%E7%9A%84lua%E6%A8%A1%E5%9D%97
+"3.下载Nginx的lua模块")3.下载Nginx的lua模块
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    5  
+    
+
+|
+
+    
+    
+    cd /opt/  
+      
+    wget https://github.com/openresty/lua-nginx-module/archive/v0.10.5.tar.gz  
+      
+    tar zxvf v0.10.5.tar.gz  
+      
+  
+---|---  
+  
+## [](http://www.leocook.org/#4-Nginx%E9%85%8D%E7%BD%AE "4.Nginx配置")4.Nginx配置
+
+### [](http://www.leocook.org/#4-1-%E4%B8%8B%E8%BD%BDnginx
+"4.1.下载nginx")4.1.下载nginx
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    5  
+    
+
+|
+
+    
+    
+    cd /opt/  
+      
+    wget http://nginx.org/download/nginx-1.10.1.tar.gz  
+      
+    tar zxvf nginx-1.10.1.tar.gz  
+      
+  
+---|---  
+  
+### [](http://www.leocook.org/#4-2-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85
+"4.2.编译安装")4.2.编译安装
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    5  
+    6  
+    7  
+    8  
+    9  
+    
+
+|
+
+    
+    
+    # 导入环境变  
+    export LUAJIT_LIB=/usr/local/lib  
+    export LUAJIT_INC=/usr/local/include/luajit-2.0  
+      
+    # 安装到/usr/local/nginx-1.10.1目录下  
+    ./configure --prefix=/usr/local/nginx-1.10.1 --add-module=../lua-nginx-module-0.10.5  
+      
+    make -j2  
+    make install  
+      
+  
+---|---  
+  
+### [](http://www.leocook.org/#4-3-%E9%85%8D%E7%BD%AE "4.3.配置")4.3.配置
+
+    
+    
+    1  
+    2  
+    
+
+|
+
+    
+    
+    cd /usr/local/nginx-1.10.1  
+    vi conf/nginx.conf  
+      
+  
+---|---  
+  
+然后在http -> server下加入配置：
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    
+
+|
+
+    
+    
+    location /lua_test {  
+        default_type 'text/plain';  
+        content_by_lua 'ngx.say("hello, ttlsa lua")';  
+    }  
+      
+  
+---|---  
+  
+这个配置后，访问[http://[hostname]:[port]/lua_test，就能访问你所定义的代码块了。](http://www.leocook.org/http://%5Bhostname%5D:%5Bport%5D/lua_test%EF%BC%8C%E5%B0%B1%E8%83%BD%E8%AE%BF%E9%97%AE%E4%BD%A0%E6%89%80%E5%AE%9A%E4%B9%89%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97%E4%BA%86%E3%80%82)
+
+如果你还想修改nginx的http端口，修改一下 **http.server** 中的 **listen** 值，就可以了。
+
+### [](http://www.leocook.org/#4-4-%E5%90%AF%E5%8A%A8nginx
+"4.4.启动nginx")4.4.启动nginx
+
+    
+    
+    1  
+    
+
+|
+
+    
+    
+    /usr/local/nginx-1.10.1/sbin/nginx  
+      
+  
+---|---  
+  
+### [](http://www.leocook.org/#4-5-%E9%AA%8C%E8%AF%81 "4.5.验证")4.5.验证
+
+查看端口的运行情况：
+
+    
+    
+    1  
+    2  
+    
+
+|
+
+    
+    
+    root@ubuntu:~# netstat -anp|grep 4002  
+    tcp        0      0 0.0.0.0:4002            0.0.0.0:*               LISTEN      1736/nginx  
+      
+  
+---|---  
+  
+或者直接请求4002端口。（我这里使用的是4002端口，你可以根据需要，设置为你需要的。）
+
+    
+    
+    1  
+    2  
+    
+
+|
+
+    
+    
+    root@ubuntu:/usr/local/nginx-1.10.1/sbin# curl http://192.168.1.160:4002/lua_test  
+    hello, ttlsa lua  
+      
+  
+---|---  
+  
+## [](http://www.leocook.org/#5-FAQ "5.FAQ")5.FAQ
+
+### [](http://www.leocook.org/#5-1-%E7%BC%BA%E5%B0%91pcre3
+"5.1.缺少pcre3")5.1.缺少pcre3
+
+  * 错误log
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    
+
+|
+
+    
+    
+    ./configure: error: the HTTP rewrite module requires the PCRE library.  
+    You can either disable the module by using --without-http_rewrite_module  
+    option, or install the PCRE library into the system, or build the PCRE library  
+    statically from the source with nginx by using --with-pcre=<path> option.  
+      
+  
+---|---  
+  
+  * 解决办法
+
+    
+    
+    1  
+    
+
+|
+
+    
+    
+    apt-get install libpcre3 libpcre3-dev  
+      
+  
+---|---  
+  
+### [](http://www.leocook.org/#5-2-%E7%BC%BA%E5%B0%91libssl
+"5.2.缺少libssl")5.2.缺少libssl
+
+  * 错误log
+
+    
+    
+    1  
+    2  
+    3  
+    4  
+    
+
+|
+
+    
+    
+    ./configure: error: the HTTP gzip module requires the zlib library.  
+    You can either disable the module by using --without-http_gzip_module  
+    option, or install the zlib library into the system, or build the zlib library  
+    statically from the source with nginx by using --with-zlib=<path> option.  
+      
+  
+---|---  
+  
+  * 解决办法
+
+    
+    
+    1  
+    
+
+|
+
+    
+    
+    apt-get install libssl-dev  
+      
+  
+---|---  
+  
+参考地址：  
+<http://www.ttlsa.com/nginx/nginx-modules-ngx_lua/>
