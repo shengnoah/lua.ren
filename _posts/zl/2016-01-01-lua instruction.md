@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: lua instruction 
@@ -1033,4 +1032,3 @@ generator的返回值。
 generator)中的closure，传入for state和for
 control，并将结果返回给自定义局部变量列表i和v。第七行调用TFORLOOP进行循环条件判断，判断i是否为空。如果不为空，将i的值赋给for
 control，然后跳转到第五行，进行循环。
-

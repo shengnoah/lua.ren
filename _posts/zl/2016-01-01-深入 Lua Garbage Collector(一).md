@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 深入 Lua Garbage Collector(一) 
@@ -1040,4 +1039,3 @@ categories: [lua文章]
 ### 总结
 
 这个简单的收集器与目前 **Ruby** 和 **Lua** 中的收集器非常的相似，所以下一次我们将深入了解 **Lua** 的 **GC** 机制。
-

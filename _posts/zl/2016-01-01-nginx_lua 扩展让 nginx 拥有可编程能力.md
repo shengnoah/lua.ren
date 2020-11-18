@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: nginx_lua 扩展让 nginx 拥有可编程能力 
@@ -282,4 +281,3 @@ Nginx lua 实现：
 ---  
   
 转载请注明出处，谢谢。。
-

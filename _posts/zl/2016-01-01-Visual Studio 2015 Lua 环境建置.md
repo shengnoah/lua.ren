@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Visual Studio 2015 Lua 环境建置 
@@ -116,4 +115,3 @@ Header文件，可先依文件类型排序后方便选择)→取消选择 lua.c�
 范例文件：下载位置 (懒人包：全部解压缩到D即可，内含Lua Source)
 
 ![](https://img.dazhuanlan.com/2019/11/25/5ddb75c6d785c.png)
-

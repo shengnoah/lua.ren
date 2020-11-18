@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Notepad++配置lua环境 
@@ -50,4 +49,3 @@ categories: [lua文章]
 （2）在标签页Plugin commands中找到cmd_lua，把快捷键修改为F5
 
 ## 5\. 运行：按F5可以看到下方有输出结果，大功告成！
-

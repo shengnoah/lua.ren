@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: System Center Virtual Machine Manager 2012 RC&amp;ndash; Evaluation开放下载 
@@ -95,5 +94,4 @@ Jerry_IT 周伯恒 2010 ~2016 Microsoft® MVP Award
 博客：http://www.dotblogs.com.tw/jerry710822  
 MVP ID: 4027163  
 My MVP Profile  
-https://mvp.support.microsoft.com/profile/Jerry  
-
+https://mvp.support.microsoft.com/profile/Jerry

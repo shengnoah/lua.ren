@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Mac 上 Sublime Text 3 配置 Lua 环境 
@@ -141,4 +140,3 @@ categories: [lua文章]
 经典的测试代码`print("hello".."world");`选择lua编译环境:![](http://ww1.sinaimg.cn/large/741b3941jw1f56t5aqif4j211g0l044k.jpg)
 
 ##### 7\. commond + b 编译查看结果`helloworld`这样就配置完成了，可以愉快的敲代码~(≧▽≦)/~啦啦啦
-

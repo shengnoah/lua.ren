@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Programming in Lua(Thrid Edition)笔记 
@@ -591,4 +590,3 @@ j
     	return proxy  
     end  
     days = readOnly{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", <span class="string"
-

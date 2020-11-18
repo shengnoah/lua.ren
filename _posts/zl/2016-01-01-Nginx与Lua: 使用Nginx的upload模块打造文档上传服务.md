@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Nginx与Lua: 使用Nginx的upload模块打造文档上传服务 
@@ -127,5 +126,3 @@ Lua是一个可以嵌入到Nginx配置文档中的动态脚本语言,从而可�
     end
     
     onupload();
-    
-

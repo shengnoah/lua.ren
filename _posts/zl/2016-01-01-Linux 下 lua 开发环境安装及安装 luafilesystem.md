@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Linux 下 lua 开发环境安装及安装 luafilesystem 
@@ -336,4 +335,3 @@ a.txt
 **原因** ：最开始的那些依赖没安装
 
 ![](https://img.dazhuanlan.com/2019/11/27/5dde43d44bee1.jpg)
-

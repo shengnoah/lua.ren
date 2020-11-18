@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Tengine+Lua+GraphicsMagick动态裁剪图片 
@@ -588,4 +587,3 @@ ImageResizer.lua：
       
   
 ---|---
-

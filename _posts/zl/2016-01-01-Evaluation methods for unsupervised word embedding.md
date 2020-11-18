@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Evaluation methods for unsupervised word embeddings 
@@ -48,4 +47,3 @@ intrinsic evaluation的表现与extrinsic evaluation的表现没有必然的联�
 # 备注
 
 parts of speech 词性
-

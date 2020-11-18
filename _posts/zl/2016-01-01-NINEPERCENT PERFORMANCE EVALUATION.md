@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: NINEPERCENT PERFORMANCE EVALUATION 
@@ -57,4 +56,3 @@ No.8 王琳凯（小鬼）
 No.9 尤长靖
 
 [了 解 更 多](https://shawoohalim.github.io/no9.html)
-

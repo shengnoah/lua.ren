@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Model Selection and Evaluation 
@@ -138,4 +137,3 @@ line越完美的fit数据；当(R^2)越接近0时，说明regression line 越不
   * [notes of machine learning by Andrew Ng in cousera](http://www.holehouse.org/mlclass)
   * GPCA (Generalized Principle Component Analysis) by [Yi Ma](http://yima.csl.illinois.edu/) (to be published)
   * [机器学习](http://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/MLbook2016.htm) 周志华
-

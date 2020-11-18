@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: nginx+lua动态改变upstream 
@@ -614,4 +613,3 @@ reload
 > –摘自官网
 
   * 另外还找到一篇[基于 consul + upsync 的动态upstream管理](http://www.jianshu.com/p/35b03c82f9fd)
-

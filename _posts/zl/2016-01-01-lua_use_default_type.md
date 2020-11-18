@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: lua_use_default_type 
@@ -39,4 +38,3 @@ Type响应头信息给你的Lua请求去处理，则将这个指令设置为关�
 这个指令第一次出现是在 v0.9.1 稳定版中。
 
 `wngn123@163.com on 206-07-12`
-

@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: nginx lua waf 
@@ -130,5 +129,3 @@ nginx安装路径假设为:/usr/local/nginx/conf/
     默认开启了get和post过滤，需要开启cookie过滤的，编辑waf.lua取消部分--注释即可
     
     日志文件名称格式如下:虚拟主机名_sec.log
-    
-

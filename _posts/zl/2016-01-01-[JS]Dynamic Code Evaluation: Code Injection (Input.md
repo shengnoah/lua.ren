@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: [JS]Dynamic Code Evaluation: Code Injection (Input Validation and Representation, Data Flow) 
@@ -95,4 +94,3 @@ document.getElementById(mstrPreText + "TextBox2").focus();
 ###  参考资讯
 
 利用 jQuery 将 DOM 元素聚焦 focus() 的六个版本
-

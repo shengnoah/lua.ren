@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: 为Lua添加std::function交互支持 
@@ -246,4 +245,3 @@ function并调用，在这个过程中使用lambda捕获Lua function的引用id�
 ## 进一步优化
 
 这里的std::function的userdata的metatable是没有实现__call方法的，因此实际上在lua层并不能调用这个方法。有需要的话可以自行实现。
-

@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Evaluating Polynomials 
@@ -30,5 +29,3 @@ Pn-1(x)=anxn-1+an-1xn-2+...+a1。 显然 Pn(x)=xPn-1(x)+a0.
             p=p*x+a[n-i-2];
         return p;
     }
-    
-
