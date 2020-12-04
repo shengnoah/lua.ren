@@ -4,236 +4,204 @@ title: introduction to lua
 tags: [lua文章]
 categories: [topic]
 ---
-print
+<p>print</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>comment</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="c1">-- one line</span>
+<span class="cm">--[[
+	multiple lines
+--]]</span>
+</code></pre>
+</div>
+<p>global variable, value is treated as global by default, only you use “local” to define it. if you awnt to delete it, just set it as nil.</p>
 
-    
-    
-    print("hello world")
-    
+<p>Lua data type：nil、boolean、number、string、userdata、function、thread、table.
+Logic operations: and, or, not</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">))</span>
+<span class="c1">-- string</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+<span class="c1">-- boolean</span>
+</code></pre>
+</div>
+<p>string</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="n">string1</span> <span class="o">=</span> <span class="s2">&#34;hello world&#34;</span>
+<span class="n">string2</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
+<span class="n">string3</span> <span class="o">=</span> <span class="s">[[
+	hello world
+]]</span>
 
-comment
+<span class="c1">-- string append</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="o">..</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="c1">-- string length #</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">string2</span><span class="p">)</span>
+<span class="nb">string.len</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">)</span>
+<span class="c1">-- string to upper</span>
+<span class="nb">string.upper</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+<span class="c1">-- string to lower</span>
+<span class="nb">string.lower</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+<span class="c1">-- string replace </span>
+<span class="nb">string.gsub</span><span class="p">(</span><span class="n">mainString</span><span class="p">,</span><span class="n">findString</span><span class="p">,</span><span class="n">replaceString</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+<span class="nb">string.gsub</span><span class="p">(</span><span class="s2">&#34;aaaa&#34;</span><span class="p">,</span><span class="s2">&#34;a&#34;</span><span class="p">,</span><span class="s2">&#34;z&#34;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1">-- return zzza, 3</span>
+<span class="c1">-- find the index, 1 as the begin point</span>
+<span class="nb">string.find</span><span class="p">(</span><span class="s2">&#34;Hello Lua user&#34;</span><span class="p">,</span> <span class="s2">&#34;Lua&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">-- reverse the string</span>
+<span class="nb">string.reverse</span><span class="p">(</span><span class="s2">&#34;lua&#34;</span><span class="p">)</span> 
+<span class="c1">-- string copy</span>
+<span class="nb">string.rep</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>table</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="kd">local</span> <span class="n">tbl2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;apple&#34;</span><span class="p">,</span> <span class="s2">&#34;pear&#34;</span><span class="p">,</span> <span class="s2">&#34;orange&#34;</span><span class="p">,</span> <span class="s2">&#34;grape&#34;</span><span class="p">}</span>
 
-    
-    
-    -- one line
-    --[[
-    	multiple lines
-    --]]
-    
+<span class="c1">-- table contact</span>
+<span class="n">fruits</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;banana&#34;</span><span class="p">,</span><span class="s2">&#34;orange&#34;</span><span class="p">,</span><span class="s2">&#34;apple&#34;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">table.concat</span><span class="p">(</span><span class="n">fruits</span><span class="p">))</span>
+<span class="c1">-- return bananaorangeapple</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">table.concat</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span><span class="s2">&#34;, &#34;</span><span class="p">))</span>
+<span class="c1">-- return banana, orange, apple</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">table.concat</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span><span class="s2">&#34;, &#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="c1">-- return orange, apple</span>
 
-global variable, value is treated as global by default, only you use “local”
-to define it. if you awnt to delete it, just set it as nil.
+<span class="c1">-- remove </span>
+<span class="nb">table.remove</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
 
-Lua data type：nil、boolean、number、string、userdata、function、thread、table. Logic
-operations: and, or, not
+<span class="c1">-- insert</span>
+<span class="nb">table.insert</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&#34;mongo&#34;</span><span class="p">)</span>
 
-    
-    
-    print(type("hello world"))
-    -- string
-    print(type(true))
-    -- boolean
-    
+<span class="c1">--sort</span>
+<span class="nb">table.sort</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>function</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="k">function</span> <span class="nf">factorial1</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">then</span>
+    	<span class="k">return</span> <span class="mi">1</span>
+	<span class="k">else</span>
+    	<span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial1</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="k">end</span>
+<span class="k">end</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">factorial1</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">factorial2</span> <span class="o">=</span> <span class="n">factorial1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">factorial2</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
-string
+<span class="c1">-- it can also return multiple values</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="nb">string.find</span><span class="p">(</span><span class="s2">&#34;www.runoob.com&#34;</span><span class="p">,</span> <span class="s2">&#34;runoob&#34;</span><span class="p">)</span> 
+<span class="c1">-- return 5 10</span>
+</code></pre>
+</div>
+<p>user data: user can define the data type and value at any style</p>
 
-    
-    
-    string1 = "hello world"
-    string2 = 'hello world'
-    string3 = [[
-    	hello world
-    ]]
-    
-    -- string append
-    print("a"..'b')
-    -- string length #
-    print(#string2)
-    string.len("abc")
-    -- string to upper
-    string.upper(argument)
-    -- string to lower
-    string.lower(argument)
-    -- string replace 
-    string.gsub(mainString,findString,replaceString,num)
-    string.gsub("aaaa","a","z",3)
-    -- return zzza, 3
-    -- find the index, 1 as the begin point
-    string.find("Hello Lua user", "Lua", 1)
-    -- reverse the string
-    string.reverse("lua") 
-    -- string copy
-    string.rep("abc", 2)
-    
+<p>assignment</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="n">t</span><span class="p">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span>       <span class="o">&lt;</span><span class="c1">--&gt;       a=10; b=2*x</span>
+<span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>         <span class="c1">-- swap &#39;a[i]&#39; for &#39;a[j]&#39;</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>             <span class="c1">--&gt; 0   1   nil</span>
+	<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">+</span><span class="mi">2</span>     <span class="c1">-- value of b+2 is ignored</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>               <span class="c1">--&gt; 1   2</span>
+</code></pre>
+</div>
+<p>index</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">t</span><span class="p">.</span><span class="n">i</span>
+</code></pre>
+</div>
+<p>loop</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="c1">-- false and nil are false, true and non-nil are true, so 0 is false</span>
+<span class="k">if</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">then</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;0 is true&#34;</span><span class="p">)</span>
+<span class="k">end</span>
 
-table
+<span class="k">if</span> <span class="p">(</span><span class="n">condition1</span><span class="p">)</span>
+<span class="k">then</span>
+	<span class="k">do</span> <span class="n">sth1</span>
+<span class="k">elseif</span> <span class="p">(</span><span class="n">condition2</span><span class="p">)</span>
+<span class="k">then</span>
+	<span class="k">do</span> <span class="n">sth2</span>
+<span class="k">else</span>
+	<span class="k">do</span> <span class="n">sth3</span>
+<span class="k">end</span>
 
-    
-    
-    local tbl2 = {"apple", "pear", "orange", "grape"}
-    
-    -- table contact
-    fruits = {"banana","orange","apple"}
-    print(table.concat(fruits))
-    -- return bananaorangeapple
-    print(table.concat(fruits,", "))
-    -- return banana, orange, apple
-    print(table.concat(fruits,", ", 2,3))
-    -- return orange, apple
-    
-    -- remove 
-    table.remove(fruits, pos)
-    
-    -- insert
-    table.insert(fruits, 2, "mongo")
-    
-    --sort
-    table.sort(fruits)
-    
+<span class="k">while</span><span class="p">(</span> <span class="kc">true</span> <span class="p">)</span>
+<span class="k">do</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;loop forever&#34;</span><span class="p">)</span>
+<span class="k">end</span>
 
-function
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">do</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
 
-    
-    
-    function factorial1(n)
-    	if n == 0 then
-        	return 1
-    	else
-        	return n * factorial1(n - 1)
-    	end
-    end
-    print(factorial1(5))
-    factorial2 = factorial1
-    print(factorial2(5))
-    
-    -- it can also return multiple values
-    s, e = string.find("www.runoob.com", "runoob") 
-    -- return 5 10
-    
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span> <span class="k">do</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
 
-user data: user can define the data type and value at any style
+<span class="n">days</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Suanday&#34;</span><span class="p">,</span><span class="s2">&#34;Monday&#34;</span><span class="p">,</span><span class="s2">&#34;Tuesday&#34;</span><span class="p">,</span><span class="s2">&#34;Wednesday&#34;</span><span class="p">,</span><span class="s2">&#34;Thursday&#34;</span><span class="p">,</span><span class="s2">&#34;Friday&#34;</span><span class="p">,</span><span class="s2">&#34;Saturday&#34;</span><span class="p">}</span>  
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="k">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>	<span class="k">do</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="k">end</span>
 
-assignment
+<span class="k">repeat</span>
+	<span class="n">statements</span>
+<span class="k">until</span><span class="p">(</span> <span class="n">condition</span> <span class="p">)</span>
 
-    
-    
-    t.n = t.n + 1
-    a, b = 10, 2*x       <-->       a=10; b=2*x
-    a[i], a[j] = a[j], a[i]         -- swap 'a[i]' for 'a[j]'
-    a, b, c = 0, 1
-    print(a,b,c)             --> 0   1   nil
-    	a, b = a+1, b+1, b+2     -- value of b+2 is ignored
-    print(a,b)               --> 1   2
-    
+<span class="c1">-- can use break </span>
+</code></pre>
+</div>
 
-index
+<p>module</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="n">module</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">module</span><span class="p">.</span><span class="n">constant</span> <span class="o">=</span> <span class="s2">&#34;value&#34;</span>
+<span class="k">function</span> <span class="nc">module</span><span class="p">.</span><span class="nf">func</span><span class="p">()</span>
+	<span class="nb">io.write</span><span class="p">(</span><span class="s2">&#34;a public function&#34;</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1">-- load a module</span>
+<span class="nb">require</span> <span class="s2">&#34;module&#34;</span>
+</code></pre>
+</div>
 
-    
-    
-    t[i]
-    t.i
-    
+<p>IO</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="c1">-- only read</span>
+<span class="n">file</span> <span class="o">=</span> <span class="nb">io.open</span><span class="p">(</span><span class="s2">&#34;test.lua&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span>
+<span class="nb">io.input</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="nb">io.close</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&#34;--  test.lua 文件末尾注释&#34;</span><span class="p">)</span>
+</code></pre>
+</div>
 
-loop
+<p>coroutine</p>
+<div class="language-lua highlighter-rouge"><pre class="highlight"><code><span class="c1">-- use producer and consumer as the example</span>
+<span class="kd">local</span> <span class="n">newProductor</span>
 
-    
-    
-    -- false and nil are false, true and non-nil are true, so 0 is false
-    if(0)
-    then
-    	print("0 is true")
-    end
-    
-    if (condition1)
-    then
-    	do sth1
-    elseif (condition2)
-    then
-    	do sth2
-    else
-    	do sth3
-    end
-    
-    while( true )
-    do
-    	print("loop forever")
-    end
-    
-    for i=1,f(x) do
-    	print(i)
-    end
-    
-    for i=10,1,-1 do
-    	print(i)
-    end
-    
-    days = {"Suanday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"}  
-    for i, v in ipairs(days)	do
-    print(v)
-    end
-    
-    repeat
-    	statements
-    until( condition )
-    
-    -- can use break 
-    
+<span class="k">function</span> <span class="nf">productor</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">send</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>     <span class="c1">-- send the products to consumers</span>
+    <span class="k">end</span>
+<span class="k">end</span>
 
-module
+<span class="k">function</span> <span class="nf">consumer</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="n">receive</span><span class="p">()</span>     <span class="c1">-- get the products from the productor</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
 
-    
-    
-    module={}
-    module.constant = "value"
-    function module.func()
-    	io.write("a public function")
-    end
-    -- load a module
-    require "module"
-    
+<span class="k">function</span> <span class="nf">receive</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">status</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">newProductor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+<span class="k">end</span>
 
-IO
+<span class="k">function</span> <span class="nf">send</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="nb">coroutine.yield</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>     <span class="c1">-- x is the value, coroutine</span>
+<span class="k">end</span>
 
-    
-    
-    -- only read
-    file = io.open("test.lua", "r")
-    io.input(file)
-    io.close(file)
-    io.write("--  test.lua 文件末尾注释")
-    
-
-coroutine
-
-    
-    
-    -- use producer and consumer as the example
-    local newProductor
-    
-    function productor()
-        local i = 0
-        while true do
-            i = i + 1
-            send(i)     -- send the products to consumers
-        end
-    end
-    
-    function consumer()
-        while true do
-            local i = receive()     -- get the products from the productor
-            print(i)
-        end
-    end
-    
-    function receive()
-        local status, value = coroutine.resume(newProductor)
-        return value
-    end
-    
-    function send(x)
-       coroutine.yield(x)     -- x is the value, coroutine
-    end
-    
-    -- start
-    newProductor = coroutine.create(productor)
-    consumer()
+<span class="c1">-- start</span>
+<span class="n">newProductor</span> <span class="o">=</span> <span class="nb">coroutine.create</span><span class="p">(</span><span class="n">productor</span><span class="p">)</span>
+<span class="n">consumer</span><span class="p">()</span>
+</code></pre>
+</div>

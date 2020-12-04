@@ -4,241 +4,27 @@ title: ngx_lua灵活定制fastcgi_cache缓存key
 tags: [lua文章]
 categories: [topic]
 ---
-## Web开发常见的几种缓存
-
->   * 常用缓存（memcached和redis）
->   * Nginx的缓存（标准模块缓存: proxy_cache和fastcgi_cache / 第三方模块做缓存: ngx_lua）
->   * CDN缓存
->   * 浏览器缓存（Cache-Control和LocalStorage）
->
-
-## proxy_cache和fastcgi_cache
-
-proxy_cache和fastcgi_cache都为Nginx的内置缓存，proxy_cache主要用于反向代理时，对后端内容源服务器进行缓存，fastcgi_cache主要用于对FastCGI的动态程序进行缓存。  
-两者相关配置类似，以下为fastcgi_cache举例
-
-### 原理
-
-针对fastcgi（如：php-
-fpm）返回的内容缓存为静态文件(文件名是用Md5算法对Key进行哈希后所得，而Key可使用fastcgi_cache的相关指令来进行控制)  
-，在用户浏览时，无需重复请求后端fastcgi，而直接返回缓存的内容，减少了后端的语言解析以及数据库连接的消耗。
-
-### 数据流程图
-
-![](https://sohow.cc//images/http_process.png)
-
-### 指令注释
-
-#### nginx的http作用域:
-
-fastcgi_cache_path /home/wwwroot/yii.me/runtime/logs levels=1:2
-keys_zone=keys_zone=zone:512m:1m inactive=1d  
-max_size=1g;
-#指定一个路径，目录结构等级，关键字区域存储时间和非活动删除时间。以及最大占用空间（keys_zone主要缓存key和文件元信息，不会缓存页面）
-
-#### nginx的location作用域:
-
-fastcgi_cache zone; #表示开启FastCGI缓存并为其指定一个名称:zone  
-fastcgi_cache_valid 1m; #设置缓存时间1分钟  
-fastcgi_cache_min_uses 1; #设置链接请求1次就被缓存  
-fastcgi_cache_use_stale error timeout invalid_header http_500;
-#定义哪些情况下用过期缓存（如果对实效要求不高建议加updating，关闭fastcgi_cache_lock，可提高性能）  
-fastcgi_cache_methods GET POST; #缓存GET和POST请求  
-fastcgi_cache_key “$cache_path$containerid$containerpage”;
-#缓存key=页面+containerid+分页页码  
-fastcgi_ignore_headers Cache-Control Expires Set-Cookie; #包含这些header的响应不缓存  
-fastcgi_cache_lock on; #同时有请求处理的时候只有一个请求允许访问后端服务器，其余请求等待缓存结果或等待超时再进行响应  
-fastcgi_cache_lock_timeout 5s; #等待超时时间5秒，超时则穿透，且不缓存穿透结果  
-fastcgi_cache_bypass $skip_cache; #非0不从cache中取  
-fastcgi_no_cache $skip_cache; #非0不保存到cache
-
-### 性能提升
-
-以下测试使用的vps机器  
-ab -c10 -n50000 <http://127.0.0.1:8080/echo.php>
-
-  * fastcgi_cache off Requests per second: 2441.56 [#/sec] (mean)
-  * fastcgi_cache zone Requests per second: 3662.79 [#/sec] (mean)
-
-## ngx_lua模块
-
-### 参考资料
-
-  * [OpenResty 最佳实践-子查询](http://wiki.jikexueyuan.com/project/openresty/openresty/sub_request.html)
-  * [OpenResty 最佳实践-缓存](http://wiki.jikexueyuan.com/project/openresty/ngx_lua/cache.html)
-
-### 在ngx_lua模块中使用共享内存
-
-  * 定义一个共享内存对象  
-语法：lua_shared_dict  
-该命令主要是定义一块名为name的共享内存空间，内存大小为size。通过该命令定义的共享内存对象对于Nginx中所有worker进程都是可见的，当Nginx通过reload命令重启时，共享内存字典项会从新获取它的内容，而当Nginx  
-退出时，字典项的值将会丢失。  
-例子：
-
-    
-        1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-    
-    9
-    
-    10
-    
-    11
-    
-    12
-    
-    13
-    
-    14
-    
-    15
-    
-    16
-    
-    17
-    
-    18
-    
-    19
-    
-    20
-    
-    21
-    
-    22
-    
-    23
-    
-    24
-    
-    25
-    
-    26
-    
-    27
-    
-    28
-    
-    29
-    
-    30
-    
-    31
-    
-    32
-    
-    33
-    
-    34
-    
-    35
-    
-    36
-    
-    37
-    
-    38
-    
-    39
-    
-    40
-    
-    41
-    
-    42
-    
-    43
-    
-    44
-
-|
-
-    
-        location /testngxlua {
-    
-            default_type application/json;
-    
-            charset utf8;
-    
-            access_by_lua '
-    
-                function get_from_cache(key)
-    
-                    local cache_ngx = ngx.shared.my_cache
-    
-                    local value = cache_ngx:get(key)
-    
-                    return value
-    
-                end
-    
-                function set_to_cache(key, value, exptime)
-    
-                    if not exptime then
-    
-                        exptime = 0
-    
-                    end
-    
-                    local cache_ngx = ngx.shared.my_cache
-    
-                    local succ, err, forcible = cache_ngx:set(key, value, exptime)
-    
-                    return succ
-    
-                end
-    
-                ngx.req.read_body()
-    
-                local c = ngx.req.get_uri_args()["c"] or ""
-    
-                local str = get_from_cache(c)
-    
-                if (str ~= nil) then
-    
-                    ngx.print("ngx_cache: "..str)
-    
-                else
-    
-                    local options = {}
-    
-                    options["method"] = ngx.var.request_method == "GET" and ngx.HTTP_GET or ngx.HTTP_POST
-    
-                    options["body"] = ngx.var.request_body
-    
-                    options["args"] = ngx.var.args
-    
-                    local res = ngx.location.capture("/index.php"..ngx.var.uri, options)
-    
-                    if res.status == 200 then
-    
-                        set_to_cache(c, res.body, 300)
-    
-                        ngx.print(res.body)
-    
-                    else
-    
-                        ngx.say(res.status)
-    
-                    end
-    
-                end
-    
-            ';
-    
-        }  
-  
----|---
+<h2 id="Web开发常见的几种缓存"><a href="#Web开发常见的几种缓存" class="headerlink" title="Web开发常见的几种缓存"></a>Web开发常见的几种缓存</h2><blockquote>
+<ul>
+<li>常用缓存（memcached和redis）</li>
+<li>Nginx的缓存（标准模块缓存: proxy_cache和fastcgi_cache / 第三方模块做缓存: ngx_lua）</li>
+<li>CDN缓存</li>
+<li>浏览器缓存（Cache-Control和LocalStorage）</li>
+</ul>
+</blockquote>
+<h2 id="proxy-cache和fastcgi-cache"><a href="#proxy-cache和fastcgi-cache" class="headerlink" title="proxy_cache和fastcgi_cache"></a>proxy_cache和fastcgi_cache</h2><p>proxy_cache和fastcgi_cache都为Nginx的内置缓存，proxy_cache主要用于反向代理时，对后端内容源服务器进行缓存，fastcgi_cache主要用于对FastCGI的动态程序进行缓存。<br/>两者相关配置类似，以下为fastcgi_cache举例</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>  针对fastcgi（如：php-fpm）返回的内容缓存为静态文件(文件名是用Md5算法对Key进行哈希后所得，而Key可使用fastcgi_cache的相关指令来进行控制)<br/>，在用户浏览时，无需重复请求后端fastcgi，而直接返回缓存的内容，减少了后端的语言解析以及数据库连接的消耗。</p>
+<h3 id="数据流程图"><a href="#数据流程图" class="headerlink" title="数据流程图"></a>数据流程图</h3><p><img src="https://sohow.cc//images/http_process.png" alt=""/></p>
+<h3 id="指令注释"><a href="#指令注释" class="headerlink" title="指令注释"></a>指令注释</h3><h4 id="nginx的http作用域"><a href="#nginx的http作用域" class="headerlink" title="nginx的http作用域:"></a>nginx的http作用域:</h4><p>fastcgi_cache_path /home/wwwroot/yii.me/runtime/logs levels=1:2 keys_zone=keys_zone=zone:512m:1m inactive=1d<br/>max_size=1g; #指定一个路径，目录结构等级，关键字区域存储时间和非活动删除时间。以及最大占用空间（keys_zone主要缓存key和文件元信息，不会缓存页面）</p>
+<h4 id="nginx的location作用域"><a href="#nginx的location作用域" class="headerlink" title="nginx的location作用域:"></a>nginx的location作用域:</h4><p>fastcgi_cache zone;                                              #表示开启FastCGI缓存并为其指定一个名称:zone<br/>fastcgi_cache_valid 1m;                                         #设置缓存时间1分钟<br/>fastcgi_cache_min_uses  1;                                      #设置链接请求1次就被缓存<br/>fastcgi_cache_use_stale error  timeout invalid_header http_500; #定义哪些情况下用过期缓存（如果对实效要求不高建议加updating，关闭fastcgi_cache_lock，可提高性能）<br/>fastcgi_cache_methods GET POST;                                 #缓存GET和POST请求<br/>fastcgi_cache_key “$cache_path$containerid$containerpage”;      #缓存key=页面+containerid+分页页码<br/>fastcgi_ignore_headers Cache-Control Expires Set-Cookie;         #包含这些header的响应不缓存<br/>fastcgi_cache_lock on;                                          #同时有请求处理的时候只有一个请求允许访问后端服务器，其余请求等待缓存结果或等待超时再进行响应<br/>fastcgi_cache_lock_timeout 5s;                                  #等待超时时间5秒，超时则穿透，且不缓存穿透结果<br/>fastcgi_cache_bypass $skip_cache;                               #非0不从cache中取<br/>fastcgi_no_cache $skip_cache;                                   #非0不保存到cache</p>
+<h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3><p>以下测试使用的vps机器<br/>ab -c10 -n50000 <a href="http://127.0.0.1:8080/echo.php" target="_blank" rel="external noopener noreferrer">http://127.0.0.1:8080/echo.php</a></p>
+<ul>
+<li>fastcgi_cache off Requests per second:    2441.56 [#/sec] (mean)</li>
+<li>fastcgi_cache zone Requests per second:    3662.79 [#/sec] (mean)</li>
+</ul>
+<h2 id="ngx-lua模块"><a href="#ngx-lua模块" class="headerlink" title="ngx_lua模块"></a>ngx_lua模块</h2><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://wiki.jikexueyuan.com/project/openresty/openresty/sub_request.html" target="_blank" rel="external noopener noreferrer">OpenResty 最佳实践-子查询</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/openresty/ngx_lua/cache.html" target="_blank" rel="external noopener noreferrer">OpenResty 最佳实践-缓存</a><h3 id="在ngx-lua模块中使用共享内存"><a href="#在ngx-lua模块中使用共享内存" class="headerlink" title="在ngx_lua模块中使用共享内存"></a>在ngx_lua模块中使用共享内存</h3></li>
+<li>定义一个共享内存对象<br/>语法：lua_shared_dict <name> <size><br/>该命令主要是定义一块名为name的共享内存空间，内存大小为size。通过该命令定义的共享内存对象对于Nginx中所有worker进程都是可见的，当Nginx通过reload命令重启时，共享内存字典项会从新获取它的内容，而当Nginx<br/>退出时，字典项的值将会丢失。<br/>例子：<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">location /testngxlua {</div><div class="line">        default_type application/json;</div><div class="line">        charset utf8;</div><div class="line"></div><div class="line">        access_by_lua &#39;</div><div class="line">            function get_from_cache(key)</div><div class="line">                local cache_ngx = ngx.shared.my_cache</div><div class="line">                local value = cache_ngx:get(key)</div><div class="line">                return value</div><div class="line">            end</div><div class="line"></div><div class="line">            function set_to_cache(key, value, exptime)</div><div class="line">                if not exptime then</div><div class="line">                    exptime = 0</div><div class="line">                end</div><div class="line"></div><div class="line">                local cache_ngx = ngx.shared.my_cache</div><div class="line">                local succ, err, forcible = cache_ngx:set(key, value, exptime)</div><div class="line">                return succ</div><div class="line">            end</div><div class="line"></div><div class="line">            ngx.req.read_body()</div><div class="line">            local c = ngx.req.get_uri_args()[&#34;c&#34;] or &#34;&#34;</div><div class="line">            local str = get_from_cache(c)</div><div class="line"></div><div class="line">            if (str ~= nil) then</div><div class="line">                ngx.print(&#34;ngx_cache: &#34;..str)</div><div class="line">            else</div><div class="line">                local options = {}</div><div class="line">                options[&#34;method&#34;] = ngx.var.request_method == &#34;GET&#34; and ngx.HTTP_GET or ngx.HTTP_POST</div><div class="line">                options[&#34;body&#34;] = ngx.var.request_body</div><div class="line">                options[&#34;args&#34;] = ngx.var.args</div><div class="line">                local res = ngx.location.capture(&#34;/index.php&#34;..ngx.var.uri, options)</div><div class="line">                if res.status == 200 then</div><div class="line">                    set_to_cache(c, res.body, 300)</div><div class="line">                    ngx.print(res.body)</div><div class="line">                else</div><div class="line">                    ngx.say(res.status)</div><div class="line">                end</div><div class="line">            end</div><div class="line">        &#39;;</div><div class="line"></div><div class="line"></div><div class="line">    }</div></pre></td></tr></tbody></table></figure>
+</size></name></li>
+</ul>

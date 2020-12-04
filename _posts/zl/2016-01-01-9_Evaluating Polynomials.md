@@ -4,28 +4,44 @@ title: Evaluating Polynomials
 tags: [lua文章]
 categories: [topic]
 ---
-![](https://img.dazhuanlan.com/2019/11/25/5ddbe656a3805.png)
 
-##  Evaluating Polynomials
+        <div id="search-loader" class="img-wrap">
+          <div class="loading">
+            <img src="https://img.dazhuanlan.com/2019/11/25/5ddbe656a3805.png">
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-md-12">
+<h2 class="title"> Evaluating Polynomials </h2>
+<h4>多项式求值</h4>
 
-#### 多项式求值
 
-给定一串实数an,an-1,...,a1,a0,以及一个实数x，计算多项式Pn(x)=anxn+an-1xn-1+...+a1x+a0的值。
 
-###### 解法
+<p>给定一串实数a<sub>n</sub>,a<sub>n-1</sub>,...,a<sub>1</sub>,a<sub>0</sub>,以及一个实数x，计算多项式P<sub>n</sub>(x)=a<sub>n</sub>x<sup>n</sup>+a<sub>n-1</sub>x<sup>n-1</sup>+...+a<sub>1</sub>x+a<sub>0</sub>的值。</p>
 
-去掉第一个系数a0,则更小规模的问题变成了计算由系数 an,an-1,...,a1表达的多项式，即
-Pn-1(x)=anxn-1+an-1xn-2+...+a1。 显然 Pn(x)=xPn-1(x)+a0.
+<h6>解法</h6>
 
-完整的算法可用如下表达式来说明： **(Horner规则)**
+<p>去掉第一个系数a<sub>0</sub>,则更小规模的问题变成了计算由系数
+a<sub>n</sub>,a<sub>n-1</sub>,...,a<sub>1</sub>表达的多项式，即
+P<sub>n-1</sub>(x)=a<sub>n</sub>x<sup>n-1</sup>+a<sub>n-1</sub>x<sup>n-2</sup>+...+a<sub>1</sub>。
+显然 P<sub>n</sub>(x)=xP<sub>n-1</sub>(x)+a<sub>0</sub>.</p>
 
-    
-    
-    int polynomialEvaluation(vector<int> a,int x)
-    {
-        int n=a.size();
-        int p=a[n-1];
-        for(int i=0;i!=n-1;++i)
-            p=p*x+a[n-i-2];
-        return p;
-    }
+<p>完整的算法可用如下表达式来说明：<strong>(Horner规则)</strong></p>
+
+
+<div class="highlight"><pre><code class="language-C++" data-lang="C++"><span class="kt">int</span> <span class="nf">polynomialEvaluation</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">,</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">p</span><span class="o">=</span><span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">!=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+
+</div>
+
+        </div>

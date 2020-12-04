@@ -4,823 +4,92 @@ title: 深入 Lua Garbage Collector(三)
 tags: [lua文章]
 categories: [topic]
 ---
-## Lua 源码
-
-阅读的源码来自 **lua-5.3.0**
-
-### GC对象
-
-在 Lua 中，一共只有 9 种数据类型：
-
-  * nil 
-  * boolean 
-  * lightuserdata 
-  * number 
-  * string 
-  * table 
-  * function 
-  * userdata 
-  * thread 
-
-> 其中，只有 **string table function thread** 四种在 **vm** 中以引用方式共享，是需要被 **GC**
-> 管理回收的对象。其它类型都以值形式存在。
->
-> 但在 **Lua** 的实现中，还有两种类型的对象需要被 **GC** 管理。分别是 **proto** （可以看作未绑定 upvalue 的函数），
-> **upvalue** （多个 upvalue 会引用同一个值）。
-
-### 保存值的形式
-
-Lua 是以 union + type 的形式保存值
-
-在lobject.h中  
-96行  
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-
-|
-
-    
-    
-    ** Union of all Lua values
-    
-    */
-    
-    typedef union Value Value;  
-  
----|---  
-  
-* * *
-
-101-108行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-
-|
-
-    
-    
-    *
-    
-    ** Tagged Values. This is the basic representation of values in Lua,
-    
-    ** an actual value plus a tag with its type.
-    
-    */
-    
-    typedef struct lua_TValue TValue;  
-  
----|---  
-  
-* * *
-
-279-286行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-
-|
-
-    
-    
-    union Value {
-    
-      GCObject *gc;    /* collectable objects */
-    
-      void *p;         /* light userdata */
-    
-      int b;           /* booleans */
-    
-      lua_CFunction f; /* light C functions */
-    
-      lua_Integer i;   /* integer numbers */
-    
-      lua_Number n;    /* float numbers */
-    
-    };  
-  
----|---  
-  
-* * *
-
-我们可以看到，Value 以 union 方式定义。如果是需要被 GC 管理的对象，就以 GCObject
-指针形式保存，否则直接存值。在代码的其它部分，并不直接使用 Value 类型，而是 TValue 类型。它比 Value 多了一个类型标识。用 int tt
-记录。通常的系统中，每个 TValue 长为 12 字节。
-
-这里作者也有提到在 32 位系统下，为何不用某种 trick 把 type 压缩到前 8 字节内  
-具体考虑到的是可移植性的原因：
-
-> Several dynamically-typed languages (e.g., the original implementa-  
-> tion of Smalltalk80 [9]) use spare bits in each pointer to store the value’s
-> type tag. This trick works in most machines because, due to alignment, the
-> last two or three bits of a pointer are always zero, and therefore can be
-> used for other purposes. However, this technique is neither portable nor
-> implementable in ANSI C.  
-> The C standard does not even ensures that a pointer ts in any integral type  
-> and so there is no standard way to perform bit manipulation over pointers.
-
-### GCObject
-
-所有的 **GCObject** 都有一个相同的数据头，叫作 **CommonHeader** 。
-
-在lobject.h里81行我们可以找到它的定义。使用宏定义的目的是为了能够包含在其他的object中。C 语言不支持结构的继承。
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-
-|
-
-    
-    
-    ** Common Header for all collectable objects (in macro form, to be
-    
-    ** included in other objects)
-    
-    */
-    
-    #define CommonHeader    GCObject *next; lu_byte tt; lu_byte marked  
-  
----|---  
-  
-* * *
-
-> 从这里我们可以看到：所有的 GCObject 都用一个单向链表串了起来。每个对象都以 tt 来识别其类型。marked 域用于标记清除的工作。
->
-> 标记清除算法是一种简单的 GC 算法。每次 GC 过程，先以若干根节点开始，逐个把直接以及间接和它们相关的节点都做上标记。对于 Lua
-> ，这个过程很容易实现。因为所有 GObject 都在同一个链表上，当标记完成后，遍历这个链表，把未被标记的节点一一删除即可。
->
-> 实际上，Lua不只用一条链表来保存所有的 GCObject 。这是因为我们要清除的string table function thread中的
-> string 类型有其特殊性。所有的 string 放在一张大的 hash 表中。它需要保证系统中不会有值相同的 string 被创建两份。所以
-> string 是被单独管理的，而不串在 GCObject 的链表中。
-
-### lua_State
-
-lua_State 是 Lua 虚拟机的外在数据形式，取名 State 意为 Lua虚拟机 的当前状态。全局 State
-引用了整个虚拟机的所有数据。而虚拟机的运转恰恰是 Lua 的核心部分。这个全局 State 定义在 lstate.h 中149-172行：
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-    
-    9
-    
-    10
-    
-    11
-    
-    12
-    
-    13
-    
-    14
-    
-    15
-    
-    16
-    
-    17
-    
-    18
-    
-    19
-    
-    20
-    
-    21
-    
-    22
-    
-    23
-    
-    24
-    
-    25
-    
-    26
-    
-    27
-
-|
-
-    
-    
-    ** 'per thread' state
-    
-    */
-    
-    struct lua_State {
-    
-      CommonHeader;
-    
-      lu_byte status;
-    
-      StkId top;  /* first free slot in the stack */
-    
-      global_State *l_G;
-    
-      CallInfo *ci;  /* call info for current function */
-    
-      const Instruction *oldpc;  /* last pc traced */
-    
-      StkId stack_last;  /* last free slot in the stack */
-    
-      StkId stack;  /* stack base */
-    
-      UpVal *openupval;  /* list of open upvalues in this stack */
-    
-      GCObject *gclist;
-    
-      struct lua_State *twups;  /* list of threads with open upvalues */
-    
-      struct lua_longjmp *errorJmp;  /* current error recover point */
-    
-      CallInfo base_ci;  /* CallInfo for first level (C calling Lua) */
-    
-      lua_Hook hook;
-    
-      ptrdiff_t errfunc;  /* current error handling function (stack index) */
-    
-      int stacksize;
-    
-      int basehookcount;
-    
-      int hookcount;
-    
-      unsigned short nny;  /* number of non-yieldable calls in stack */
-    
-      unsigned short nCcalls;  /* number of nested C calls */
-    
-      lu_byte hookmask;
-    
-      lu_byte allowhook;
-    
-    };  
-  
----|---  
-  
-* * *
-
-> 一个完整的 lua 虚拟机在运行时，可有多个 lua_State ，即多个 thread 。它们会共享一些数据。这些数据放在
-> **global_State *l_G** 域中。其中自然也包括所有 GCobject 的链表。
-
-lstate.h 105行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-    
-    9
-    
-    10
-    
-    11
-    
-    12
-    
-    13
-    
-    14
-    
-    15
-    
-    16
-    
-    17
-    
-    18
-    
-    19
-    
-    20
-    
-    21
-    
-    22
-    
-    23
-    
-    24
-    
-    25
-    
-    26
-    
-    27
-    
-    28
-    
-    29
-    
-    30
-    
-    31
-    
-    32
-    
-    33
-    
-    34
-    
-    35
-    
-    36
-    
-    37
-    
-    38
-    
-    39
-
-|
-
-    
-    
-    ** 'global state', shared by all threads of this state
-    
-    */
-    
-    typedef struct global_State {
-    
-      lua_Alloc frealloc;  /* function to reallocate memory */
-    
-      void *ud;         /* auxiliary data to 'frealloc' */
-    
-      lu_mem totalbytes;  /* number of bytes currently allocated - GCdebt */
-    
-      l_mem GCdebt;  /* bytes allocated not yet compensated by the collector */
-    
-      lu_mem GCmemtrav;  /* memory traversed by the GC */
-    
-      lu_mem GCestimate;  /* an estimate of the non-garbage memory in use */
-    
-      stringtable strt;  /* hash table for strings */
-    
-      TValue l_registry;
-    
-      unsigned int seed;  /* randomized seed for hashes */
-    
-      lu_byte currentwhite;
-    
-      lu_byte gcstate;  /* state of garbage collector */
-    
-      lu_byte gckind;  /* kind of GC running */
-    
-      lu_byte gcrunning;  /* true if GC is running */
-    
-      GCObject *allgc;  /* list of all collectable objects */
-    
-      GCObject **sweepgc;  /* current position of sweep in list */
-    
-      GCObject *finobj;  /* list of collectable objects with finalizers */
-    
-      GCObject *gray;  /* list of gray objects */
-    
-      GCObject *grayagain;  /* list of objects to be traversed atomically */
-    
-      GCObject *weak;  /* list of tables with weak values */
-    
-      GCObject *ephemeron;  /* list of ephemeron tables (weak keys) */
-    
-      GCObject *allweak;  /* list of all-weak tables */
-    
-      GCObject *tobefnz;  /* list of userdata to be GC */
-    
-      GCObject *fixedgc;  /* list of objects not to be collected */
-    
-      struct lua_State *twups;  /* list of threads with open upvalues */
-    
-      Mbuffer buff;  /* temporary buffer for string concatenation */
-    
-      unsigned int gcfinnum;  /* number of finalizers to call in each GC step */
-    
-      int gcpause;  /* size of pause between successive GCs */
-    
-      int gcstepmul;  /* GC 'granularity' */
-    
-      lua_CFunction panic;  /* to be called in unprotected errors */
-    
-      struct lua_State *mainthread;
-    
-      const lua_Number *version;  /* pointer to version number */
-    
-      TString *memerrmsg;  /* memory-error message */
-    
-      TString *tmname[TM_N];  /* array with tag-method names */
-    
-      struct Table *mt[LUA_NUMTAGS];  /* metatables for basic types */
-    
-    } global_State;  
-  
----|---  
-  
-* * *
-
-### allgc
-
-> 所有的 string 则以 stringtable 结构保存在 stringtable strt 域。string 的值类型为 TString
-> ，它和其它 GCObject 一样，拥有 CommonHeader 。但需要注意，CommonHeader 中的 next
-> 域却和其它类型的单向链表意义不同。它被挂接在 stringtable 这个 hash 表中。
->
-> 除 string 外的 GCObject 链表头放在 allgc 域中
-
-在 lstate.h 122 行:
-
-    
-    
-    1
-
-|
-
-    
-    
-    GCObject *allgc;  /* list of all collectable objects */  
-  
----|---  
-  
-* * *
-
-初始化时，这个域被初始化为主线程。见 lstate.c 253 行，lua_newthread 函数中:
-
-    
-    
-    1
-    
-    2
-    
-    3
-
-|
-
-    
-    
-    /* link it on list 'allgc' */
-    
-    L1->next = g->allgc;
-    
-    g->allgc = obj2gco(L1);  
-  
----|---  
-  
-* * *
-
-### link函数
-
-每当一个新的 GCobject 被创建出来，都会被挂接到这个链表上，link函数主要是：
-
-lgc.c 145-206行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-    
-    9
-    
-    10
-    
-    11
-    
-    12
-    
-    13
-    
-    14
-    
-    15
-    
-    16
-    
-    17
-    
-    18
-    
-    19
-    
-    20
-    
-    21
-    
-    22
-    
-    23
-    
-    24
-    
-    25
-    
-    26
-    
-    27
-    
-    28
-
-|
-
-    
-    
-    void  (lua_State *L, GCObject *o, GCObject *v) {
-    
-      global_State *g = G(L);
-    
-      lua_assert(isblack(o) && iswhite(v) && !isdead(g, v) && !isdead(g, o));
-    
-      if (keepinvariant(g))  /* must keep invariant? */
-    
-        reallymarkobject(g, v);  /* restore invariant */
-    
-      else {  /* sweep phase */
-    
-        lua_assert(issweepphase(g));
-    
-        makewhite(g, o);  /* mark main obj. as white to avoid other barriers */
-    
-      }
-    
-    }
-    
-    void luaC_upvalbarrier_ (lua_State *L, UpVal *uv) {
-    
-      global_State *g = G(L);
-    
-      GCObject *o = gcvalue(uv->v);
-    
-      lua_assert(!upisopen(uv));  /* ensured by macro luaC_upvalbarrier */
-    
-      if (keepinvariant(g))
-    
-        markobject(g, o);
-    
-    }
-    
-    GCObject *luaC_newobj (lua_State *L, int tt, size_t sz) {
-    
-      global_State *g = G(L);
-    
-      GCObject *o = cast(GCObject *, luaM_newobject(L, novariant(tt), sz));
-    
-      o->marked = luaC_white(g);
-    
-      o->tt = tt;
-    
-      o->next = g->allgc;
-    
-      g->allgc = o;
-    
-      return o;
-    
-    }  
-  
----|---  
-  
-* * *
-
-> upvalue 在 C 中类型为 UpVal ，也是一个 GCObject 。但这里被特殊处理。为什么会这样？因为 Lua 的
-> GC可以分步扫描。别的类型被新创建时，都可以直接作为一个白色节点（新节点）挂接在整个系统中。但 upvalue
-> 却是对已有的对象的间接引用，不是新数据。一旦 GC 在 mark 的过程中（ gc 状态为 GCSpropagate ），则需增加屏障
-> luaC_barrier 。对于这个问题，会在以后详细展开。
-
-### userdata
-
-lua 还有另一种数据类型创建时的挂接过程也被特殊处理。那就是 userdata 。
-
-见 lstring.c 的 170 行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-    
-    9
-    
-    10
-    
-    11
-    
-    12
-
-|
-
-    
-    
-    Udata *luaS_newudata (lua_State *L, size_t s) {
-    
-      Udata *u;
-    
-      GCObject *o;
-    
-      if (s > MAX_SIZE - sizeof(Udata))
-    
-        luaM_toobig(L);
-    
-      o = luaC_newobj(L, LUA_TUSERDATA, sizeludata(s));
-    
-      u = gco2u(o);
-    
-      u->len = s;
-    
-      u->metatable = NULL;
-    
-      setuservalue(L, u, luaO_nilobject);
-    
-      return u;
-    
-    }  
-  
----|---  
-  
-* * *
-
-这里调用 luaC_newobj 来挂接新的 Udata 对象，但是把所有 userdata 全部挂接在其它类型之后
-
-> 这样做的原因是:
-
-所有 userdata 都可能有 gc 方法（其它类型则没有）。需要统一去调用这些 gc 方面，则应该有一个途径来单独遍历所有的 userdata
-。除此之外，userdata 和其它 GCObject 的处理方式则没有区别，故依旧挂接在整个 GCObject 链表上而不需要单独再分出一个链表。
-
-处理 userdata 的流程见 lgc.c 的 860 行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-
-|
-
-    
-    
-    ** move all unreachable objects (or 'all' objects) that need
-    
-    ** finalization from list 'finobj' to list 'tobefnz' (to be finalized)
-    
-    */
-    
-    static void separatetobefnz (global_State *g, int all) {  
-  
----|---  
-  
-* * *
-
-这个函数会把所有带有 gc 方法的 userdata 挑出来，放到一个循环链表中。在Lua5.3中，这个循环链表在 global_State 的
-tobefnz 域。需要调用 gc 方法的这些 userdata 在当个 gc 循环是不能被直接清除的。所以在 mark 环节的最后，会被重新 mark
-为不可清除节点。
-
-见 lgc.c 的 285 行:
-
-    
-    
-    1
-    
-    2
-    
-    3
-    
-    4
-    
-    5
-    
-    6
-    
-    7
-    
-    8
-
-|
-
-    
-    
-    ** mark all objects in list of being-finalized
-    
-    */
-    
-    static void markbeingfnz (global_State *g) {
-    
-      GCObject *o;
-    
-      for (o = g->tobefnz; o != NULL; o = o->next)
-    
-        markobject(g, o);
-    
-    }  
-  
----|---  
-  
-* * *
-
-这样，可以保证在调用 gc 方法环节，这些对象的内存都没有被释放。但因为这些对象被设置了 finalized 标记。（通过 markfinalized
-），下一次 gc 过程不会进入 tmudata 链表，将会被正确清理。
-
-具体 userdata 的清理流程，会在后面展开解释。
-
-* * *
-
-## 参考
-
-[云风的 BLOG](http://blog.codingnow.com/2011/03/lua_gc_1.html)
+<p>
+
+</p><h2 id="Lua-源码"><a href="#Lua-源码" class="headerlink" title="Lua 源码"></a>Lua 源码</h2><p>阅读的源码来自 <strong>lua-5.3.0</strong></p>
+
+<h3 id="GC对象"><a href="#GC对象" class="headerlink" title="GC对象"></a>GC对象</h3><p>在 Lua 中，一共只有 9 种数据类型：</p>
+<ul>
+<li>nil </li>
+<li>boolean </li>
+<li>lightuserdata </li>
+<li>number </li>
+<li>string </li>
+<li>table  </li>
+<li>function  </li>
+<li>userdata  </li>
+<li>thread </li>
+</ul>
+<blockquote>
+<p>其中，只有 <strong>string table function thread</strong> 四种在 <strong>vm</strong> 中以引用方式共享，是需要被 <strong>GC</strong> 管理回收的对象。其它类型都以值形式存在。</p>
+<p>但在 <strong>Lua</strong> 的实现中，还有两种类型的对象需要被 <strong>GC</strong> 管理。分别是 <strong>proto</strong> （可以看作未绑定 upvalue 的函数）， <strong>upvalue</strong> （多个 upvalue 会引用同一个值）。</p>
+</blockquote>
+<h3 id="保存值的形式"><a href="#保存值的形式" class="headerlink" title="保存值的形式"></a>保存值的形式</h3><p>Lua 是以 union + type 的形式保存值</p>
+<p>在lobject.h中<br/>96行<br/></p><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** Union of all Lua values</div><div class="line">*/</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> Value Value;</div></pre></td></tr></tbody></table></figure><p></p>
+<hr/>
+<p>101-108行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">*</div><div class="line">** Tagged Values. This is the basic representation of values in Lua,</div><div class="line">** an actual value plus a tag with its type.</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> lua_TValue TValue;</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>279-286行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">union</span> Value {</div><div class="line">  GCObject *gc;    <span class="comment">/* collectable objects */</span></div><div class="line">  <span class="keyword">void</span> *p;         <span class="comment">/* light userdata */</span></div><div class="line">  <span class="keyword">int</span> b;           <span class="comment">/* booleans */</span></div><div class="line">  lua_CFunction f; <span class="comment">/* light C functions */</span></div><div class="line">  lua_Integer i;   <span class="comment">/* integer numbers */</span></div><div class="line">  lua_Number n;    <span class="comment">/* float numbers */</span></div><div class="line">};</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>我们可以看到，Value 以 union 方式定义。如果是需要被 GC 管理的对象，就以 GCObject 指针形式保存，否则直接存值。在代码的其它部分，并不直接使用 Value 类型，而是 TValue 类型。它比 Value 多了一个类型标识。用 int tt 记录。通常的系统中，每个 TValue 长为 12 字节。</p>
+<p>这里作者也有提到在 32 位系统下，为何不用某种 trick 把 type 压缩到前 8 字节内<br/>具体考虑到的是可移植性的原因：</p>
+<blockquote>
+<p>Several dynamically-typed languages (e.g., the original implementa-<br/>tion of Smalltalk80 [9]) use spare bits in each pointer to store the value’s type tag. This trick works in most machines because, due to alignment, the last two or three bits of a pointer are always zero, and therefore can be used for other purposes. However, this technique is neither portable nor implementable in ANSI C.<br/>The C standard does not even ensures that a pointer ts in any integral type<br/>and so there is no standard way to perform bit manipulation over pointers.</p>
+</blockquote>
+<h3 id="GCObject"><a href="#GCObject" class="headerlink" title="GCObject"></a>GCObject</h3><p>所有的 <strong>GCObject</strong> 都有一个相同的数据头，叫作 <strong>CommonHeader</strong> 。</p>
+<p>在lobject.h里81行我们可以找到它的定义。使用宏定义的目的是为了能够包含在其他的object中。C 语言不支持结构的继承。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** Common Header for all collectable objects (in macro form, to be</div><div class="line">** included in other objects)</div><div class="line">*/</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> CommonHeader    GCObject *next; lu_byte tt; lu_byte marked</span></div></pre></td></tr></tbody></table></figure>
+<hr/>
+<blockquote>
+<p>从这里我们可以看到：所有的 GCObject 都用一个单向链表串了起来。每个对象都以 tt 来识别其类型。marked 域用于标记清除的工作。</p>
+<p>标记清除算法是一种简单的 GC 算法。每次 GC 过程，先以若干根节点开始，逐个把直接以及间接和它们相关的节点都做上标记。对于 Lua ，这个过程很容易实现。因为所有 GObject 都在同一个链表上，当标记完成后，遍历这个链表，把未被标记的节点一一删除即可。</p>
+<p>实际上，Lua不只用一条链表来保存所有的 GCObject 。这是因为我们要清除的string table function thread中的 string 类型有其特殊性。所有的 string 放在一张大的 hash 表中。它需要保证系统中不会有值相同的 string 被创建两份。所以 string 是被单独管理的，而不串在 GCObject 的链表中。</p>
+</blockquote>
+<h3 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h3><p>lua_State 是 Lua 虚拟机的外在数据形式，取名 State 意为 Lua虚拟机 的当前状态。全局 State 引用了整个虚拟机的所有数据。而虚拟机的运转恰恰是 Lua 的核心部分。这个全局 State 定义在 lstate.h 中149-172行：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** &#39;per thread&#39; state</div><div class="line">*/</div><div class="line"><span class="keyword">struct</span> lua_State {</div><div class="line">  CommonHeader;</div><div class="line">  lu_byte status;</div><div class="line">  StkId top;  <span class="comment">/* first free slot in the stack */</span></div><div class="line">  global_State *l_G;</div><div class="line">  CallInfo *ci;  <span class="comment">/* call info for current function */</span></div><div class="line">  <span class="keyword">const</span> Instruction *oldpc;  <span class="comment">/* last pc traced */</span></div><div class="line">  StkId stack_last;  <span class="comment">/* last free slot in the stack */</span></div><div class="line">  StkId <span class="built_in">stack</span>;  <span class="comment">/* stack base */</span></div><div class="line">  UpVal *openupval;  <span class="comment">/* list of open upvalues in this stack */</span></div><div class="line">  GCObject *gclist;</div><div class="line">  <span class="keyword">struct</span> lua_State *twups;  <span class="comment">/* list of threads with open upvalues */</span></div><div class="line">  <span class="keyword">struct</span> lua_longjmp *errorJmp;  <span class="comment">/* current error recover point */</span></div><div class="line">  CallInfo base_ci;  <span class="comment">/* CallInfo for first level (C calling Lua) */</span></div><div class="line">  lua_Hook hook;</div><div class="line">  <span class="keyword">ptrdiff_t</span> errfunc;  <span class="comment">/* current error handling function (stack index) */</span></div><div class="line">  <span class="keyword">int</span> stacksize;</div><div class="line">  <span class="keyword">int</span> basehookcount;</div><div class="line">  <span class="keyword">int</span> hookcount;</div><div class="line">  <span class="keyword">unsigned</span> <span class="keyword">short</span> nny;  <span class="comment">/* number of non-yieldable calls in stack */</span></div><div class="line">  <span class="keyword">unsigned</span> <span class="keyword">short</span> nCcalls;  <span class="comment">/* number of nested C calls */</span></div><div class="line">  lu_byte hookmask;</div><div class="line">  lu_byte allowhook;</div><div class="line">};</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<blockquote>
+<p>一个完整的 lua 虚拟机在运行时，可有多个 lua_State ，即多个 thread 。它们会共享一些数据。这些数据放在 <strong> global_State *l_G </strong> 域中。其中自然也包括所有 GCobject 的链表。</p>
+</blockquote>
+<p>lstate.h 105行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** &#39;global state&#39;, shared by all threads of this state</div><div class="line">*/</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> global_State {</div><div class="line">  lua_Alloc frealloc;  <span class="comment">/* function to reallocate memory */</span></div><div class="line">  <span class="keyword">void</span> *ud;         <span class="comment">/* auxiliary data to &#39;frealloc&#39; */</span></div><div class="line">  lu_mem totalbytes;  <span class="comment">/* number of bytes currently allocated - GCdebt */</span></div><div class="line">  l_mem GCdebt;  <span class="comment">/* bytes allocated not yet compensated by the collector */</span></div><div class="line">  lu_mem GCmemtrav;  <span class="comment">/* memory traversed by the GC */</span></div><div class="line">  lu_mem GCestimate;  <span class="comment">/* an estimate of the non-garbage memory in use */</span></div><div class="line">  stringtable strt;  <span class="comment">/* hash table for strings */</span></div><div class="line">  TValue l_registry;</div><div class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> seed;  <span class="comment">/* randomized seed for hashes */</span></div><div class="line">  lu_byte currentwhite;</div><div class="line">  lu_byte gcstate;  <span class="comment">/* state of garbage collector */</span></div><div class="line">  lu_byte gckind;  <span class="comment">/* kind of GC running */</span></div><div class="line">  lu_byte gcrunning;  <span class="comment">/* true if GC is running */</span></div><div class="line">  GCObject *allgc;  <span class="comment">/* list of all collectable objects */</span></div><div class="line">  GCObject **sweepgc;  <span class="comment">/* current position of sweep in list */</span></div><div class="line">  GCObject *finobj;  <span class="comment">/* list of collectable objects with finalizers */</span></div><div class="line">  GCObject *gray;  <span class="comment">/* list of gray objects */</span></div><div class="line">  GCObject *grayagain;  <span class="comment">/* list of objects to be traversed atomically */</span></div><div class="line">  GCObject *weak;  <span class="comment">/* list of tables with weak values */</span></div><div class="line">  GCObject *ephemeron;  <span class="comment">/* list of ephemeron tables (weak keys) */</span></div><div class="line">  GCObject *allweak;  <span class="comment">/* list of all-weak tables */</span></div><div class="line">  GCObject *tobefnz;  <span class="comment">/* list of userdata to be GC */</span></div><div class="line">  GCObject *fixedgc;  <span class="comment">/* list of objects not to be collected */</span></div><div class="line">  <span class="keyword">struct</span> lua_State *twups;  <span class="comment">/* list of threads with open upvalues */</span></div><div class="line">  Mbuffer buff;  <span class="comment">/* temporary buffer for string concatenation */</span></div><div class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> gcfinnum;  <span class="comment">/* number of finalizers to call in each GC step */</span></div><div class="line">  <span class="keyword">int</span> gcpause;  <span class="comment">/* size of pause between successive GCs */</span></div><div class="line">  <span class="keyword">int</span> gcstepmul;  <span class="comment">/* GC &#39;granularity&#39; */</span></div><div class="line">  lua_CFunction panic;  <span class="comment">/* to be called in unprotected errors */</span></div><div class="line">  <span class="keyword">struct</span> lua_State *mainthread;</div><div class="line">  <span class="keyword">const</span> lua_Number *version;  <span class="comment">/* pointer to version number */</span></div><div class="line">  TString *memerrmsg;  <span class="comment">/* memory-error message */</span></div><div class="line">  TString *tmname[TM_N];  <span class="comment">/* array with tag-method names */</span></div><div class="line">  <span class="keyword">struct</span> Table *mt[LUA_NUMTAGS];  <span class="comment">/* metatables for basic types */</span></div><div class="line">} global_State;</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<h3 id="allgc"><a href="#allgc" class="headerlink" title="allgc"></a>allgc</h3><blockquote>
+<p>所有的 string 则以 stringtable 结构保存在 stringtable strt 域。string 的值类型为 TString ，它和其它 GCObject 一样，拥有 CommonHeader 。但需要注意，CommonHeader 中的 next 域却和其它类型的单向链表意义不同。它被挂接在 stringtable 这个 hash 表中。</p>
+<p>除 string 外的 GCObject 链表头放在 allgc 域中</p>
+</blockquote>
+<p>在  lstate.h 122 行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GCObject *allgc;  <span class="comment">/* list of all collectable objects */</span></div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>初始化时，这个域被初始化为主线程。见 lstate.c 253 行，lua_newthread 函数中:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* link it on list &#39;allgc&#39; */</span></div><div class="line">L1-&gt;next = g-&gt;allgc;</div><div class="line">g-&gt;allgc = obj2gco(L1);</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<h3 id="link函数"><a href="#link函数" class="headerlink" title="link函数"></a>link函数</h3><p>每当一个新的 GCobject 被创建出来，都会被挂接到这个链表上，link函数主要是：</p>
+<p>lgc.c 145-206行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span>  <span class="params">(lua_State *L, GCObject *o, GCObject *v)</span> </span>{</div><div class="line">  global_State *g = G(L);</div><div class="line">  lua_assert(isblack(o) &amp;&amp; iswhite(v) &amp;&amp; !isdead(g, v) &amp;&amp; !isdead(g, o));</div><div class="line">  <span class="keyword">if</span> (keepinvariant(g))  <span class="comment">/* must keep invariant? */</span></div><div class="line">    reallymarkobject(g, v);  <span class="comment">/* restore invariant */</span></div><div class="line">  <span class="keyword">else</span> {  <span class="comment">/* sweep phase */</span></div><div class="line">    lua_assert(issweepphase(g));</div><div class="line">    makewhite(g, o);  <span class="comment">/* mark main obj. as white to avoid other barriers */</span></div><div class="line">  }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">luaC_upvalbarrier_</span> <span class="params">(lua_State *L, UpVal *uv)</span> </span>{</div><div class="line">  global_State *g = G(L);</div><div class="line">  GCObject *o = gcvalue(uv-&gt;v);</div><div class="line">  lua_assert(!upisopen(uv));  <span class="comment">/* ensured by macro luaC_upvalbarrier */</span></div><div class="line">  <span class="keyword">if</span> (keepinvariant(g))</div><div class="line">    markobject(g, o);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="function">GCObject *<span class="title">luaC_newobj</span> <span class="params">(lua_State *L, <span class="keyword">int</span> tt, <span class="keyword">size_t</span> sz)</span> </span>{</div><div class="line">  global_State *g = G(L);</div><div class="line">  GCObject *o = cast(GCObject *, luaM_newobject(L, novariant(tt), sz));</div><div class="line">  o-&gt;marked = luaC_white(g);</div><div class="line">  o-&gt;tt = tt;</div><div class="line">  o-&gt;next = g-&gt;allgc;</div><div class="line">  g-&gt;allgc = o;</div><div class="line">  <span class="keyword">return</span> o;</div><div class="line">}</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<blockquote>
+<p>upvalue 在 C 中类型为 UpVal ，也是一个 GCObject 。但这里被特殊处理。为什么会这样？因为 Lua 的 GC可以分步扫描。别的类型被新创建时，都可以直接作为一个白色节点（新节点）挂接在整个系统中。但 upvalue 却是对已有的对象的间接引用，不是新数据。一旦 GC 在 mark 的过程中（ gc 状态为 GCSpropagate ），则需增加屏障 luaC_barrier 。对于这个问题，会在以后详细展开。</p>
+</blockquote>
+<h3 id="userdata"><a href="#userdata" class="headerlink" title="userdata"></a>userdata</h3><p>lua 还有另一种数据类型创建时的挂接过程也被特殊处理。那就是 userdata 。</p>
+<p>见 lstring.c 的 170 行: </p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function">Udata *<span class="title">luaS_newudata</span> <span class="params">(lua_State *L, <span class="keyword">size_t</span> s)</span> </span>{</div><div class="line">  Udata *u;</div><div class="line">  GCObject *o;</div><div class="line">  <span class="keyword">if</span> (s &gt; MAX_SIZE - <span class="keyword">sizeof</span>(Udata))</div><div class="line">    luaM_toobig(L);</div><div class="line">  o = luaC_newobj(L, LUA_TUSERDATA, sizeludata(s));</div><div class="line">  u = gco2u(o);</div><div class="line">  u-&gt;len = s;</div><div class="line">  u-&gt;metatable = <span class="literal">NULL</span>;</div><div class="line">  setuservalue(L, u, luaO_nilobject);</div><div class="line">  <span class="keyword">return</span> u;</div><div class="line">}</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>这里调用 luaC_newobj 来挂接新的 Udata 对象，但是把所有 userdata 全部挂接在其它类型之后</p>
+<blockquote>
+<p>这样做的原因是:</p>
+</blockquote>
+<p>所有 userdata 都可能有 gc 方法（其它类型则没有）。需要统一去调用这些 gc 方面，则应该有一个途径来单独遍历所有的 userdata 。除此之外，userdata 和其它 GCObject 的处理方式则没有区别，故依旧挂接在整个 GCObject 链表上而不需要单独再分出一个链表。</p>
+<p>处理 userdata 的流程见 lgc.c 的 860 行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** move all unreachable objects (or &#39;all&#39; objects) that need</div><div class="line">** finalization from list &#39;finobj&#39; to list &#39;tobefnz&#39; (to be finalized)</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">separatetobefnz</span> <span class="params">(global_State *g, <span class="keyword">int</span> all)</span> </span>{</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>这个函数会把所有带有 gc 方法的 userdata 挑出来，放到一个循环链表中。在Lua5.3中，这个循环链表在 global_State 的 tobefnz 域。需要调用 gc 方法的这些 userdata 在当个 gc 循环是不能被直接清除的。所以在 mark 环节的最后，会被重新 mark 为不可清除节点。</p>
+<p>见 lgc.c 的 285 行:</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">** mark all objects in list of being-finalized</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">markbeingfnz</span> <span class="params">(global_State *g)</span> </span>{</div><div class="line">  GCObject *o;</div><div class="line">  <span class="keyword">for</span> (o = g-&gt;tobefnz; o != <span class="literal">NULL</span>; o = o-&gt;next)</div><div class="line">    markobject(g, o);</div><div class="line">}</div></pre></td></tr></tbody></table></figure>
+<hr/>
+<p>这样，可以保证在调用 gc 方法环节，这些对象的内存都没有被释放。但因为这些对象被设置了 finalized 标记。（通过 markfinalized ），下一次 gc 过程不会进入 tmudata 链表，将会被正确清理。</p>
+<p>具体 userdata 的清理流程，会在后面展开解释。</p>
+<hr/>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.codingnow.com/2011/03/lua_gc_1.html" target="_blank" rel="external noopener noreferrer">云风的 BLOG</a></p>

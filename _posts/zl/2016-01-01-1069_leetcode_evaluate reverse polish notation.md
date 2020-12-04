@@ -4,95 +4,15 @@ title: leetcode_evaluate reverse polish notation
 tags: [lua文章]
 categories: [topic]
 ---
-## [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-
-reverse-polish-notation/)
+<h2 id="Evaluate-Reverse-Polish-Notation"><a href="#Evaluate-Reverse-Polish-Notation" class="headerlink" title="Evaluate Reverse Polish Notation"></a><a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank" rel="noopener noreferrer">Evaluate Reverse Polish Notation</a></h2><p>Evaluate the value of an arithmetic expression in Reverse Polish Notation. Valid operators are +, -, *, /. Each operand may be an integer or another expression.<br/>（计算逆波兰表达式）</p>
 
-Evaluate the value of an arithmetic expression in Reverse Polish Notation.
-Valid operators are +, -, *, /. Each operand may be an integer or another
-expression.  
-（计算逆波兰表达式）
+<p><strong>Note:</strong></p>
+<ol>
+<li>Division between two integers should truncate toward zero.</li>
+<li>The given RPN expression is always valid. That means the expression would always evaluate to a result and there won’t be any divide by zero operation.</li>
+</ol>
+<p><strong>Example:</strong> </p>
+<div align="center"><br/>    <img src="https://sara-hy.github.io//images/leetcode_150.png" width="500" align="center/"/><br/></div>
 
-**Note:**
-
-  1. Division between two integers should truncate toward zero.
-  2. The given RPN expression is always valid. That means the expression would always evaluate to a result and there won’t be any divide by zero operation.
-
-**Example:**
-
-  
-![](https://sara-hy.github.io//images/leetcode_150.png)  
-
-### 1\. 栈
-
-使用堆栈来计算逆波兰表达式。其中需要注意的是，题目中要求除法运算没有整除时要向 0 靠近，因此在两个异号的数相除时，应该 + 1
-处理，或者转换为正数除法再加负号。具体实现过程如下：
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    27  
-    28  
-    29  
-    
-
-|
-
-    
-    
-    class (object):  
-        def evalRPN(self, tokens):  
-            """  
-            :type tokens: List[str]  
-            :rtype: int  
-            """  
-            stack = []  
-              
-            for i in range(len(tokens)):  
-                if tokens[i] not in ['+', '-', '*', '/']:  
-                    stack.append(int(tokens[i]))  
-                else:  
-                    right = stack.pop()  
-                    left = stack.pop()  
-                    if tokens[i] == '+':  
-                        stack.append(left + right)  
-                    elif tokens[i] == '-':  
-                        stack.append(left - right)  
-                    elif tokens[i] == '*':  
-                        stack.append(left * right)  
-                    else:  
-                          
-                        if left * right < 0 and left % right != 0:  
-                            stack.append(left / right + 1)  
-                            # stack.append(-(abs(left) / abs(right)))  
-                        else:  
-                            stack.append(left / right)  
-              
-            return stack[-1]  
-      
-  
----|---
+<h3 id="1-栈"><a href="#1-栈" class="headerlink" title="1. 栈"></a>1. 栈</h3><p>使用堆栈来计算逆波兰表达式。其中需要注意的是，题目中要求除法运算没有整除时要向 0 靠近，因此在两个异号的数相除时，应该 + 1 处理，或者转换为正数除法再加负号。具体实现过程如下：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/><span class="line">27</span><br/><span class="line">28</span><br/><span class="line">29</span><br/></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="params">(object)</span>:</span></span><br/><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">evalRPN</span><span class="params">(self, tokens)</span>:</span></span><br/><span class="line">        <span class="string">&#34;&#34;&#34;</span></span><br/><span class="line"><span class="string">        :type tokens: List[str]</span></span><br/><span class="line"><span class="string">        :rtype: int</span></span><br/><span class="line"><span class="string">        &#34;&#34;&#34;</span></span><br/><span class="line">        stack = []</span><br/><span class="line">        </span><br/><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(tokens)):</span><br/><span class="line">            <span class="keyword">if</span> tokens[i] <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&#39;+&#39;</span>, <span class="string">&#39;-&#39;</span>, <span class="string">&#39;*&#39;</span>, <span class="string">&#39;/&#39;</span>]:</span><br/><span class="line">                stack.append(int(tokens[i]))</span><br/><span class="line">            <span class="keyword">else</span>:</span><br/><span class="line">                right = stack.pop()</span><br/><span class="line">                left = stack.pop()</span><br/><span class="line">                <span class="keyword">if</span> tokens[i] == <span class="string">&#39;+&#39;</span>:</span><br/><span class="line">                    stack.append(left + right)</span><br/><span class="line">                <span class="keyword">elif</span> tokens[i] == <span class="string">&#39;-&#39;</span>:</span><br/><span class="line">                    stack.append(left - right)</span><br/><span class="line">                <span class="keyword">elif</span> tokens[i] == <span class="string">&#39;*&#39;</span>:</span><br/><span class="line">                    stack.append(left * right)</span><br/><span class="line">                <span class="keyword">else</span>:</span><br/><span class="line">                    </span><br/><span class="line">                    <span class="keyword">if</span> left * right &lt; <span class="number">0</span> <span class="keyword">and</span> left % right != <span class="number">0</span>:</span><br/><span class="line">                        stack.append(left / right + <span class="number">1</span>)</span><br/><span class="line">                        <span class="comment"># stack.append(-(abs(left) / abs(right)))</span></span><br/><span class="line">                    <span class="keyword">else</span>:</span><br/><span class="line">                        stack.append(left / right)</span><br/><span class="line">        </span><br/><span class="line">        <span class="keyword">return</span> stack[<span class="number">-1</span>]</span><br/></pre></td></tr></tbody></table></figure>

@@ -4,19 +4,17 @@ title: lua inside: 高效的tolower
 tags: [lua文章]
 categories: [topic]
 ---
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#define ltolower(c)	((c) | (&#39;A&#39; ^ &#39;a&#39;))</span></code></pre></figure>
 
-    #define ltolower(c)	((c) | ('A' ^ 'a'))
+<p><code class="highlighter-rouge">Lua</code>源码中的<code class="highlighter-rouge">ltolower</code>是这样实现的, 为什么能管用呢？因为： <br/>
+<code class="highlighter-rouge">&#39;A&#39;</code>的二进制表示是：‭01000001‬,<code class="highlighter-rouge">&#39;Z&#39;</code>的二进制表示是：‭01011010‬‬ <br/>
+<code class="highlighter-rouge">&#39;a&#39;</code>的二进制表示是：‭01100001‬,<code class="highlighter-rouge">&#39;z&#39;</code>的二进制表示是：‭01111010‬ <br/>
+这个方法真是clever啊!但是有两个限制条件：</p>
+<ol>
+  <li><code class="highlighter-rouge">ASCII</code>编码</li>
+  <li>有外部的代码确保<code class="highlighter-rouge">c</code>是<code class="highlighter-rouge">alphabetic character</code></li>
+</ol>
 
-`Lua`源码中的`ltolower`是这样实现的, 为什么能管用呢？因为：  
-`'A'`的二进制表示是：‭01000001‬,`'Z'`的二进制表示是：‭01011010‬‬  
-`'a'`的二进制表示是：‭01100001‬,`'z'`的二进制表示是：‭01111010‬  
-这个方法真是clever啊!但是有两个限制条件：
+<p>按照同样的思路，<code class="highlighter-rouge">toupper</code>可以写成这样：</p>
 
-  1. `ASCII`编码
-  2. 有外部的代码确保`c`是`alphabetic character`
-
-按照同样的思路，`toupper`可以写成这样：
-
-    
-    
-    #define ltoupper(c)	((c) & (~('A' ^ 'a')))
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#define ltoupper(c)	((c) &amp; (~(&#39;A&#39; ^ &#39;a&#39;)))</span></code></pre></figure>

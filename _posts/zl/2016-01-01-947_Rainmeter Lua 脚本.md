@@ -4,255 +4,41 @@ title: Rainmeter Lua 脚本
 tags: [lua文章]
 categories: [topic]
 ---
-用Rainmeter也快10年了，从乐此不疲得写RM项目到现在的桌面怎么简洁怎么来，期间也发布过不少下载量超六位数Skin，也没有为Rainmeter写过啥，今天写一下Lua和Rainmeter的使用，也是让大家能运用这个高级脚本写出更好的Skin。
+<p>用Rainmeter也快10年了，从乐此不疲得写RM项目到现在的桌面怎么简洁怎么来，期间也发布过不少下载量超六位数Skin，也没有为Rainmeter写过啥，今天写一下Lua和Rainmeter的使用，也是让大家能运用这个高级脚本写出更好的Skin。</p>
 
-Script（脚本）这个Measure已不是什么新的Measure了，但是几乎没有多少中使用到它。可能是它使用的脚本语言门槛比较高的缘故。Rainmeter官网中的介绍（English）：
-
-> [Rainmeter 官方文档](http://rainmeter.net/RainCMS/?q=LuaForRainmeter)
-
-Measure=Script Measure就类似于“Plugin”
-Measure，可以拓展RM的功能。但脚本的编写却比Plugin（使用C++或C#编写的dll）的要简单得多。
-
-在皮肤配置中，lua脚本语法如下：
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    
-
-|
-
-    
-    
-    [MeasureLuaScript]  
-    Measure=Script            
-    ScriptFile=MyScript.lua  
-    TableName=MyScriptTable   
-    MySetting="SomeSetting"   
-    UpdateDivider=1  
-      
-  
----|---  
-  
-我解释一下各项参数：
-
-> Measure=Script  
-> 标识 Measure 类型是 Script 扩展类型
-
-> ScriptFile=MyScript.lua  
-> 这个参数指定使用的脚本的路径，是必需的
-
-> TableName=MyScriptTable  
-> 这个参数可以是任意值，它是用来与其它的脚本Measure区别开来的，所以值是唯一的，也是必需的
-
-> MySetting=”SomeSetting”  
-> 这个参数不是必须的，它是用来向当前使用的Lua脚本的传递参数的，参数的名称与数量都要与Lua脚本中的表PROPERTIES相对应。
-
-脚本中的内容：  
-一个表：  
-用来存放在皮肤中的变量，如上面的 MySetting  
-PROPERTIES=  
-{  
-MySetting=””;  
-}
-
-> UpdateDivider=1  
-> 更新时间
-
-#### Lua必要函数
-
-> function Initialize()  
-> 初始化函数，皮肤刷新时，会调用这个函数
-
-> function Update()  
-> 皮肤每更新更新一次，都会调用这个函数，
-
-> function GetStringValue()  
-> function GetValue()  
-> 这两个函数有且只能有一个，它的功能是返回字符串（GetStringValue）或数值（GetValue）给皮肤中调用该脚本的Measure
-
-#### 实例
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    
-
-|
-
-    
-    
-    [Rainmeter]   
-    DynamicWindowSize=1   
-    Update=1000   
-      
-    [MeasureLuaScript]   
-    Measure=Script   
-    ScriptFile=#CURRENTPATH#getinistring.lua  
-    TableName=GetString  
-    FilePath="#CURRENTPATH#timesetting.cfg"  
-    secName="time1"  
-    KeyName="h"  
-    Defstr=" "  
-      
-    [MeterLua]   
-    Meter=String   
-    MeasureName=MeasureLuaScript   
-    FontSize=12   
-    FontColor=255,255,255,255  
-    Solidcolor=0,0,0,100  
-      
-  
----|---  
-      
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    27  
-    28  
-    29  
-    30  
-    31  
-    32  
-    33  
-    34  
-    35  
-    36  
-    37  
-    38  
-    39  
-    40  
-    41  
-    42  
-    43  
-    44  
-    45  
-    46  
-    47  
-    48  
-    49  
-    50  
-    51  
-    52  
-    53  
-    54  
-    55  
-    56  
-    57  
-    58  
-    
-
-|
-
-    
-    
-    PROPERTIES =  
-    {  
-    filepath="";  
-    secName="";  
-    keyname="";  
-    defstr="";  
-    }  
-      
-    function Initialize()  
-    FilePath =PROPERTIES.filepath;  
-    Secstr=PROPERTIES.secName;  
-    Keystr=PROPERTIES.keyname;  
-    Defstr=PROPERTIES.Defstr;  
-      
-    end -- function Initialize  
-      
-    function Update()  
-      
-    StrVal=ReadIniFile(FilePath,Secstr,"H","0");  
-    end -- function Update  
-      
-    function GetStringValue()  
-    if not StrVal then StrVal="can not get anystring!" end ;  
-    return StrVal;  
-      
-    end -- function GetStringValue  
-      
-    function ReadIniFile(filename,section,Key,default)  
-            local gotsec=false;  
-            local i,j=nil,nil;  
-            local Keyvalue=nil;  
-      
-            if not filename or filename=="" then  
-                    return "missing "filename"";  
-      
-            elseif not section or section=="" then  
-                    return "missing "secName"";  
-            elseif not Key or Key=="" then  
-                    return "missing "keyName"";  
-            end ;  
-      
-            section=string.lower(section);  
-            Key=string.lower(Key);  
-                    for tmp in io.lines(filename,r) do  
-                    tmp=string.lower(tmp);  
-                            if not gotsec then  
-                                    i,j=string.find(tmp,section.."]");  
-                                    if i then gotsec=true end;  
-                            else  
-                                    i,j,Keyvalue=string.find(tmp,Key.."%s*=%s*(.*)%s*");  
-                                    --print(Keyvalue);  
-                                    if i then break end;  
-                            end;  
-                    end;  
-                    ----io.close(FileN);  
-                    if not Keyvalue then Keyvalue=default end;  
-            return Keyvalue;  
-    end  
-      
-  
----|---  
-  
-实例中，通过获取 Rainmeter 配置文件，然后打印各项设置参数，
+<p>Script（脚本）这个Measure已不是什么新的Measure了，但是几乎没有多少中使用到它。可能是它使用的脚本语言门槛比较高的缘故。Rainmeter官网中的介绍（English）：</p>
+<blockquote>
+<p><a href="http://rainmeter.net/RainCMS/?q=LuaForRainmeter" target="_blank" rel="noopener noreferrer">Rainmeter 官方文档</a></p>
+</blockquote>
+<p>Measure=Script  Measure就类似于“Plugin” Measure，可以拓展RM的功能。但脚本的编写却比Plugin（使用C++或C#编写的dll）的要简单得多。</p>
+<p>在皮肤配置中，lua脚本语法如下：</p>
+<figure class="highlight ini hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/></pre></td><td class="code"><pre><span class="line"><span class="hljs-section">[MeasureLuaScript]</span></span><br/><span class="line"><span class="hljs-attr">Measure</span>=Script          </span><br/><span class="line"><span class="hljs-attr">ScriptFile</span>=MyScript.lua</span><br/><span class="line"><span class="hljs-attr">TableName</span>=MyScriptTable </span><br/><span class="line"><span class="hljs-attr">MySetting</span>=<span class="hljs-string">&#34;SomeSetting&#34;</span> </span><br/><span class="line"><span class="hljs-attr">UpdateDivider</span>=<span class="hljs-number">1</span></span><br/></pre></td></tr></tbody></table></figure>
+<p>我解释一下各项参数：</p>
+<blockquote>
+<p>Measure=Script<br/>标识 Measure 类型是 Script 扩展类型</p>
+</blockquote>
+<blockquote>
+<p>ScriptFile=MyScript.lua<br/>这个参数指定使用的脚本的路径，是必需的</p>
+</blockquote>
+<blockquote>
+<p>TableName=MyScriptTable<br/>这个参数可以是任意值，它是用来与其它的脚本Measure区别开来的，所以值是唯一的，也是必需的</p>
+</blockquote>
+<blockquote>
+<p>MySetting=”SomeSetting”<br/>这个参数不是必须的，它是用来向当前使用的Lua脚本的传递参数的，参数的名称与数量都要与Lua脚本中的表PROPERTIES相对应。</p>
+</blockquote>
+<p>脚本中的内容：<br/>一个表：<br/>用来存放在皮肤中的变量，如上面的  MySetting<br/>PROPERTIES=<br/>{<br/>    MySetting=””;<br/>}</p>
+<blockquote>
+<p>UpdateDivider=1<br/>更新时间</p>
+</blockquote>
+<h4 id="Lua必要函数"><a href="#Lua必要函数" class="headerlink" title="Lua必要函数"></a>Lua必要函数</h4><blockquote>
+<p>function Initialize()<br/>初始化函数，皮肤刷新时，会调用这个函数</p>
+</blockquote>
+<blockquote>
+<p>function Update()<br/>皮肤每更新更新一次，都会调用这个函数，</p>
+</blockquote>
+<blockquote>
+<p>function GetStringValue()<br/>function GetValue()<br/>这两个函数有且只能有一个，它的功能是返回字符串（GetStringValue）或数值（GetValue）给皮肤中调用该脚本的Measure</p>
+</blockquote>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight ini hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/></pre></td><td class="code"><pre><span class="line"><span class="hljs-section">[Rainmeter]</span> </span><br/><span class="line"><span class="hljs-attr">DynamicWindowSize</span>=<span class="hljs-number">1</span> </span><br/><span class="line"><span class="hljs-attr">Update</span>=<span class="hljs-number">1000</span> </span><br/><span class="line"></span><br/><span class="line"><span class="hljs-section">[MeasureLuaScript]</span> </span><br/><span class="line"><span class="hljs-attr">Measure</span>=Script </span><br/><span class="line"><span class="hljs-attr">ScriptFile</span>=#CURRENTPATH#getinistring.lua</span><br/><span class="line"><span class="hljs-attr">TableName</span>=GetString</span><br/><span class="line"><span class="hljs-attr">FilePath</span>=<span class="hljs-string">&#34;#CURRENTPATH#timesetting.cfg&#34;</span></span><br/><span class="line"><span class="hljs-attr">secName</span>=<span class="hljs-string">&#34;time1&#34;</span></span><br/><span class="line"><span class="hljs-attr">KeyName</span>=<span class="hljs-string">&#34;h&#34;</span></span><br/><span class="line"><span class="hljs-attr">Defstr</span>=<span class="hljs-string">&#34; &#34;</span></span><br/><span class="line"></span><br/><span class="line"><span class="hljs-section">[MeterLua]</span> </span><br/><span class="line"><span class="hljs-attr">Meter</span>=String </span><br/><span class="line"><span class="hljs-attr">MeasureName</span>=MeasureLuaScript </span><br/><span class="line"><span class="hljs-attr">FontSize</span>=<span class="hljs-number">12</span> </span><br/><span class="line"><span class="hljs-attr">FontColor</span>=<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span></span><br/><span class="line"><span class="hljs-attr">Solidcolor</span>=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">100</span></span><br/></pre></td></tr></tbody></table></figure>
+<figure class="highlight lua hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/><span class="line">27</span><br/><span class="line">28</span><br/><span class="line">29</span><br/><span class="line">30</span><br/><span class="line">31</span><br/><span class="line">32</span><br/><span class="line">33</span><br/><span class="line">34</span><br/><span class="line">35</span><br/><span class="line">36</span><br/><span class="line">37</span><br/><span class="line">38</span><br/><span class="line">39</span><br/><span class="line">40</span><br/><span class="line">41</span><br/><span class="line">42</span><br/><span class="line">43</span><br/><span class="line">44</span><br/><span class="line">45</span><br/><span class="line">46</span><br/><span class="line">47</span><br/><span class="line">48</span><br/><span class="line">49</span><br/><span class="line">50</span><br/><span class="line">51</span><br/><span class="line">52</span><br/><span class="line">53</span><br/><span class="line">54</span><br/><span class="line">55</span><br/><span class="line">56</span><br/><span class="line">57</span><br/><span class="line">58</span><br/></pre></td><td class="code"><pre><span class="line">PROPERTIES =</span><br/><span class="line">{</span><br/><span class="line">filepath=<span class="hljs-string">&#34;&#34;</span>;</span><br/><span class="line">secName=<span class="hljs-string">&#34;&#34;</span>;</span><br/><span class="line">keyname=<span class="hljs-string">&#34;&#34;</span>;</span><br/><span class="line">defstr=<span class="hljs-string">&#34;&#34;</span>;</span><br/><span class="line">}</span><br/><span class="line"></span><br/><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Initialize</span><span class="hljs-params">()</span></span></span><br/><span class="line">FilePath =PROPERTIES.filepath;</span><br/><span class="line">Secstr=PROPERTIES.secName;</span><br/><span class="line">Keystr=PROPERTIES.keyname;</span><br/><span class="line">Defstr=PROPERTIES.Defstr;</span><br/><span class="line"></span><br/><span class="line"><span class="hljs-keyword">end</span> <span class="hljs-comment">-- function Initialize</span></span><br/><span class="line"></span><br/><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Update</span><span class="hljs-params">()</span></span></span><br/><span class="line"></span><br/><span class="line">StrVal=ReadIniFile(FilePath,Secstr,<span class="hljs-string">&#34;H&#34;</span>,<span class="hljs-string">&#34;0&#34;</span>);</span><br/><span class="line"><span class="hljs-keyword">end</span> <span class="hljs-comment">-- function Update</span></span><br/><span class="line"></span><br/><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GetStringValue</span><span class="hljs-params">()</span></span></span><br/><span class="line"><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> StrVal <span class="hljs-keyword">then</span> StrVal=<span class="hljs-string">&#34;can not get anystring!&#34;</span> <span class="hljs-keyword">end</span> ;</span><br/><span class="line"><span class="hljs-keyword">return</span> StrVal;</span><br/><span class="line"></span><br/><span class="line"><span class="hljs-keyword">end</span> <span class="hljs-comment">-- function GetStringValue</span></span><br/><span class="line"></span><br/><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ReadIniFile</span><span class="hljs-params">(filename,section,Key,default)</span></span></span><br/><span class="line">        <span class="hljs-keyword">local</span> gotsec=<span class="hljs-literal">false</span>;</span><br/><span class="line">        <span class="hljs-keyword">local</span> i,j=<span class="hljs-literal">nil</span>,<span class="hljs-literal">nil</span>;</span><br/><span class="line">        <span class="hljs-keyword">local</span> Keyvalue=<span class="hljs-literal">nil</span>;</span><br/><span class="line"></span><br/><span class="line">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> filename <span class="hljs-keyword">or</span> filename==<span class="hljs-string">&#34;&#34;</span> <span class="hljs-keyword">then</span></span><br/><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-string">&#34;missing &#34;filename&#34;&#34;</span>;</span><br/><span class="line"></span><br/><span class="line">        <span class="hljs-keyword">elseif</span> <span class="hljs-keyword">not</span> section <span class="hljs-keyword">or</span> section==<span class="hljs-string">&#34;&#34;</span> <span class="hljs-keyword">then</span></span><br/><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-string">&#34;missing &#34;secName&#34;&#34;</span>;</span><br/><span class="line">        <span class="hljs-keyword">elseif</span> <span class="hljs-keyword">not</span> Key <span class="hljs-keyword">or</span> Key==<span class="hljs-string">&#34;&#34;</span> <span class="hljs-keyword">then</span></span><br/><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-string">&#34;missing &#34;keyName&#34;&#34;</span>;</span><br/><span class="line">        <span class="hljs-keyword">end</span> ;</span><br/><span class="line"></span><br/><span class="line">        section=<span class="hljs-built_in">string</span>.<span class="hljs-built_in">lower</span>(section);</span><br/><span class="line">        Key=<span class="hljs-built_in">string</span>.<span class="hljs-built_in">lower</span>(Key);</span><br/><span class="line">                <span class="hljs-keyword">for</span> tmp <span class="hljs-keyword">in</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">lines</span>(filename,r) <span class="hljs-keyword">do</span></span><br/><span class="line">                tmp=<span class="hljs-built_in">string</span>.<span class="hljs-built_in">lower</span>(tmp);</span><br/><span class="line">                        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gotsec <span class="hljs-keyword">then</span></span><br/><span class="line">                                i,j=<span class="hljs-built_in">string</span>.<span class="hljs-built_in">find</span>(tmp,section..<span class="hljs-string">&#34;]&#34;</span>);</span><br/><span class="line">                                <span class="hljs-keyword">if</span> i <span class="hljs-keyword">then</span> gotsec=<span class="hljs-literal">true</span> <span class="hljs-keyword">end</span>;</span><br/><span class="line">                        <span class="hljs-keyword">else</span></span><br/><span class="line">                                i,j,Keyvalue=<span class="hljs-built_in">string</span>.<span class="hljs-built_in">find</span>(tmp,Key..<span class="hljs-string">&#34;%s*=%s*(.*)%s*&#34;</span>);</span><br/><span class="line">                                <span class="hljs-comment">--print(Keyvalue);</span></span><br/><span class="line">                                <span class="hljs-keyword">if</span> i <span class="hljs-keyword">then</span> <span class="hljs-keyword">break</span> <span class="hljs-keyword">end</span>;</span><br/><span class="line">                        <span class="hljs-keyword">end</span>;</span><br/><span class="line">                <span class="hljs-keyword">end</span>;</span><br/><span class="line">                <span class="hljs-comment">----io.close(FileN);</span></span><br/><span class="line">                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> Keyvalue <span class="hljs-keyword">then</span> Keyvalue=default <span class="hljs-keyword">end</span>;</span><br/><span class="line">        <span class="hljs-keyword">return</span> Keyvalue;</span><br/><span class="line"><span class="hljs-keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+<p>实例中，通过获取 Rainmeter 配置文件，然后打印各项设置参数，</p>

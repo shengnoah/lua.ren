@@ -4,348 +4,68 @@ title: Programming in Lua(Thrid Edition)笔记
 tags: [lua文章]
 categories: [topic]
 ---
-### 5 Functions
-
-  * 当函数参数为literal string或table constructor时，可以不加括号
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    
-
-|
-
-    
-        print "Hello world"  
-    dofile 'a.lua'  
-    print [[a multi-line message]]  
-    f{x=10, y=20}  
-    type{}  
-      
-  
----|---  
-  * `:`操作符可用于面向对象编程，`o:foo(x)`相当于`o.foo(o, x)`，需把o当做第一个额外的参数
-
-  * 传给函数的参数个数与其所需的参数个数可以不同，Lua会按照多重赋值的规则对参数赋值：extra arguments are thrown away, extra parameters get nil.此可用于使用默认参数：
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        function (n)  
-    	n = n or 1  
-    	count = count + n  
-    end  
-      
-  
----|---  
-  * 函数的多重返回值
-    
-        1  
-    2  
-    
-
-|
-
-    
-        s, e = string.find("hello Lua users", "Lua")  
-    print(s, e)   
-      
-  
----|---  
-
-字符串的第一个字符索引为1
-
-  * 函数返回多值只需把这些值以此写在return后即可
-
-  * 函数调用只有在以下四个构造中作为唯一一个或最后一个表达式时才会返回多值，否则只返回一值：multiple assignments，arguments to function calls，tale constructors，return statements，多余的返回值丢弃，多余的变量赋nil
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    
-
-|
-
-    
-        function foo()  
-    	return 1,2  
-    end  
-    a,b,c = 0,foo() -- a=0,b=1,c=2  
-    x,y,z = foo(),0 -- x=1,y=0,z=nil  
-    print(foo())    --> 1	2	3  
-    t = {foo()}     --> t = {1, 2, 3}  
-    t = {foo(), 0}  --> t = {1, 0}  
-    return foo()    --> return 1,2,3  
-      
-  
----|---  
-  * 返回值可以有多种形式：
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    
-
-|
-
-    
-        function foo(i)  
-    	if i == 0 then return  
-    	elseif i == 1 then return 1  
-    	elseif i == 2 then return 1, 2  
-    	end  
-    end  
-    print(foo(0)) -- (no results)  
-    print(foo(1)) --> 1  
-    print(foo(2)) --> 1	2  
-    print(foo(3)) -- (no results)  
-      
-  
----|---  
-  * 给函数表达式加上括号，可以强制其只返回一个值
-
-  * table.unpack()可以返回一个sequence的所有元素，返回元素个数与`#`操作符结果相同
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    
-
-|
-
-    
-        a = {1,2}  
-    print(table.unpack(a)) --> 1	2  
-    a[6] = 6  
-    print(table.unpack(a)) --> 1	2  
-    a[3] = 3  
-    print(table.unpack(a)) --> 1	2	3  
-      
-  
----|---  
-
-    
-    
-    1  
-    2  
-    3  
-    
-
-|
-
-    
-    
-    f = string.find  
-    a = {"hello", "ll"}  
-    print(f(table.unpack(a)))  
-      
-  
----|---  
-  
-  * 可以明确的选取table.unpack()的结果
-    
-        1  
-    
-
-|
-
-    
-        print(table.unpack({"Sun", "Mon", "Tue", "Wed", "Thi", "Fri", "Sat"}, 2, 4)) --> Mon	Tue	Wed  
-      
-  
----|---  
-  * 用Lua写unpack
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    
-
-|
-
-    
-        function unpack(t, i, n)   
-    	i = i or 1  
-    	n = n or #t  
-    	if i <= n then  
-    		retur t[i], unpack(t, i + 1, n)  
-    	end  
-    end  
-      
-  
----|---  
-  * 可变参数函数，参数用`...`表示，叫做vararg expression
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    
-
-|
-
-    
-        function add(...)  
-    	local s = 0  
-    	for i, v in ipairs{...} do  
-    		s = s + v  
-    	end  
-    	return s  
-    end  
-    print(add(3, 4, 10, 25, 12)) --> 54  
-      
-  
----|---  
-
-`print(...)`可以打印出所有参数  
-`return ...`返回所有参数
-
-  * `{...}`是由所有参数构造的table
-
-  * 多参数可转变为可变参数
-    
-        1  
-    
-
-|
-
-    
-        function foo(a, b, c)  
-      
-  
----|---  
-
-变为  
-
-    
-    
-    1  
-    2  
-    
-
-|
-
-    
-    
-    function foo(...)  
-    	local a, b, c = ...  
-      
-  
----|---  
-  
-  * 跟踪函数调用：
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        function foo1(...)  
-    	print("calling foo:", ...)  
-    	return foo(...)  
-    end  
-      
-  
----|---  
-  * 在`...`之前可以加上任意个固定参数
-    
-        1  
-    2  
-    3  
-    
-
-|
-
-    
-        functin fwrite(fmt, ...)  
-    	return io.write(string.format(fmt, ...))  
-    end  
-      
-  
----|---  
-  * `{...}`不能检测到末尾的nil，这时可用`table.pack(...)`构造一个带有表示元素个数的域n的table，但是`{...}` is cleaner and faster than `table.pack(...)`
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    
-
-|
-
-    
-        function nonils(...)  
-    	local arg = table.pack(...)  
-    	for i = 1, arg.n do  
-    		if arg[i] == nil then return false end  
-    	end  
-    	return true  
-    end  
-    print(nonils(2, 3, nil)) --> false  
-    print(nonils(2, 3))      --> true  
-    print(nonils())          --> true  
-    print(nonils(nil))       --> false  
-      
-  
----|---  
-  * named arguments并非Lua直接提供的语法，而是通过传递给函数一个table来间接实现的
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        function rename(arg)  
-    	return os.rename(arg.old, arg.new)  
-    end  
-    rename{old="old.lua", new="new.lua"}  
-      
-  
----|---
+<h3 id="5-Functions"><a href="#5-Functions" class="headerlink" title="5 Functions"></a>5 Functions</h3>
+<ul>
+<li><p>当函数参数为literal string或table constructor时，可以不加括号</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">&#34;Hello world&#34;</span></span><br/><span class="line"><span class="built_in">dofile</span> <span class="string">&#39;a.lua&#39;</span></span><br/><span class="line"><span class="built_in">print</span> <span class="string">[[a multi-line message]]</span></span><br/><span class="line">f{x=<span class="number">10</span>, y=<span class="number">20</span>}</span><br/><span class="line"><span class="built_in">type</span>{}</span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><code>:</code>操作符可用于面向对象编程，<code>o:foo(x)</code>相当于<code>o.foo(o, x)</code>，需把o当做第一个额外的参数</p>
+</li>
+<li><p>传给函数的参数个数与其所需的参数个数可以不同，Lua会按照多重赋值的规则对参数赋值：extra arguments are thrown away, extra parameters get nil.此可用于使用默认参数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">(n)</span></span></span><br/><span class="line">	n = n <span class="keyword">or</span> <span class="number">1</span></span><br/><span class="line">	count = count + n</span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>函数的多重返回值</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/></pre></td><td class="code"><pre><span class="line">s, e = <span class="built_in">string</span>.<span class="built_in">find</span>(<span class="string">&#34;hello Lua users&#34;</span>, <span class="string">&#34;Lua&#34;</span>)</span><br/><span class="line"><span class="built_in">print</span>(s, e) </span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>字符串的第一个字符索引为1</p>
+<ul>
+<li><p>函数返回多值只需把这些值以此写在return后即可</p>
+</li>
+<li><p>函数调用只有在以下四个构造中作为唯一一个或最后一个表达式时才会返回多值，否则只返回一值：multiple assignments，arguments to function calls，tale constructors，return statements，多余的返回值丢弃，多余的变量赋nil</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span></span><br/><span class="line">	<span class="keyword">return</span> <span class="number">1</span>,<span class="number">2</span></span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">a,b,c = <span class="number">0</span>,foo() <span class="comment">-- a=0,b=1,c=2</span></span><br/><span class="line">x,y,z = foo(),<span class="number">0</span> <span class="comment">-- x=1,y=0,z=nil</span></span><br/><span class="line"><span class="built_in">print</span>(foo())    <span class="comment">--&gt; 1	2	3</span></span><br/><span class="line">t = {foo()}     <span class="comment">--&gt; t = {1, 2, 3}</span></span><br/><span class="line">t = {foo(), <span class="number">0</span>}  <span class="comment">--&gt; t = {1, 0}</span></span><br/><span class="line"><span class="keyword">return</span> foo()    <span class="comment">--&gt; return 1,2,3</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>返回值可以有多种形式：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(i)</span></span></span><br/><span class="line">	<span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">then</span> <span class="keyword">return</span></span><br/><span class="line">	<span class="keyword">elseif</span> i == <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span></span><br/><span class="line">	<span class="keyword">elseif</span> i == <span class="number">2</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span>, <span class="number">2</span></span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="built_in">print</span>(foo(<span class="number">0</span>)) <span class="comment">-- (no results)</span></span><br/><span class="line"><span class="built_in">print</span>(foo(<span class="number">1</span>)) <span class="comment">--&gt; 1</span></span><br/><span class="line"><span class="built_in">print</span>(foo(<span class="number">2</span>)) <span class="comment">--&gt; 1	2</span></span><br/><span class="line"><span class="built_in">print</span>(foo(<span class="number">3</span>)) <span class="comment">-- (no results)</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>给函数表达式加上括号，可以强制其只返回一个值</p>
+</li>
+<li><p>table.unpack()可以返回一个sequence的所有元素，返回元素个数与<code>#</code>操作符结果相同</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/></pre></td><td class="code"><pre><span class="line">a = {<span class="number">1</span>,<span class="number">2</span>}</span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">table</span>.<span class="built_in">unpack</span>(a)) <span class="comment">--&gt; 1	2</span></span><br/><span class="line">a[<span class="number">6</span>] = <span class="number">6</span></span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">table</span>.<span class="built_in">unpack</span>(a)) <span class="comment">--&gt; 1	2</span></span><br/><span class="line">a[<span class="number">3</span>] = <span class="number">3</span></span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">table</span>.<span class="built_in">unpack</span>(a)) <span class="comment">--&gt; 1	2	3</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">string</span>.<span class="built_in">find</span></span><br/><span class="line">a = {<span class="string">&#34;hello&#34;</span>, <span class="string">&#34;ll&#34;</span>}</span><br/><span class="line"><span class="built_in">print</span>(f(<span class="built_in">table</span>.<span class="built_in">unpack</span>(a)))</span><br/></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>可以明确的选取table.unpack()的结果</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">table</span>.<span class="built_in">unpack</span>({<span class="string">&#34;Sun&#34;</span>, <span class="string">&#34;Mon&#34;</span>, <span class="string">&#34;Tue&#34;</span>, <span class="string">&#34;Wed&#34;</span>, <span class="string">&#34;Thi&#34;</span>, <span class="string">&#34;Fri&#34;</span>, <span class="string">&#34;Sat&#34;</span>}, <span class="number">2</span>, <span class="number">4</span>)) <span class="comment">--&gt; Mon	Tue	Wed</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>用Lua写unpack</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">unpack</span><span class="params">(t, i, n)</span></span> </span><br/><span class="line">	i = i <span class="keyword">or</span> <span class="number">1</span></span><br/><span class="line">	n = n <span class="keyword">or</span> #t</span><br/><span class="line">	<span class="keyword">if</span> i &lt;= n <span class="keyword">then</span></span><br/><span class="line">		retur t[i], <span class="built_in">unpack</span>(t, i + <span class="number">1</span>, n)</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>可变参数函数，参数用<code>...</code>表示，叫做vararg expression</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">(...)</span></span></span><br/><span class="line">	<span class="keyword">local</span> s = <span class="number">0</span></span><br/><span class="line">	<span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>{...} <span class="keyword">do</span></span><br/><span class="line">		s = s + v</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> s</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="built_in">print</span>(add(<span class="number">3</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">25</span>, <span class="number">12</span>)) <span class="comment">--&gt; 54</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><code>print(...)</code>可以打印出所有参数<br/><code>return ...</code>返回所有参数</p>
+<ul>
+<li><p><code>{...}</code>是由所有参数构造的table</p>
+</li>
+<li><p>多参数可转变为可变参数</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(a, b, c)</span></span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>变为<br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(...)</span></span></span><br/><span class="line">	<span class="keyword">local</span> a, b, c = ...</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<ul>
+<li><p>跟踪函数调用：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo1</span><span class="params">(...)</span></span></span><br/><span class="line">	<span class="built_in">print</span>(<span class="string">&#34;calling foo:&#34;</span>, ...)</span><br/><span class="line">	<span class="keyword">return</span> foo(...)</span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>在<code>...</code>之前可以加上任意个固定参数</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/></pre></td><td class="code"><pre><span class="line">functin fwrite(fmt, ...)</span><br/><span class="line">	<span class="keyword">return</span> <span class="built_in">io</span>.<span class="built_in">write</span>(<span class="built_in">string</span>.<span class="built_in">format</span>(fmt, ...))</span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><code>{...}</code>不能检测到末尾的nil，这时可用<code>table.pack(...)</code>构造一个带有表示元素个数的域n的table，但是<code>{...}</code> is cleaner and faster than <code>table.pack(...)</code></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nonils</span><span class="params">(...)</span></span></span><br/><span class="line">	<span class="keyword">local</span> <span class="built_in">arg</span> = <span class="built_in">table</span>.pack(...)</span><br/><span class="line">	<span class="keyword">for</span> i = <span class="number">1</span>, <span class="built_in">arg</span>.n <span class="keyword">do</span></span><br/><span class="line">		<span class="keyword">if</span> <span class="built_in">arg</span>[i] == <span class="literal">nil</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="built_in">print</span>(nonils(<span class="number">2</span>, <span class="number">3</span>, <span class="literal">nil</span>)) <span class="comment">--&gt; false</span></span><br/><span class="line"><span class="built_in">print</span>(nonils(<span class="number">2</span>, <span class="number">3</span>))      <span class="comment">--&gt; true</span></span><br/><span class="line"><span class="built_in">print</span>(nonils())          <span class="comment">--&gt; true</span></span><br/><span class="line"><span class="built_in">print</span>(nonils(<span class="literal">nil</span>))       <span class="comment">--&gt; false</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>named arguments并非Lua直接提供的语法，而是通过传递给函数一个table来间接实现的</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rename</span><span class="params">(arg)</span></span></span><br/><span class="line">	<span class="keyword">return</span> <span class="built_in">os</span>.<span class="built_in">rename</span>(<span class="built_in">arg</span>.old, <span class="built_in">arg</span>.new)</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="built_in">rename</span>{old=<span class="string">&#34;old.lua&#34;</span>, new=<span class="string">&#34;new.lua&#34;</span>}</span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>

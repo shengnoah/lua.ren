@@ -4,84 +4,11 @@ title: leetcode解题-evaluate reverse polish notation
 tags: [lua文章]
 categories: [topic]
 ---
-## 描述
-
-> Evaluate the value of an arithmetic expression in Reverse Polish Notation.
->
-> Valid operators are +, -, *, /. Each operand may be an integer or another
-> expression.
->
-> Some examples:  
->  [“2”, “1”, “+”, “3”, “*“] -> ((2 + 1) * 3) -> 9  
->  [“4”, “13”, “5”, “/“, “+”] -> (4 + (13 / 5)) -> 6
-
-## 分析
-
-逆波兰式求值，比较简单，注意代码里除法`int(float(a) / b))`是因为Python
-2有一个奇葩的设置就是除法结果是负数的时候是向下取整的（我们需要向0取整）。
-
-## 代码
-
-### Python
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    
-
-|
-
-    
-    
-    class (object):  
-        def eval(self, op, a, b):  
-            if op == '+':  
-                return a + b  
-            elif op == '-':  
-                return a - b  
-            elif op == '*':  
-                return a * b  
-            elif op == '/':  
-                return int(float(a) / b)  
-      
-        def evalRPN(self, tokens):  
-            """  
-            :type tokens: List[str]  
-            :rtype: int  
-            """  
-            ss = []  
-            for t in tokens:  
-                if t in '+-*/':  
-                    b = ss.pop()  
-                    a = ss.pop()  
-                    ss.append(self.eval(t, a, b))  
-                else:  
-                    ss.append(int(t))  
-            return ss[-1]  
-      
-  
----|---
+<span itemprop="articleBody"><h2 id="描述">描述</h2><blockquote>
+<p>Evaluate the value of an arithmetic expression in Reverse Polish Notation.</p>
+<p>Valid operators are +, -, *, /. Each operand may be an integer or another expression.</p>
+<p>Some examples:<br/>  [“2”, “1”, “+”, “3”, “*“] -&gt; ((2 + 1) * 3) -&gt; 9<br/>  [“4”, “13”, “5”, “/“, “+”] -&gt; (4 + (13 / 5)) -&gt; 6</p>
+</blockquote>
+<h2 id="分析">分析</h2><p>逆波兰式求值，比较简单，注意代码里除法<code>int(float(a) / b))</code>是因为Python 2有一个奇葩的设置就是除法结果是负数的时候是向下取整的（我们需要向0取整）。</p>
+<h2 id="代码">代码</h2><h3 id="Python">Python</h3><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="params">(object)</span>:</span></span><br/><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eval</span><span class="params">(self, op, a, b)</span>:</span></span><br/><span class="line">        <span class="keyword">if</span> op == <span class="string">&#39;+&#39;</span>:</span><br/><span class="line">            <span class="keyword">return</span> a + b</span><br/><span class="line">        <span class="keyword">elif</span> op == <span class="string">&#39;-&#39;</span>:</span><br/><span class="line">            <span class="keyword">return</span> a - b</span><br/><span class="line">        <span class="keyword">elif</span> op == <span class="string">&#39;*&#39;</span>:</span><br/><span class="line">            <span class="keyword">return</span> a * b</span><br/><span class="line">        <span class="keyword">elif</span> op == <span class="string">&#39;/&#39;</span>:</span><br/><span class="line">            <span class="keyword">return</span> int(float(a) / b)</span><br/><span class="line"></span><br/><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">evalRPN</span><span class="params">(self, tokens)</span>:</span></span><br/><span class="line">        <span class="string">&#34;&#34;&#34;</span><br/><span class="line">        :type tokens: List[str]</span><br/><span class="line">        :rtype: int</span><br/><span class="line">        &#34;&#34;&#34;</span></span><br/><span class="line">        ss = []</span><br/><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> tokens:</span><br/><span class="line">            <span class="keyword">if</span> t <span class="keyword">in</span> <span class="string">&#39;+-*/&#39;</span>:</span><br/><span class="line">                b = ss.pop()</span><br/><span class="line">                a = ss.pop()</span><br/><span class="line">                ss.append(self.eval(t, a, b))</span><br/><span class="line">            <span class="keyword">else</span>:</span><br/><span class="line">                ss.append(int(t))</span><br/><span class="line">        <span class="keyword">return</span> ss[-<span class="number">1</span>]</span><br/></pre></td></tr></tbody></table></figure>
+</span>

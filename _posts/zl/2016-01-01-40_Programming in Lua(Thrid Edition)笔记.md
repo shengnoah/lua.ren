@@ -4,589 +4,157 @@ title: Programming in Lua(Thrid Edition)笔记
 tags: [lua文章]
 categories: [topic]
 ---
-### 13 Metatables and Metamethods
-
-  * metatable和metamethod可以允许我们对一个值做未定义的操作，Lua中的每个值都可以有一个metatable，table和userdata有自己的metatable，其他类型的值对于本类型的所有值共享一个metatable，Lua创建的表默认无metatable。
-    
-        1  
-    2  
-    
-
-|
-
-    
-        t = {}  
-    print(getmetatable(t))   
-      
-  
----|---  
-
-用`setmetatable()`改变table的metatable：  
-
-    
-    
-    1  
-    2  
-    3  
-    
-
-|
-
-    
-    
-    t1 = {}  
-    setmetatable(t, t1)  
-    print(getmetatable(t) == t1) --> true  
-      
-  
----|---  
-  
-  * 一个table可以是任何值的metatable，一组相关的table可以共享一个公共的metatable来描述它们公共的行为，一个table也可以做自己的metatable来描述自己的行为。
-
-  * 用算术metamethod对集合求并、求交
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    27  
-    28  
-    29  
-    30  
-    31  
-    32  
-    33  
-    34  
-    35  
-    36  
-    37  
-    38  
-    39  
-    40  
-    41  
-    
-
-|
-
-    
-        Set = {}  
-    local mt = {}  
-    -- create a new set with the values of a given list  
-    function (l)  
-    	local set = {}  
-    	setmetatable(set, mt)  
-    	for _, v in ipairs(l) do set[v] = true end  
-    	return set  
-    end  
-    function Set.union(a, b)  
-    	local res = Set.new{}  
-    	for k in pairs(a) do res[k] = true end  
-    	for k in pairs(b) do res[k] = true end  
-    	return res  
-    end  
-    function Set.intersection(a, b)  
-    	local res = Set.new{}  
-    	for k in pairs(a) do  
-    		res[k] = b[k]  
-    	end  
-    	return res  
-    end  
-    -- presents a set as a string  
-    function Set.tostring(set)  
-    	local l = {} -- list to put all elements from the set  
-    	for e in pairs(set) do  
-    		l[#l + 1] = e  
-    	end  
-    	return "{" .. table.concat(l, ", ") .. "}"  
-    end  
-    -- print a set  
-    function Set.print(s)  
-    	print(Set.tostring(s))  
-    end  
-    s1 = Set.new{10, 20, 30, 50}  
-    s2 = Set.new{30, 1}  
-    mt.__add = Set.union  
-    mt.__mul = Set.intersection  
-    s3 = s1 + s2  
-    Set.print(s3)  
-    Set.print(s3 * s1)  
-      
-  
----|---  
-  * 算术运算符在metatable中对应的域名：
-
-field name | operator symbol | operator name  
----|---|---  
-__add | + | addition  
-__mul | * | multiplication  
-__sub | - | subtraction  
-__div | / | division  
-__unm | - | negation  
-__mod | % | modulo  
-__pow | ^ | exponentiation  
-__len | # | element number  
-__concat | .. | concatenation  
-  
-  * 对于一个算术运算，Lua从左到右查找操作数metatable中相应的metamethod，优先使用最先找到的，如果没找到则报错
-    
-        1  
-    2  
-    
-
-|
-
-    
-        s = Set.new{1, 2, 3}  
-    s = s + 8 --> bad argument #1 to 'pairs' (table expected, got number)  
-      
-  
----|---  
-
-安全检查：  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    
-
-|
-
-    
-    
-    function Set.union(a, b)  
-    	if getmetatable(a) ~= mt or getmetatable(b) ~= mt then  
-    		error("attemp to 'add' a set with a non-set value", 2)  
-    	end  
-    	<as before>  
-      
-  
----|---  
-  
-  * 关系运算符在metatable中对应的域名：
-
-field name | operator symbol | operator name  
----|---|---  
-__eq | = | equal to  
-__lt | < | less than  
-__le | <= | less than or equal to  
-  
-`a~=b`变为`not (a==b)`，`a>b`变为`b<a`，`a>=b`变为`b<=a`
-
-  * 用关系metamethod对集合进行比较
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    
-
-|
-
-    
-        mt.__le = function (a, b) -- set containment  
-    	for k in pairs(a) do  
-    		if not b[k] then return false end  
-    	end  
-    	return true  
-    end  
-    mt.__lt = function (a, b)  
-    	return a <= b and not (b <= a)  
-    end  
-    mt.__eq = function (a, b)  
-    	return a <= b and b <= a  
-    end  
-    s1 = Set.new{2, 4}  
-    s2 = Set.new{4, 10, 2}  
-    print(s1 <= s2)  
-    print(s1 < s2)  
-    print(s1 >= s1)  
-    print(s1 > s2)  
-    print(s1 == s2 * s1)  
-      
-  
----|---  
-
-先构造`__le`，再用其来构造其他关系运算
-
-  * 对于不同基础类型的两个对象或者有不同的metamethod，相等比较总是返回false而不会调用任何metamethod，因此一个集合总是不同与一个数，无论metamethod是什么
-
-  * 库定义metametod  
-`print()`总是调用`tostring()`来格式化输出，但是`tostring()`会先检查值是否有`__tostring`metamethod，如果有则将其结果返回
-
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        print({}) --> table: 0xda4680  
-    mt.__tostring = Set.tostring  
-    s1 = Set.new{10, 4, 5}  
-    print(s1) --> {4, 5, 10}  
-      
-  
----|---  
-
-j
-
-  * `setmetatable()`和`getmetatable()`用一个metafield来保护metatable，防止用户看到或改变metatable。通过设置metatable中的`__metatable`域，`getmetatable()`将会返回该域的值，`setmetatable()`会报错
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        mt.__metatable = "not your business"  
-    s1 = Set.new()  
-    print(getmetatable(s1)) --> not your business  
-    setmetatable(s1, {}) --> stdin:1: cannot change protected metatable  
-      
-  
----|---  
-  * `__index`metamethod用于在索引table中不存在的元素时提供值，如果没有该metamethod，则直接返回nil
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    
-
-|
-
-    
-        -- create the prototype with default values  
-    prototype = {x = 0, y = 0, width = 100, height = 100}  
-    mt = {} -- create a metatable  
-    -- declare the constrctor function  
-    function new(o)  
-    	setmetatable(o, mt)  
-    	return o  
-    end  
-    mt.__index = function (_, key)  
-    	return prototype[key]  
-    end  
-    w = new{x = 10, y = 20}  
-    print(w.width) --> 100  
-      
-  
----|---  
-
-`__index`为函数时，两个参数为table和不存在的key。`__index`也可以为一个table，此时则在此table中重新查找，查找方式同上，即可以继续用该table的`__index`  
-
-    
-    
-    1  
-    
-
-|
-
-    
-    
-    mt.__index = prototype  
-      
-  
----|---  
-  
-  * `rawget(t, k)`用于对table的raw access，即无视metatable
-
-  * `__newindex`用于对table中不存在的元素赋值，可以取代原赋值语句，其可以为函数或table，`rawset(t, k, v)`可以进行raw assignment，无视metatable
-
-  * 利用`__index`为table设置默认值
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    
-
-|
-
-    
-        function setDefault(t, d)  
-    	local mt = {__index = function () return d end}  
-    	setmetatable(t, mt)  
-    end  
-    tab = {x = 10, y = 20}  
-    print(tab.x, tab.z) --> 10	nil  
-    setDefault(tab, 0)  
-    print(tab.x, tab.z) --> 10	0  
-      
-  
----|---  
-
-为了避免每个table的`__index`都生成一个闭包从而浪费资源，可以将默认值存储在table的元素中  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    
-
-|
-
-    
-    
-    local mt = {__index = function (t) return t.___ end}  
-    function setDefault(t, d)  
-    	t.___ = d  
-    	setmetatable(t, mt)  
-    end  
-      
-  
----|---  
-  
-为了避免名字冲突，可以用一个局部空table作为索引  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    
-
-|
-
-    
-    
-    local key = {} -- unique key  
-    local mt = {__index = function (t) return t[key] end}  
-    function setDefault(t, d)  
-    	t[key] = d  
-    	setmetatable(t, mt)  
-    end  
-      
-  
----|---  
-  
-  * `__index`和`__newindex`只在索引不存在的元素时才会生效，所以为了监视一个table的所有存取值操作，可以用一个空table作为代理，对这些操作处理之后再重定向到原table上
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    
-
-|
-
-    
-        t = {} -- original table (created somewhere)  
-    -- keep a private access to the original table  
-    local _t = t  
-    -- create proxy  
-    t = {}  
-    -- create metatable  
-    local mt = {  
-    	__index = function (t, k)  
-    		print("*access to element " .. tostring(k))  
-    		return _t[k] -- access the original tables  
-    	end,  
-    	__newindex = function (t, k, v)  
-    		print("*update of element " .. tostring(k) .. " to " .. tostring(v))  
-    		_t[k] = v -- update original table  
-    	end  
-    }  
-    setmetatable(t, mt)  
-    t[2] = "hello" --> *update of element 2 to hello  
-    print(t[2]) --> *access to element 2nhello  
-      
-  
----|---  
-  * `__pairs`
-    
-        1  
-    2  
-    3  
-    4  
-    
-
-|
-
-    
-        mt.__pairs = function ()  
-    	return function (_, k)  
-    		return next(_t, k)  
-    	end  
-      
-  
----|---  
-
-`__ipairs`也可以设置
-
-  * 为了避免每个proxy的`__index`和`__newindex`都生成一个闭包从而浪费资源，可以将原table存储在proxy的元素中，利用局部空table做索引避免名字冲突
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    
-
-|
-
-    
-        local index = {} -- create private index  
-    local mt = { -- create metatable  
-    	__index = function (t, k)  
-    		print("*access to element " .. tostring(k))  
-    		return t[index][k] -- access the original table  
-    	end,  
-    	__newindex = function (t, k, v)  
-    		print("*update of element " .. tostring(k) .. " to " .. tostring(v))  
-    		t[index][k] = v -- update original table  
-    	end,  
-    	__pairs = function (t)  
-    		return function (t, k)  
-    			return next(t[index], k)  
-    		end, t  
-    	end  
-    }  
-    function track(t)  
-    	local proxy = {}  
-    	proxy[index] = t  
-    	setmetatable(proxy, mt)  
-    	return proxy  
-    end  
-    t = {}  
-    t = track(t)  
-    t[2] = "hello"  
-    print(t[2])  
-      
-  
----|---  
-  * 只读table
-    
-        1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    
-
-|
-
-    
-        function readOnly(t)  
-    	local proxy = {}  
-    	local mt = { -- create metatable  
-    		__index = t,  
-    		__newindex = function (t, k, v)  
-    			error("attempt to update a read-only table", 2)  
-    		end  
-    	}  
-    	setmetatable(proxy, mt)  
-    	return proxy  
-    end  
-    days = readOnly{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", <span class="string"
+<h3 id="13-Metatables-and-Metamethods"><a href="#13-Metatables-and-Metamethods" class="headerlink" title="13 Metatables and Metamethods"></a>13 Metatables and Metamethods</h3>
+<ul>
+<li>metatable和metamethod可以允许我们对一个值做未定义的操作，Lua中的每个值都可以有一个metatable，table和userdata有自己的metatable，其他类型的值对于本类型的所有值共享一个metatable，Lua创建的表默认无metatable。<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/></pre></td><td class="code"><pre><span class="line">t = {}</span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(t)) </span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>用<code>setmetatable()</code>改变table的metatable：<br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/></pre></td><td class="code"><pre><span class="line">t1 = {}</span><br/><span class="line"><span class="built_in">setmetatable</span>(t, t1)</span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(t) == t1) <span class="comment">--&gt; true</span></span><br/></pre></td></tr></tbody></table></figure><p></p>
+<ul>
+<li><p>一个table可以是任何值的metatable，一组相关的table可以共享一个公共的metatable来描述它们公共的行为，一个table也可以做自己的metatable来描述自己的行为。</p>
+</li>
+<li><p>用算术metamethod对集合求并、求交</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/><span class="line">27</span><br/><span class="line">28</span><br/><span class="line">29</span><br/><span class="line">30</span><br/><span class="line">31</span><br/><span class="line">32</span><br/><span class="line">33</span><br/><span class="line">34</span><br/><span class="line">35</span><br/><span class="line">36</span><br/><span class="line">37</span><br/><span class="line">38</span><br/><span class="line">39</span><br/><span class="line">40</span><br/><span class="line">41</span><br/></pre></td><td class="code"><pre><span class="line">Set = {}</span><br/><span class="line"><span class="keyword">local</span> mt = {}</span><br/><span class="line"><span class="comment">-- create a new set with the values of a given list</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">(l)</span></span></span><br/><span class="line">	<span class="keyword">local</span> set = {}</span><br/><span class="line">	<span class="built_in">setmetatable</span>(set, mt)</span><br/><span class="line">	<span class="keyword">for</span> _, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(l) <span class="keyword">do</span> set[v] = <span class="literal">true</span> <span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> set</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set.union</span><span class="params">(a, b)</span></span></span><br/><span class="line">	<span class="keyword">local</span> res = Set.new{}</span><br/><span class="line">	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(a) <span class="keyword">do</span> res[k] = <span class="literal">true</span> <span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(b) <span class="keyword">do</span> res[k] = <span class="literal">true</span> <span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> res</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set.intersection</span><span class="params">(a, b)</span></span></span><br/><span class="line">	<span class="keyword">local</span> res = Set.new{}</span><br/><span class="line">	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(a) <span class="keyword">do</span></span><br/><span class="line">		res[k] = b[k]</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> res</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="comment">-- presents a set as a string</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set.tostring</span><span class="params">(set)</span></span></span><br/><span class="line">	<span class="keyword">local</span> l = {} <span class="comment">-- list to put all elements from the set</span></span><br/><span class="line">	<span class="keyword">for</span> e <span class="keyword">in</span> <span class="built_in">pairs</span>(set) <span class="keyword">do</span></span><br/><span class="line">		l[#l + <span class="number">1</span>] = e</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> <span class="string">&#34;{&#34;</span> .. <span class="built_in">table</span>.<span class="built_in">concat</span>(l, <span class="string">&#34;, &#34;</span>) .. <span class="string">&#34;}&#34;</span></span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line"><span class="comment">-- print a set</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set.print</span><span class="params">(s)</span></span></span><br/><span class="line">	<span class="built_in">print</span>(Set.<span class="built_in">tostring</span>(s))</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">s1 = Set.new{<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">50</span>}</span><br/><span class="line">s2 = Set.new{<span class="number">30</span>, <span class="number">1</span>}</span><br/><span class="line">mt.<span class="built_in">__add</span> = Set.union</span><br/><span class="line">mt.<span class="built_in">__mul</span> = Set.intersection</span><br/><span class="line">s3 = s1 + s2</span><br/><span class="line">Set.<span class="built_in">print</span>(s3)</span><br/><span class="line">Set.<span class="built_in">print</span>(s3 * s1)</span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>算术运算符在metatable中对应的域名：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">field name</th>
+<th style="text-align:center">operator symbol</th>
+<th style="text-align:center">operator name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">__add</td>
+<td style="text-align:center">+</td>
+<td style="text-align:center">addition</td>
+</tr>
+<tr>
+<td style="text-align:center">__mul</td>
+<td style="text-align:center">*</td>
+<td style="text-align:center">multiplication</td>
+</tr>
+<tr>
+<td style="text-align:center">__sub</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">subtraction</td>
+</tr>
+<tr>
+<td style="text-align:center">__div</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">division</td>
+</tr>
+<tr>
+<td style="text-align:center">__unm</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">negation</td>
+</tr>
+<tr>
+<td style="text-align:center">__mod</td>
+<td style="text-align:center">%</td>
+<td style="text-align:center">modulo</td>
+</tr>
+<tr>
+<td style="text-align:center">__pow</td>
+<td style="text-align:center">^</td>
+<td style="text-align:center">exponentiation</td>
+</tr>
+<tr>
+<td style="text-align:center">__len</td>
+<td style="text-align:center">#</td>
+<td style="text-align:center">element number</td>
+</tr>
+<tr>
+<td style="text-align:center">__concat</td>
+<td style="text-align:center">..</td>
+<td style="text-align:center">concatenation</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>对于一个算术运算，Lua从左到右查找操作数metatable中相应的metamethod，优先使用最先找到的，如果没找到则报错<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/></pre></td><td class="code"><pre><span class="line">s = Set.new{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}</span><br/><span class="line">s = s + <span class="number">8</span> <span class="comment">--&gt; bad argument #1 to &#39;pairs&#39; (table expected, got number)</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>安全检查：<br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set.union</span><span class="params">(a, b)</span></span></span><br/><span class="line">	<span class="keyword">if</span> <span class="built_in">getmetatable</span>(a) ~= mt <span class="keyword">or</span> <span class="built_in">getmetatable</span>(b) ~= mt <span class="keyword">then</span></span><br/><span class="line">		<span class="built_in">error</span>(<span class="string">&#34;attemp to &#39;add&#39; a set with a non-set value&#34;</span>, <span class="number">2</span>)</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	&lt;as before&gt;</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<ul>
+<li>关系运算符在metatable中对应的域名：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">field name</th>
+<th style="text-align:center">operator symbol</th>
+<th style="text-align:center">operator name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">__eq</td>
+<td style="text-align:center">=</td>
+<td style="text-align:center">equal to</td>
+</tr>
+<tr>
+<td style="text-align:center">__lt</td>
+<td style="text-align:center">&lt;</td>
+<td style="text-align:center">less than</td>
+</tr>
+<tr>
+<td style="text-align:center">__le</td>
+<td style="text-align:center">&lt;=</td>
+<td style="text-align:center">less than or equal to</td>
+</tr>
+</tbody>
+</table>
+<p><code>a~=b</code>变为<code>not (a==b)</code>，<code>a&gt;b</code>变为<code>b&lt;a</code>，<code>a&gt;=b</code>变为<code>b&lt;=a</code></p>
+<ul>
+<li>用关系metamethod对集合进行比较<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/></pre></td><td class="code"><pre><span class="line">mt.<span class="built_in">__le</span> = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span></span> <span class="comment">-- set containment</span></span><br/><span class="line">	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(a) <span class="keyword">do</span></span><br/><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> b[k] <span class="keyword">then</span> <span class="keyword">return</span> <span class="literal">false</span> <span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">mt.<span class="built_in">__lt</span> = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span></span></span><br/><span class="line">	<span class="keyword">return</span> a &lt;= b <span class="keyword">and</span> <span class="keyword">not</span> (b &lt;= a)</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">mt.<span class="built_in">__eq</span> = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span></span></span><br/><span class="line">	<span class="keyword">return</span> a &lt;= b <span class="keyword">and</span> b &lt;= a</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">s1 = Set.new{<span class="number">2</span>, <span class="number">4</span>}</span><br/><span class="line">s2 = Set.new{<span class="number">4</span>, <span class="number">10</span>, <span class="number">2</span>}</span><br/><span class="line"><span class="built_in">print</span>(s1 &lt;= s2)</span><br/><span class="line"><span class="built_in">print</span>(s1 &lt; s2)</span><br/><span class="line"><span class="built_in">print</span>(s1 &gt;= s1)</span><br/><span class="line"><span class="built_in">print</span>(s1 &gt; s2)</span><br/><span class="line"><span class="built_in">print</span>(s1 == s2 * s1)</span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>先构造<code>__le</code>，再用其来构造其他关系运算</p>
+<ul>
+<li><p>对于不同基础类型的两个对象或者有不同的metamethod，相等比较总是返回false而不会调用任何metamethod，因此一个集合总是不同与一个数，无论metamethod是什么</p>
+</li>
+<li><p>库定义metametod<br/><code>print()</code>总是调用<code>tostring()</code>来格式化输出，但是<code>tostring()</code>会先检查值是否有<code>__tostring</code>metamethod，如果有则将其结果返回</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>({}) <span class="comment">--&gt; table: 0xda4680</span></span><br/><span class="line">mt.<span class="built_in">__tostring</span> = Set.<span class="built_in">tostring</span></span><br/><span class="line">s1 = Set.new{<span class="number">10</span>, <span class="number">4</span>, <span class="number">5</span>}</span><br/><span class="line"><span class="built_in">print</span>(s1) <span class="comment">--&gt; {4, 5, 10}</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>j</p>
+<ul>
+<li><p><code>setmetatable()</code>和<code>getmetatable()</code>用一个metafield来保护metatable，防止用户看到或改变metatable。通过设置metatable中的<code>__metatable</code>域，<code>getmetatable()</code>将会返回该域的值，<code>setmetatable()</code>会报错</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line">mt.<span class="built_in">__metatable</span> = <span class="string">&#34;not your business&#34;</span></span><br/><span class="line">s1 = Set.new()</span><br/><span class="line"><span class="built_in">print</span>(<span class="built_in">getmetatable</span>(s1)) <span class="comment">--&gt; not your business</span></span><br/><span class="line"><span class="built_in">setmetatable</span>(s1, {}) <span class="comment">--&gt; stdin:1: cannot change protected metatable</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><code>__index</code>metamethod用于在索引table中不存在的元素时提供值，如果没有该metamethod，则直接返回nil</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/></pre></td><td class="code"><pre><span class="line"><span class="comment">-- create the prototype with default values</span></span><br/><span class="line">prototype = {x = <span class="number">0</span>, y = <span class="number">0</span>, width = <span class="number">100</span>, height = <span class="number">100</span>}</span><br/><span class="line">mt = {} <span class="comment">-- create a metatable</span></span><br/><span class="line"><span class="comment">-- declare the constrctor function</span></span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">new</span><span class="params">(o)</span></span></span><br/><span class="line">	<span class="built_in">setmetatable</span>(o, mt)</span><br/><span class="line">	<span class="keyword">return</span> o</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">mt.<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(_, key)</span></span></span><br/><span class="line">	<span class="keyword">return</span> prototype[key]</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">w = new{x = <span class="number">10</span>, y = <span class="number">20</span>}</span><br/><span class="line"><span class="built_in">print</span>(w.width) <span class="comment">--&gt; 100</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><code>__index</code>为函数时，两个参数为table和不存在的key。<code>__index</code>也可以为一个table，此时则在此table中重新查找，查找方式同上，即可以继续用该table的<code>__index</code><br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line">mt.<span class="built_in">__index</span> = prototype</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<ul>
+<li><p><code>rawget(t, k)</code>用于对table的raw access，即无视metatable</p>
+</li>
+<li><p><code>__newindex</code>用于对table中不存在的元素赋值，可以取代原赋值语句，其可以为函数或table，<code>rawset(t, k, v)</code>可以进行raw assignment，无视metatable</p>
+</li>
+<li><p>利用<code>__index</code>为table设置默认值</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setDefault</span><span class="params">(t, d)</span></span></span><br/><span class="line">	<span class="keyword">local</span> mt = {<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span> <span class="keyword">return</span> d <span class="keyword">end</span>}</span><br/><span class="line">	<span class="built_in">setmetatable</span>(t, mt)</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">tab = {x = <span class="number">10</span>, y = <span class="number">20</span>}</span><br/><span class="line"><span class="built_in">print</span>(tab.x, tab.z) <span class="comment">--&gt; 10	nil</span></span><br/><span class="line">setDefault(tab, <span class="number">0</span>)</span><br/><span class="line"><span class="built_in">print</span>(tab.x, tab.z) <span class="comment">--&gt; 10	0</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>为了避免每个table的<code>__index</code>都生成一个闭包从而浪费资源，可以将默认值存储在table的元素中<br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> mt = {<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t)</span></span> <span class="keyword">return</span> t.___ <span class="keyword">end</span>}</span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setDefault</span><span class="params">(t, d)</span></span></span><br/><span class="line">	t.___ = d</span><br/><span class="line">	<span class="built_in">setmetatable</span>(t, mt)</span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>为了避免名字冲突，可以用一个局部空table作为索引<br/></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = {} <span class="comment">-- unique key</span></span><br/><span class="line"><span class="keyword">local</span> mt = {<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t)</span></span> <span class="keyword">return</span> t[key] <span class="keyword">end</span>}</span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setDefault</span><span class="params">(t, d)</span></span></span><br/><span class="line">	t[key] = d</span><br/><span class="line">	<span class="built_in">setmetatable</span>(t, mt)</span><br/><span class="line"><span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure><p></p>
+<ul>
+<li><p><code>__index</code>和<code>__newindex</code>只在索引不存在的元素时才会生效，所以为了监视一个table的所有存取值操作，可以用一个空table作为代理，对这些操作处理之后再重定向到原table上</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/></pre></td><td class="code"><pre><span class="line">t = {} <span class="comment">-- original table (created somewhere)</span></span><br/><span class="line"><span class="comment">-- keep a private access to the original table</span></span><br/><span class="line"><span class="keyword">local</span> _t = t</span><br/><span class="line"><span class="comment">-- create proxy</span></span><br/><span class="line">t = {}</span><br/><span class="line"><span class="comment">-- create metatable</span></span><br/><span class="line"><span class="keyword">local</span> mt = {</span><br/><span class="line">	<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, k)</span></span></span><br/><span class="line">		<span class="built_in">print</span>(<span class="string">&#34;*access to element &#34;</span> .. <span class="built_in">tostring</span>(k))</span><br/><span class="line">		<span class="keyword">return</span> _t[k] <span class="comment">-- access the original tables</span></span><br/><span class="line">	<span class="keyword">end</span>,</span><br/><span class="line">	<span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, k, v)</span></span></span><br/><span class="line">		<span class="built_in">print</span>(<span class="string">&#34;*update of element &#34;</span> .. <span class="built_in">tostring</span>(k) .. <span class="string">&#34; to &#34;</span> .. <span class="built_in">tostring</span>(v))</span><br/><span class="line">		_t[k] = v <span class="comment">-- update original table</span></span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">}</span><br/><span class="line"><span class="built_in">setmetatable</span>(t, mt)</span><br/><span class="line">t[<span class="number">2</span>] = <span class="string">&#34;hello&#34;</span> <span class="comment">--&gt; *update of element 2 to hello</span></span><br/><span class="line"><span class="built_in">print</span>(t[<span class="number">2</span>]) <span class="comment">--&gt; *access to element 2nhello</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><code>__pairs</code></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/></pre></td><td class="code"><pre><span class="line">mt.__pairs = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br/><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(_, k)</span></span></span><br/><span class="line">		<span class="keyword">return</span> <span class="built_in">next</span>(_t, k)</span><br/><span class="line">	<span class="keyword">end</span></span><br/></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><code>__ipairs</code>也可以设置</p>
+<ul>
+<li><p>为了避免每个proxy的<code>__index</code>和<code>__newindex</code>都生成一个闭包从而浪费资源，可以将原table存储在proxy的元素中，利用局部空table做索引避免名字冲突</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> index = {} <span class="comment">-- create private index</span></span><br/><span class="line"><span class="keyword">local</span> mt = { <span class="comment">-- create metatable</span></span><br/><span class="line">	<span class="built_in">__index</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, k)</span></span></span><br/><span class="line">		<span class="built_in">print</span>(<span class="string">&#34;*access to element &#34;</span> .. <span class="built_in">tostring</span>(k))</span><br/><span class="line">		<span class="keyword">return</span> t[index][k] <span class="comment">-- access the original table</span></span><br/><span class="line">	<span class="keyword">end</span>,</span><br/><span class="line">	<span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, k, v)</span></span></span><br/><span class="line">		<span class="built_in">print</span>(<span class="string">&#34;*update of element &#34;</span> .. <span class="built_in">tostring</span>(k) .. <span class="string">&#34; to &#34;</span> .. <span class="built_in">tostring</span>(v))</span><br/><span class="line">		t[index][k] = v <span class="comment">-- update original table</span></span><br/><span class="line">	<span class="keyword">end</span>,</span><br/><span class="line">	__pairs = <span class="function"><span class="keyword">function</span> <span class="params">(t)</span></span></span><br/><span class="line">		<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(t, k)</span></span></span><br/><span class="line">			<span class="keyword">return</span> <span class="built_in">next</span>(t[index], k)</span><br/><span class="line">		<span class="keyword">end</span>, t</span><br/><span class="line">	<span class="keyword">end</span></span><br/><span class="line">}</span><br/><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">track</span><span class="params">(t)</span></span></span><br/><span class="line">	<span class="keyword">local</span> proxy = {}</span><br/><span class="line">	proxy[index] = t</span><br/><span class="line">	<span class="built_in">setmetatable</span>(proxy, mt)</span><br/><span class="line">	<span class="keyword">return</span> proxy</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">t = {}</span><br/><span class="line">t = track(t)</span><br/><span class="line">t[<span class="number">2</span>] = <span class="string">&#34;hello&#34;</span></span><br/><span class="line"><span class="built_in">print</span>(t[<span class="number">2</span>])</span><br/></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>只读table</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readOnly</span><span class="params">(t)</span></span></span><br/><span class="line">	<span class="keyword">local</span> proxy = {}</span><br/><span class="line">	<span class="keyword">local</span> mt = { <span class="comment">-- create metatable</span></span><br/><span class="line">		<span class="built_in">__index</span> = t,</span><br/><span class="line">		<span class="built_in">__newindex</span> = <span class="function"><span class="keyword">function</span> <span class="params">(t, k, v)</span></span></span><br/><span class="line">			<span class="built_in">error</span>(<span class="string">&#34;attempt to update a read-only table&#34;</span>, <span class="number">2</span>)</span><br/><span class="line">		<span class="keyword">end</span></span><br/><span class="line">	}</span><br/><span class="line">	<span class="built_in">setmetatable</span>(proxy, mt)</span><br/><span class="line">	<span class="keyword">return</span> proxy</span><br/><span class="line"><span class="keyword">end</span></span><br/><span class="line">days = readOnly{<span class="string">&#34;Sunday&#34;</span>, <span class="string">&#34;Monday&#34;</span>, <span class="string">&#34;Tuesday&#34;</span>, <span class="string">&#34;Wednesday&#34;</span>, <span class="string">&#34;Thursday&#34;</span>, <span class="string">&#34;Friday&#34;</span>, <span class="string"

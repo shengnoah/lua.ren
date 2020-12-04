@@ -4,246 +4,253 @@ title: design pattern - observer pattern in c++ and lua
 tags: [lua文章]
 categories: [topic]
 ---
-  * What is Observer Pattern
-  * Example in C++
-  * Example in Lua
+<ul id="markdown-toc">
+  <li><a href="#what-is-observer-pattern" id="markdown-toc-what-is-observer-pattern">What is Observer Pattern</a></li>
+  <li><a href="#example-in-c" id="markdown-toc-example-in-c">Example in C++</a></li>
+  <li><a href="#example-in-lua" id="markdown-toc-example-in-lua">Example in Lua</a></li>
+</ul>
 
-  
-![](https://upload.wikimedia.org/wikipedia/commons/0/01/W3sDesign_Observer_Design_Pattern_UML.jpg)
 
-  
-[Observer Pattern Wiki](https://en.wikipedia.org/wiki/Observer_pattern)  
+<center><br/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/01/W3sDesign_Observer_Design_Pattern_UML.jpg" width="800" itemprop="image"/>
+</center>
+<p><br/>
+<a href="https://en.wikipedia.org/wiki/Observer_pattern">Observer Pattern Wiki</a><br/></p>
+<blockquote>
+  <p>The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.
+</p>
+</blockquote>
 
-> The observer pattern is a software design pattern in which an object, called
-> the subject, maintains a list of its dependents, called observers, and
-> notifies them automatically of any state changes, usually by calling one of
-> their methods.
 
-**  
-一一一一一一一一一一一一一一一一一一一一一一一一  
-© Hung-Chi's Blog  
-[ https://hungchicheng.github.io/2017/09/29/Design-Patterns-Observer-Pattern-
-in-lua-and-C++/ ](https://hungchicheng.github.io/2017/09/29/Design-Patterns-
-Observer-Pattern-in-lua-and-C++/)  
-一一一一一一一一一一一一一一一一一一一一一一一一 **
+<center><b><br/>
+一一一一一一一一一一一一一一一一一一一一一一一一<br/>
+© Hung-Chi&#39;s Blog<br/>
+<a href="https://hungchicheng.github.io/2017/09/29/Design-Patterns-Observer-Pattern-in-lua-and-C++/" id="link" target="_blank" rel="noopener noreferrer">
+	https://hungchicheng.github.io/2017/09/29/Design-Patterns-Observer-Pattern-in-lua-and-C++/
+</a><br/>
+一一一一一一一一一一一一一一一一一一一一一一一一
+</b></center>
 
-  
 
-## What is Observer Pattern
 
-## Example in C++
+<p><br/></p>
+<center>
 
-    
-    
-    #include <iostream>
-    #include <set>
-    using namespace std;
-    
-    class Observer{
-    public:
-        virtual void update(int p) = 0;
-    };
-    
-    class Subject{
-    protected:
-        std::set< Observer* > m_observerList;
-    public:
-        void attach( Observer *o ){ m_observerList.insert( o ); };
-        void detach( Observer *o ){ m_observerList.erase( o ); };
-        virtual void notify () = 0;
-    };
-    
-    class  Subject1:public Subject{
-    private:
-        int m_state;
-    public:
-        void notify (){
-            for ( auto &o : m_observerList ){
-                o->update(m_state);
-            }
-        };
-        void setState( int s ){
-            m_state = s;
-            notify();
-        }
-        int getState(){ return m_state; }
-    };
-    
-    class Observer1:public Observer{
-        string m_name;
-        int m_state;
-    public:
-        Observer1( string name ):m_name( name ){}
-        void update( int p ){ m_state = p; } // override
-        string getName(){ return m_name; }
-        int getState(){ return m_state; }
-    };
-    
-    class Observer2:public Observer{
-        string m_name;
-        int m_state;
-    public:
-        Observer2( string name ):m_name( name ){}
-        void update( int p ){ m_state = p; } // override
-        string getName(){ return m_name; }
-        int getState(){ return m_state; }
-    };
-    
-    int main(int argc, char* argv[])
-    {
-        Subject1 product;
-        Observer1 shop1( "shop1--" );
-        Observer2 shop2( "shop2--" );
-        
-        product.attach( &shop1 );
-        product.attach( &shop2 );
-        product.setState( 12 );
-        cout<< shop1.getName() << shop1.getState() <<endl;
-        cout<< shop2.getName() << shop2.getState() <<endl;
-        
-        product.detach( &shop2 );
-        product.setState( 11 );
-        cout<< shop1.getName() << shop1.getState() <<endl;
-        cout<< shop2.getName() << shop2.getState() <<endl;
-        
-        return 0;
-    }
-    
 
-Output:
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
 
-    
-    
-    shop1--12
-    shop2--12
-    shop1--11
-    shop2--12
-    
 
-[Download - Source
-Code](https://github.com/hungchicheng/DesignPattern/blob/master/C%2B%2B/Observer.cpp)  
-  
+<h2 id="what-is-observer-pattern">What is Observer Pattern</h2>
 
-## Example in Lua
+<h2 id="example-in-c">Example in C++</h2>
 
-    
-    
-    function FuncNew( obj ) -- for Inheritance 
-        function obj:new( o )
-            o = o or {}
-            setmetatable( o, self )
-            self.__index = self
-            return o
-        end
-        return obj
-    end
-    
-    Observer = {}
-    function Observer:create()
-        function self:update( p ) -- virtual update
-            -- do nothing
-        end
-        return FuncNew( Observer ):new()
-    end
-    
-    Subject = {}
-    function Subject:create()
-        self.m_observerList = {}
-        function self:attach( observer )
-            table.insert( self.m_observerList, observer )
-        end
-        function self:detach( observer )
-            for k,v in pairs( self.m_observerList ) do
-                if v == observer then
-                    table.remove( self.m_observerList, k )
-                end
-            end
-        end
-        function self:notify() -- virtual notify
-            -- do nothing
-        end
-        return FuncNew( Subject ):new()
-    end
-    
-    Subject1 = Subject:create() -- inheritance Subject
-    function Subject1:create()
-        local m_state = nil
-        function self:notify() -- override notify
-            for k,v in pairs( self.m_observerList ) do
-                v:update( m_state )
-            end
-        end
-        function self:setState( s ) 
-            m_state = s
-            self:notify()
-        end
-        function self:getState( s ) 
-            return m_state
-        end
-        return FuncNew( Subject1 ):new()
-    end
-    
-    Observer1 = Observer:create() -- inheritance Subject
-    function Observer1:create( n )
-        local m_name = n
-        local m_state = nil
-        function self:update( p ) -- override update
-            m_state = p
-        end
-        function self:getName()
-            return m_name
-        end
-        function self:getState()
-            return m_state
-        end
-        return FuncNew( Observer1 ):new()
-    end
-    
-    Observer2 = Observer:create() -- inheritance Subject
-    function Observer2:create( n )
-        local m_name = n
-        local m_state = nil
-        function self:update( p ) -- override update
-            m_state = p
-        end
-        function self:getName()
-            return m_name
-        end
-        function self:getState()
-            return m_state
-        end
-        return FuncNew( Observer2 ):new()
-    end
-    
-    ------------------------------------------------------
-    
-    local product = Subject1:create()
-    local shop1 = Observer1:create( "shop1--" )
-    local shop2 = Observer2:create( "shop2--" )
-    product:attach( shop1 )
-    product:attach( shop2 )
-    product:setState( 12 )
-    --print( shop1.m_state )
-    print( shop1:getName() .. tostring( shop1:getState() ) )
-    print( shop2:getName() .. tostring( shop2:getState() ) )
-    print( "" )
-    product:detach( shop2 )
-    product:setState( 11 )
-    print( shop1:getName() .. tostring( shop1:getState() ) )
-    print( shop2:getName() .. tostring( shop2:getState() ) )
-    
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;set&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
-Output:
+<span class="k">class</span> <span class="nc">Observer</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
 
-    
-    
-    shop1--12
-    shop2--12
-    
-    shop1--11
-    shop2--12
-    [Finished in 0.0s]
-    
+<span class="k">class</span> <span class="nc">Subject</span><span class="p">{</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">set</span><span class="o">&lt;</span> <span class="n">Observer</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_observerList</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">attach</span><span class="p">(</span> <span class="n">Observer</span> <span class="o">*</span><span class="n">o</span> <span class="p">){</span> <span class="n">m_observerList</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">o</span> <span class="p">);</span> <span class="p">};</span>
+    <span class="kt">void</span> <span class="n">detach</span><span class="p">(</span> <span class="n">Observer</span> <span class="o">*</span><span class="n">o</span> <span class="p">){</span> <span class="n">m_observerList</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">o</span> <span class="p">);</span> <span class="p">};</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">notify</span> <span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
 
-[Download - Source
-Code](https://github.com/hungchicheng/DesignPattern/blob/master/Lua/Observer.lua)
+<span class="k">class</span>  <span class="nc">Subject1</span><span class="o">:</span><span class="k">public</span> <span class="n">Subject</span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">m_state</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">notify</span> <span class="p">(){</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="n">o</span> <span class="o">:</span> <span class="n">m_observerList</span> <span class="p">){</span>
+            <span class="n">o</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">(</span><span class="n">m_state</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="kt">void</span> <span class="n">setState</span><span class="p">(</span> <span class="kt">int</span> <span class="n">s</span> <span class="p">){</span>
+        <span class="n">m_state</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+        <span class="n">notify</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">getState</span><span class="p">(){</span> <span class="k">return</span> <span class="n">m_state</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Observer1</span><span class="o">:</span><span class="k">public</span> <span class="n">Observer</span><span class="p">{</span>
+    <span class="n">string</span> <span class="n">m_name</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_state</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Observer1</span><span class="p">(</span> <span class="n">string</span> <span class="n">name</span> <span class="p">)</span><span class="o">:</span><span class="n">m_name</span><span class="p">(</span> <span class="n">name</span> <span class="p">){}</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span> <span class="kt">int</span> <span class="n">p</span> <span class="p">){</span> <span class="n">m_state</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// override
+</span>    <span class="n">string</span> <span class="n">getName</span><span class="p">(){</span> <span class="k">return</span> <span class="n">m_name</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">getState</span><span class="p">(){</span> <span class="k">return</span> <span class="n">m_state</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Observer2</span><span class="o">:</span><span class="k">public</span> <span class="n">Observer</span><span class="p">{</span>
+    <span class="n">string</span> <span class="n">m_name</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_state</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Observer2</span><span class="p">(</span> <span class="n">string</span> <span class="n">name</span> <span class="p">)</span><span class="o">:</span><span class="n">m_name</span><span class="p">(</span> <span class="n">name</span> <span class="p">){}</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">(</span> <span class="kt">int</span> <span class="n">p</span> <span class="p">){</span> <span class="n">m_state</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// override
+</span>    <span class="n">string</span> <span class="n">getName</span><span class="p">(){</span> <span class="k">return</span> <span class="n">m_name</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">getState</span><span class="p">(){</span> <span class="k">return</span> <span class="n">m_state</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">Subject1</span> <span class="n">product</span><span class="p">;</span>
+    <span class="n">Observer1</span> <span class="n">shop1</span><span class="p">(</span> <span class="s">&#34;shop1--&#34;</span> <span class="p">);</span>
+    <span class="n">Observer2</span> <span class="n">shop2</span><span class="p">(</span> <span class="s">&#34;shop2--&#34;</span> <span class="p">);</span>
+    
+    <span class="n">product</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">shop1</span> <span class="p">);</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">shop2</span> <span class="p">);</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">setState</span><span class="p">(</span> <span class="mi">12</span> <span class="p">);</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">shop1</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">shop1</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">shop2</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">shop2</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    
+    <span class="n">product</span><span class="p">.</span><span class="n">detach</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">shop2</span> <span class="p">);</span>
+    <span class="n">product</span><span class="p">.</span><span class="n">setState</span><span class="p">(</span> <span class="mi">11</span> <span class="p">);</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">shop1</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">shop1</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">shop2</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">shop2</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Output:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">shop1--12
+shop2--12
+shop1--11
+shop2--12
+</span></code></pre></div></div>
+<p><a href="https://github.com/hungchicheng/DesignPattern/blob/master/C%2B%2B/Observer.cpp">Download - Source Code</a><br/>
+
+<br/></p>
+<center>
+
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+
+
+<h2 id="example-in-lua">Example in Lua</h2>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="nf">FuncNew</span><span class="p">(</span> <span class="n">obj</span> <span class="p">)</span> <span class="c1">-- for Inheritance </span>
+    <span class="k">function</span> <span class="nf">obj</span><span class="p">:</span><span class="n">new</span><span class="p">(</span> <span class="n">o</span> <span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">o</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="nb">setmetatable</span><span class="p">(</span> <span class="n">o</span><span class="p">,</span> <span class="n">self</span> <span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="n">self</span>
+        <span class="k">return</span> <span class="n">o</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">obj</span>
+<span class="k">end</span>
+
+<span class="n">Observer</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nf">Observer</span><span class="p">:</span><span class="n">create</span><span class="p">()</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">update</span><span class="p">(</span> <span class="n">p</span> <span class="p">)</span> <span class="c1">-- virtual update</span>
+        <span class="c1">-- do nothing</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">FuncNew</span><span class="p">(</span> <span class="n">Observer</span> <span class="p">):</span><span class="n">new</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="n">Subject</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nf">Subject</span><span class="p">:</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">m_observerList</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">attach</span><span class="p">(</span> <span class="n">observer</span> <span class="p">)</span>
+        <span class="nb">table.insert</span><span class="p">(</span> <span class="n">self</span><span class="p">.</span><span class="n">m_observerList</span><span class="p">,</span> <span class="n">observer</span> <span class="p">)</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">detach</span><span class="p">(</span> <span class="n">observer</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span> <span class="n">self</span><span class="p">.</span><span class="n">m_observerList</span> <span class="p">)</span> <span class="k">do</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">observer</span> <span class="k">then</span>
+                <span class="nb">table.remove</span><span class="p">(</span> <span class="n">self</span><span class="p">.</span><span class="n">m_observerList</span><span class="p">,</span> <span class="n">k</span> <span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">notify</span><span class="p">()</span> <span class="c1">-- virtual notify</span>
+        <span class="c1">-- do nothing</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">FuncNew</span><span class="p">(</span> <span class="n">Subject</span> <span class="p">):</span><span class="n">new</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="n">Subject1</span> <span class="o">=</span> <span class="n">Subject</span><span class="p">:</span><span class="n">create</span><span class="p">()</span> <span class="c1">-- inheritance Subject</span>
+<span class="k">function</span> <span class="nf">Subject1</span><span class="p">:</span><span class="n">create</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">m_state</span> <span class="o">=</span> <span class="kc">nil</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">notify</span><span class="p">()</span> <span class="c1">-- override notify</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span> <span class="n">self</span><span class="p">.</span><span class="n">m_observerList</span> <span class="p">)</span> <span class="k">do</span>
+            <span class="n">v</span><span class="p">:</span><span class="n">update</span><span class="p">(</span> <span class="n">m_state</span> <span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">setState</span><span class="p">(</span> <span class="n">s</span> <span class="p">)</span> 
+        <span class="n">m_state</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="n">self</span><span class="p">:</span><span class="n">notify</span><span class="p">()</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">getState</span><span class="p">(</span> <span class="n">s</span> <span class="p">)</span> 
+        <span class="k">return</span> <span class="n">m_state</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">FuncNew</span><span class="p">(</span> <span class="n">Subject1</span> <span class="p">):</span><span class="n">new</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="n">Observer1</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">:</span><span class="n">create</span><span class="p">()</span> <span class="c1">-- inheritance Subject</span>
+<span class="k">function</span> <span class="nf">Observer1</span><span class="p">:</span><span class="n">create</span><span class="p">(</span> <span class="n">n</span> <span class="p">)</span>
+    <span class="kd">local</span> <span class="n">m_name</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="kd">local</span> <span class="n">m_state</span> <span class="o">=</span> <span class="kc">nil</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">update</span><span class="p">(</span> <span class="n">p</span> <span class="p">)</span> <span class="c1">-- override update</span>
+        <span class="n">m_state</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">m_name</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">m_state</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">FuncNew</span><span class="p">(</span> <span class="n">Observer1</span> <span class="p">):</span><span class="n">new</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="n">Observer2</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">:</span><span class="n">create</span><span class="p">()</span> <span class="c1">-- inheritance Subject</span>
+<span class="k">function</span> <span class="nf">Observer2</span><span class="p">:</span><span class="n">create</span><span class="p">(</span> <span class="n">n</span> <span class="p">)</span>
+    <span class="kd">local</span> <span class="n">m_name</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="kd">local</span> <span class="n">m_state</span> <span class="o">=</span> <span class="kc">nil</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">update</span><span class="p">(</span> <span class="n">p</span> <span class="p">)</span> <span class="c1">-- override update</span>
+        <span class="n">m_state</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">m_name</span>
+    <span class="k">end</span>
+    <span class="k">function</span> <span class="nf">self</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">m_state</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">FuncNew</span><span class="p">(</span> <span class="n">Observer2</span> <span class="p">):</span><span class="n">new</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="c1">------------------------------------------------------</span>
+
+<span class="kd">local</span> <span class="n">product</span> <span class="o">=</span> <span class="n">Subject1</span><span class="p">:</span><span class="n">create</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">shop1</span> <span class="o">=</span> <span class="n">Observer1</span><span class="p">:</span><span class="n">create</span><span class="p">(</span> <span class="s2">&#34;shop1--&#34;</span> <span class="p">)</span>
+<span class="kd">local</span> <span class="n">shop2</span> <span class="o">=</span> <span class="n">Observer2</span><span class="p">:</span><span class="n">create</span><span class="p">(</span> <span class="s2">&#34;shop2--&#34;</span> <span class="p">)</span>
+<span class="n">product</span><span class="p">:</span><span class="n">attach</span><span class="p">(</span> <span class="n">shop1</span> <span class="p">)</span>
+<span class="n">product</span><span class="p">:</span><span class="n">attach</span><span class="p">(</span> <span class="n">shop2</span> <span class="p">)</span>
+<span class="n">product</span><span class="p">:</span><span class="n">setState</span><span class="p">(</span> <span class="mi">12</span> <span class="p">)</span>
+<span class="c1">--print( shop1.m_state )</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">shop1</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span> <span class="n">shop1</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">shop2</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span> <span class="n">shop2</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&#34;&#34;</span> <span class="p">)</span>
+<span class="n">product</span><span class="p">:</span><span class="n">detach</span><span class="p">(</span> <span class="n">shop2</span> <span class="p">)</span>
+<span class="n">product</span><span class="p">:</span><span class="n">setState</span><span class="p">(</span> <span class="mi">11</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">shop1</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span> <span class="n">shop1</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">shop2</span><span class="p">:</span><span class="n">getName</span><span class="p">()</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span> <span class="n">shop2</span><span class="p">:</span><span class="n">getState</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+</code></pre></div></div>
+<p>Output:</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">shop1--12
+shop2--12
+
+shop1--11
+shop2--12
+[Finished in 0.0s]
+</span></code></pre></div></div>
+<p><a href="https://github.com/hungchicheng/DesignPattern/blob/master/Lua/Observer.lua">Download - Source Code</a><br/></p>

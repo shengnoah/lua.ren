@@ -4,155 +4,144 @@ title: [Lua] MetaTable and MetaMethod
 tags: [lua文章]
 categories: [topic]
 ---
-比如，我们有两个分数：
+<p>比如，我们有两个分数：</p>
 
-    
-    
-    fraction_a = {numerator=2, denominator=3}
-    fraction_b = {numerator=4, denominator=7}
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fraction_a</span> <span class="o">=</span> <span class="p">{</span><span class="n">numerator</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">denominator</span><span class="o">=</span><span class="mi">3</span><span class="p">}</span>
+<span class="n">fraction_b</span> <span class="o">=</span> <span class="p">{</span><span class="n">numerator</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">denominator</span><span class="o">=</span><span class="mi">7</span><span class="p">}</span>
+</code></pre></div></div>
 
-我们想实现分数间的相加：2/3 + 4/7，我们如果要执行： fraction_a + fraction_b，会报错的。
+<p>我们想实现分数间的相加：2/3 + 4/7，我们如果要执行： fraction_a + fraction_b，会报错的。</p>
 
-所以，我们可以动用MetaTable，如下所示：
+<p>所以，我们可以动用MetaTable，如下所示：</p>
 
-    
-    
-    fraction_op={}
-    function fraction_op.__add(f1, f2)
-        ret = {}
-        ret.numerator = f1.numerator * f2.denominator + f2.numerator * f1.denominator
-        ret.denominator = f1.denominator * f2.denominator
-        return ret
-    end
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fraction_op</span><span class="o">=</span><span class="p">{}</span>
+<span class="k">function</span> <span class="nc">fraction_op</span><span class="p">.</span><span class="nf">__add</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">numerator</span> <span class="o">=</span> <span class="n">f1</span><span class="p">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">f2</span><span class="p">.</span><span class="n">denominator</span> <span class="o">+</span> <span class="n">f2</span><span class="p">.</span><span class="n">numerator</span> <span class="o">*</span> <span class="n">f1</span><span class="p">.</span><span class="n">denominator</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">denominator</span> <span class="o">=</span> <span class="n">f1</span><span class="p">.</span><span class="n">denominator</span> <span class="o">*</span> <span class="n">f2</span><span class="p">.</span><span class="n">denominator</span>
+    <span class="k">return</span> <span class="n">ret</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
-为之前定义的两个table设置MetaTable：（其中的setmetatble是库函数）
+<p>为之前定义的两个table设置MetaTable：（其中的setmetatble是库函数）</p>
 
-    
-    
-    setmetatable(fraction_a, fraction_op)
-    setmetatable(fraction_b, fraction_op)
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">setmetatable</span><span class="p">(</span><span class="n">fraction_a</span><span class="p">,</span> <span class="n">fraction_op</span><span class="p">)</span>
+<span class="nb">setmetatable</span><span class="p">(</span><span class="n">fraction_b</span><span class="p">,</span> <span class="n">fraction_op</span><span class="p">)</span>
+</code></pre></div></div>
 
-于是你就可以这样干了：（调用的是fraction_op.__add()函数）
+<p>于是你就可以这样干了：（调用的是fraction_op.__add()函数）</p>
 
-    
-    
-    fraction_s = fraction_a + fraction_b
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fraction_s</span> <span class="o">=</span> <span class="n">fraction_a</span> <span class="o">+</span> <span class="n">fraction_b</span>
+</code></pre></div></div>
 
-至于__add这是MetaMethod，这是Lua内建约定的，其它的还有如下的MetaMethod：
+<p>至于__add这是MetaMethod，这是Lua内建约定的，其它的还有如下的MetaMethod：</p>
 
-    
-    
-    __add(a, b)                     对应表达式 a + b
-    __sub(a, b)                     对应表达式 a - b
-    __mul(a, b)                     对应表达式 a * b
-    __div(a, b)                     对应表达式 a / b
-    __mod(a, b)                     对应表达式 a % b
-    __pow(a, b)                     对应表达式 a ^ b
-    __unm(a)                        对应表达式 -a
-    __concat(a, b)                  对应表达式 a .. b
-    __len(a)                        对应表达式 #a
-    __eq(a, b)                      对应表达式 a == b
-    __lt(a, b)                      对应表达式 a < b
-    __le(a, b)                      对应表达式 a <= b
-    __index(a, b)                   对应表达式 a.b
-    __newindex(a, b, c)             对应表达式 a.b = c
-    __call(a, ...)                  对应表达式 a(...)
-    
-    
-    
-    Set = {}
-    Set.mt = {} -- metatable for sets
-    
-    function Set.new(t)
-        t = t or {}
-        local set = {}
-        setmetatable(set, Set.mt)
-        for _, l in ipairs(t) do
-            set[l] = true
-        end
-        return set
-    end
-    
-    function Set.union(a, b)
-    
-        if getmetatable(a) ~= Set.mt or
-            getmetatable(b) ~= Set.mt then
-            error("Attempt to 'add' a set with a not-set value", 2)
-        end
-    
-        local res = Set.new()
-        for k in pairs(a) do
-            res[k] = true
-        end
-        for k in pairs(b) do
-            res[k] = true
-        end
-        return res
-    end
-    
-    function Set.intersection(a, b)
-        local res = Set.new()
-        for k in pairs(a) do
-            res[k] = b[k]
-        end
-        return res
-    end
-    
-    function Set.tostring(set)
-        set = set or {}
-        local s = "{"
-        local sep = ""
-        for e in pairs(set) do
-            s = s .. sep .. e
-            sep = ", "
-        end
-        return s .. "}"
-    end
-    
-    function Set.print(s)
-        print(Set.tostring(s))
-    end
-    
-    -- 相加
-    Set.mt.__add = Set.union
-    
-    -- 相乘，交集
-    Set.mt.__mul = Set.intersection
-    
-    
-    s1 = Set.new({10, 20, 30, 50})
-    s2 = Set.new({30, 1})
-    print(getmetatable(s1))
-    print(getmetatable(s2))
-    
-    Set.print(s1)
-    Set.print(s2)
-    
-    s3 = s1 + s2
-    Set.print(s3)
-    
-    s = Set.new({1, 2, 3})
-    -- s = s + 8    -- table加上一个数字
-    
-    Set.print(s1 * s2)
-    
-    print("--------------")
-    
-    print(s1)
-    print(s2)
-    -- print会自动调用__tostring，我们在这里修改了__tostring
-    Set.mt.__tostring = Set.tostring
-    print(s1)
-    print(s2)
-    
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">__sub</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+<span class="n">__mul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">__div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+<span class="n">__mod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
+<span class="n">__pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                     <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span>
+<span class="n">__unm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                        <span class="err">对应表达式</span> <span class="o">-</span><span class="n">a</span>
+<span class="n">__concat</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                  <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">..</span> <span class="n">b</span>
+<span class="n">__len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>                        <span class="err">对应表达式</span> <span class="o">#</span><span class="n">a</span>
+<span class="n">__eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                      <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+<span class="n">__lt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                      <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span>
+<span class="n">__le</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                      <span class="err">对应表达式</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span>
+<span class="n">__index</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>                   <span class="err">对应表达式</span> <span class="n">a</span><span class="p">.</span><span class="n">b</span>
+<span class="n">__newindex</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>             <span class="err">对应表达式</span> <span class="n">a</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">c</span>
+<span class="n">__call</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>                  <span class="err">对应表达式</span> <span class="n">a</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div></div>
 
-参考链接：
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Set</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">mt</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">-- metatable for sets</span>
 
-<http://coolshell.cn/articles/10739.html>
+<span class="k">function</span> <span class="nc">Set</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="kd">local</span> <span class="n">set</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nb">setmetatable</span><span class="p">(</span><span class="n">set</span><span class="p">,</span> <span class="n">Set</span><span class="p">.</span><span class="n">mt</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">l</span> <span class="k">in</span> <span class="nb">ipairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">set</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">set</span>
+<span class="k">end</span>
 
-<http://book.luaer.cn/>
+<span class="k">function</span> <span class="nc">Set</span><span class="p">.</span><span class="nf">union</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">getmetatable</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">~=</span> <span class="n">Set</span><span class="p">.</span><span class="n">mt</span> <span class="ow">or</span>
+        <span class="nb">getmetatable</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">~=</span> <span class="n">Set</span><span class="p">.</span><span class="n">mt</span> <span class="k">then</span>
+        <span class="nb">error</span><span class="p">(</span><span class="s2">&#34;Attempt to &#39;add&#39; a set with a not-set value&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="kd">local</span> <span class="n">res</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="k">end</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">res</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">Set</span><span class="p">.</span><span class="nf">intersection</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">res</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">res</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">Set</span><span class="p">.</span><span class="nf">tostring</span><span class="p">(</span><span class="n">set</span><span class="p">)</span>
+    <span class="n">set</span> <span class="o">=</span> <span class="n">set</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&#34;{&#34;</span>
+    <span class="kd">local</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">set</span><span class="p">)</span> <span class="k">do</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">..</span> <span class="n">sep</span> <span class="o">..</span> <span class="n">e</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="s2">&#34;, &#34;</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">..</span> <span class="s2">&#34;}&#34;</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">Set</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Set</span><span class="p">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="c1">-- 相加</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">mt</span><span class="p">.</span><span class="n">__add</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">union</span>
+
+<span class="c1">-- 相乘，交集</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">mt</span><span class="p">.</span><span class="n">__mul</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">intersection</span>
+
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">new</span><span class="p">({</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">})</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">new</span><span class="p">({</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">getmetatable</span><span class="p">(</span><span class="n">s1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">getmetatable</span><span class="p">(</span><span class="n">s2</span><span class="p">))</span>
+
+<span class="n">Set</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+
+<span class="n">s3</span> <span class="o">=</span> <span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">s3</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">new</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
+<span class="c1">-- s = s + 8    -- table加上一个数字</span>
+
+<span class="n">Set</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">s1</span> <span class="o">*</span> <span class="n">s2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--------------&#34;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+<span class="c1">-- print会自动调用__tostring，我们在这里修改了__tostring</span>
+<span class="n">Set</span><span class="p">.</span><span class="n">mt</span><span class="p">.</span><span class="n">__tostring</span> <span class="o">=</span> <span class="n">Set</span><span class="p">.</span><span class="n">tostring</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>参考链接：</p>
+
+<p><a href="http://coolshell.cn/articles/10739.html" target="_blank" rel="noopener noreferrer">http://coolshell.cn/articles/10739.html</a></p>
+
+<p><a href="http://book.luaer.cn/" target="_blank" rel="noopener noreferrer">http://book.luaer.cn/</a></p>

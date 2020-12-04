@@ -4,201 +4,25 @@ title: 在Swift中构建assert(), 第一部分: Lazy Evaluation
 tags: [lua文章]
 categories: [topic]
 ---
-**文章目录**
-
-本文翻译自[Building assert() in Swift, Part 1: Lazy
-Evaluation](https://developer.apple.com/swift/blog/?id=4)  
-  
-我们在设计Swift的时候觉得废除C预处理，排除bug并让我们的代码更加通俗易懂。这是开发者的大捷，也意味着Swift需要用新的方式实现旧的特性。大多数的特性（模块引入，条件编译）都了无新意，但或许最有趣的就是如何让Swift支持像`assert()`这样的宏。
-
-当构建C语言的release版本时，`assert()`宏指令并没有运行时特性，因为它不对任何参数做计算。C语言中最流行的实现方法如下：
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    
-
-|
-
-    
-    
-      
-    #define assert(e)  ((void)0)  
-    #else  
-    #define assert(e)    
-    	((void) ((e) ? ((void)0) : __assert (#e, __FILE__, __LINE__)))  
-    #define __assert(e, file, line)   
-    	((void)printf ("%s:%u: failed assertion `%s'n", file, line, e), abort())  
-    #endif  
-      
-  
----|---  
-  
-Swift模拟的断言(assert)提供C语言中断言几乎所有功能，不使用预处理，以更干净的方式实现。让我们深入学习Swift一些有趣的特性吧。
-
-## 参数的惰性计算（Lazy Evaluation）
-
-当实现Swift的`assert()`时，我们遇到的第一个挑战是没有明确的方式让一个函数接收一个表达式而不评判它。比如，我们想使用：
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    
-
-|
-
-    
-    
-    func assert(x : Bool) {  
-    	#if !NDEBUG  
-      
-    		  
-    	#endif  
-    }  
-      
-  
----|---  
-  
-甚至当断言失效，应用程序将会在计算表达式时损失性能：  
-
-    
-    
-    1  
-    
-
-|
-
-    
-    
-    assert(someExpensiveComputation() != 42)  
-      
-  
----|---  
-  
-修复这种情况的一种方法是在定义断言的时候让它接收一个闭包(closure)：  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    
-
-|
-
-    
-    
-    func assert(predicate : () -> Bool) {  
-    	# !NDEBUG  
-    		 !predicate() {  
-    			abort()  
-    		}  
-    	#endif  
-    }  
-      
-  
----|---  
-  
-正如我们想要的，只有在断言有效时才计算表达式，但它也给我们留下了一个不幸的调用语法：  
-
-    
-    
-    1  
-    
-
-|
-
-    
-    
-    assert({ someExpensiveComputation() != 42 })  
-      
-  
----|---  
-  
-我们可以用Swift的`@autoclosure`属性来修复它。这个自动闭包属性可以用在函数的参数上来表明一个未经花括号修饰的表达式可以被隐式的打包成闭包并作为参数传递给函数。比如：  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    
-
-|
-
-    
-    
-    func assert(predicate : @autoclosure () -> Bool) {  
-    	# !NDEBUG  
-    		 !predicate() {  
-    			abort()  
-    		}  
-    	#endif  
-    }  
-      
-  
----|---  
-  
-这让你更自然的调用断言：  
-
-    
-    
-    1  
-    
-
-|
-
-    
-    
-    assert(someExpensiveComputation() != 42)  
-      
-  
----|---  
-  
-自动闭包是一个强大的特性，因为你可以有条件地计算表达式，多次计算并像使用闭包那样来使用打包的表达式。自动闭包也可以在Swift的其他地方使用。比如，实现简化逻辑运算符：  
-
-    
-    
-    1  
-    2  
-    3  
-    
-
-|
-
-    
-    
-    func &&(lhs: BooleanType, rhs: @autoclosure () -> BooleanType) -> Bool {  
-    	return lhs.boolValue ? rhs().boolValue : false  
-    }  
-      
-  
----|---  
-  
-通过将右边表达式以闭包形式接收，Swift提供合适的子表达式的惰性计算。
-
-## 自动闭包
-
-作为C语言的宏，自动闭包要谨慎使用。因为从调用函数的一方看不出来参数的计算受到了影响。自动闭包有意地限制我们不传递参数，所以你不能在类似条件控制流的情形中使用它。在符合人们期望的实用语义情况（可能是“features”API）下使用它，而不是单单为了省略闭包的花括号。
-
-本文涵盖了实现Swift断言的一个特别的部分，但接下来还会有更多带给大家。
+<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>本文翻译自<a href="https://developer.apple.com/swift/blog/?id=4" target="_blank" rel="external noopener noreferrer">Building assert() in Swift, Part 1: Lazy Evaluation</a><br/><br/>我们在设计Swift的时候觉得废除C预处理，排除bug并让我们的代码更加通俗易懂。这是开发者的大捷，也意味着Swift需要用新的方式实现旧的特性。大多数的特性（模块引入，条件编译）都了无新意，但或许最有趣的就是如何让Swift支持像<code>assert()</code>这样的宏。  </p>
+<p>当构建C语言的release版本时，<code>assert()</code>宏指令并没有运行时特性，因为它不对任何参数做计算。C语言中最流行的实现方法如下：  </p>
+<figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/></pre></td><td class="code"><pre><span class="line"></span><br/><span class="line"><span class="meta">#define assert(e)  ((void)0)</span></span><br/><span class="line"><span class="meta">#else</span></span><br/><span class="line"><span class="meta">#define assert(e)  </span></span><br/><span class="line">	((<span class="keyword">void</span>) ((e) ? ((<span class="keyword">void</span>)<span class="number">0</span>) : __assert (<span class="meta">#e, __FILE__, __LINE__)))</span></span><br/><span class="line"><span class="meta">#define __assert(e, file, line) </span></span><br/><span class="line">	((<span class="keyword">void</span>)printf (<span class="string">&#34;%s:%u: failed assertion `%s&#39;n&#34;</span>, file, line, e), abort())</span><br/><span class="line"><span class="meta">#endif</span></span><br/></pre></td></tr></tbody></table></figure>
+<p>Swift模拟的断言(assert)提供C语言中断言几乎所有功能，不使用预处理，以更干净的方式实现。让我们深入学习Swift一些有趣的特性吧。  </p>
+<h2 id="参数的惰性计算（Lazy-Evaluation）"><a href="#参数的惰性计算（Lazy-Evaluation）" class="headerlink" title="参数的惰性计算（Lazy Evaluation）"></a>参数的惰性计算（Lazy Evaluation）</h2><p>当实现Swift的<code>assert()</code>时，我们遇到的第一个挑战是没有明确的方式让一个函数接收一个表达式而不评判它。比如，我们想使用：  </p>
+<figure class="highlight less"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">func</span> <span class="selector-tag">assert</span>(<span class="attribute">x </span>: Bool) {</span><br/><span class="line">	<span class="selector-id">#if</span> !<span class="selector-tag">NDEBUG</span></span><br/><span class="line"></span><br/><span class="line">		</span><br/><span class="line">	<span class="selector-id">#endif</span></span><br/><span class="line">}</span><br/></pre></td></tr></tbody></table></figure>
+<p>甚至当断言失效，应用程序将会在计算表达式时损失性能：<br/></p><figure class="highlight lisp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line">assert(<span class="name">someExpensiveComputation</span>() != <span class="number">42</span>)</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>修复这种情况的一种方法是在定义断言的时候让它接收一个闭包(closure)：<br/></p><figure class="highlight livescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/></pre></td><td class="code"><pre><span class="line">func assert<span class="function"><span class="params">(predicate : () -&gt; Bool)</span> {</span><br/><span class="line">	# !<span class="title">NDEBUG</span></span><br/><span class="line">		 !<span class="title">predicate</span><span class="params">()</span> {</span><br/><span class="line">			<span class="title">abort</span><span class="params">()</span></span><br/><span class="line">		}</span><br/><span class="line">	#<span class="title">endif</span></span><br/><span class="line">}</span></span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>正如我们想要的，只有在断言有效时才计算表达式，但它也给我们留下了一个不幸的调用语法：<br/></p><figure class="highlight stylus"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">assert</span><span class="params">({ someExpensiveComputation()</span></span> != <span class="number">42</span> })</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>我们可以用Swift的<code>@autoclosure</code>属性来修复它。这个自动闭包属性可以用在函数的参数上来表明一个未经花括号修饰的表达式可以被隐式的打包成闭包并作为参数传递给函数。比如：<br/></p><figure class="highlight livescript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/></pre></td><td class="code"><pre><span class="line">func assert<span class="function"><span class="params">(predicate : @autoclosure () -&gt; Bool)</span> {</span><br/><span class="line">	# !<span class="title">NDEBUG</span></span><br/><span class="line">		 !<span class="title">predicate</span><span class="params">()</span> {</span><br/><span class="line">			<span class="title">abort</span><span class="params">()</span></span><br/><span class="line">		}</span><br/><span class="line">	#<span class="title">endif</span></span><br/><span class="line">}</span></span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>这让你更自然的调用断言：<br/></p><figure class="highlight lisp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/></pre></td><td class="code"><pre><span class="line">assert(<span class="name">someExpensiveComputation</span>() != <span class="number">42</span>)</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>自动闭包是一个强大的特性，因为你可以有条件地计算表达式，多次计算并像使用闭包那样来使用打包的表达式。自动闭包也可以在Swift的其他地方使用。比如，实现简化逻辑运算符：<br/></p><figure class="highlight less"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">func</span> <span class="selector-tag">&amp;</span><span class="selector-tag">&amp;</span>(<span class="attribute">lhs</span>: BooleanType, <span class="attribute">rhs</span>: <span class="variable">@autoclosure</span> () -&gt; BooleanType) <span class="selector-tag">-</span>&gt; <span class="selector-tag">Bool</span> {</span><br/><span class="line">	return lhs<span class="selector-class">.boolValue</span> ? <span class="selector-tag">rhs</span>()<span class="selector-class">.boolValue</span> : <span class="selector-tag">false</span></span><br/><span class="line">}</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<p>通过将右边表达式以闭包形式接收，Swift提供合适的子表达式的惰性计算。  </p>
+<h2 id="自动闭包"><a href="#自动闭包" class="headerlink" title="自动闭包"></a>自动闭包</h2><p>作为C语言的宏，自动闭包要谨慎使用。因为从调用函数的一方看不出来参数的计算受到了影响。自动闭包有意地限制我们不传递参数，所以你不能在类似条件控制流的情形中使用它。在符合人们期望的实用语义情况（可能是“features”API）下使用它，而不是单单为了省略闭包的花括号。  </p>
+<p>本文涵盖了实现Swift断言的一个特别的部分，但接下来还会有更多带给大家。</p>

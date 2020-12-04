@@ -6,302 +6,249 @@ title: [BigData-Spark]Classification using Spark.
 tags: [lua文章]
 categories: [topic]
 ---
-Learning note for [Machine learning with spark](http://www.amazon.com/Machine-
-Learning-Spark-Nick-Pentreath/dp/1783288515).
+<p>Learning note for <a href="http://www.amazon.com/Machine-Learning-Spark-Nick-Pentreath/dp/1783288515">Machine learning with spark</a>.</p>
 
-Besides, thanks to [Zeppelin](https://github.com/apache/incubator-zeppelin).
-Although it is not so user-friendly like RStudio or Jupyter, it **really**
-makes the learning of Spark much easier.
+<p>Besides, thanks to <a href="https://github.com/apache/incubator-zeppelin">Zeppelin</a>. Although it is not so user-friendly like RStudio or Jupyter, it <strong>really</strong> makes the learning of Spark much easier.</p>
 
-# 1\. Data Loading from HDFS
+<h1 id="1-data-loading-from-hdfs">1. Data Loading from HDFS</h1>
 
-First, download the data from <https://www.kaggle.com/c/stumbleupon>.
+<p>First, download the data from <a href="https://www.kaggle.com/c/stumbleupon">https://www.kaggle.com/c/stumbleupon</a>.</p>
 
-Then upload data to HDFS:
+<p>Then upload data to HDFS:</p>
 
-    
-    
-    tail -n +2 train.tsv >train_noheader.tsv
-    hdfs dfs -mkdir hdfs://tanglab1:9000/user/hadoop/stumbleupon
-    hdfs dfs -put train_noheader.tsv hdfs://tanglab1:9000/user/hadoop/stumbleupon
-    
-    
-    
-    val rawData = sc.textFile("/user/hadoop/stumbleupon/train_noheader.tsv")
-    val records = rawData.map(line => line.split("t"))
-    records.first()
-    
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -n +2 train.tsv &gt;train_noheader.tsv
+hdfs dfs -mkdir hdfs://tanglab1:9000/user/hadoop/stumbleupon
+hdfs dfs -put train_noheader.tsv hdfs://tanglab1:9000/user/hadoop/stumbleupon
+</code></pre></div></div>
 
-# 2\. Data Process
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rawData</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="s">&#34;/user/hadoop/stumbleupon/train_noheader.tsv&#34;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">records</span> <span class="k">=</span> <span class="n">rawData</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">line</span> <span class="k">=&gt;</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&#34;t&#34;</span><span class="o">))</span>
+<span class="n">records</span><span class="o">.</span><span class="n">first</span><span class="o">()</span>
+</code></pre></div></div>
 
-Select the column for label(last column) and Feature(5 ~ last but one column)
-Data cleanning and convert NA to 0.0 Save the label and feature in vector into
-MLlib.
+<h1 id="2-data-process">2. Data Process</h1>
+<p>Select the column for label(last column) and Feature(5 ~ last but one column)
+Data cleanning and convert NA to 0.0
+Save the label and feature in vector into MLlib.</p>
 
-**As naive bayesian model do not accept negative input value, convert negtive
-input into 0**
+<p><strong>As naive bayesian model do not accept negative input value, convert negtive input into 0</strong></p>
 
-    
-    
-    import org.apache.spark.mllib.regression.LabeledPoint
-    import org.apache.spark.mllib.linalg.Vectors
-    
-    val data = records.map{ r => 
-        val trimmed = r.map(_.replaceAll(""", ""))
-        val label = trimmed(r.size - 1).toInt
-        val features = trimmed.slice(4, r.size - 1).map(d => 
-        	if (d=="?") 0.0 else d.toDouble)
-        LabeledPoint(label, Vectors.dense(features))
-    }
-    
-    val nbData = records.map{ r => 
-        val trimmed = r.map(_.replaceAll(""", ""))
-        val label = trimmed(r.size - 1).toInt
-        val features = trimmed.slice(4, r.size - 1).map(d => 
-    	    if(d=="?") 0.0 else d.toDouble).map( d=> if(d<0.0) 0.0 else d)
-        LabeledPoint(label, Vectors.dense(features))
-    }
-    
-    data.cache
-    data.count
-    
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark.mllib.regression.LabeledPoint</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.linalg.Vectors</span>
 
-# 3\. Model training
+<span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="n">records</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">r</span> <span class="k">=&gt;</span> 
+    <span class="k">val</span> <span class="n">trimmed</span> <span class="k">=</span> <span class="n">r</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&#34;&#34;&#34;</span><span class="o">,</span> <span class="s">&#34;&#34;</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">label</span> <span class="k">=</span> <span class="n">trimmed</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">).</span><span class="n">toInt</span>
+    <span class="k">val</span> <span class="n">features</span> <span class="k">=</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">slice</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">d</span> <span class="k">=&gt;</span> 
+    	<span class="k">if</span> <span class="o">(</span><span class="n">d</span><span class="o">==</span><span class="s">&#34;?&#34;</span><span class="o">)</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">toDouble</span><span class="o">)</span>
+    <span class="nc">LabeledPoint</span><span class="o">(</span><span class="n">label</span><span class="o">,</span> <span class="nc">Vectors</span><span class="o">.</span><span class="n">dense</span><span class="o">(</span><span class="n">features</span><span class="o">))</span>
+<span class="o">}</span>
 
-Import modules required. Then define the parameters required by the models.
+<span class="k">val</span> <span class="n">nbData</span> <span class="k">=</span> <span class="n">records</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">r</span> <span class="k">=&gt;</span> 
+    <span class="k">val</span> <span class="n">trimmed</span> <span class="k">=</span> <span class="n">r</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">replaceAll</span><span class="o">(</span><span class="s">&#34;&#34;&#34;</span><span class="o">,</span> <span class="s">&#34;&#34;</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">label</span> <span class="k">=</span> <span class="n">trimmed</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">).</span><span class="n">toInt</span>
+    <span class="k">val</span> <span class="n">features</span> <span class="k">=</span> <span class="n">trimmed</span><span class="o">.</span><span class="n">slice</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">d</span> <span class="k">=&gt;</span> 
+	    <span class="k">if</span><span class="o">(</span><span class="n">d</span><span class="o">==</span><span class="s">&#34;?&#34;</span><span class="o">)</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">toDouble</span><span class="o">).</span><span class="n">map</span><span class="o">(</span> <span class="n">d</span><span class="k">=&gt;</span> <span class="k">if</span><span class="o">(</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">0.0</span><span class="o">)</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">d</span><span class="o">)</span>
+    <span class="nc">LabeledPoint</span><span class="o">(</span><span class="n">label</span><span class="o">,</span> <span class="nc">Vectors</span><span class="o">.</span><span class="n">dense</span><span class="o">(</span><span class="n">features</span><span class="o">))</span>
+<span class="o">}</span>
 
-    
-    
-    import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
-    import org.apache.spark.mllib.classification.SVMWithSGD
-    import org.apache.spark.mllib.classification.NaiveBayes
-    import org.apache.spark.mllib.tree.DecisionTree
-    import org.apache.spark.mllib.tree.configuration.Algo
-    import org.apache.spark.mllib.tree.impurity.Entropy
-    
-    val numIterations = 10
-    val maxTreeDepth = 5
-    
+<span class="n">data</span><span class="o">.</span><span class="n">cache</span>
+<span class="n">data</span><span class="o">.</span><span class="n">count</span>
+</code></pre></div></div>
 
-## 3.1 Training logistic regression
+<h1 id="3-model-training">3. Model training</h1>
+<p>Import modules required. 
+Then define the parameters required by the models.</p>
 
-    
-    
-    val lrModel = LogisticRegressionWithSGD.train(data, numIterations)
-    
-    val dataPoint = data.first
-    val prediction = lrModel.predict(dataPoint.features)
-    val trueLabel = dataPoint.label
-    
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark.mllib.classification.LogisticRegressionWithSGD</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.classification.SVMWithSGD</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.classification.NaiveBayes</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.tree.DecisionTree</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.tree.configuration.Algo</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.mllib.tree.impurity.Entropy</span>
 
-## 3.2 Training SVM
+<span class="k">val</span> <span class="n">numIterations</span> <span class="k">=</span> <span class="mi">10</span>
+<span class="k">val</span> <span class="n">maxTreeDepth</span> <span class="k">=</span> <span class="mi">5</span>
+</code></pre></div></div>
 
-    
-    
-    val svmModel = SVMWithSGD.train(data, numIterations)
-    
+<h2 id="31-training-logistic-regression">3.1 Training logistic regression</h2>
 
-## 3.3 Training the naive bayesian model
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">lrModel</span> <span class="k">=</span> <span class="nc">LogisticRegressionWithSGD</span><span class="o">.</span><span class="n">train</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="n">numIterations</span><span class="o">)</span>
 
-    
-    
-    val nbModel = NaiveBayes.train(nbData)
-    
+<span class="k">val</span> <span class="n">dataPoint</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">first</span>
+<span class="k">val</span> <span class="n">prediction</span> <span class="k">=</span> <span class="n">lrModel</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">dataPoint</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">trueLabel</span> <span class="k">=</span> <span class="n">dataPoint</span><span class="o">.</span><span class="n">label</span>
+</code></pre></div></div>
 
-## 3.4 Training the decision model
+<h2 id="32-training-svm">3.2 Training SVM</h2>
 
-    
-    
-    val dtModel = DecisionTree.train(data, Algo.Classification, Entropy, maxTreeDepth)
-    
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">svmModel</span> <span class="k">=</span> <span class="nc">SVMWithSGD</span><span class="o">.</span><span class="n">train</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="n">numIterations</span><span class="o">)</span>
+</code></pre></div></div>
 
-# 4\. Evaluating the preformance of the classification models
+<h2 id="33-training-the-naive-bayesian-model">3.3 Training the naive bayesian model</h2>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">nbModel</span> <span class="k">=</span> <span class="nc">NaiveBayes</span><span class="o">.</span><span class="n">train</span><span class="o">(</span><span class="n">nbData</span><span class="o">)</span>
+</code></pre></div></div>
 
-## 4.1 Accuracy
+<h2 id="34-training-the-decision-model">3.4 Training the decision model</h2>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">dtModel</span> <span class="k">=</span> <span class="nc">DecisionTree</span><span class="o">.</span><span class="n">train</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="nc">Algo</span><span class="o">.</span><span class="nc">Classification</span><span class="o">,</span> <span class="nc">Entropy</span><span class="o">,</span> <span class="n">maxTreeDepth</span><span class="o">)</span>
+</code></pre></div></div>
 
-    
-    
-    val lrTotalCorrect = data.map{ point =>
-        if( lrModel.predict(point.features) == point.label) 1 else 0
-    }.sum
-    
-    val svmTotalCorrect = data.map{ point =>
-        if( svmModel.predict(point.features) == point.label ) 1 else 0
-    }.sum
-    
-    val nbTotalCorrect = nbData.map{ point =>
-        if( nbModel.predict(point.features)  == point.label ) 1 else 0
-    }.sum
-    
-    val dtTotalCorrect = data.map{ point =>
-        val score = dtModel.predict(point.features)
-        val predicted = if(score > 0.5) 1 else  0
-        if (predicted == point.label) 1 else 0
-    }.sum
-    
-    val lrAccuracy = lrTotalCorrect / data.count
-    val svmAccuracy    = svmTotalCorrect / data.count
-    val nbTotalAccuracy= nbTotalCorrect  / data.count
-    val dtTotalAccuracy= dtTotalCorrect  / data.count
-    
-    
-    
-    lrAccuracy: Double = 0.5146720757268425
-    svmAccuracy: Double = 0.5146720757268425
-    nbTotalAccuracy: Double = 0.5803921568627451
-    dtTotalAccuracy: Double = 0.6482758620689655
-    
+<h1 id="4-evaluating-the-preformance-of-the-classification-models">4. Evaluating the preformance of the classification models</h1>
 
-## 4.2 Calculating the region under the Precision and recall(PR) and FP-
-TP(ROC) curve
+<h2 id="41-accuracy">4.1 Accuracy</h2>
 
-    
-    
-    import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics
-    
-    val metrics = Seq(lrModel, svmModel).map{ model =>
-        val scoreAndLabels = data.map{ point =>
-            (model.predict(point.features), point.label)
-        }
-        val metrics = new BinaryClassificationMetrics(scoreAndLabels)
-        (model.getClass.getSimpleName, metrics.areaUnderPR, metrics.areaUnderROC)
-    }
-    
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">lrTotalCorrect</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+    <span class="k">if</span><span class="o">(</span> <span class="n">lrModel</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}.</span><span class="n">sum</span>
 
-Naive bayesian need another dataset which have no negative feature. And the
-prediction of naive bayesian is a ratio range from 0 to 1, which needs to be
-cut to 0 or 1.
+<span class="k">val</span> <span class="n">svmTotalCorrect</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+    <span class="k">if</span><span class="o">(</span> <span class="n">svmModel</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span> <span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}.</span><span class="n">sum</span>
 
-    
-    
-    val nbmetrics = Seq(nbModel).map{ model =>
-        val scoreAndLabels = nbData.map{ point =>
-            val score = model.predict(point.features)
-            (if(score > 0.5) 1.0 else 0.0, point.label)
-        }
-        val metrics = new BinaryClassificationMetrics(scoreAndLabels)
-        (model.getClass.getSimpleName, metrics.areaUnderPR, metrics.areaUnderROC)
-    }
-    
+<span class="k">val</span> <span class="n">nbTotalCorrect</span> <span class="k">=</span> <span class="n">nbData</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+    <span class="k">if</span><span class="o">(</span> <span class="n">nbModel</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>  <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span> <span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}.</span><span class="n">sum</span>
 
-The prediction of decision tree also have a cutoff.
+<span class="k">val</span> <span class="n">dtTotalCorrect</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="n">score</span> <span class="k">=</span> <span class="n">dtModel</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">predicted</span> <span class="k">=</span> <span class="k">if</span><span class="o">(</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span>  <span class="mi">0</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}.</span><span class="n">sum</span>
 
-    
-    
-    val dtmetrics = Seq(dtModel).map{ model =>
-        val scoreAndLabels = data.map{ point =>
-            val score = model.predict(point.features)
-            (if(score > 0.5) 1.0 else 0.0, point.label)
-        }
-        val metrics = new BinaryClassificationMetrics(scoreAndLabels)
-        (model.getClass.getSimpleName, metrics.areaUnderPR, metrics.areaUnderROC)
-    }
-    
+<span class="k">val</span> <span class="n">lrAccuracy</span> <span class="k">=</span> <span class="n">lrTotalCorrect</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span>
+<span class="k">val</span> <span class="n">svmAccuracy</span>    <span class="k">=</span> <span class="n">svmTotalCorrect</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span>
+<span class="k">val</span> <span class="n">nbTotalAccuracy</span><span class="k">=</span> <span class="n">nbTotalCorrect</span>  <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span>
+<span class="k">val</span> <span class="n">dtTotalAccuracy</span><span class="k">=</span> <span class="n">dtTotalCorrect</span>  <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span>
+</code></pre></div></div>
 
-For all model, the Precision/Recall and FP-TP ROC were summarized as below:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lrAccuracy: Double = 0.5146720757268425
+svmAccuracy: Double = 0.5146720757268425
+nbTotalAccuracy: Double = 0.5803921568627451
+dtTotalAccuracy: Double = 0.6482758620689655
+</code></pre></div></div>
 
-    
-    
-    val allMetrics = metrics ++ nbmetrics ++ dtmetrics
-    allMetrics.foreach{ case (m, pr, roc) =>
-        println(f"$m, Area under PR: $pr, Area under ROC: $roc")
-    }
-    
+<h2 id="42-calculating-the-region-under-the-precision-and-recallpr-and-fp-tproc-curve">4.2 Calculating the region under the Precision and recall(PR) and FP-TP(ROC) curve</h2>
 
-which gived:
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark.mllib.evaluation.BinaryClassificationMetrics</span>
 
-    
-    
-    LogisticRegressionModel, Area under PR: 0.7567586293858841, Area under ROC: 0.5014181143280931
-    SVMModel, Area under PR: 0.7567586293858841, Area under ROC: 0.5014181143280931
-    NaiveBayesModel, Area under PR: 0.6808510815151734, Area under ROC: 0.5835585110136261
-    DecisionTreeModel, Area under PR: 0.7430805993331199, Area under ROC: 0.6488371887050935
-    
+<span class="k">val</span> <span class="n">metrics</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">lrModel</span><span class="o">,</span> <span class="n">svmModel</span><span class="o">).</span><span class="n">map</span><span class="o">{</span> <span class="n">model</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="n">scoreAndLabels</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+        <span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">),</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">metrics</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BinaryClassificationMetrics</span><span class="o">(</span><span class="n">scoreAndLabels</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="n">getClass</span><span class="o">.</span><span class="n">getSimpleName</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderPR</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderROC</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-**As the preformance is not well enough, some adjustment were required to
-promote the performance.**
+<p>Naive bayesian need another dataset which have no negative feature. 
+And the prediction of naive bayesian is a ratio range from 0 to 1, which needs to be cut to 0 or 1.</p>
 
-# 5\. The improvement the performance of model and the optimization of the
-parameters.
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">nbmetrics</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">nbModel</span><span class="o">).</span><span class="n">map</span><span class="o">{</span> <span class="n">model</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="n">scoreAndLabels</span> <span class="k">=</span> <span class="n">nbData</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">score</span> <span class="k">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>
+        <span class="o">(</span><span class="k">if</span><span class="o">(</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="o">)</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="mf">0.0</span><span class="o">,</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">metrics</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BinaryClassificationMetrics</span><span class="o">(</span><span class="n">scoreAndLabels</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="n">getClass</span><span class="o">.</span><span class="n">getSimpleName</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderPR</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderROC</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-Drawbacks for current model:
+<p>The prediction of decision tree also have a cutoff.</p>
 
-  * Only the values were included, not all features.
-  * No analysis for the features of the data.
-  * Non-optimized parameter.
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">dtmetrics</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">dtModel</span><span class="o">).</span><span class="n">map</span><span class="o">{</span> <span class="n">model</span> <span class="k">=&gt;</span>
+    <span class="k">val</span> <span class="n">scoreAndLabels</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span>
+        <span class="k">val</span> <span class="n">score</span> <span class="k">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>
+        <span class="o">(</span><span class="k">if</span><span class="o">(</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="o">)</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="mf">0.0</span><span class="o">,</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">metrics</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BinaryClassificationMetrics</span><span class="o">(</span><span class="n">scoreAndLabels</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="n">getClass</span><span class="o">.</span><span class="n">getSimpleName</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderPR</span><span class="o">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">areaUnderROC</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-## 5.1 The standardization for features
+<p>For all model, the Precision/Recall and FP-TP ROC were summarized as below:</p>
 
-Try to calculate the mean value and variation for each column of the data
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">allMetrics</span> <span class="k">=</span> <span class="n">metrics</span> <span class="o">++</span> <span class="n">nbmetrics</span> <span class="o">++</span> <span class="n">dtmetrics</span>
+<span class="n">allMetrics</span><span class="o">.</span><span class="n">foreach</span><span class="o">{</span> <span class="k">case</span> <span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">pr</span><span class="o">,</span> <span class="n">roc</span><span class="o">)</span> <span class="k">=&gt;</span>
+    <span class="n">println</span><span class="o">(</span><span class="n">f</span><span class="s">&#34;$m, Area under PR: $pr, Area under ROC: $roc&#34;</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-    
-    
-    import org.apache.spark.mllib.linalg.distributed.RowMatrix
-    
-    val vectors = data.map(lp => lp.features)
-    val matrix = new RowMatrix(vectors)
-    val matrixSummary = matrix.computeColumnSummaryStatistics()
-    
-    case class MatrixInfo(index:Int, mean: Double, variation: Double)
-    val value_RowMean = matrixSummary.mean.toArray
-    val value_RowVar  = matrixSummary.variance.toArray
-    
-    val Info = (0 to value_RowMean.length-1 toList).map{i =>
-        MatrixInfo(i, value_RowMean(i), value_RowVar(i))
-    }.toDF()
-    
-    Info.registerTempTable("Info")
-    
+<p>which gived:</p>
 
-These results can be shown directly with Zeppelin:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LogisticRegressionModel, Area under PR: 0.7567586293858841, Area under ROC: 0.5014181143280931
+SVMModel, Area under PR: 0.7567586293858841, Area under ROC: 0.5014181143280931
+NaiveBayesModel, Area under PR: 0.6808510815151734, Area under ROC: 0.5835585110136261
+DecisionTreeModel, Area under PR: 0.7430805993331199, Area under ROC: 0.6488371887050935
+</code></pre></div></div>
 
-    
-    
-    SELECT index, mean FROM Info
-    ORDER BY index
-    
+<p><strong>As the preformance is not well enough, some adjustment were required to promote the performance.</strong></p>
 
-![png](http://huboqiang.cn/http://huboqiang.cn//images/2016-03-03-SparkMLlibClassification/FigVar.png)
+<h1 id="5-the-improvement-the-performance-of-model-and-the-optimization-of-the-parameters">5. The improvement the performance of model and the optimization of the parameters.</h1>
 
-    
-    
-    SELECT index, variation FROM Info 
-    ORDER BY index
-    
+<p>Drawbacks for current model:</p>
 
-![png](/images/2016-03-03-SparkMLlibClassification/FigVar.png)
+<ul>
+  <li>Only the values were included, not all features.</li>
+  <li>No analysis for the features of the data.</li>
+  <li>Non-optimized parameter.</li>
+</ul>
 
-Let’s see the mean and variation. In the raw format, the distribution of data
-did not follow the Gaussian distribution. So let’s make a z-score
-normalization:
+<h2 id="51-the-standardization-for-features">5.1 The standardization for features</h2>
 
-    
-    
-    import org.apache.spark.mllib.feature.StandardScaler
-    
-    val scaler = new StandardScaler(
-    	withMean = true, 
-    	withStd = true
-    ).fit(vectors)
-    
-    val scaledData = data.map(lp => 
-    	LabeledPoint(lp.label, scaler.transform(lp.features))
-    )
-    
-    
+<p>Try to calculate the mean value and variation for each column of the data</p>
 
-As only logistic regression would be influenced by normalization, here
-logistic regression will be re-preformed to see the influence of normalization
-to the result:
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark.mllib.linalg.distributed.RowMatrix</span>
 
-    
-    
-    val lrModelScaled = LogisticRegressionWithSGD.train(scaledData, numIterations)
-    val lrTotalCorrectScaled = scaledData.map{ point => 
-        if(lrModelScaled.predict(point.features) == point.label) 1 else 0
-    }.sum
-    val lrAccuracyScaled = lrTotalCorrectScaled / data.count
-    val lrPredictionsVsTrue = scaledData.map{ point => 
-        (lrModelScaled.predict(point.features), point.label)
-    }
-    val
+<span class="k">val</span> <span class="n">vectors</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">lp</span> <span class="k">=&gt;</span> <span class="n">lp</span><span class="o">.</span><span class="n">features</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">matrix</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">RowMatrix</span><span class="o">(</span><span class="n">vectors</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">matrixSummary</span> <span class="k">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">computeColumnSummaryStatistics</span><span class="o">()</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">MatrixInfo</span><span class="o">(</span><span class="n">index</span><span class="k">:</span><span class="kt">Int</span><span class="o">,</span> <span class="n">mean</span><span class="k">:</span> <span class="kt">Double</span><span class="o">,</span> <span class="n">variation</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">value_RowMean</span> <span class="k">=</span> <span class="n">matrixSummary</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">toArray</span>
+<span class="k">val</span> <span class="n">value_RowVar</span>  <span class="k">=</span> <span class="n">matrixSummary</span><span class="o">.</span><span class="n">variance</span><span class="o">.</span><span class="n">toArray</span>
+
+<span class="k">val</span> <span class="nc">Info</span> <span class="k">=</span> <span class="o">(</span><span class="mi">0</span> <span class="n">to</span> <span class="n">value_RowMean</span><span class="o">.</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span> <span class="n">toList</span><span class="o">).</span><span class="n">map</span><span class="o">{</span><span class="n">i</span> <span class="k">=&gt;</span>
+    <span class="nc">MatrixInfo</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">value_RowMean</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">value_RowVar</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="o">}.</span><span class="n">toDF</span><span class="o">()</span>
+
+<span class="nc">Info</span><span class="o">.</span><span class="n">registerTempTable</span><span class="o">(</span><span class="s">&#34;Info&#34;</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>These results can be shown directly with Zeppelin:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">index</span><span class="p">,</span> <span class="n">mean</span> <span class="k">FROM</span> <span class="n">Info</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="k">index</span>
+</code></pre></div></div>
+<p><img src="http://huboqiang.cn/http://huboqiang.cn//images/2016-03-03-SparkMLlibClassification/FigVar.png" alt="png"/></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">index</span><span class="p">,</span> <span class="n">variation</span> <span class="k">FROM</span> <span class="n">Info</span> 
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="k">index</span>
+</code></pre></div></div>
+<p><img src="/images/2016-03-03-SparkMLlibClassification/FigVar.png" alt="png"/></p>
+
+<p>Let’s see the mean and variation. In the raw format, the distribution of data did not follow the Gaussian distribution. So let’s make a z-score normalization:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark.mllib.feature.StandardScaler</span>
+
+<span class="k">val</span> <span class="n">scaler</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StandardScaler</span><span class="o">(</span>
+	<span class="n">withMean</span> <span class="k">=</span> <span class="kc">true</span><span class="o">,</span> 
+	<span class="n">withStd</span> <span class="k">=</span> <span class="kc">true</span>
+<span class="o">).</span><span class="n">fit</span><span class="o">(</span><span class="n">vectors</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">scaledData</span> <span class="k">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">lp</span> <span class="k">=&gt;</span> 
+	<span class="nc">LabeledPoint</span><span class="o">(</span><span class="n">lp</span><span class="o">.</span><span class="n">label</span><span class="o">,</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="o">(</span><span class="n">lp</span><span class="o">.</span><span class="n">features</span><span class="o">))</span>
+<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>As only logistic regression would be influenced by normalization, here logistic regression will be re-preformed to see the influence of normalization to the result:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">lrModelScaled</span> <span class="k">=</span> <span class="nc">LogisticRegressionWithSGD</span><span class="o">.</span><span class="n">train</span><span class="o">(</span><span class="n">scaledData</span><span class="o">,</span> <span class="n">numIterations</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">lrTotalCorrectScaled</span> <span class="k">=</span> <span class="n">scaledData</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span> 
+    <span class="k">if</span><span class="o">(</span><span class="n">lrModelScaled</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">)</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}.</span><span class="n">sum</span>
+<span class="k">val</span> <span class="n">lrAccuracyScaled</span> <span class="k">=</span> <span class="n">lrTotalCorrectScaled</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span>
+<span class="k">val</span> <span class="n">lrPredictionsVsTrue</span> <span class="k">=</span> <span class="n">scaledData</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">point</span> <span class="k">=&gt;</span> 
+    <span class="o">(</span><span class="n">lrModelScaled</span><span class="o">.</span><span class="n">predict</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="n">features</span><span class="o">),</span> <span class="n">point</span><span class="o">.</span><span class="n">label</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="k">val</span> <span class="n">

@@ -4,241 +4,212 @@ title: [Lua] Coroutine协程
 tags: [lua文章]
 categories: [topic]
 ---
-## Coroutine Manipulation
+<h2 id="coroutine-manipulation">Coroutine Manipulation</h2>
 
-### coroutine.create (f)
+<h3 id="coroutinecreate-f">coroutine.create (f)</h3>
 
-Creates a new coroutine, with body f. f must be a function. Returns this new
-coroutine, an object with type “thread”.
+<p>Creates a new coroutine, with body f. f must be a function. Returns this new coroutine, an object with type “thread”.</p>
 
-创建一个新的协程。f必须是一个函数。返回值是这个新的协程，返回值的类型是thread。
+<p>创建一个新的协程。f必须是一个函数。返回值是这个新的协程，返回值的类型是thread。</p>
 
-### coroutine.isyieldable ()
+<h3 id="coroutineisyieldable-">coroutine.isyieldable ()</h3>
 
-Returns true when the running coroutine can yield.
+<p>Returns true when the running coroutine can yield.</p>
 
-A running coroutine is yieldable if it is not the main thread and it is not
-inside a non-yieldable C function.
+<p>A running coroutine is yieldable if it is not the main thread and it is not inside a non-yieldable C function.</p>
 
-返回true当正在运行的协程可以被yield。
+<p>返回true当正在运行的协程可以被yield。</p>
 
-### coroutine.resume (co [, val1, ···])
+<h3 id="coroutineresume-co--val1-">coroutine.resume (co [, val1, ···])</h3>
 
-Starts or continues the execution of coroutine co. The first time you resume a
-coroutine, it starts running its body. The values val1, … are passed as the
-arguments to the body function. If the coroutine has yielded, resume restarts
-it; the values val1, … are passed as the results from the yield.
+<p>Starts or continues the execution of coroutine co. The first time you resume a coroutine, it starts running its body. The values val1, … are passed as the arguments to the body function. If the coroutine has yielded, resume restarts it; the values val1, … are passed as the results from the yield.</p>
 
-If the coroutine runs without any errors, resume returns true plus any values
-passed to yield (when the coroutine yields) or any values returned by the body
-function (when the coroutine terminates). If there is any error, resume
-returns false plus the error message.
+<p>If the coroutine runs without any errors, resume returns true plus any values passed to yield (when the coroutine yields) or any values returned by the body function (when the coroutine terminates). If there is any error, resume returns false plus the error message.</p>
 
-### coroutine.running ()
+<h3 id="coroutinerunning-">coroutine.running ()</h3>
 
-Returns the running coroutine plus a boolean, true when the running coroutine
-is the main one.
+<p>Returns the running coroutine plus a boolean, true when the running coroutine is the main one.</p>
 
-返回一个正在运行的协程和一个boolean值，这个协程是主线程的话boolean值为true。
+<p>返回一个正在运行的协程和一个boolean值，这个协程是主线程的话boolean值为true。</p>
 
-### coroutine.status (co)
+<h3 id="coroutinestatus-co">coroutine.status (co)</h3>
 
-Returns the status of coroutine co, as a string: “running”, if the coroutine
-is running (that is, it called status); “suspended”, if the coroutine is
-suspended in a call to yield, or if it has not started running yet; “normal”
-if the coroutine is active but not running (that is, it has resumed another
-coroutine); and “dead” if the coroutine has finished its body function, or if
-it has stopped with an error.
+<p>Returns the status of coroutine co, as a string: “running”, if the coroutine is running (that is, it called status); “suspended”, if the coroutine is suspended in a call to yield, or if it has not started running yet; “normal” if the coroutine is active but not running (that is, it has resumed another coroutine); and “dead” if the coroutine has finished its body function, or if it has stopped with an error.</p>
 
-### coroutine.wrap (f)
+<h3 id="coroutinewrap-f">coroutine.wrap (f)</h3>
 
-Creates a new coroutine, with body f. f must be a function. Returns a function
-that resumes the coroutine each time it is called. Any arguments passed to the
-function behave as the extra arguments to resume. Returns the same values
-returned by resume, except the first boolean. In case of error, propagates the
-error.
+<p>Creates a new coroutine, with body f. f must be a function. Returns a function that resumes the coroutine each time it is called. Any arguments passed to the function behave as the extra arguments to resume. Returns the same values returned by resume, except the first boolean. In case of error, propagates the error.</p>
 
-### coroutine.yield (···)
+<h3 id="coroutineyield-">coroutine.yield (···)</h3>
 
-Suspends the execution of the calling coroutine. Any arguments to yield are
-passed as extra results to resume.
+<p>Suspends the execution of the calling coroutine. Any arguments to yield are passed as extra results to resume.</p>
 
-挂起调用这个函数的协程。参数会传递给resume，作为resume的返回值。
+<p>挂起调用这个函数的协程。参数会传递给resume，作为resume的返回值。</p>
 
-## 例子
+<h2 id="例子">例子</h2>
 
-### 例子1
+<h3 id="例子1">例子1</h3>
 
-    
-    
-    co = coroutine.create(
-        function(i)
-            print(i);
-        end
-    )
-    
-    print(coroutine.status( co ))
-    coroutine.resume(co, 1)
-    print(coroutine.status( co ))
-    
-    print("---------------")
-    
-    co = coroutine.wrap(
-        function(i)
-            print(i);
-        end
-    )
-    
-    co(2)
-    
-    print("---------------")
-    
-    co2 = coroutine.create(
-        function()
-            for i = 1, 10 do
-                print(i)
-                if i == 3 then
-                    print(coroutine.status(co2))
-                    print(coroutine.running( ))
-                end
-                coroutine.yield()
-            end
-        end
-    )
-    
-    coroutine.resume(co2)
-    coroutine.resume(co2)
-    coroutine.resume(co2)
-    
-    print(coroutine.status(co2))
-    print(coroutine.running( ))
-    
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">co</span> <span class="o">=</span> <span class="nb">coroutine.create</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="k">end</span>
+<span class="p">)</span>
 
-输出：
+<span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.status</span><span class="p">(</span> <span class="n">co</span> <span class="p">))</span>
+<span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.status</span><span class="p">(</span> <span class="n">co</span> <span class="p">))</span>
 
-    
-    
-    suspended
-    1
-    dead
-    ---------------
-    2
-    ---------------
-    1
-    2
-    3
-    running
-    thread: 0000000000459dd8        false
-    suspended
-    thread: 0000000000456638        true
-    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;---------------&#34;</span><span class="p">)</span>
 
-### 例子2
+<span class="n">co</span> <span class="o">=</span> <span class="nb">coroutine.wrap</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="k">end</span>
+<span class="p">)</span>
 
-    
-    
-    function foo(a)
-        print("foo a = ", a)
-        return coroutine.yield(2 * a)
-    end
-    
-    co = coroutine.create(
-        function(a, b)
-            print("1==== ", a, b)
-            local r = foo( a + 1 )
-    
-            print("2==== ", r)
-            local r, s = coroutine.yield(a + b, a - b)
-    
-            print("3==== ", r, s)
-            return b, "end of coroutine."
-        end
-    )
-    
-    print("main", coroutine.resume(co, 1, 10))
-    print("--------------")
-    
-    print("main", coroutine.resume(co, "abc"))
-    print("--------------")
-    
-    print("main", coroutine.resume(co, "xxx", "yyy"))
-    print("--------------")
-    
-    print("main", coroutine.resume(co, "xxx", "yyy"))
-    print("--------------")
-    
+<span class="n">co</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
-输出：
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;---------------&#34;</span><span class="p">)</span>
 
-    
-    
-    1====   1       10
-    foo a =         2
-    main    true    4
-    --------------
-    2====   abc
-    main    true    11      -9
-    --------------
-    3====   xxx     yyy
-    main    true    10      end of coroutine.
-    --------------
-    main    false   cannot resume dead coroutine
-    --------------
-    
+<span class="n">co2</span> <span class="o">=</span> <span class="nb">coroutine.create</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span> <span class="k">do</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">then</span>
+                <span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.status</span><span class="p">(</span><span class="n">co2</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.running</span><span class="p">(</span> <span class="p">))</span>
+            <span class="k">end</span>
+            <span class="nb">coroutine.yield</span><span class="p">()</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="p">)</span>
 
-### 例子3：生产者，消费者
+<span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+<span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+<span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
 
-    
-    
-    local newProductor
-    
-    function productor()
-        local i = 0
-        while true do
-            i = i + 1
-            if i > 10 then
-                break;
-            end
-            send(i)
-        end
-    end
-    
-    function consumer()
-        while true do
-            local s, i = receive()
-            if s == false then
-                break;
-            end
-            print(i)
-        end
-    end
-    
-    function receive()
-        local status, value = coroutine.resume(newProductor)
-        return status, value
-    end
-    
-    function send(x)
-        coroutine.yield(x)
-    end
-    
-    newProductor = coroutine.create( productor )
-    consumer()
-    
-    
+<span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.status</span><span class="p">(</span><span class="n">co2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">coroutine.running</span><span class="p">(</span> <span class="p">))</span>
+</code></pre></div></div>
 
-输出：
+<p>输出：</p>
 
-    
-    
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-    10
-    nil
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>suspended
+1
+dead
+---------------
+2
+---------------
+1
+2
+3
+running
+thread: 0000000000459dd8        false
+suspended
+thread: 0000000000456638        true
+</code></pre></div></div>
+
+<h3 id="例子2">例子2</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="nf">foo</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;foo a = &#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">coroutine.yield</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">co</span> <span class="o">=</span> <span class="nb">coroutine.create</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;1==== &#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="kd">local</span> <span class="n">r</span> <span class="o">=</span> <span class="n">foo</span><span class="p">(</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;2==== &#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="kd">local</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">coroutine.yield</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;3==== &#34;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&#34;end of coroutine.&#34;</span>
+    <span class="k">end</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;main&#34;</span><span class="p">,</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--------------&#34;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;main&#34;</span><span class="p">,</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="s2">&#34;abc&#34;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--------------&#34;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;main&#34;</span><span class="p">,</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="s2">&#34;xxx&#34;</span><span class="p">,</span> <span class="s2">&#34;yyy&#34;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--------------&#34;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;main&#34;</span><span class="p">,</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="s2">&#34;xxx&#34;</span><span class="p">,</span> <span class="s2">&#34;yyy&#34;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;--------------&#34;</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1====   1       10
+foo a =         2
+main    true    4
+--------------
+2====   abc
+main    true    11      -9
+--------------
+3====   xxx     yyy
+main    true    10      end of coroutine.
+--------------
+main    false   cannot resume dead coroutine
+--------------
+</code></pre></div></div>
+
+<h3 id="例子3生产者消费者">例子3：生产者，消费者</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">local</span> <span class="n">newProductor</span>
+
+<span class="k">function</span> <span class="nf">productor</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">then</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">end</span>
+        <span class="n">send</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">consumer</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">s</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="kc">false</span> <span class="k">then</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">end</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">receive</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">status</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">coroutine.resume</span><span class="p">(</span><span class="n">newProductor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">value</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">send</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">coroutine.yield</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">newProductor</span> <span class="o">=</span> <span class="nb">coroutine.create</span><span class="p">(</span> <span class="n">productor</span> <span class="p">)</span>
+<span class="n">consumer</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>输出：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+nil
+</code></pre></div></div>

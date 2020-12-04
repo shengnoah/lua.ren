@@ -4,268 +4,42 @@ title: Evaluation Indicators
 tags: [lua文章]
 categories: [topic]
 ---
-假设测试集中有类别为A、B、C的三种class。现在要对class A 的recall、precision和AP进行评估。
-
-$quad$ | class A | class not A  
----|---|---  
-Test says “A” | True positive | False Positive |  
-Test says “not A” | False positive | True Positive |  
-  
-公式为：  
-`召回率 Recall = TP / (TP + FN)`  
-`准确率 Precision = TP / (TP + FP)`
-
-**也就是说，recall是一张图片中检测出来的目标占所有目标的比例，即“召回”的比例；precision是每个检测出来的目标的准确率。**
-
-代码如下：  
-
-    
-    
-    1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    27  
-    
-
-|
-
-    
-    
-    import numpy as np  
-      
-      
-    def (preds, labels):  
-        num_cls = preds.shape[1]  
-        batch_size = preds.shape[0]  
-      
-        labels_hot = np.zeros((batch_size, num_cls))  
-        labels_hot[np.arange(batch_size), labels] = 1  
-      
-        max_pred_idx = np.argmax(preds, axis=1)  
-        preds_hot = np.zeros((batch_size, num_cls))  
-        preds_hot[np.arange(batch_size), max_pred_idx] = 1  
-      
-        tp, tn, fp, fn = 0, 0, 0, 0  
-        for i in range(num_cls):  
-            pred = preds_hot[:, i]  
-            label = labels_hot[:, i]  
-            tp += int(np.sum(label[np.where(pred == label)[0]]))  
-            tn += int(np.sum(1 - label[np.where(pred == label)[0]]))  
-            fp += np.sum(label[np.where(pred == 1)] == 0)  
-            fn += np.sum(label[np.where(pred == 0)] == 1)  
-      
-        precision = tp / (tp + fp)  
-        recall = tp / (tp + fn)  
-      
-        return precision, recall  
-      
-  
----|---  
-  
-# 二、AP & mAP
-
-单个类别的平均精度叫AP。先求出原precision-recall曲线的包络曲线，然后将转折点的precision值相加取平均即为该类的AP。  
-而mAP就是将所有类别的AP相加取平均。
-
-# 三、CMC
-
-CMC（cumulated matching characteristic curve），即累计匹配特征曲线。
-
-假如有一个类别为c1的样本，得到的匹配分数为：  
-`c1:0.9 c2:0.8 c3:0.7`  
-那么rank1（第一次即命中）=100%，则后面的rank2、rank3也为100%
-
-如果得到的匹配分数为：  
-`c1:0.8 c2:0.9 c3:0.7`  
-那么rank1=0%，rank2=100%，rank3=100%
-
-多类别的评估求和取平均即可。
-
-**车辆reid的mAP和CMC代码如下：**  
-
-    
-    
-     1  
-    2  
-    3  
-    4  
-    5  
-    6  
-    7  
-    8  
-    9  
-    10  
-    11  
-    12  
-    13  
-    14  
-    15  
-    16  
-    17  
-    18  
-    19  
-    20  
-    21  
-    22  
-    23  
-    24  
-    25  
-    26  
-    27  
-    28  
-    29  
-    30  
-    31  
-    32  
-    33  
-    34  
-    35  
-    36  
-    37  
-    38  
-    39  
-    40  
-    41  
-    42  
-    43  
-    44  
-    45  
-    46  
-    47  
-    48  
-    49  
-    50  
-    51  
-    52  
-    53  
-    54  
-    55  
-    56  
-    57  
-    58  
-    59  
-    60  
-    61  
-    62  
-    63  
-    64  
-    65  
-    66  
-    67  
-    68  
-    69  
-    70  
-    71  
-    72  
-    73  
-    74  
-    75  
-    76  
-    
-
-|
-
-    
-    
-    def eval_market1501(distmat, q_pids, g_pids, q_camids, g_camids, max_rank):  
-        """Evaluation with market1501 metric  
-        Key: for each query identity, its gallery images from the same camera view are discarded.  
-        """  
-        num_q, num_g = distmat.shape  
-        if num_g < max_rank:  
-            max_rank = num_g  
-            print("Note: number of gallery samples is quite small, got {}".format(num_g))  
-        indices = np.argsort(distmat, axis=1)  
-        matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)  
-      
-          
-        all_cmc = []  
-        all_AP = []  
-        num_valid_q = 0. # number of valid query  
-        for q_idx in range(num_q):  
-            # get query pid and camid  
-            q_pid = q_pids[q_idx]  
-            q_camid = q_camids[q_idx]  
-      
-            # remove gallery samples that have the same pid and camid with query  
-            order = indices[q_idx]  
-            remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)  
-            keep = np.invert(remove)  
-      
-            # compute cmc curve  
-            orig_cmc = matches[q_idx][keep] # binary vector, positions with value 1 are correct matches  
-            if not np.any(orig_cmc):  
-                # this condition is true when query identity does not appear in gallery  
-                continue  
-      
-            cmc = orig_cmc.cumsum()  
-            cmc[cmc > 1] = 1  
-      
-            all_cmc.append(cmc[:max_rank])  
-            num_valid_q += 1.  
-      
-            good_idx = []  
-            keep_ap = (g_pids[order] == q_pid) & (g_camids[order] != q_camid)  
-            for i in range(keep_ap.shape[0]):  
-                if keep_ap[i]:  
-                    good_idx.append(order[i])  
-      
-            # compute average precision  
-            ngood = len(good_idx)  
-            intersect_sz = 0  
-            ap = 0  
-            good_now = 0  
-            old_recall = 0  
-            old_precision = 0  
-            counter = 0  
-      
-            for idx in order:  
-                if idx in good_idx:  
-                    intersect_sz += 1  
-                    good_now += 1  
-      
-                recall = intersect_sz / ngood  
-                precision = intersect_sz / (counter + 1)  
-                ap += (recall - old_recall) * ((old_precision + precision) / 2)  
-                old_recall = recall  
-                old_precision = precision  
-                counter += 1  
-      
-                if good_now == ngood:  
-                    break  
-      
-            all_AP.append(ap)  
-      
-        assert num_valid_q > 0, "Error: all query identities do not appear in gallery"  
-      
-        all_cmc = np.asarray(all_cmc).astype(np.float32)  
-        all_cmc = all_cmc.sum(0) / num_valid_q  
-        mAP = np.mean(all_AP)  
-      
-        return all_cmc, mAP  
-      
-  
----|---
+<p>假设测试集中有类别为A、B、C的三种class。现在要对class A 的recall、precision和AP进行评估。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$quad$</th>
+<th style="text-align:center">class A</th>
+<th style="text-align:center">class not A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Test says “A”</td>
+<td style="text-align:center">True positive</td>
+<td style="text-align:center">False Positive</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">Test says “not A”</td>
+<td style="text-align:center">False positive</td>
+<td style="text-align:center">True Positive</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>公式为：<br/><code>召回率 Recall = TP / (TP + FN)</code><br/><code>准确率 Precision = TP / (TP + FP)</code></p>
+<p><strong>也就是说，recall是一张图片中检测出来的目标占所有目标的比例，即“召回”的比例；precision是每个检测出来的目标的准确率。</strong></p>
+<p>代码如下：<br/></p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/><span class="line">27</span><br/></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br/><span class="line"></span><br/><span class="line"></span><br/><span class="line"><span class="function"><span class="keyword">def</span> <span class="params">(preds, labels)</span>:</span></span><br/><span class="line">    num_cls = preds.shape[<span class="number">1</span>]</span><br/><span class="line">    batch_size = preds.shape[<span class="number">0</span>]</span><br/><span class="line"></span><br/><span class="line">    labels_hot = np.zeros((batch_size, num_cls))</span><br/><span class="line">    labels_hot[np.arange(batch_size), labels] = <span class="number">1</span></span><br/><span class="line"></span><br/><span class="line">    max_pred_idx = np.argmax(preds, axis=<span class="number">1</span>)</span><br/><span class="line">    preds_hot = np.zeros((batch_size, num_cls))</span><br/><span class="line">    preds_hot[np.arange(batch_size), max_pred_idx] = <span class="number">1</span></span><br/><span class="line"></span><br/><span class="line">    tp, tn, fp, fn = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br/><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_cls):</span><br/><span class="line">        pred = preds_hot[:, i]</span><br/><span class="line">        label = labels_hot[:, i]</span><br/><span class="line">        tp += int(np.sum(label[np.where(pred == label)[<span class="number">0</span>]]))</span><br/><span class="line">        tn += int(np.sum(<span class="number">1</span> - label[np.where(pred == label)[<span class="number">0</span>]]))</span><br/><span class="line">        fp += np.sum(label[np.where(pred == <span class="number">1</span>)] == <span class="number">0</span>)</span><br/><span class="line">        fn += np.sum(label[np.where(pred == <span class="number">0</span>)] == <span class="number">1</span>)</span><br/><span class="line"></span><br/><span class="line">    precision = tp / (tp + fp)</span><br/><span class="line">    recall = tp / (tp + fn)</span><br/><span class="line"></span><br/><span class="line">    <span class="keyword">return</span> precision, recall</span><br/></pre></td></tr></tbody></table></figure><p></p>
+<h1 id="二、AP-amp-mAP"><a href="#二、AP-amp-mAP" class="headerlink" title="二、AP &amp; mAP"></a>二、AP &amp; mAP</h1><p>单个类别的平均精度叫AP。先求出原precision-recall曲线的包络曲线，然后将转折点的precision值相加取平均即为该类的AP。<br/>而mAP就是将所有类别的AP相加取平均。</p>
+<h1 id="三、CMC"><a href="#三、CMC" class="headerlink" title="三、CMC"></a>三、CMC</h1><p>CMC（cumulated matching characteristic curve），即累计匹配特征曲线。</p>
+<p>假如有一个类别为c1的样本，得到的匹配分数为：<br/><code>c1:0.9
+c2:0.8
+c3:0.7</code><br/>那么rank1（第一次即命中）=100%，则后面的rank2、rank3也为100%</p>
+<p>如果得到的匹配分数为：<br/><code>c1:0.8
+c2:0.9
+c3:0.7</code><br/>那么rank1=0%，rank2=100%，rank3=100%</p>
+<p>多类别的评估求和取平均即可。</p>
+<p><strong>车辆reid的mAP和CMC代码如下：</strong><br/></p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br/><span class="line">2</span><br/><span class="line">3</span><br/><span class="line">4</span><br/><span class="line">5</span><br/><span class="line">6</span><br/><span class="line">7</span><br/><span class="line">8</span><br/><span class="line">9</span><br/><span class="line">10</span><br/><span class="line">11</span><br/><span class="line">12</span><br/><span class="line">13</span><br/><span class="line">14</span><br/><span class="line">15</span><br/><span class="line">16</span><br/><span class="line">17</span><br/><span class="line">18</span><br/><span class="line">19</span><br/><span class="line">20</span><br/><span class="line">21</span><br/><span class="line">22</span><br/><span class="line">23</span><br/><span class="line">24</span><br/><span class="line">25</span><br/><span class="line">26</span><br/><span class="line">27</span><br/><span class="line">28</span><br/><span class="line">29</span><br/><span class="line">30</span><br/><span class="line">31</span><br/><span class="line">32</span><br/><span class="line">33</span><br/><span class="line">34</span><br/><span class="line">35</span><br/><span class="line">36</span><br/><span class="line">37</span><br/><span class="line">38</span><br/><span class="line">39</span><br/><span class="line">40</span><br/><span class="line">41</span><br/><span class="line">42</span><br/><span class="line">43</span><br/><span class="line">44</span><br/><span class="line">45</span><br/><span class="line">46</span><br/><span class="line">47</span><br/><span class="line">48</span><br/><span class="line">49</span><br/><span class="line">50</span><br/><span class="line">51</span><br/><span class="line">52</span><br/><span class="line">53</span><br/><span class="line">54</span><br/><span class="line">55</span><br/><span class="line">56</span><br/><span class="line">57</span><br/><span class="line">58</span><br/><span class="line">59</span><br/><span class="line">60</span><br/><span class="line">61</span><br/><span class="line">62</span><br/><span class="line">63</span><br/><span class="line">64</span><br/><span class="line">65</span><br/><span class="line">66</span><br/><span class="line">67</span><br/><span class="line">68</span><br/><span class="line">69</span><br/><span class="line">70</span><br/><span class="line">71</span><br/><span class="line">72</span><br/><span class="line">73</span><br/><span class="line">74</span><br/><span class="line">75</span><br/><span class="line">76</span><br/></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eval_market1501</span><span class="params">(distmat, q_pids, g_pids, q_camids, g_camids, max_rank)</span>:</span></span><br/><span class="line">    <span class="string">&#34;&#34;&#34;Evaluation with market1501 metric</span></span><br/><span class="line"><span class="string">    Key: for each query identity, its gallery images from the same camera view are discarded.</span></span><br/><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br/><span class="line">    num_q, num_g = distmat.shape</span><br/><span class="line">    <span class="keyword">if</span> num_g &lt; max_rank:</span><br/><span class="line">        max_rank = num_g</span><br/><span class="line">        print(<span class="string">&#34;Note: number of gallery samples is quite small, got {}&#34;</span>.format(num_g))</span><br/><span class="line">    indices = np.argsort(distmat, axis=<span class="number">1</span>)</span><br/><span class="line">    matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)</span><br/><span class="line"></span><br/><span class="line">    </span><br/><span class="line">    all_cmc = []</span><br/><span class="line">    all_AP = []</span><br/><span class="line">    num_valid_q = <span class="number">0.</span> <span class="comment"># number of valid query</span></span><br/><span class="line">    <span class="keyword">for</span> q_idx <span class="keyword">in</span> range(num_q):</span><br/><span class="line">        <span class="comment"># get query pid and camid</span></span><br/><span class="line">        q_pid = q_pids[q_idx]</span><br/><span class="line">        q_camid = q_camids[q_idx]</span><br/><span class="line"></span><br/><span class="line">        <span class="comment"># remove gallery samples that have the same pid and camid with query</span></span><br/><span class="line">        order = indices[q_idx]</span><br/><span class="line">        remove = (g_pids[order] == q_pid) &amp; (g_camids[order] == q_camid)</span><br/><span class="line">        keep = np.invert(remove)</span><br/><span class="line"></span><br/><span class="line">        <span class="comment"># compute cmc curve</span></span><br/><span class="line">        orig_cmc = matches[q_idx][keep] <span class="comment"># binary vector, positions with value 1 are correct matches</span></span><br/><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> np.any(orig_cmc):</span><br/><span class="line">            <span class="comment"># this condition is true when query identity does not appear in gallery</span></span><br/><span class="line">            <span class="keyword">continue</span></span><br/><span class="line"></span><br/><span class="line">        cmc = orig_cmc.cumsum()</span><br/><span class="line">        cmc[cmc &gt; <span class="number">1</span>] = <span class="number">1</span></span><br/><span class="line"></span><br/><span class="line">        all_cmc.append(cmc[:max_rank])</span><br/><span class="line">        num_valid_q += <span class="number">1.</span></span><br/><span class="line"></span><br/><span class="line">        good_idx = []</span><br/><span class="line">        keep_ap = (g_pids[order] == q_pid) &amp; (g_camids[order] != q_camid)</span><br/><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(keep_ap.shape[<span class="number">0</span>]):</span><br/><span class="line">            <span class="keyword">if</span> keep_ap[i]:</span><br/><span class="line">                good_idx.append(order[i])</span><br/><span class="line"></span><br/><span class="line">        <span class="comment"># compute average precision</span></span><br/><span class="line">        ngood = len(good_idx)</span><br/><span class="line">        intersect_sz = <span class="number">0</span></span><br/><span class="line">        ap = <span class="number">0</span></span><br/><span class="line">        good_now = <span class="number">0</span></span><br/><span class="line">        old_recall = <span class="number">0</span></span><br/><span class="line">        old_precision = <span class="number">0</span></span><br/><span class="line">        counter = <span class="number">0</span></span><br/><span class="line"></span><br/><span class="line">        <span class="keyword">for</span> idx <span class="keyword">in</span> order:</span><br/><span class="line">            <span class="keyword">if</span> idx <span class="keyword">in</span> good_idx:</span><br/><span class="line">                intersect_sz += <span class="number">1</span></span><br/><span class="line">                good_now += <span class="number">1</span></span><br/><span class="line"></span><br/><span class="line">            recall = intersect_sz / ngood</span><br/><span class="line">            precision = intersect_sz / (counter + <span class="number">1</span>)</span><br/><span class="line">            ap += (recall - old_recall) * ((old_precision + precision) / <span class="number">2</span>)</span><br/><span class="line">            old_recall = recall</span><br/><span class="line">            old_precision = precision</span><br/><span class="line">            counter += <span class="number">1</span></span><br/><span class="line"></span><br/><span class="line">            <span class="keyword">if</span> good_now == ngood:</span><br/><span class="line">                <span class="keyword">break</span></span><br/><span class="line"></span><br/><span class="line">        all_AP.append(ap)</span><br/><span class="line"></span><br/><span class="line">    <span class="keyword">assert</span> num_valid_q &gt; <span class="number">0</span>, <span class="string">&#34;Error: all query identities do not appear in gallery&#34;</span></span><br/><span class="line"></span><br/><span class="line">    all_cmc = np.asarray(all_cmc).astype(np.float32)</span><br/><span class="line">    all_cmc = all_cmc.sum(<span class="number">0</span>) / num_valid_q</span><br/><span class="line">    mAP = np.mean(all_AP)</span><br/><span class="line"></span><br/><span class="line">    <span class="keyword">return</span> all_cmc, mAP</span><br/></pre></td></tr></tbody></table></figure><p></p>
