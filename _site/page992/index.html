@@ -1,0 +1,1600 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page992/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page992/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/496_An-Empirical-Evaluation-of-Generic-Convolutional-a/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/496_An-Empirical-Evaluation-of-Generic-Convolutional-a/" rel="bookmark" title="An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling" itemprop="url">An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <p>目录：</p>
+<ul id="markdown-toc">
+  <li><a href="#tcn-论文总结" id="markdown-toc-tcn-论文总结">TCN 论文总结</a>    <ul>
+      <li><a href="#基础知识" id="markdown-toc-基础知识">基础知识</a>        <ul>
+          <li><a href="#1-时间序列" id="markdown-toc-1-时间序列">1. 时间序列</a></li>
+          <li><a href="#2-rnn-lstm-gru" id="markdown-toc-2-rnn-lstm-gru">2. RNN, LSTM, GRU</a></li>
+          <li><a href="#3-cnn" id="markdown-toc-3-cnn">3. CNN</a></li>
+        </ul>
+      </li>
+      <li><a href="#tcn" id="markdown-toc-tcn">TCN</a>        <ul>
+          <li><a href="#causal-convolutions" id="markdown-toc-causal-convolutions">Causal Convolutions</a></li>
+          <li><a href="#dilate-convolutions" id="markdown-toc-dilate-convolutions">Dilate Convolutions</a></li>
+          <li><a href="#residual-convolutions" id="markdown-toc-residual-convolutions">Residual Convolutions</a></li>
+          <li><a href="#tcn-的结构" id="markdown-toc-tcn-的结构">TCN 的结构</a></li>
+        </ul>
+      </li>
+      <li><a href="#实验" id="markdown-toc-实验">实验</a></li>
+      <li><a href="#总结" id="markdown-toc-总结">总结</a></li>
+      <li><a href="#参考文献" id="markdown-toc-参考文献">参考文献</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="基础知识">基础知识</h2>
+
+<p>对于大多数深入学习的实践者来说，序列建模是循环网络的同义词。然而，最近的研究结果表明，卷积结构在音频合成和机器翻译等任务上可以优于循环网络。给定一个新的序列建模任务或数据集，应该使用哪个体系结构？作者对用于序列建模的通用卷积和循环体系结构进行了系统评估。实验表明，一个简单的卷积结构在不同的任务和数据集范围内都优于典型的循环网络（如LSTM），同时显示出更长的有效记忆。</p>
+
+<p>TCN的特点：</p>
+<ol>
+  <li>使用了因果卷积，意味着未来到过去没有信息泄露</li>
+  <li>该结构将任意长度的输入序列映射到相同长度的输出序列（和RNN一样）</li>
+  <li>使用残差网络和扩展卷积的组合来增强网络记忆。</li>
+</ol>
+
+<h3 id="1-时间序列">1. 时间序列</h3>
+
+<p><strong>序列模型</strong></p>
+
+<p>假设给定一个序列 ${x_0, x_1, … , x_T}$，我们希望预测每一时刻对应的输出 ${y_0, y_1, …, y_T}$。序列模型网络是任意函数 $f：x^{T+1} -&gt; y^{T+1}$ 产生的映射。$ hat{y_0}, …, hat{y_0} = f(x_0, … , x_T)$ ，其中 $ hat y $ 是真实的对应值。它应该满足因果约束：$y_t$ 仅仅依赖于 ${x_0, x_1, … , x_t}$，而不依赖于 ${x_{t+1},  … , x_T}$。在序列模型中，学习的目标是找到一个网络 f，最小化实际输出和预测之间的损失函数
+[
+	L(y_0, y_1, …, y_T, f(x_0, … , x_T))
+]
+其中序列和输出是根据分布描绘的。</p>
+
+<blockquote>
+  <p>在进行语音识别时，给定了一个输入音频片段  X ，并要求输出对应的文字记录  Y 。这个例子里输入和输出数据都是序列模型，因为   X 是一个按时播放的音频片段，输出 Y 是一系列单词。</p>
+</blockquote>
+
+<blockquote>
+  <p>音乐生成问题是使用序列数据的另一个例子，只有输出数据 Y 是序列，而输入数据可以是空集，也可以是个单一的整数，这个数可能指代你想要生成的音乐风格，也可能是你想要生成的那首曲子的头几个音符。输入的   X 可以是空的，或者就是个数字，然后输出序列 Y 。</p>
+</blockquote>
+
+<blockquote>
+  <p>在处理文本时，输入的文本也是序列。</p>
+</blockquote>
+
+<h3 id="2-rnn-lstm-gru">2. RNN, LSTM, GRU</h3>
+
+<p><strong>RNN</strong></p>
+
+<p>核心是每个输入对应隐层节点，而隐层节点之间形成了线性序列，信息由前向后在隐层之间逐步向后传递。
+<img src="https://provenclei.github.io//assets/tcn/tcn_1.png" alt="1" />
+图显示的是RNN模型全部展开时的情况。“展开”指的是用网络描述出所有序列。
+RNN（循环神经网络）之所以是“循环”，是因为它们对序列的每个元素执行相同的任务，而每次的结果都独立于之前的计算。理论上讲，RNN可以利用任意长度的序列信息，但只可以利用有限的前几步的信息。
+例如，如果序列中的句子有5个单词，那么，横向展开网络后将有五层神经网络，一层对应一个单词。
+下面解释一下其中的计算公式：
+$x_t$ 是在时刻t时的输入。例如，$x_1$ 对应于一个句子的第二个词的实数向量
+$s_t$是在时刻 $t$ 时的隐藏状态，类似于网络的“大脑”，也就是“记忆模块”的值
+$s_t$的运算是基于以前隐藏状态 $s_{t-1}$ 和当前的输入 $x_t$ 决定的，其中激活函数通常是非线性的，例如，<code class="highlighter-rouge">tanh</code> or <code class="highlighter-rouge">ReLU</code> 函数。
+$o_t$是时刻 $t$ 时的输出结果。如，预推测句子中的下一个词，那么在这里的输出就可以表示为一个词典序列，值为每一个词的概率。
+<img src="https://provenclei.github.io//assets/tcn/tcn_2.png" alt="1" /></p>
+
+<p><strong>LSTM</strong></p>
+
+<p>原始的RNN也存在问题，它采取线性序列结构不断从前往后收集输入信息，但这种线性序列结构在反向传播的时候存在优化困难问题，因为反向传播路径太长，容易导致严重的梯度消失或梯度爆炸问题。为了解决这个问题，后来引入了LSTM和GRU模型，通过增加中间状态信息直接向后传播，以此缓解梯度消失问题，获得了很好的效果，于是很快LSTM和GRU成为RNN的标准模型。
+<img src="https://provenclei.github.io//assets/tcn/tcn_3.png" alt="1" />
+LSTM 里面最重要的概念是“门结构（gate）”，分为遗忘门，输入门和输出门。</p>
+
+<p><strong>GRU</strong>
+<img src="https://provenclei.github.io//assets/tcn/tcn_4.png" alt="1" />
+将遗忘门和输入门合成了一个单一的重置门（reset gate），也就是说多大程度上擦除以前的状态state，另外细胞更新操作变为更新门（update gete），它的作用是多大程度上要用candidate 来更新当前的hidden layer。</p>
+
+<p><strong>LSTM和GRU对比</strong></p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_5.png" alt="1" /></p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_6.png" alt="1" /></p>
+
+<p>标准LSTM和GRU的差别并不大，但是都比tanh要明显好很多，所以在选择标准LSTM或者GRU的时候还要看具体的任务是什么。 
+使用LSTM的原因之一是解决RNN Deep Network的Gradient错误累积太多，以至于Gradient归零或者成为无穷大，所以无法继续进行优化的问题。GRU的构造更简单：比LSTM少一个gate，这样就少几个矩阵乘法。在训练数据很大的情况下GRU能节省很多时间。因为gru参数更少，所以gru训练起来比lstm更简单。</p>
+
+<p>缺点：</p>
+
+<p>经过特殊改造的CNN模型，以及最近特别流行的Transformer，这些后起之秀尤其是Transformer的应用效果相比RNN来说，目前看具有明显的优势。</p>
+
+<p>RNN本身的序列依赖结构对于大规模并行计算来说是个问题，这个问题严重阻碍了RNN的发展。原因：因为T时刻的计算依赖T-1时刻的隐层计算结果，而T-1时刻的计算依赖T-2时刻的隐层计算结果……..这样就形成了所谓的序列依赖关系。就是说只能先把第1时间步的算完，才能算第2时间步的结果，这就造成了RNN在这个角度上是无法并行计算的，只能老老实实地按着时间步一个单词一个单词往后走。</p>
+
+<h3 id="3-cnn">3. CNN</h3>
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_7.png" style="zoom:60%" /></p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_8.png" style="zoom:60%" /></p>
+
+<p>一般而言，输入的字或者词用 <code class="highlighter-rouge">Word Embedding</code> 的方式表达，这样本来一维的文本信息输入就转换成了二维的输入结构，假设输入X包含n个字符，而每个字符的 <code class="highlighter-rouge">Word Embedding</code> 的长度为d，那么输入就是 <code class="highlighter-rouge">d*n</code> 的二维向量。</p>
+
+<p>卷积层本质上是个特征抽取层，可以设定超参数F来指定卷积层包含多少个卷积核（Filter）。对于某个Filter来说，可以想象有一个<code class="highlighter-rouge">d*k</code>大小的移动窗口从输入矩阵的第一个字开始不断往后移动，其中k是 Filter 指定的窗口大小，<code class="highlighter-rouge">d</code> 是 <code class="highlighter-rouge">Word Embedding</code> 长度。对于某个时刻的窗口，通过神经网络的非线性变换，将这个窗口内的输入值转换为某个特征值，随着窗口不断往后移动，这个Filter对应的特征值不断产生，形成这个Filter的特征向量。这就是卷积核抽取特征的过程。卷积层内每个Filter都如此操作，就形成了不同的特征序列。Pooling 层则对Filter的特征进行降维操作，形成最终的特征。一般在 Pooling 层之后连接全联接层神经网络，形成最后的分类过程。</p>
+
+<p>这就是最早应用在 NLP 领域 CNN 模型的工作机制，用来解决 NLP 中的句子分类任务，看起来还是很简洁的，之后陆续出现了在此基础上的改进模型。这些怀旧版 CNN 模型在一些任务上也能和当时怀旧版本的RNN模型效果相当，所以在 NLP 若干领域也能野蛮生长，但是在更多的NLP领域，还是处于被RNN模型压制到抑郁症早期的尴尬局面。</p>
+
+<p>CNN 捕获到的是什么特征呢？从上述怀旧版本 CNN 卷积层的运作机制你大概看出来了，关键在于卷积核覆盖的那个滑动窗口，CNN能捕获到的特征基本都体现在这个滑动窗口里了。大小为 <code class="highlighter-rouge">k</code> 的滑动窗口轻轻的穿过句子的一个个单词，荡起阵阵涟漪，那么它捕获了什么?其实它捕获到的是单词的 <code class="highlighter-rouge">k-gram</code> 片段信息，这些 <code class="highlighter-rouge">k-gram</code> 片段就是CNN捕获到的特征，<code class="highlighter-rouge">k</code> 的大小决定了能捕获多远距离的特征。</p>
+
+<p>对于远距离特征，单层 CNN 是无法捕获到的，如果滑动窗口 <code class="highlighter-rouge">k</code> 最大为2，而如果有个远距离特征距离是5，那么无论上多少个卷积核，都无法覆盖到长度为5的距离的输入，所以它是无法捕获长距离特征的。
+有两种典型的改进方法：
+一种是假设我们仍然用单个卷积层，滑动窗口大小 <code class="highlighter-rouge">k</code> 假设为3，就是只接收三个输入单词，但是我们想捕获距离为5的特征，可以跳着覆盖呀？这就是 Dilated 卷积的基本思想。
+第二种方法是把深度做起来。第一层卷积层，假设滑动窗口大小<code class="highlighter-rouge">k</code>是3，如果再往上叠一层卷积层，假设滑动窗口大小也是3，但是第二层窗口覆盖的是第一层窗口的输出特征，所以它其实能覆盖输入的距离达到了5。如果继续往上叠加卷积层，可以继续增大卷积核覆盖输入的长度。</p>
+
+<p>Kim 版本 CNN 还有一个问题，就是那个 Max Pooling 层，这块其实与CNN 能否保持输入句子中单词的位置信息有关系。RNN因为是线性序列结构，所以很自然它天然就会把位置信息编码进去；那么，CNN 是否能够保留原始输入的相对位置信息呢？其实 CNN 的卷积核是能保留特征之间的相对位置的，道理很简单，滑动窗口从左到右滑动，捕获到的特征也是如此顺序排列，所以它在结构上已经记录了相对位置信息了。但是如果卷积层后面立即接上 Pooling 层的话，<code class="highlighter-rouge">Max Pooling</code> 的操作逻辑是：从一个卷积核获得的特征向量里只选中并保留最强的那一个特征，所以到了 Pooling 层，位置信息就被扔掉了，这在 NLP 里其实是有信息损失的。所以在 NLP 领域里，目前 CNN 的一个发展趋势是抛弃 Pooling 层，靠全卷积层来叠加网络深度，这背后是有原因的。</p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_9.png" style="zoom:60%" /></p>
+
+<p>NLP领域主流的CNN
+通常由 <code class="highlighter-rouge">1-D</code> 卷积层来叠加深度，使用 <code class="highlighter-rouge">Skip Connection</code> 来辅助优化，也可以引入 Dilated CNN 等手段。比如 <code class="highlighter-rouge">ConvS2S</code> 主体就是上图所示结构，Encoder 包含 15 个卷积层，卷积核 kernel size=3，覆盖输入长度为25。</p>
+
+<h2 id="tcn">TCN</h2>
+
+<h3 id="causal-convolutions">Causal Convolutions</h3>
+
+<p><code class="highlighter-rouge">TCN</code> 的两个原则：</p>
+<ol>
+  <li>输入和输出长度相等</li>
+  <li>不能泄露未来的信息</li>
+</ol>
+
+<p>对应解决方法：</p>
+<ol>
+  <li>一维全卷积网络和Zero padding（kernel size - 1）
+前者保证了隐藏层长度和输入层相同，后者保证了特征图每层大小相同。</li>
+  <li>使用因果卷积
+t时刻的输出仅与时间t和前层中更早的元素有关。
+（Waibel, Alex, Hanazawa, Toshiyuki, Hinton, Geoffrey, Shikano, Kiyohiro, and Lang, Kevin J. Phoneme recognition using time- delay neural networks. IEEE Transactions on Acoustics, Speech, and Signal Processing, 37(3), 1989.）</li>
+</ol>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_10.png" style="zoom:60%" /></p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_11.png" alt="1" /></p>
+
+<p>缺点：
+上面的图片可以详细的解释因果卷积，但是问题就来，如果我要考虑很久之前的变量x，那么卷积层数就必须增加（自行体会）。。。卷积层数的增加就带来：梯度消失，训练复杂，拟合效果不好的问题，为了决绝这个问题，出现了扩展卷积（dilated）。
+对于因果卷积，存在的一个问题是需要很多层或者很大的filter来增加卷积的感受野。扩大卷积（dilated convolution）是通过跳过部分输入来使filter可以应用于大于filter本身长度的区域。</p>
+
+<h3 id="dilate-convolutions">Dilate Convolutions</h3>
+
+<p><strong>感受野</strong>
+<img src="https://provenclei.github.io//assets/tcn/tcn_12.png" style="zoom:40%" />
+如果输出图像的每一个像素和输入图像的 $n<em>n$ 的像素有关，那么久称输出图像的感受野为 $n</em>n$。</p>
+
+<p>可以使用两层 $3<em>3$ 的卷积来模拟 $5</em>5$ 的卷积。这样可以节约参数，因为 $5<em>5$ 卷积的参数量为25，比 $3</em>3$ 卷积的参数量18还要多。这样做可以节约参数。</p>
+
+<p>原方法：
+      输入   -&gt;    $5*5$ 卷积    -&gt;   非线性</p>
+
+<p>新方法：
+      输入   -&gt;    $3<em>3$ 卷积    -&gt;   非线性   -&gt;    $3</em>3$ 卷积    -&gt;  非线性</p>
+
+<p>进一步继续这个思路，就是著名的Incepttion构架。根据Google实验，将卷积核拆分并加入更多的非线性，有可能进一步提升网络性能。</p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_13.png" style="zoom:60%" /></p>
+
+<p>在传统深度学习网络构架中，如 AlexNet,会使用较大的卷积核，因为卷积核越大，感受野越大，看到的图像信息越多，有可能获得更好的特征。
+<img src="https://provenclei.github.io//assets/tcn/tcn_14.png" alt="1" /></p>
+
+<p>AlexNet总共包含8层，其中有5个卷积层和3个全连接层，有60M个参数，神经元个数为650k，分类数目为1000，LRN层出现在第一个和第二个卷积层后面，最大池化层出现在两个LRN层及最后一个卷积层后。</p>
+
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_15.png" style="zoom:40%" /></p>
+
+<p>Way1 对应为通常的一种理解感受野的方式。在下方左侧的上图中，是在 5x5 的图像(蓝色)上做一个 3x3 卷积核的卷积计算操作，步长为2，padding 为1，所以输出为 3x3 的特征图(绿色)。那么该特征图上的每个特征(1x1)对应的感受野，就是 3x3。在下方左侧的下图中，是在上述基础上再加了一个完全一样的卷积层。对于经过第二层卷积后其上的一个特征(如红色圈)在上一层特征图上“感受”到 3x3 大小，该 3x3 大小的每个特征再映射回到图像上，就会发现由 7x7 个像素点与之关联，有所贡献。于是，就可以说第二层卷积后的特征其感受野大小是 7x7（需要自己画个图，好好数一数）。</p>
+
+<p><strong>扩展卷积</strong></p>
+
+<p><code class="highlighter-rouge">Dilated conv</code> 在 ICLR 2016上提出。其主要作用是在不增加参数和模型复杂度的条件下，可以指数倍的扩大视觉野的大小。从下图中可以看出这一效果。蓝色的矩形表示视觉野。红色的小点表示 kernel。在图a中，kernel是 <code class="highlighter-rouge">3*3</code>，视觉野是 <code class="highlighter-rouge">3*3</code>，dilated=1；在图b中，kernel是<code class="highlighter-rouge">3*3</code>，但是视觉野是 <code class="highlighter-rouge">7*7</code>，dilated=2；在图c中，kernel是 <code class="highlighter-rouge">3*3</code>，但是视觉野是 <code class="highlighter-rouge">15*15</code>，dilated=4. 可以看出在dilated（扩展系数）扩大时，视觉野同样扩大。
+<img src="https://provenclei.github.io//assets/tcn/tcn_16.png" alt="1" />
+下面，我们使用1D的数据来详细看一下dilated。从下图可以看出，当dilated=2时，每一个输出，“看到了”3个输入（虽然其中2-1=1被忽略了）。当dilated=4时，“看到了”5个输入（4-1=3个被忽略了）
+<img src="https://provenclei.github.io//assets/tcn/tcn_17.png" alt="1" />
+从上面的分析可以看出，dilated与stride非常相似。但dilated与stride可以等同吗？
+答案是否定的。我们可以将dilated看成是kernel稀疏化的一种模式。而stride只是dilated的一种特例。根据不同任务，我们可以设计不同的稀疏模式。并不一定要求在宽上的稀疏个数等于长上的稀疏个数。 
+<img src="https://provenclei.github.io//assets/tcn/tcn_18.png" style="zoom:60%" />
+使用扩展卷积可以指数级增大卷积感受野。
+<img src="https://provenclei.github.io//assets/tcn/tcn_19.png" style="zoom:40%" />
+d为扩张因子。当d=1时，扩展卷积退化为正常卷积。使用大的扩展因子，可以使得顶层的输出表示更广泛的输入范围。</p>
+
+<p>TCN给出了两种扩大感受野的方法：</p>
+<ol>
+  <li>选择更大的过滤器大小k</li>
+  <li>增大扩展因子d
+这样得到的有效的感受野大小为（k-1）d。</li>
+</ol>
+
+<h3 id="residual-convolutions">Residual Convolutions</h3>
+
+<p><strong>1*1卷积</strong></p>
+
+<p>最小的卷积核是 <code class="highlighter-rouge">1*1</code> 卷积核。表面上看，<code class="highlighter-rouge">1*1</code> 卷积核并不是真正的过滤器，它只是将图像的每个点都乘以1个权重，再加上一个偏置。通过 N 个 <code class="highlighter-rouge">1*1</code> 卷积神经元，只需要少量的参数，就可以将M张图片变成N张图片。<code class="highlighter-rouge">1×1</code> 卷积能够实现跨通道的交互和信息，<code class="highlighter-rouge">1×1×F</code> 的卷积在数学上就等价于多层感知机,F 是 filter 的数目,一个 filter 相当于就是对一张图片做一次卷积。
+<img src="https://provenclei.github.io//assets/tcn/tcn_20.png" style="zoom:30%" /></p>
+
+<p>应用场景：</p>
+<ol>
+  <li>如需将图片分为N类，可以在最后用 <code class="highlighter-rouge">1*1</code> 卷积层将M张图片变成N张图片，再通过全局池化变成N个数字，送入SoftMax层。</li>
+  <li>可以用 <code class="highlighter-rouge">1*1</code> 卷积作为瓶颈层（bottleneck）.
+     假设通道是256个，要求经过 <code class="highlighter-rouge">3*3</code> 卷积，最后输出通道也是256。两种实现方法：
+     第一种：
+             输入：256个通道 -&gt;  256个 <code class="highlighter-rouge">3*3</code> 卷积神经元  -&gt;  输出：256个通道
+     第二种：
+            输入： 256个通道 -&gt;  64个 <code class="highlighter-rouge">1*1</code> 卷积神经元   -&gt;  64个 <code class="highlighter-rouge">3*3</code> 卷积神经元  -&gt;  256个 <code class="highlighter-rouge">1*1</code> 卷积神经元  -&gt;  输出：256个通道</li>
+  <li>希望改变通道数过图片尺寸，简单的方法就是用 $1*1$ 卷积层。残差网络中就会用到这一点。</li>
+  <li>连续使用多个 <code class="highlighter-rouge">1*1</code> 卷积层，可在图像的每个点上实现一个小型的MLP网络。</li>
+</ol>
+
+<p><strong>残差网络</strong></p>
+
+<p>深度学习的一大原则是，神经网络越深，效果往往越好。但极深的网络往往并不容易训练。梯度消失和梯度爆炸曾是困扰研究人员的难题。2015年，微软亚洲研究院（MSRA）公布了152层残差网络，ResNet，论文为《Deep Residual Learning for Image Recognition》，成为了深度网络构架的重要突破。2016年进行了改进（http://arxiv.org/abs/1603.05027），MSRA成功训练了深度为1000层的网络，并实现了更低的错误率。
+<img src="https://provenclei.github.io//assets/tcn/tcn_21.png" style="zoom:60%" />
+经实际测试，每次跳过 2 层网络可能实现更好的性能。因为2层网络可提供更多的非线性，拟合更复杂的 F(x)。左一是残差网络的基本模组（block）。实际做法如左二所示。右一为加入瓶颈层的残差网络。
+在 2016 年的后续论文中，《Identity Mappings in Deep Residual Network》研究人员测试了多种网络的组合，包括BN层和非线性层的位置调整。
+<img src="https://provenclei.github.io//assets/tcn/tcn_22.png" alt="1" />
+e的效果最好，错误率最低，左通道上没有ReLU层，实现了信息的完全畅通。
+c架构的问题在于，它将ReLU放在了有通道的最后。由于ReLU的输出永远大于等于0，这对于网络的表达能力是有害的。
+而d和e的区别在于BN层的位置。事实上，BN层最适宜放在非线性激活函数前边。e无疑满足了多有要求。</p>
+
+<p>为了保证TCN的稳定，使用残差网络。
+对依赖2^12大小的感受野和高维的输入序列进行预测，网络可能会达到12层，每层包含多个特征提取器。会出现梯度消失等问题。这里使用残差模块代替卷积层。
+残差模块包含：两层扩展卷积，线性矫正单元 Relu，权重归一化优化方法（用于filter），Dropout。
+在标准的 ResNet 中，输入直接添加到输出中。而在 TCN 中，输入和输出可能具有不同的宽度，因此引入 1*1 卷积，确保接受相同形状的张量。
+<img src="https://provenclei.github.io//assets/tcn/tcn_23.png" style="zoom:40%" /></p>
+
+<h3 id="tcn-的结构">TCN 的结构</h3>
+<p><img src="https://provenclei.github.io//assets/tcn/tcn_24.png" style="zoom:40%" />
+从五个方面对TCN进行讨论：</p>
+<ol>
+  <li>Parallelism</li>
+  <li>Flexible receptive field size</li>
+  <li>Stable gradients</li>
+  <li>Low memory requirement for training</li>
+  <li>Variable length inputs</li>
+</ol>
+
+<p>并行性。在RNN中，对以后的时间步的预测必须等待它们的前辈完成，卷积可以并行进行，因为在每个层中使用相同的过滤器。因此，在训练和评估中，一个长的输入序列可以在TCN中作为一个整体进行处理，而不是像在RNN中那样按顺序进行处理。
+灵活的接收字段大小。TCN可以通过多种方式改变其接收场的大小。例如，使用更大的膨胀系数或增大滤波器的大小来叠加更多的膨胀（因果）卷积层都是可行的选择（可能有不同的解释）。因此，TCN能够更好地控制模型的内存大小，并且易于适应不同的域。
+NN的并行计算能力，那是非常强的，这其实很好理解。我们考虑单层卷积层，首先对于某个卷积核来说，每个滑动窗口位置之间没有依赖关系，所以完全可以并行计算；另外，不同的卷积核之间也没什么相互影响，所以也可以并行计算。CNN的并行度是非常自由也非常高的，这是CNN的一个非常好的优点。</p>
+
+<p>稳定的坡度。与循环体系结构不同，TCN的反向传播路径不同于序列的时间方向。因此，TCN避免了爆炸/消失梯度的问题，这是RNN的一个主要问题（并导致LSTM、GRU、HF-RNN（Martens&amp;Sutskever，2011）等的发展）。</p>
+
+<p>训练所需的内存不足。尤其是在长输入序列的情况下，LSTM和GRU可以很容易地使用大量内存来存储其多个单元门的部分结果。然而，在TCN中，过滤器是跨层共享的，而反向传播路径仅取决于网络深度。因此，在实践中，我们发现门控RNN可能比TCN消耗更多的内存。</p>
+
+<p>可变长度输入。与RNN一样，TCN也可以通过滑动一维卷积核来获取任意长度的输入，RNN以循环的方式对可变长度的输入进行建模。这意味着对于任意长度的序列数据，TCN可以作为RNN的替代品。</p>
+
+<h2 id="实验">实验</h2>
+
+<p><strong>测试集</strong></p>
+
+<p>The Adding Problem</p>
+
+<p>这一任务是一个回归问题。用来验证循环神经网络在学习长期依赖方面的能力。Adding Problem输入的是两个向量，这两个向量具有相同的长度T。其中一个称为出具序列，这个序列包含T个随机生成的数字，这些数字在[0,1]之间，并且服从统一分布。另一个被称为指示序列，这个序列也包含T个数字，除了两个位置的值为1，其余都是0，这两个位置是随机的。Adding Problem的目标输出是数据序列中两个数值之和，这两个数值在指示序列中对应的位置值为1。
+<img src="https://provenclei.github.io//assets/tcn/tcn_25.png" alt="1" />
+在这个序列中第一个时刻输入的为[0.4, 0]，第二个时刻输入的序列为[0.6, 0]，以此类推，一共有T个时刻。
+最简单的策略就是不管输出什么值一直预测输出为1，这样能得到一个均方误差MSE（Mean Squared Error）的期望为0.1767。这是一个基准，需要所有模型获得比这个基准更低的错误。
+随着序列长度的增加，Adding Problem变得越来越难处理。首先序列中第一个值和第二个值之间的距离变得越来越远，增加了学习长期依赖的难度。其次，序列中会有更多不相关的数字，这会给模型学习序列的特征带来带来更大的干扰。解决Adding Problem需要神经网络记住两个值的同时忽略大量无效数字。</p>
+
+<p>MNIST序列分类任务</p>
+
+<p>MNIST数据集是一个手写数字识别数据集，包含60000张用于训练的图像和10000张用于测试的图像。每张图像包含一个0到9的数字，将这些图像分为10类。MNIST的图像是灰度图，而且长和宽都是28。为了将这个任务转化为序列任务，将二维图像转化为一个序列，在这个任务中，每一个时刻输入一个像素。从左到右，从上到下将图像的像素一一读入序列中，那么序列长度为784。P-MNIST数据集，是将图片的像素转化为序列时，依次随机读取像素点，每张图片使用相同的随机读取方式。由于MNIST中包含大量的局部信息，序列长度达到784，所以MNIST足以用于验证网络的学习序列长度依赖和捕获局部特征的能力。</p>
+
+<p>Copy memory</p>
+
+<p>每个输入序列的长度为t+20，其中前10个值是1到8之间的随机整数。模型应该在T步骤之后记住它们。
+序列的其余部分都是零，除了序列中的最后11个条目，该条目以9开头，表示模型应该开始输出其存储的值。
+除了最后10个条目外，该模型预计在每个时间步都会给出零输出，在这里，它应该按照在序列开始时看到的相同顺序生成（复制）10个值。
+其目的是在每个时间步最小化类别预测的平均交叉熵。</p>
+
+<p>JSB Chorales and Nottingham</p>
+
+<p>JSB 是一个复调音乐集，由382个由四部分组成的协调合唱团组成。每个输入都是一个元素序列。每个元素都是一个88位二进制代码，对应于钢琴上的88个键，1表示在给定时间按下的键。诺丁汉是一个复调音乐集，基于1200个英国和美国民歌的收集，并远远大于JSB合唱团。JSB Chorales和Nottingham已被用于多次重复序列建模的实证研究。两个任务的性能都是用负对数似然（nll）来衡量的。</p>
+
+<p>PennTreebank（PTB）</p>
+
+<p>这是一个字符级语言模型，用来预测文本的下一个字符，而不是下一个单词。尽管相同条件下，字符集语言模型的预测能力比单词的模型预测能力稍差。字符集语言模型的预测的任务是衡量网络的预测性能。PTB包括训练集，验证集和测试集。其中训练集包括5059k个字符，验证集396个字符，测试集446k个字符。训练过程中训练集被分割成长度为100的子串，无需其他与处理。</p>
+
+<p>Wikitext-103</p>
+
+<p>维基文本-103是PTB的110倍大，其词汇量约为268K。数据集包含28K篇维基百科文章（约1.03亿字）用于训练，60篇文章（约218K字）用于验证，60篇文章（246K字）用于测试。这是一个比PTB更具代表性和现实性的数据集，具有更大的词汇表，包括许多罕见的单词。</p>
+
+<p>LAMBADA</p>
+
+<p>LAMBADA是一个常用于阅读理解的数据集，包括从小说中提取的10K段，平均4.6个句子作为上下文，1个目标句子，其最后一个词是要被预测的。LAMBADA的训练数据包括2662部小说的全文，字数超过2亿，词汇量大约是93K。数据集是为了让一个人在给出上下文句子时能够很容易地猜测漏掉的单词。研究结果表明，一个模型能够更好地从更长更广的上下文中捕获信息。</p>
+
+<p>text8</p>
+
+<p>text8数据集用于字符级语言建模。text8大约是ptb的20倍，来自维基百科的大约100万个字符（90M用于训练，5M用于验证，5M用于测试）。</p>
+
+<p><strong>实验</strong></p>
+
+<p>The adding problem
+<img src="https://provenclei.github.io//assets/tcn/tcn_26.png" alt="1" />
+T=200和600，收敛结果如图所示。所有的模型都有大约70K的参数。TCN迅速收敛到一个几乎完美的解决方案（即MSE接近0）。GRUS的表现也不错，尽管其收敛速度比TCN慢。LSTM和Vanilla RNN表现明显较差。</p>
+
+<p>Sequential MNIST and P-MNIST
+<img src="https://provenclei.github.io//assets/tcn/tcn_27.png" alt="1" />
+在MNIST序列任务上的收敛结果，运行超过10个epochs ，如图所示。所有的模型都有大约70k个参数。对于这两个问题，无论是在收敛性方面还是在任务的最终准确性方面，TCN都明显优于循环体系结构。</p>
+
+<p>Copy memory
+<img src="https://provenclei.github.io//assets/tcn/tcn_28.png" alt="1" />
+Copy memory任务的收敛结果如图所示。TCN很快收敛到正确的答案，而LSTMS和GRU与预测所有零的损失几乎相同。在这种情况下，我们还将其与最近提出的EURNN进行了比较，此模型在这项任务上表现良好。虽然TCN和EURNN在序列长度T=500时都表现良好，但TCN在T=1000和更长时间内（在损失和收敛速度方面）有明显的优势。</p>
+
+<p>Polyphonic Music and Language Modeling</p>
+
+<p>我们讨论复调音乐建模、字符级语言建模和单词级语言建模的结果。
+<img src="https://provenclei.github.io//assets/tcn/tcn_29.png" alt="1" />
+Polyphonic music
+在Nottingham和JSB Chorales上，几乎没有调优的TCN在很大程度上优于循环网络模型，甚至优于某些增强的循环架构，例如HF-RNN（BoulangerLewandowski等，2012）和Diagonal RNN（Subakan＆ Smaragdis，2017）。但是，如Deep Belief Net LSTM模型表现更好（Vohra等，2015）;我们认为这可能是由于数据集相对较小，因此正确的正则化方法或生成建模程序可以显着提高性能。</p>
+
+<p>Word-level language modeling</p>
+
+<p>语言建模仍然是循环网络的主要应用之一，最近的许多工作都致力于为此任务优化LSTM（Krueger等人，2017年；Merity等人，2017年）。我们的实现遵循标准实践，将TCN和RNN的编码器和解码器层的权重联系起来（Press&amp;Wolf，2016），这显著减少了模型中的参数数量。使用SGD进行训练，并在验证准确度达到高峰时将tcn和rnns的学习速率是0.5。在较小的ptb语料库上，tcn优于gru和vanilla rnn。然而，在更大的wikitext-103语料库和lambada数据集上，在没有任何超参数搜索的情况下，TCN优于Grave等人的LSTM结果，实现了更低的困惑。</p>
+
+<p>Character-level language modeling.</p>
+
+<p>在字符级语言建模（ptb和text8，以每字符位度量的精度）上，通用TCN优于常规LSTM和GRU以及规范稳定LSTM等方法（Krueger和Memisevic，2015年）。（现有的特殊化架构优于所有这些架构，请参阅补充部分。）</p>
+
+<h2 id="总结">总结</h2>
+
+<p>TCN
+形式简洁：使用卷积形式(convolution)
+适用于序列模型：因果卷积 (causal convolutions)
+对历史有记忆：扩展卷积(dilated convolutions)+残差模块(residual block)
+输入输出维度保持一致：全卷积网络(fully-convolutional network）</p>
+
+<p>缺点：</p>
+<ol>
+  <li>合成数据任务，很难应用到 NLP 领域</li>
+  <li>比较基准低</li>
+  <li>没有使用NLP领域中有效的门控机制（附录中有提到，但是效果不好）</li>
+</ol>
+
+<p>利用 Dilated CNN 拓展单层卷积层的输入覆盖长度，利用全卷积层堆叠层深，使用 Skip Connection 辅助优化，引入 Casual CNN 让网络结构看不到T时间步后的数据。不过 TCN 的实验做得有两个明显问题：一个问题是任务除了语言模型外都不是典型的NLP任务，而是合成数据任务，所以论文结论很难直接说就适合 NLP 领域；另外一点，它用来进行效果比较的对比方法，没有用当时效果很好的模型来对比，比较基准低。所以TCN的模型效果说服力不太够。</p>
+
+<h2 id="参考文献">参考文献</h2>
+<p>《An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling》</p>
+
+<div class="social-share-wrapper">
+    
+  </div>
+
+<script src="/assets/js/social-share.min.js"></script>
+
+<script>
+  socialShare('.social-share', {
+    sites: [
+      
+        'qq'
+        ,
+        
+      
+        'wechat'
+        ,
+        
+      
+        'weibo'
+        ,
+        
+      
+        'twitter'
+        ,
+        
+      
+        'facebook'
+        
+      
+    ],
+    wechatQrcodeTitle: "分享到微信朋友圈",
+    wechatQrcodeHelper: '期待在朋友圈见到这篇文章'
+  });
+</script>
+
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page991/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page990/">990</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page991/">991</a></li>
+      
+    
+      
+        <li><strong class="current-page">992</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page993/">993</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page994/">994</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page993/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

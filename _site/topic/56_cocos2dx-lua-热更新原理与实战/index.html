@@ -1,0 +1,945 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>cocos2dx lua 热更新原理与实战 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2dx lua 热更新原理与实战">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/56_cocos2dx-lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/56_cocos2dx-lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>cocos2dx lua 热更新原理与实战</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~4 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">cocos2dx lua 热更新原理与实战</h1>
+      <p>首先，如果有过cocos2dx lua开发经验的朋友都知道，为什么使用Lua而不是C++,最重要的原因就是因为下面这三个原因</p>
+<ul>
+<li>热更新(在线更新代码和资源)</li>
+<li>比C++简单很多,入门和实战</li>
+<li>轻量级，最小最轻的脚本语言</li>
+</ul>
+<p>今天就从Lua热更新，捣鼓一下其中的原理，并具体实战一下！</p>
+
+<h3 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h3>
+<p>热更新也叫不停机更新，是在游戏服务器运行期间对游戏进行更新。实现不停机修正bug、修改游戏数据等操作。也可以这样讲：一辆车以时速150km跑着，突然爆胎了，然后司机告诉你，我不停车，你去把轮胎换了，小心点。</p>
+<h3 id="热更新的作用"><a href="#热更新的作用" class="headerlink" title="热更新的作用"></a>热更新的作用</h3>
+<p>Lua模块热更新原理，能很好的支持代码热更新机制，是大部分选择要嵌入脚本语言的原因之一。好处很简单，脚本代码可以热更新的话，调试和线上解决问题都可以不用重启程序了，对开发效率有很大的帮助。</p>
+<h3 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h3>
+<p>Lua内部提供了一个require函数，来实现模块的加载，它做的事情主要是以下几个：</p>
+<blockquote>
+<p>在registry[“_LOADED”]表中判断该模块是否已经加载过了，如果是则返回，避免重复加载某个模块代码。</p>
+</blockquote>
+<p>依次调用注册的loader来加载模块,将加载过的模块赋值给registry[“_LOADED”]表。</p>
+<p>而如果要实现Lua的代码热更新，其实也就是需要重新加载某个模块，因此就要想办法让Lua认为它之前没有加载过。查看Lua代码发现，registry[“_LOADED”]表，实际上对应的是package.loaded表，这在以下函数中有体现：</p>
+<pre><code>(loadlib.c)
+627 LUALIB_API int luaopen_package (lua_State *L) {
+
+655   /* set field `loaded&#39; */
+656   luaL_findtable(L, LUA_REGISTRYINDEX, &#34;_LOADED&#34;, 2);
+657   lua_setfield(L, -2, &#34;loaded&#34;);
+</code></pre>
+<p>因此事情就很简单了，需要提供一个require_ex函数，可以理解为require的增强版，使用这个函数可以动态更新某个模块的代码:</p>
+<pre><code>function require_ex( _mname )
+print( string.format(&#34;require_ex = %s&#34;, _mname) )
+if package.loaded[_mname] then
+print( string.format(&#34;require_ex module[%s] reload&#34;, _mname))
+end
+package.loaded[_mname] = nil
+require( _mname )
+end
+</code></pre>
+<p>这个函数做的事情一目了然。首先判断是否曾经加载过这个模块，如果有则打印一条日志表示需要重新加载某个模块，然后将该模块原来在表中注册的值赋空，然后再次调用require进行模块的加载和注册。</p>
+<h3 id="热更新实现细节"><a href="#热更新实现细节" class="headerlink" title="热更新实现细节"></a>热更新实现细节</h3>
+<p>以上了解了Lua代码热更新的原理，但是还有一些细节需要提醒一下。</p>
+<ul>
+<li><p>如何组织你的项目中的Lua代码？</p>
+<ul>
+<li>我在qnode中使用的方式是，单独使用一个叫main.lua的文件调用require_ex函数来加载需要用到的lua模块，而Lua虚拟机创建之后执行的是这个文件，这样的话，当你需要热更新项目中的Lua代码时，只需要重新执行这个main.lua就行了。</li>
+</ul>
+</li>
+<li><p>如何通知热更新代码呢？</p>
+<ul>
+<li>我在qnode中使用的信号机制，当服务器收到USR1信号时，通知所有工作进程，由工作进程来重新对main.lua进行重新加载，这样就完成了lua代码的热更新，为此我写了一个简单的脚本reload.sh，就是根据当前qnode的服务器进程ID来对其发送USR1信号量的。</li>
+</ul>
+</li>
+<li><p>一般热更新的都是函数的实现，所以需要对全局变量做一些保护。</p>
+<ul>
+<li>比如当前某全局变量为100，表示某个操作已经进行了100次，它不能因为热更新重新置0，所以要对这些不能改变的全局变量做一个保护，最简单的方式就是这样:</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">a = a or 0</span><br /></pre></td></tr></tbody></table></figure>
+<p>很简单的原理，只有当前a这个变量没有初始值的时候才会赋值为0，而后面不管这个Lua文件被加载多少次，a都不会因为重新加载了Lua代码发生改变了。</p>
+<h3 id="热更新实战"><a href="#热更新实战" class="headerlink" title="热更新实战"></a>热更新实战</h3>
+<p>其实我们平时开发中，可以用简单易懂的方式来理解热更新</p>
+<ul>
+<li><ol>
+<li>客户端向服务器发送请求，服务器告诉客户端，没更新，你是最新的啦，那就直接跳过喽</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>如果是告诉你有更新，那就要告诉我哪些需要更新对吧，你可能需要更新的东西，放在一个文件里，一并发送给客户端</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>客户端拿到这个文件，就一个一个去向服务器要，最后把要更新的内容都下载到本地了</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>cocos2dx-lua中有assetmanagerex的c++实现类，也有绑定到lua。</p>
+<blockquote>
+<p>3.10之前有缺陷，问题是当有文件下载失败时会陷入死循环，导致业务链断裂。不过网上有解决办法，可简单修改源码解决。<br />建议把高于3.10版本以后的assetmanagerex代码移植到旧的3.x版本，也可以选择新项目使用3.10以后版本。</p>
+</blockquote>
+</blockquote>
+<h4 id="网上有提到两种热更新的方法"><a href="#网上有提到两种热更新的方法" class="headerlink" title="网上有提到两种热更新的方法"></a>网上有提到两种热更新的方法</h4>
+<ul>
+<li><p>1.只存在一套资源，用一个文件记录所有文件的信息（文件名，路径，大小，MD5）。游戏启动时下载这个文件与本地文件MD5进行对比，不同的和新增的下载下来，没有的删掉。（最好再做个简要信息文件，因为资源多了记录文件信息的文件会有上百KB大小）</p>
+</li>
+<li><p>2.第二种存在多套资源，客户端每更新一个版本都会有一个内部版本号。更新服务端会有多套压缩包，如1.0-1.5， 1.1-1.5 ，1.2-1.5 ，1.3-1.5，1.4-1.5。此方法需要保留每个版本的文件资源，依次生成每一个版本到最新版本的增量压缩包（依据是文件名和MD5）</p>
+</li>
+</ul>
+<p>但是结合实战第一种和优点是方便管理，从始到终只有一套资源。缺点是玩家下载时流量多一点，因为没有压缩。第二种优点是玩家下载流量小，但每次升级需要保留历史版本为升级依据，版本越多越不好管理。</p>
+<h5 id="具体代码实战"><a href="#具体代码实战" class="headerlink" title="具体代码实战"></a>具体代码实战</h5>
+<pre><code>local AutoUpdateScene = class(&#34;AutoUpdateScene&#34;, cc.load(&#34;mvc&#34;).ViewBase)
+
+local manifestPath = &#34;project.manifest&#34;
+local storagePath = &#34;update&#34;
+
+function AutoUpdateScene:onCreate()
+
+self._update_failed_count = 0
+
+local layer  = cc.Layer:create()
+
+local am = nil
+
+local function onEnter()
+
+local ttfConfig = {}
+ttfConfig.fontFilePath = &#34;fonts/arial.ttf&#34;
+ttfConfig.fontSize = 80
+
+local  progress = cc.Label:createWithTTF(ttfConfig, &#34;0%&#34;, cc.VERTICAL_TEXT_ALIGNMENT_CENTER)
+progress:setPosition(cc.p(display.center.x, display.center.y + 50))
+layer:addChild(progress)
+
+am = cc.AssetsManagerEx:create(manifestPath, cc.FileUtils:getInstance():getWritablePath() .. storagePath)
+am:retain()
+
+if not am:getLocalManifest():isLoaded() then
+print(&#34;Fail to update assets, step skipped.&#34;)
+self:onFail(&#34;本地资源错误，请重新下载游戏。&#34;)
+else
+local function onUpdateEvent(event)
+local eventCode = event:getEventCode()
+print(&#34;====== assetsmanagerex error code:&#34;, eventCode)
+--[[ cc.EventAssetsManagerEx.EventCode = {
+ERROR_NO_LOCAL_MANIFEST = 0,
+ERROR_DOWNLOAD_MANIFEST = 1,
+ERROR_PARSE_MANIFEST = 2,
+NEW_VERSION_FOUND = 3,
+ALREADY_UP_TO_DATE = 4,
+UPDATE_PROGRESSION = 5,
+ASSET_UPDATED = 6,
+ERROR_UPDATING = 7,
+UPDATE_FINISHED = 8,
+UPDATE_FAILED = 9,
+ERROR_DECOMPRESS = 10
+} ]]
+if eventCode == cc.EventAssetsManagerEx.EventCode.ERROR_NO_LOCAL_MANIFEST then
+print(&#34;No local manifest file found, skip assets update.&#34;)
+self:onFail(string.format(&#34;本地资源错误，请重新下载游戏。(错误码:%d)&#34;, eventCode))
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.UPDATE_PROGRESSION then
+local assetId = event:getAssetId()
+local percent = event:getPercent()
+local strInfo = &#34;&#34;
+if assetId == cc.AssetsManagerExStatic.VERSION_ID then
+strInfo = string.format(&#34;Version file: %d%%&#34;, percent)
+elseif assetId == cc.AssetsManagerExStatic.MANIFEST_ID then
+strInfo = string.format(&#34;Manifest file: %d%%&#34;, percent)
+else
+strInfo = string.format(&#34;%d%%&#34;, percent)
+end
+progress:setString(strInfo)
+self:setLoadingProgress(event:getPercentByFile())
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.ERROR_DOWNLOAD_MANIFEST or
+eventCode == cc.EventAssetsManagerEx.EventCode.ERROR_PARSE_MANIFEST then
+print(&#34;Fail to download manifest file, update skipped.&#34;)
+self:onFail(string.format(&#34;更新失败，请检查网络配置。(错误码:%d)&#34;, eventCode))
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.ALREADY_UP_TO_DATE or
+eventCode == cc.EventAssetsManagerEx.EventCode.UPDATE_FINISHED then
+print(&#34;Update finished.&#34;)
+self:onSuccess()
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.ERROR_UPDATING then
+print(&#34;Asset &#34;, event:getAssetId(), &#34;, &#34;, event:getMessage())
+-- self:onFail(string.format(&#34;更新资源失败，请检查网络后重试。(%d)&#34;, eventCode))
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.UPDATE_FAILED then
+print(&#34;Fail to download resource files.&#34;)
+self._update_failed_count = self._update_failed_count + 1
+if self._update_failed_count &lt;= 3 then
+print(&#34;try again&#34;)
+am:downloadFailedAssets()
+else
+self:onFail(string.format(&#34;更新失败，请检查网络配置。(错误码:%d)&#34;, eventCode))
+end
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.NEW_VERSION_FOUND then
+print(&#34;new version found.&#34;)
+--am:update()
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.ASSET_UPDATED then
+print(&#34;assets updated.&#34;)
+elseif eventCode == cc.EventAssetsManagerEx.EventCode.ERROR_DECOMPRESS then
+print(&#34;decompress error.&#34;)
+end
+end
+local listener = cc.EventListenerAssetsManagerEx:create(am, onUpdateEvent)
+cc.Director:getInstance():getEventDispatcher():addEventListenerWithFixedPriority(listener, 1)
+
+am:update()
+--am:checkUpdate()
+end
+end
+
+local function onExit()
+am:release()
+end
+
+local function onNodeEvent(event)
+if &#34;enter&#34; == event then
+onEnter()
+elseif &#34;exit&#34; == event then
+onExit()
+end
+end
+layer:registerScriptHandler(onNodeEvent)
+
+self:addChild(layer)
+end
+
+function AutoUpdateScene:onFail(msg)
+print(&#34;====== update fail ======&#34;, msg)
+
+-- 热更新失败处理
+end
+
+function AutoUpdateScene:onSuccess()
+print(&#34;====== update success ======&#34;)
+
+local writablePath = cc.FileUtils:getInstance():getWritablePath()
+package.path = writablePath .. &#34;update/src/?.lua;./?.lua;&#34;
+
+-- 启动热更新后的场景
+end
+
+return AutoUpdateScene
+</code></pre>
+<ul>
+<li>推荐<ul>
+<li><a href="https://blog.csdn.net/weixin_37730482/article/details/73299286" target="_blank" rel="noopener noreferrer">https://blog.csdn.net/weixin_37730482/article/details/73299286</a></li>
+<li><a href="https://blog.csdn.net/qq_32319583/article/details/53223452" target="_blank" rel="noopener noreferrer">https://blog.csdn.net/qq_32319583/article/details/53223452</a></li>
+<li><a href="https://blog.csdn.net/q277055799/article/details/8463835?utm_source=blogxgwz3****" target="_blank" rel="noopener noreferrer">https://blog.csdn.net/q277055799/article/details/8463835?utm_source=blogxgwz3<em>**</em></a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/569_Lua%E6%A0%87%E5%87%86%E5%BA%93%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/569_Lua%E6%A0%87%E5%87%86%E5%BA%93%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/569_Lua%E6%A0%87%E5%87%86%E5%BA%93%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/56_cocos2dx-lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/56_cocos2dx-lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/56_cocos2dx-lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/569_Lua%E6%A0%87%E5%87%86%E5%BA%93%E9%98%85%E8%AF%BB%E6%80%BB%E7%BB%93-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

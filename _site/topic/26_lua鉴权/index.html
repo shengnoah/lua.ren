@@ -1,0 +1,733 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>lua鉴权 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lua鉴权">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/26_lua%E9%89%B4%E6%9D%83/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/26_lua%E9%89%B4%E6%9D%83/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>lua鉴权</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~5 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">lua鉴权</h1>
+      <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3>
+<p>openresty+lua做接口调用权限限制<br />说明：openresty可以理解为一个服务器它将nginx的核心包含了过来，并结合lua脚本语言实现一些对性能要求高的功能</p>
+<h3 id="purview-lua"><a href="#purview-lua" class="headerlink" title="purview.lua"></a>purview.lua</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /></pre></td><td class="code"><pre><span class="line">--调用json公共组件</span><br /><span class="line">cjson = require(<span class="string">&#34;cjson&#34;</span>)</span><br /><span class="line">fun = require(<span class="string">&#34;myxz.fun&#34;</span>) -- 引用公用方法文件</span><br /><span class="line">conf = require(<span class="string">&#34;myxz.ini&#34;</span>) --引用配置文件</span><br /><span class="line">reds = require(<span class="string">&#34;myxz.redis_pool&#34;</span>) --引用redis连接池</span><br /><span class="line">mysqld = require(<span class="string">&#34;myxz.mysql_pool&#34;</span>) --引用mysql连接池</span><br /><span class="line">--参数校验</span><br /><span class="line">check_arg =   fun:check_post_arg() --调用参数校验方法</span><br /><span class="line">arg_tables = {} --存储post的参数信息</span><br /><span class="line"><span class="keyword">if</span> check_arg[<span class="string">&#39;status&#39;</span>] ==0 <span class="keyword">then</span></span><br /><span class="line">    --参数校验通过，获取返回的参数，并将参数拼接</span><br /><span class="line">    arg_tables= check_arg[<span class="string">&#39;arg_tables&#39;</span>]</span><br /><span class="line">    get_info = string.format(<span class="string">&#34;%s:%s:%s&#34;</span>,arg_tables[<span class="string">&#39;appid&#39;</span>],arg_tables[<span class="string">&#39;ip&#39;</span>],arg_tables[<span class="string">&#39;appkey&#39;</span>])</span><br /><span class="line"><span class="keyword">else</span></span><br /><span class="line">    ngx.say(fun:resJson(-1,check_arg[<span class="string">&#39;msg&#39;</span>]))</span><br /><span class="line">    <span class="built_in">return</span>;</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line">--1.首先通过redis查找</span><br /><span class="line">--2.没有找到再找数据库</span><br /><span class="line">--3.根据appid查询项目是否授权</span><br /><span class="line">--4.项目获取权限成功，再查询ip是否被限制了</span><br /><span class="line"><span class="built_in">local</span> res,err,value = reds:get_key(get_info)</span><br /><span class="line"><span class="keyword">if</span> not res <span class="keyword">then</span></span><br /><span class="line">    ngx.say(fun:resJson(-1,err))</span><br /><span class="line">    <span class="built_in">return</span></span><br /><span class="line">end</span><br /><span class="line"><span class="keyword">if</span> value == ngx.null <span class="keyword">then</span></span><br /><span class="line">      </span><br /><span class="line">    --redis数据未空,根据appid查询，查询信息是否一致</span><br /><span class="line">    <span class="built_in">local</span> sql_appid =  string.format(<span class="string">&#34;select * from myxz_appid_list   where appid= &#39;%s&#39; and appkey=&#39;%s&#39;   limit 1 &#34;</span>,arg_tables[<span class="string">&#39;appid&#39;</span>],arg_tables[<span class="string">&#39;appkey&#39;</span>])  </span><br /><span class="line">    <span class="built_in">local</span> res,msg,result = mysqld:query(sql_appid)</span><br /><span class="line">    --连接失败报错</span><br /><span class="line">    <span class="keyword">if</span> not res <span class="keyword">then</span></span><br /><span class="line">        ngx.say(fun:resJson(-1,msg))</span><br /><span class="line">    end</span><br /><span class="line">      </span><br /><span class="line">    --未查找数据报错</span><br /><span class="line">    <span class="keyword">if</span> table.maxn(result)== 0 <span class="keyword">then</span></span><br /><span class="line">        ngx.say(fun:resJson(-1,<span class="string">&#39;appid验证失败，被拦截&#39;</span>))</span><br /><span class="line">        <span class="built_in">return</span></span><br /><span class="line">    end</span><br /><span class="line"> </span><br /><span class="line">    --项目权限获取成功，需要验证ip是否被允许</span><br /><span class="line">    <span class="built_in">local</span> sql = string.format(<span class="string">&#34;select * from myxz_appid_white_list where appid=&#39;%s&#39; and ip= &#39;%s&#39; limit 1 &#34;</span>,arg_tables[<span class="string">&#39;appid&#39;</span>],arg_tables[<span class="string">&#39;ip&#39;</span>])</span><br /><span class="line">    res,msg,result = mysqld:query(sql)</span><br /><span class="line">    <span class="keyword">if</span> table.maxn(result)==0 <span class="keyword">then</span></span><br /><span class="line">        ngx.say(fun:resJson(-1,<span class="string">&#39;该项目，非法操作或没有授予权限，被拦截&#39;</span>))</span><br /><span class="line">        <span class="built_in">return</span></span><br /><span class="line">    end</span><br /><span class="line"> </span><br /><span class="line">    --所有验证通过，最后写入redis缓存</span><br /><span class="line">    ok, err = reds:set_key(get_info,1)</span><br /><span class="line">    ngx.say(fun:resJson(0,<span class="string">&#39;该项目鉴权成功,可以访问&#39;</span>));</span><br /><span class="line">    <span class="built_in">return</span></span><br /><span class="line">end</span><br /><span class="line">--3.redis找到了信息鉴权成功</span><br /><span class="line">ngx.say(fun:resJson(0,<span class="string">&#34;该项目鉴权成功,可以访问!&#34;</span>))</span><br /></pre></td></tr></tbody></table></figure>
+<h3 id="ini-lua"><a href="#ini-lua" class="headerlink" title="ini.lua"></a>ini.lua</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /></pre></td><td class="code"><pre><span class="line">--配置相关方法</span><br /><span class="line"><span class="built_in">local</span> _CONF = {}</span><br /><span class="line">--返回redis配置文件</span><br /><span class="line"><span class="keyword">function</span> _CONF.redis()</span><br /><span class="line">    <span class="built_in">local</span>  redis_config = {host=<span class="string">&#39;127.0.0.1&#39;</span>,pass=<span class="string">&#39;123456&#39;</span>,port=6379} --redis配置项</span><br /><span class="line">    <span class="built_in">return</span> redis_config</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line">--返回mysql配置文件</span><br /><span class="line"><span class="keyword">function</span> _CONF.mysql()</span><br /><span class="line">    <span class="built_in">local</span> mysql_config = {host=<span class="string">&#39;127.0.0.1&#39;</span>,port=3306,database=<span class="string">&#39;test&#39;</span>,user=<span class="string">&#39;root&#39;</span>,password=<span class="string">&#39;123456&#39;</span>} --mysql的配置项</span><br /><span class="line">    <span class="built_in">return</span> mysql_config</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line"><span class="built_in">return</span> _CONF</span><br /></pre></td></tr></tbody></table></figure>
+<h3 id="mysql-pool-lua"><a href="#mysql-pool-lua" class="headerlink" title="mysql_pool.lua"></a>mysql_pool.lua</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /></pre></td><td class="code"><pre><span class="line">--连接mysql</span><br /><span class="line"><span class="built_in">local</span> mysql = require <span class="string">&#34;resty.mysql&#34;</span></span><br /><span class="line"><span class="built_in">local</span> mysql_pool = {}</span><br /><span class="line"><span class="keyword">function</span> mysql_pool:get_connect()</span><br /><span class="line"><span class="keyword">if</span> ngx.ctx[mysql_pool] <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#39;返回mysql连接池成功&#39;</span>,ngx.ctx[mysql_pool]</span><br /><span class="line">end</span><br /><span class="line"><span class="built_in">local</span> db, err_mysql = mysql:new()</span><br /><span class="line"><span class="keyword">if</span> not db <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;failed to instantiate mysql&#34;</span></span><br /><span class="line">end</span><br /><span class="line">db:set_timeout(1000) -- 1 sec</span><br /><span class="line"><span class="built_in">local</span> ok, err_mysql, errno, sqlstate = db:connect{</span><br /><span class="line">    host = conf.mysql()[<span class="string">&#39;host&#39;</span>],</span><br /><span class="line">    port = conf.mysql()[<span class="string">&#39;port&#39;</span>],</span><br /><span class="line">    database = conf.mysql()[<span class="string">&#39;database&#39;</span>],</span><br /><span class="line">    user = conf.mysql()[<span class="string">&#39;user&#39;</span>],</span><br /><span class="line">    password = conf.mysql()[<span class="string">&#39;password&#39;</span>],</span><br /><span class="line">    max_packet_size = 1024 * 1024</span><br /><span class="line">}</span><br /><span class="line"><span class="keyword">if</span> not ok <span class="keyword">then</span></span><br /><span class="line">--ngx.say(fun.resJson(-1,<span class="string">&#34;mysql connect failed&#34;</span>))</span><br /><span class="line"><span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;mysql conncet failed&#34;</span></span><br /><span class="line">end</span><br /><span class="line">--存储mysql连接池并返回</span><br /><span class="line">ngx.ctx[mysql_pool] = db</span><br /><span class="line"><span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#39;mysql连接成功&#39;</span>,ngx.ctx[mysql_pool]</span><br /><span class="line"> </span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line"> </span><br /><span class="line">--关闭mysql连接池</span><br /><span class="line"><span class="keyword">function</span> mysql_pool:close()</span><br /><span class="line"><span class="keyword">if</span> ngx.ctx[mysql_pool] <span class="keyword">then</span></span><br /><span class="line">ngx.ctx[mysql_pool]:set_keepalive(60000, 1000)</span><br /><span class="line">ngx.ctx[mysql_pool] = nil</span><br /><span class="line">end</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line"> </span><br /><span class="line">--执行sql查询</span><br /><span class="line"><span class="keyword">function</span> mysql_pool:query(sql)</span><br /><span class="line">--ngx.say(sql)</span><br /><span class="line"><span class="built_in">local</span> ret,msg,client = self:get_connect()</span><br /><span class="line">--连接数据库失败，返回错误信息</span><br /><span class="line"><span class="keyword">if</span> not ret <span class="keyword">then</span></span><br /><span class="line"><span class="built_in">return</span> <span class="literal">false</span>,msg</span><br /><span class="line">end</span><br /><span class="line">--连接成功后执行sql查询,执行失败返回错误信息</span><br /><span class="line"><span class="built_in">local</span> res,errmsg,errno,sqlstate = client:query(sql)</span><br /><span class="line">--self:close()</span><br /><span class="line"><span class="keyword">if</span> not res <span class="keyword">then</span></span><br /><span class="line"><span class="built_in">return</span> <span class="literal">false</span>,errmsg</span><br /><span class="line">end</span><br /><span class="line">--ngx.say(res[1][<span class="string">&#39;appid&#39;</span>])</span><br /><span class="line">--ngx.say(res[1][<span class="string">&#39;ip&#39;</span>])</span><br /><span class="line">--执行成功，返回信息</span><br /><span class="line"><span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#34;查询信息成功&#34;</span>,res</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line"><span class="built_in">return</span> mysql_pool</span><br /></pre></td></tr></tbody></table></figure>
+<p>　　</p>
+<h3 id="redis-pool-lua"><a href="#redis-pool-lua" class="headerlink" title="redis_pool.lua"></a>redis_pool.lua</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span> redis = require(<span class="string">&#34;resty.redis&#34;</span>)</span><br /><span class="line"><span class="built_in">local</span> redis_pool = {}</span><br /><span class="line">--连接redis</span><br /><span class="line"><span class="keyword">function</span> redis_pool:get_connect()</span><br /><span class="line">    <span class="keyword">if</span> ngx.ctx[redis_pool] <span class="keyword">then</span></span><br /><span class="line">        <span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#34;redis连接成功&#34;</span>,ngx.ctx[redis_pool]</span><br /><span class="line">    end</span><br /><span class="line">    <span class="built_in">local</span> red = redis:new()</span><br /><span class="line">    red:set_timeout(1000) -- 1 sec</span><br /><span class="line">    <span class="built_in">local</span> ok, err = red:connect(conf.redis()[<span class="string">&#39;host&#39;</span>],conf.redis()[<span class="string">&#39;port&#39;</span>])</span><br /><span class="line"><span class="keyword">if</span> not ok <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;failed to connect redis&#34;</span></span><br /><span class="line">end</span><br /><span class="line">--设置redis密码</span><br /><span class="line"><span class="built_in">local</span> count, err = red:get_reused_times()</span><br /><span class="line"><span class="keyword">if</span> 0 == count <span class="keyword">then</span></span><br /><span class="line">    ok, err = red:auth(conf.redis()[<span class="string">&#39;pass&#39;</span>])</span><br /><span class="line"><span class="keyword">if</span> not ok <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;redis failed to auth&#34;</span></span><br /><span class="line">end</span><br /><span class="line">    elseif err <span class="keyword">then</span></span><br /><span class="line">        <span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;redis failed to get reused times&#34;</span></span><br /><span class="line">end</span><br /><span class="line">--选择redis数据库</span><br /><span class="line">ok, err = red:select(0)</span><br /><span class="line"><span class="keyword">if</span> not ok <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">false</span>,<span class="string">&#34;redis connect failed &#34;</span></span><br /><span class="line">end</span><br /><span class="line">--建立redis连接池</span><br /><span class="line">ngx.ctx[redis_pool] = red</span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#39;redis连接成功&#39;</span>,ngx.ctx[redis_pool]</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line">--关闭连接池</span><br /><span class="line"><span class="keyword">function</span> redis_pool:close()</span><br /><span class="line">    <span class="keyword">if</span> ngx.ctx[redis_pool] <span class="keyword">then</span></span><br /><span class="line">        ngx.ctx[redis_pool]:set_keepalive(60000, 300)</span><br /><span class="line">        ngx.ctx[redis_pool] = nil</span><br /><span class="line">    end</span><br /><span class="line">end</span><br /><span class="line">---获取key的值</span><br /><span class="line"><span class="keyword">function</span> redis_pool:get_key(str)</span><br /><span class="line">    <span class="built_in">local</span> res,err,client = self:get_connect()</span><br /><span class="line">    <span class="keyword">if</span> not res <span class="keyword">then</span></span><br /><span class="line">        <span class="built_in">return</span> <span class="literal">false</span>,err</span><br /><span class="line">    end</span><br /><span class="line"><span class="built_in">local</span> keys = client:get(str)</span><br /><span class="line">--self:close()</span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#34;获取key成功&#34;</span>,keys</span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line">--设置key的值</span><br /><span class="line"><span class="keyword">function</span> redis_pool:set_key(str,value)</span><br /><span class="line">    <span class="built_in">local</span> res,err,client = self:get_connect()</span><br /><span class="line">        <span class="keyword">if</span> not res <span class="keyword">then</span></span><br /><span class="line">    <span class="built_in">return</span> <span class="literal">false</span>,err</span><br /><span class="line">end</span><br /><span class="line">client:<span class="built_in">set</span>(str,value)</span><br /><span class="line">--self:close()</span><br /><span class="line"><span class="built_in">return</span> <span class="literal">true</span>,<span class="string">&#34;成功设置key&#34;</span></span><br /><span class="line">end</span><br /><span class="line"> </span><br /><span class="line"><span class="built_in">return</span> redis_pool</span><br /></pre></td></tr></tbody></table></figure>
+<h3 id="fun-lua"><a href="#fun-lua" class="headerlink" title="fun.lua"></a>fun.lua</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span><br /><span class="line">69</span><br /></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span> _M = {}</span><br /><span class="line"></span><br /><span class="line">--返回json信息公用方法</span><br /><span class="line"><span class="keyword">function</span> _M:resJson(status,mes)</span><br /><span class="line">    <span class="built_in">local</span> arr_return = {}</span><br /><span class="line">    arr_return[<span class="string">&#39;status&#39;</span>] = status</span><br /><span class="line">    arr_return[<span class="string">&#39;msg&#39;</span>] = mes</span><br /><span class="line">    <span class="built_in">return</span> cjson.encode(arr_return)</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line">--字符串按指定字符拆分公用方法</span><br /><span class="line"><span class="keyword">function</span> _M:lua_string_split(str, split_char)    </span><br /><span class="line">    <span class="built_in">local</span> sub_str_tab = {}; </span><br /><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) <span class="keyword">do</span>        </span><br /><span class="line">        <span class="built_in">local</span> pos = string.find(str, split_char);  </span><br /><span class="line">        <span class="keyword">if</span> (not pos) <span class="keyword">then</span>            </span><br /><span class="line">            <span class="built_in">local</span> size_t = table.getn(sub_str_tab)</span><br /><span class="line">            table.insert(sub_str_tab,size_t+1,str);</span><br /><span class="line">            <span class="built_in">break</span>;  </span><br /><span class="line">            end</span><br /><span class="line">    </span><br /><span class="line">        <span class="built_in">local</span> sub_str = string.sub(str, 1, pos - 1);              </span><br /><span class="line">        <span class="built_in">local</span> size_t = table.getn(sub_str_tab)</span><br /><span class="line">        table.insert(sub_str_tab,size_t+1,sub_str);</span><br /><span class="line">        <span class="built_in">local</span> t = string.len(str);</span><br /><span class="line">        str = string.sub(str, pos + 1, t);   </span><br /><span class="line">    end    </span><br /><span class="line">    <span class="built_in">return</span> sub_str_tab;</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line">--检测post过来的参数合法性</span><br /><span class="line"><span class="keyword">function</span> _M:check_post_arg()</span><br /><span class="line">    <span class="built_in">local</span> rule_count =  3</span><br /><span class="line">    --接收POST过来的数据</span><br /><span class="line">    ngx.req.read_body()</span><br /><span class="line">    <span class="built_in">local</span> arg = ngx.req.get_post_args()</span><br /><span class="line">    <span class="built_in">local</span> arg_count = 0 --存储参数个数</span><br /><span class="line">    <span class="built_in">local</span> arg_table = {appid,ip,appkey}</span><br /><span class="line">    <span class="built_in">local</span> get_info --参数拼接字符串，方便redis操作</span><br /><span class="line">    --遍历post过来的参数</span><br /><span class="line">    <span class="keyword">for</span> k,v <span class="keyword">in</span> pairs(arg) <span class="keyword">do</span></span><br /><span class="line">        arg_count = arg_count+1</span><br /><span class="line">        arg_table[k] = v</span><br /><span class="line">    end</span><br /><span class="line"></span><br /><span class="line">    --参数赋值</span><br /><span class="line">    appid = arg_table[<span class="string">&#39;appid&#39;</span>] </span><br /><span class="line">    ip = arg_table[<span class="string">&#39;ip&#39;</span>]</span><br /><span class="line">    appkey = arg_table[<span class="string">&#39;appkey&#39;</span>]</span><br /><span class="line">    --判断参数个数传递过来的参数要与规定的个数一致</span><br /><span class="line">    <span class="keyword">if</span> rule_count == arg_count <span class="keyword">then</span></span><br /><span class="line">        <span class="keyword">if</span> string.len(appid) == 0 <span class="keyword">then</span></span><br /><span class="line">            <span class="built_in">return</span>  {status=-1,msg=<span class="string">&#39;参数传递错误，被拦截&#39;</span>}</span><br /><span class="line">        end</span><br /><span class="line">        <span class="keyword">if</span> string.len(ip) == 0 <span class="keyword">then</span> </span><br /><span class="line">            <span class="built_in">return</span>  {status=-1,msg=<span class="string">&#39;参数传递错误，被拦截&#39;</span>}</span><br /><span class="line">        end</span><br /><span class="line">        <span class="keyword">if</span> string.len(appkey) == 0 <span class="keyword">then</span> </span><br /><span class="line">            <span class="built_in">return</span>  {status=-1,msg=<span class="string">&#39;参数传递错误，被拦截&#39;</span>}</span><br /><span class="line">        end </span><br /><span class="line">        ---参数正确返回参数信息</span><br /><span class="line">        <span class="built_in">return</span>  {status=0,msg=<span class="string">&#39;参数校验成功&#39;</span>,arg_tables=arg_table}</span><br /><span class="line">    <span class="keyword">else</span></span><br /><span class="line">        <span class="built_in">return</span>  {status=-1,msg=<span class="string">&#39;参数传递错误，被拦截&#39;</span>}</span><br /><span class="line">    end</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line"><span class="built_in">return</span> _M</span><br /></pre></td></tr></tbody></table></figure>
+<h3 id="配置nginx-conf文件"><a href="#配置nginx-conf文件" class="headerlink" title="配置nginx.conf文件"></a>配置nginx.conf文件</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line">上面的lua文件都是放在/data/<span class="built_in">local</span>/openresty/lualib/myxz/目录下</span><br /><span class="line">location /lua{</span><br /><span class="line">lua_code_cache on;</span><br /><span class="line">content_by_lua_file /data/<span class="built_in">local</span>/openresty/lualib/myxz/purview.lua;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<h3 id="mysql数据设计"><a href="#mysql数据设计" class="headerlink" title="mysql数据设计"></a>mysql数据
+</h3>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-269_BLEU-a-Method-for-Automatic-Evaluation-of-Machine/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-269_BLEU-a-Method-for-Automatic-Evaluation-of-Machine/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-269_BLEU-a-Method-for-Automatic-Evaluation-of-Machine/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/26_lua%E9%89%B4%E6%9D%83/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/26_lua%E9%89%B4%E6%9D%83/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/26_lua%E9%89%B4%E6%9D%83/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-269_BLEU-a-Method-for-Automatic-Evaluation-of-Machine/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

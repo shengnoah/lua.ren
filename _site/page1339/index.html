@@ -1,0 +1,1873 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page1339/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page1339/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/182_Lua%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E4%BB%A3%E7%A0%81/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~18 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/182_Lua%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E4%BB%A3%E7%A0%81/" rel="bookmark" title="Lua运行时更新代码" itemprop="url">Lua运行时更新代码</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>			&lt;p&gt;      最近沉迷lua脚本热更，想说这个可以提高多少菜鸡的调试效率，找了网上好多文章，但是都不行，尝试了很久，并且自己测试和学习，写了一遍，勉强能热更了（还是有个问题，要按2次才能输出正确热更的值，一直找不到，有人找到麻烦告诉我一下308164213）。下面记录一下找热更的过程。&lt;/p&gt;
+</code></pre></div></div>
+
+<p>一、用来卸载表格的加载
+–最简单粗暴的热更新就是将package.loaded[modelname]的值置为nil，强制重新加载：
+function reload_module_obsolete(module_name)
+    package.loaded[module_name] = nil
+    require(module_name)
+end
+–这样做虽然能完成热更，但问题是已经引用了该模块的地方不会得到更新， 因此我们需要将引用该模块的地方的值也做对应的更新。
+function ReloadUtil.Reload_Module(module_name)
+    local old_module = _G[module_name]</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package.loaded[module_name] = nil
+require (module_name)
+
+local new_module = _G[module_name]
+for k, v in pairs(new_module) do
+    old_module[k] = v
+end
+
+package.loaded[module_name] = old_module end
+</code></pre></div></div>
+
+<p>二、我认为逻辑最清晰的，但是可能是我不会用吧！
+源链接：https://github.com/tickbh/td_rlua/wiki/Lua-%E7%83%AD%E6%9B%B4%E6%96%B0%E5%B0%8F%E7%BB%93</p>
+
+<p>–region 利用_ENV环境，在加载的时候把数据加载到_ENV下，然后再通过对比的方式修改_G底下的值，从而实现热更新，函数 – 失败</p>
+
+<p>function ReloadUtil.hotfix(chunk, check_name)
+    check_name = check_name or ‘hotfix’
+    local env = {}
+    setmetatable(env, { __index = _G })
+    local f, err = load(chunk, check_name,  ‘t’, env)
+    assert(f,err)
+    local ok, err = pcall(f)
+    assert(ok,err)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local protection = {
+    setmetatable = true,
+    pairs = true,
+    ipairs = true,
+    next = true,
+    require = true,
+    _ENV = true,
+}
+--防止重复的table替换，造成死循环
+local visited_sig = {}
+
+function ReloadUtil.update_table(newTable, oldTable, name, deep)
+    --对某些关键函数不进行比对
+    if protection[newTable] or protection[oldTable] then return end
+    --如果原值与当前值内存一致，值一样不进行对比
+    if newTable == oldTable then return end
+    local signature = tostring(oldTable)..tostring(newTable)
+    if visited_sig[signature] then return end
+    visited_sig[signature] = true
+    --遍历对比值，如进行遍历env类似的步骤
+    for name, newValue in pairs(newTable) do
+        local old_value = oldTable[name]
+        if type(newValue) == type(old_value) then
+            if type(newValue) == 'function' then
+                ReloadUtil.update_func(newValue, old_value, name, deep..'  '..name..'  ')
+                oldTable[name] = newValue
+            elseif type(newValue) == 'table' then
+                ReloadUtil.update_table(newValue, old_value, name, deep..'  '..name..'  ')
+            end
+        else
+            oldTable[name] = newValue
+        end
+    end
+    --遍历table的元表，进行对比
+    local old_meta = debug.getmetatable(oldTable)
+    local new_meta = debug.getmetatable(newTable)
+    if type(old_meta) == 'table' and type(new_meta) == 'table' then
+        ReloadUtil.update_table(new_meta, old_meta, name..'s Meta', deep..'  '..name..'s Meta'..'  ' )
+    end
+end
+
+function ReloadUtil.update_func(newFunc, oldFunc, name, deep)
+    --取得原值所有的upvalue，保存起来
+    local old_upvalue_map = {}
+    for i = 1, math.huge do
+        local name, value = debug.getupvalue(oldFunc, i)
+        if not name then break end
+        old_upvalue_map[name] = value
+    end
+    --遍历所有新的upvalue，根据名字和原值对比，如果原值不存在则进行跳过，如果为其它值则进行遍历env类似的步骤
+    for i = 1, math.huge do
+        local name, value = debug.getupvalue(newFunc, i)
+        if not name then break end
+        local old_value = old_upvalue_map[name]
+        if old_value then
+            if type(old_value) ~= type(value) then
+                debug.setupvalue(newFunc, i, old_value)
+            elseif type(old_value) == 'function' then
+                ReloadUtil.update_func(value, old_value, name, deep..'  '..name..'  ')
+            elseif type(old_value) == 'table' then
+                ReloadUtil.update_table(value, old_value, name, deep..'  '..name..'  ')
+                debug.setupvalue(newFunc, i, old_value)
+            else
+                debug.setupvalue(newFunc, i, old_value)
+            end
+        end
+    end
+end
+
+--原理
+--利用_ENV环境，在加载的时候把数据加载到_ENV下，然后再通过对比的方式修改_G底下的值，从而实现热更新，函数
+for name,value in pairs(env) do
+    local g_value = _G[name]
+    if type(g_value) ~= type(value) then
+        _G[name] = value
+    elseif type(value) == 'function' then
+        ReloadUtil.update_func(value, g_value, name, 'G'..'  ')
+        _G[name] = value
+    elseif type(value) == 'table' then
+        ReloadUtil.update_table(value, g_value, name, 'G'..'  ')
+    end
+end
+return 0 end
+</code></pre></div></div>
+
+<p>function ReloadUtil.hotfix_file(debugName)
+    local newCode
+    local fp = io.open(debugName)
+    if fp then
+        newCode = fp:read(‘*all’)
+        io.close(fp)
+    end
+    if not newCode then
+        return -1
+    end
+    return ReloadUtil.hotfix(newCode, debugName)
+end</p>
+
+<p>–endregion</p>
+
+<p>三、有点复杂，递归了debug.getregistry()，然后去替换旧的值
+源链接：http://asqbtcupid.github.io/luahotupdate1-require/</p>
+
+<p>有介绍原理，讲得还蛮细的，学习了蛮多，但是这个递归真的是复杂，我注释掉了一些递归，能满足基本的需求。</p>
+
+<p>local ReloadUtil = {}</p>
+
+<p>local tableInsert = table.insert
+local tableRemove = table.remove
+local tableConcat = table.concat
+local ioPopen = io.popen
+local ioInput = io.input
+local ioRead = io.read
+local stringMatch = string.match
+local stringFind = string.find
+local stringSub = string.sub
+local stringGsub = string.gsub
+local packageLoaded = package.loaded
+local type = type
+local getfenv = getfenv
+local setfenv = setfenv
+local loadstring = loadstring
+local mathHuge = math.huge
+local debugGetupvalue = debug.getupvalue
+local debugSetupvalue = debug.setupvalue
+local debugGetmetatable = debug.getmetatable
+local debugSetfenv = debug.setfenv</p>
+
+<p>function ReloadUtil.FailNotify(…)
+    printAError(…)
+end</p>
+
+<p>function ReloadUtil.DebugNofity(…)
+    print(…)
+end</p>
+
+<p>function ReloadUtil.ErrorHandle(e)
+    ReloadUtil.FailNotify(“HotUpdate Errorn”..tostring(e))
+    ReloadUtil.ErrorHappen = true
+end</p>
+
+<p>function ReloadUtil.InitProtection()
+    ReloadUtil.Protection = {}
+    local Protection = ReloadUtil.Protection
+    Protection[setmetatable] = true
+    Protection[pairs] = true
+    Protection[ipairs] = true
+    Protection[next] = true
+    Protection[require] = true
+    Protection[ReloadUtil] = true
+    Protection[ReloadUtil.Meta] = true
+    Protection[math] = true
+    Protection[string] = true
+    Protection[table] = true
+end</p>
+
+<p>local function Normalize(path)
+    path = path:gsub(“/”,””)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local pathLen = #path
+if path:sub(pathLen, pathLen) == "\" then
+    path = path:sub(1, pathLen - 1)
+end
+
+local parts = { }
+for w in path:gmatch("[^\]+") do
+    if     w == ".." and #parts ~=0 then tableRemove(parts)
+    elseif w ~= "."  then tableInsert(parts, w)
+    end
+end
+return tableConcat(parts, "\") end
+</code></pre></div></div>
+
+<p>– 根据给的路径，找到路径下所有文档，HU.FileMap[FileName] = {SysPath = line, LuaPath = luapath}
+function ReloadUtil.InitFileMap(RootPath)
+    local systemPathList = {}
+    local HotUpdateDic = ReloadUtil.HotUpdateDic
+    local OldCode = ReloadUtil.OldCode
+    RootPath = Normalize(RootPath)
+    –获取一个File对象其下的所有文档和目录的绝对路径: 的所有文档(/S/B)，不包括文档夹（/A:A），ioPopen返回文档句柄file handle
+    –todo 这里有的问题，多次启动后会报bad file decorator ，检查是否是打开文档没有关闭导致
+    local file = ioPopen(“dir /S/B /A:A "”..RootPath..”"”)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for SysPath in ioInput(file):lines() do
+    local FileName = stringMatch(SysPath,".*\(.*)%.lua")
+    --todo meta 优化一下regex
+    local metaFile = stringMatch(SysPath,".*\(.*)%.lua.meta")
+    if FileName ~= nil and metaFile == nil then
+        --todo !!! luaPath在保存的时候是按文档夹路径保存的比如：game.modules.XXX.lua，所以可能要自己搞对这个路径
+
+        local startIndex = stringFind(SysPath,"game")
+        local luaPath = stringSub(SysPath, startIndex, #SysPath -4)
+        luaPath = stringGsub(luaPath, "\", ".")
+        HotUpdateDic[luaPath] = SysPath
+        tableInsert(systemPathList,SysPath)
+        -- 初始化旧代码
+        ioInput(SysPath)
+        OldCode[SysPath] = ioRead("*all")
+        ioInput():close()
+    end
+end
+
+file:close()
+
+return systemPathList end
+</code></pre></div></div>
+
+<p>function ReloadUtil.InitFakeTable()
+    local meta = {}
+    ReloadUtil.Meta = meta
+    local function FakeT() return setmetatable({}, meta) end
+    local function EmptyFunc() end
+    local function pairs() return EmptyFunc end
+    local function setmetatable(t, metaT)
+        ReloadUtil.MetaMap[t] = metaT
+        return t
+    end
+    local function getmetatable(t, metaT)
+        return setmetatable({}, t)
+    end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local function require(LuaPath)
+    if not ReloadUtil.RequireMap[LuaPath] then
+        local FakeTable = FakeT()
+        ReloadUtil.RequireMap[LuaPath] = FakeTable
+    end
+    return ReloadUtil.RequireMap[LuaPath]
+end
+
+function meta.__index(table, key)
+    if key == "setmetatable" then
+        return setmetatable
+    elseif key == "pairs" or key == "ipairs" then
+        return pairs
+    elseif key == "next" then
+        return EmptyFunc
+    elseif key == "require" then
+        return require
+    else
+        local FakeTable = FakeT()
+        rawset(table, key, FakeTable)
+        return FakeTable
+    end
+end
+function meta.__newindex(table, key, value) rawset(table, key, value) end
+function meta.__call() return FakeT(), FakeT(), FakeT() end
+function meta.__add() return meta.__call() end
+function meta.__sub() return meta.__call() end
+function meta.__mul() return meta.__call() end
+function meta.__div() return meta.__call() end
+function meta.__mod() return meta.__call() end
+function meta.__pow() return meta.__call() end
+function meta.__unm() return meta.__call() end
+function meta.__concat() return meta.__call() end
+function meta.__eq() return meta.__call() end
+function meta.__lt() return meta.__call() end
+function meta.__le() return meta.__call() end
+function meta.__len() return meta.__call() end
+return FakeT end
+</code></pre></div></div>
+
+<p>function ReloadUtil.IsNewCode(SysPath)
+    ioInput(SysPath)
+    local newCode = ioRead(“*all”)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local oldCode = ReloadUtil.OldCode[SysPath]
+if oldCode == newCode then
+    ioInput():close()
+    return false
+end
+
+ReloadUtil.DebugNofity(SysPath)
+return true, newCode end
+</code></pre></div></div>
+
+<p>function ReloadUtil.GetNewObject(newCode, LuaPath, SysPath)
+    –loadstring 一段lua代码以后，会经过语法解析返回一个函数，执行返回的函数时，字符串中的代码就被执行了。
+    local NewFunction = loadstring(newCode)
+    if not NewFunction then
+        ReloadUtil.FailNotify(SysPath..” has syntax error.”)
+        collectgarbage(“collect”)
+    else
+        – 把加载的字符串放置在空环境了，防止报错
+        setfenv(NewFunction, ReloadUtil.FakeENV)
+        local NewObject
+        ReloadUtil.ErrorHappen = false
+        –类似其它语言里的 try-catch, xpcall 类似 pcall xpcall接受两个参数：调用函数、错误处理函数
+        – todo 父类没拿到
+        xpcall(function () NewObject = NewFunction() end, ReloadUtil.ErrorHandle)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    if not ReloadUtil.ErrorHappen then
+        ReloadUtil.OldCode[SysPath] = newCode
+        return NewObject
+    else
+        collectgarbage("collect")
+    end
+end end
+</code></pre></div></div>
+
+<p>function ReloadUtil.ResetENV(object, name, From, Deepth)
+    local visited = {}
+    local function f(object, name)
+        if not object or visited[object] then return end
+        visited[object] = true
+        if type(object) == “function” then
+            ReloadUtil.DebugNofity(Deepth..”HU.ResetENV”, name, “  from:”..From)
+            xpcall(function () setfenv(object, ReloadUtil.ENV) end, ReloadUtil.FailNotify)
+        elseif type(object) == “table” then
+            ReloadUtil.DebugNofity(Deepth..”HU.ResetENV”, name, “  from:”..From)
+            for k, v in pairs(object) do
+                f(k, tostring(k)..”__key”, “ HU.ResetENV “, Deepth..”    “ )
+                f(v, tostring(k), “ HU.ResetENV “, Deepth..”    “)
+            end
+        end
+    end
+    f(object, name)
+end</p>
+
+<p>– 遍历_G这张全局表，替换HU.ChangedFuncList 有改动列表 的函数
+function ReloadUtil.Travel_G()
+    local visited = {}
+    local ChangedFuncList = ReloadUtil.ChangedFuncList
+    visited[ReloadUtil] = true</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local function f(table)
+    if (type(table) ~= "function" and type(table) ~= "table") or visited[table] or ReloadUtil.Protection[table] then return end
+
+    visited[table] = true
+
+    if type(table) == "function" then
+        for i = 1, mathHuge do
+            local name, value = debugGetupvalue(table, i)
+            if not name then break end
+
+            if type(value) == "function" then
+                for _, funcs in ipairs(ChangedFuncList) do
+                    if value == funcs.OldObject then
+                        debugSetupvalue(table, i, funcs.NewObject)
+                    end
+                end
+            end
+            -- todo
+            --f(value)
+        end
+    elseif type(table) == "table" then
+        -- 不要漏掉元表和upvalue的表，元表的获参考debug.getmetatable，
+        -- todo 这样对于有metatable这个key的元表，也能正确获取。
+        --f(debugGetmetatable(table))
+
+        local changeIndexList = {}
+        for key, value in pairs(table) do
+            -- todo 还有注意table的key也可以是函数。
+            --f(key)
+            f(value)
+
+            if type(value) == "function" then
+                for _, funcs in ipairs(ChangedFuncList) do
+                    if value == funcs.OldObject then
+                        table[key] = funcs.NewObject
+                    end
+                end
+            end
+
+            -- 找出改动的index
+            if type(key) == "function" then
+                for index, funcs in ipairs(ChangedFuncList) do
+                    if key == funcs.OldObject then
+                        changeIndexList[#changeIndexList + 1] = index
+                    end
+                end
+            end
+        end
+
+        -- 修改改动的值
+        for _, index in ipairs(changeIndexList) do
+            local funcs = ChangedFuncList[index]
+            table[funcs.NewObject] = table[funcs.OldObject]
+            table[funcs.OldObject] = nil
+        end
+    end
+end
+
+--遍历_G这张全局表，_G在registryTable里
+--f(_G)
+--如果有宿主语言，那么还要遍历一下注册表，用debug.getregistry()获得。
+local registryTable = debug.getregistry()
+f(registryTable) end
+</code></pre></div></div>
+
+<p>function ReloadUtil.UpdateTable(OldTable, NewTable, Name, From, Deepth)
+    if ReloadUtil.Protection[OldTable] or ReloadUtil.Protection[NewTable] then return end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if OldTable == NewTable then return end
+
+local signature = tostring(OldTable)..tostring(NewTable)
+
+if ReloadUtil.VisitedSig[signature] then return end
+
+ReloadUtil.VisitedSig[signature] = true
+ReloadUtil.DebugNofity(Deepth.."HU.UpdateTable "..Name.."  from:"..From)
+
+for ElementName, newValue in pairs(NewTable) do
+    local OldElement = OldTable[ElementName]
+    if type(newValue) == type(OldElement) then
+        if type(newValue) == "function" then
+            ReloadUtil.UpdateOneFunction(OldElement, newValue, ElementName, OldTable, "HU.UpdateTable", Deepth.."    ")
+        elseif type(newValue) == "table" then
+            ReloadUtil.UpdateTable(OldElement, newValue, ElementName, "HU.UpdateTable", Deepth.."    ")
+        end
+    elseif OldElement == nil and type(newValue) == "function" then
+        -- 新增的函数，添加到旧环境里
+        if pcall(setfenv, newValue, ReloadUtil.ENV) then
+            OldTable[ElementName] = newValue
+        end
+    end
+end
+
+-- todo 更新metatable
+--local OldMeta = debug.getmetatable(OldTable)
+--local NewMeta = ReloadUtil.MetaMap[NewTable]
+--if type(OldMeta) == "table" and type(NewMeta) == "table" then
+--    ReloadUtil.UpdateTable(OldMeta, NewMeta, Name.."'s Meta", "HU.UpdateTable", Deepth.."    ")
+--end end
+</code></pre></div></div>
+
+<p>– Upvalue 是指那些函数外被引用到的local变量
+function ReloadUtil.UpdateUpvalue(OldFunction, NewFunction, Name, From, Deepth)
+    ReloadUtil.DebugNofity(Deepth..”HU.UpdateUpvalue”, Name, “  from:”..From)
+    local OldUpvalueMap = {}
+    local OldExistName = {}
+    – 记录旧的upvalue表
+    for i = 1, mathHuge do
+        local name, value = debugGetupvalue(OldFunction, i)
+        if not name then break end
+        OldUpvalueMap[name] = value
+        OldExistName[name] = true
+    end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- 新的upvalue表进行替换
+for i = 1, mathHuge do
+    local name, value = debugGetupvalue(NewFunction, i)
+    if not name then break end
+    if OldExistName[name] then
+        local OldValue = OldUpvalueMap[name]
+        if type(OldValue) ~= type(value) then
+            -- 新的upvalue类型不一致时，用旧的upvalue
+            debugSetupvalue(NewFunction, i, OldValue)
+        elseif type(OldValue) == "function" then
+            -- 替换单个函数
+            ReloadUtil.UpdateOneFunction(OldValue, value, name, nil, "HU.UpdateUpvalue", Deepth.."    ")
+        elseif type(OldValue) == "table" then
+            -- 对table里面的函数继续递归替换
+            ReloadUtil.UpdateTable(OldValue, value, name, "HU.UpdateUpvalue", Deepth.."    ")
+            debugSetupvalue(NewFunction, i, OldValue)
+        else
+            -- 其他类型数据有改变，也要用旧的
+            debugSetupvalue(NewFunction, i, OldValue)
+        end
+    else
+        -- 对新添加的upvalue设置正确的环境表
+        ReloadUtil.ResetENV(value, name, "HU.UpdateUpvalue", Deepth.."    ")
+    end
+end end
+</code></pre></div></div>
+
+<p>function ReloadUtil.UpdateOneFunction(OldObject, NewObject, FuncName, OldTable, From, Deepth)
+    if ReloadUtil.Protection[OldObject] or ReloadUtil.Protection[NewObject] then return end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if OldObject == NewObject then return end
+
+local signature = tostring(OldObject)..tostring(NewObject)
+
+if ReloadUtil.VisitedSig[signature] then return end
+ReloadUtil.DebugNofity(Deepth.."HU.UpdateOneFunction "..FuncName.."  from:"..From)
+ReloadUtil.VisitedSig[signature] = true
+--最后注意把热更新的函数的环境表再改回旧函数的环境表即可，方法是setfenv(newfunction, getfenv(oldfunction))。
+if pcall(debugSetfenv, NewObject, getfenv(OldObject)) then
+    ReloadUtil.UpdateUpvalue(OldObject, NewObject, FuncName, "HU.UpdateOneFunction", Deepth.."    ")
+    ReloadUtil.ChangedFuncList[#ReloadUtil.ChangedFuncList + 1] = {OldObject = OldObject,NewObject = NewObject,FuncName = FuncName,OldTable = OldTable}
+end end
+</code></pre></div></div>
+
+<p>function ReloadUtil.ReplaceOld(OldObject, NewObject, LuaPath, From)
+    if type(OldObject) == type(NewObject) then
+        if type(NewObject) == “table” then
+            ReloadUtil.UpdateTable(OldObject, NewObject, LuaPath, From, “”)
+        elseif type(NewObject) == “function” then
+            ReloadUtil.UpdateOneFunction(OldObject, NewObject, LuaPath, nil, From, “”)
+        end
+    end
+end</p>
+
+<p>function ReloadUtil.HotUpdateCode(LuaPath, SysPath)
+    local OldObject = packageLoaded[LuaPath]
+    if not OldObject then
+        – 没加载的就不热更？？
+        return
+    end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local isNew,newCode = ReloadUtil.IsNewCode(SysPath)
+if not isNew then
+    return
+end
+
+local newObject = ReloadUtil.GetNewObject(newCode,SysPath,LuaPath)
+-- 更新旧代码
+ReloadUtil.ReplaceOld(OldObject, newObject, LuaPath, "Main")
+
+--原理
+--利用_ENV环境，在加载的时候把数据加载到_ENV下，然后再通过对比的方式修改_G底下的值，从而实现热更新，函数
+--setmetatable(ReloadUtil.FakeENV, nil)
+--todo ？？
+--ReloadUtil.UpdateTable(ReloadUtil.ENV, ReloadUtil.FakeENV, " ENV ", "Main", "")
+
+-- 替换完，上一次的代码就是旧代码
+ReloadUtil.OldCode[SysPath] = newCode end
+</code></pre></div></div>
+
+<p>– 外部调用（先Init需要的路径，然后Update是热更时候调用的）</p>
+
+<p>—@param RootPath 需要被更新的文档夹路径
+—@param UpdateListFile 需要被更新的文档列表,不传为整个文档夹，会卡
+function ReloadUtil.Init(RootPath, ENV)
+    ReloadUtil.HotUpdateDic = {}
+    ReloadUtil.FileMap = {}
+    ReloadUtil.OldCode = {}
+    ReloadUtil.ChangedFuncList = {}
+    ReloadUtil.VisitedSig = {}
+    ReloadUtil.FakeENV = ReloadUtil.InitFakeTable()()
+    –当我们加载lua模块的时候，这时候这个模块信息并不像初始化全局代码一样，就算提前设置了package.loaded[“AA”] = nil,
+    –也不会出现在env中同时也不会调用_G的__newindex函数，也就是说env[“AA”]为空，故这种写法无法进行热更新，所以通常模块的写法改成如下
+    –定义模块AA
+    local AA = {}
+    –相当于package.seeall
+    setmetatable(AA, {__index = _G})
+    –环境隔离
+    local _ENV = AA
+    ReloadUtil.NewENV = _ENV
+    ReloadUtil.ENV = ENV or _G
+    ReloadUtil.InitProtection()
+    ReloadUtil.ALL = false
+    return ReloadUtil.InitFileMap(RootPath)
+end</p>
+
+<p>function ReloadUtil.Update()
+    ReloadUtil.VisitedSig = {}
+    ReloadUtil.ChangedFuncList = {}
+    for LuaPath, SysPath in pairs(ReloadUtil.HotUpdateDic) do
+        ReloadUtil.HotUpdateCode(LuaPath, SysPath)
+    end</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if #ReloadUtil.ChangedFuncList &gt; 0 then
+    ReloadUtil.Travel_G()
+end
+collectgarbage("collect") end
+</code></pre></div></div>
+
+<p>    我跟老大炫耀的时候，老大说，那你懂其中的原理吗，一下问懵我了，老大说，你要学习到其他的原理才能进步啊，不然就只是个会用工具的人。好有道理，搞得我羞愧难当，赶紧好好学习其中原理。零零碎碎学习了好久，感觉智商不大够。</p>
+
+<p>  upvalue
+Upvalue 是指那些函数外被引用到的local变量,比如：
+local a = 1
+function foo()</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print(a)
+</code></pre></div></div>
+
+<p>end</p>
+
+<p> 那么a就是这个foo的upvalue。</p>
+
+<p>getupvalue (f, up)</p>
+
+<p>此函数返回函数 f 的第 up 个上值的名字和值。 如果该函数没有那个上值，返回 nil 。 
+以 ‘(‘ （开括号）打头的变量名表示没有名字的变量 （去除了调试信息的代码块）。</p>
+
+<p>setupvalue (f, up, value):</p>
+
+<p>这个函数将 value 设为函数 f 的第 up 个上值。 如果函数没有那个上值，返回 nil 否则，返回该上值的名字。</p>
+
+<p>_G和debug.getregistry这2张表
+     学习的时候，我一直以为只有把_G这张全局表的旧值替换掉就好了，然后真正实施的时候，还是会有种种问题，实在是很糟糕，看这段代码的时候一直不是很理解，看了debug.getregistry的定义：</p>
+
+<p>debug.getregistry（）：返回注册表表，这是一个预定义出来的表， 可以用来保存任何 C 代码想保存的 Lua 值。</p>
+
+<p>还是半桶水，但是我有注意到_G这种表其实在debug.getregistry返回的这张注册表里有，所以最后就递归这张表其替换里面的旧值就好了。</p>
+
+<p>getfenv(object):
+返回对象的环境变量。</p>
+
+<p>setfenv（function,_ENV）
+设置一段代码的运行环境</p>
+
+<p>最后总结一下流程：</p>
+
+<p>1. 初始化需要热更的文档路径，用一张哈希表存下来：</p>
+
+<ol>
+  <li>对了InitFileMap这个函数有个要注意的，luaPath在保存的时候是按文档夹路径保存的比如：game.modules.XXX.lua，所以可能要自己搞对这个路径；</li>
+</ol>
+
+<p>2. io.popen(“dir /S/B /A:A "”..RootPath..”"”)</p>
+
+<p>获取一个File对象其下的所有文档和目录的绝对路径: 的所有文档(/S/B)，不包括文档夹（/A:A），io.popen返回文档句柄file handle
+2.  然后遍历这些路径，io.read(“*all”)读取所有的代码，判断是否是新代码，新的话记录到ChangedFuncList</p>
+
+<p>列表里面</p>
+
+<ol>
+  <li>
+    <p>新代码的话，就把加载的字符串放置在空环境了，防止报错setfenv(NewFunction, ReloadUtil.FakeENV)</p>
+  </li>
+  <li>
+    <p>代替旧代码，拿着ChangedFuncList列表到注册表(debug.getregistry())里面去找旧值，递归注册表的旧值替换成新的值</p>
+  </li>
+</ol>
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page1338/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1337/">1337</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1338/">1338</a></li>
+      
+    
+      
+        <li><strong class="current-page">1339</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1340/">1340</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1341/">1341</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page1340/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

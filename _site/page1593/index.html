@@ -1,0 +1,1536 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page1593/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page1593/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/1017_Evaluation-and-Solution-of-Urban-Crawl/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~34 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/1017_Evaluation-and-Solution-of-Urban-Crawl/" rel="bookmark" title="Evaluation and Solution of Urban Crawl" itemprop="url">Evaluation and Solution of Urban Crawl</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <script src="/assets/js/APlayer.min.js"> </script>
+<link rel="stylesheet" type="text/css" href="/assets/css/DPlayer.min.css" />
+<script src="/assets/js/DPlayer.min.js"> </script>
+<p>这是我与同学组队在2017年2月参加美国数学建模大赛（Interdisciplinary Contest In Modeling     ）的文章，比赛题目为：Sustainable Cities Needed</p>
+
+<p>题目原文为：</p>
+<p>Background:<br />Many communities are implementing smart growth initiatives in an effort to consider long range, sustainable planning goals. “Smart growth is about helping every town and city become a more economically prosperous, socially equitable, and environmentally sustainable place to live.”[2] Smart growth focuses on building cities that embrace the E’s of sustainability—Economically prosperous, socially Equitable, and Environmentally Sustainable. This task is more important than ever because the world is rapidly urbanizing. It is projected that by 2050, 66 percent of the world’s population will be urban—this will result in a projected 2.5 billion people being added to the urban population.[3] Consequently, urban planning has become increasingly important and necessary to ensure that people have access to equitable and sustainable homes, resources and jobs.<br />Smart growth is an urban planning theory that originated in 1990’s as a means to curb continued urban sprawl and reduce the loss of farmland surrounding urban centers. The ten principles for smart growth are<br />1 Mix land uses<br />2 Take advantage of compact building design<br />3 Create a range of housing opportunities and choices<br />4 Create walkable neighborhoods<br />5 Foster distinctive, attractive communities with a strong sense of place<br />6 Preserve open space, farmland, natural beauty, and critical environmental areas<br />7 Strengthen and direct development towards existing communities<br />8 Provide a variety of transportation choices<br />9 Make development decisions predictable, fair, and cost effective<br />10 Encourage community and stakeholder collaboration in development decisions<br />These broad principles must be tailored to a community’s unique needs to be effective.  Thus, any measure of success must incorporate the demographics, growth needs, and geographical conditions of a city as well as the goal to adhere to the three E’s.</p>
+<p>以下是我们小组的文章：</p>
+<h2 id="Evaluation-and-Solution-of-Urban-Crawl"><a href="#Evaluation-and-Solution-of-Urban-Crawl" class="headerlink" title="Evaluation and Solution of Urban Crawl"></a>Evaluation and Solution of Urban Crawl</h2>
+<h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3>
+<p>In this paper, based on theproblems, we divide our thinking into 4 parts.</p>
+<p>For task 1, we developa ’Successful Smart Growth’ index (SSG) to measure the governance of urbancrawl based on the impact of the ten principles on the three E’s and happiness.We used the rank correlation analysis and geometric compare scale to considerhow the factors were affected by each principle. Using this as a basis, wedetermine the influence level and furthermore the weights of the three E’s andhappiness in the SSG index. Finally we calculated the weighted sum of thenondimensionalized variance of three E’s and happiness and used that tocalculate our SSG index.</p>
+<p>For task 2, we appliedour model to two cities: TAKASAKI and Mobile City. Based on our assumptions, weuse the financial condition of the annual statement and the variance ratio atthe national level to represent the changes in three E’s and happiness. Afterthat, we nondimensionalized the variance of three E’s and happiness by usingthe algebraic model to calculate the variance ratio. Finally, we gave score ofthe SSG index of TAKASAKI and Mobile City.</p>
+<p>For task 3 &amp; 4, weproposed six individual initiatives and developed a more robust model — FSGPindex based on the situation of TAKASAKI and Mobile City. According to theproblems in the cities, we proposed our smart growth plan based on tenprinciples. Using the scale comparison method and the weighting method, weobtained the SPG index. Then with the enlightenment of <em>the theory of optimum population ( A. Sauvy ) </em>, we calculated theproper population density for development by using the quadratic function andsymbolic-graphic combination. Finally, we used profit loss equation to defineprofit loss coefficient and optimized the SSG index by using the coefficient.</p>
+<p>For task 5, using theconcept of task 4, we divided the result of population increase into twoconditions. And we analyzed the changes of our initiatives in two conditionsand prove the robustness of our model.</p>
+<p>Synthesize tenprinciples, three E’s and happiness, we evaluated the success of smart growthof cities and their plans.</p>
+<p>​                <strong>Key Words: </strong>SSG index          SmartGrowth         FSGP index</p>
+<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1         Introduction"></a>1         Introduction</h3>
+<h4 id="1-1-Background"><a href="#1-1-Background" class="headerlink" title="1.1       Background"></a>1.1       Background</h4>
+<p>Urban development had come up to aseries of problems since 1970s. The boundary of the city was getting blurry. The original city planning could not adapt the change since more people werepurchasing houses in the suburban area. These phenomenon caused thedegeneration of natural resources, the loss in the open space, the aggravationof traffic, the large-scale expenditure of infrastructure. Scholars pointed outthat a large scale crash down would be inevitable if the city keep consumingresources in an unsustainable way.</p>
+<p>Organizationslike the Environmental Protection Agency offer solutions in many aspects forthose problems, and finally concluded them into a concept with ten principlescalled ’smart growth’. After this strategy was published, according to a survey[1] carried by Smart Growth Network in Oct. 2000, 78% of the US citizenssupported that it is a necessity to curb the urban crawl.</p>
+<h4 id="1-2-Restatement"><a href="#1-2-Restatement" class="headerlink" title="1.2       Restatement"></a>1.2       Restatement</h4>
+<p>If we evaluate the progress of thesmart growth, the changes of the ten principles could be indistinct, but thegoal of the whole activity is clear, that is make the city a more economicallyprosperous, socially equitable and environmentally sustainable. When weinterpret the goal of smart growth, we believe the happiness(in the aspect ofcountry is GNH) would also be affected by the principles. According to theGeller(2003) [2], smart growth could curb the damage of the environment,improve the accessibility of infrastructure, promote the healthy life style andbuild a livable city so that the overall living quality can be improved. Thus,based on ten principles, we interpret:</p>
+<p>•   Economically prosperous</p>
+<p>•   Equitable society</p>
+<p>•   Environmentally sustainable</p>
+<p>•   Happiness of citizens as ourreference objects to evaluate the success of the smart growth.</p>
+<h3 id="2-Task-1-Model-for-Smart-Growth-Measurement"><a href="#2-Task-1-Model-for-Smart-Growth-Measurement" class="headerlink" title="2         Task 1: Model for Smart Growth Measurement"></a>2         Task 1: Model for Smart Growth Measurement</h3>
+<h4 id="2-1-Outline-of-Our-Approach"><a href="#2-1-Outline-of-Our-Approach" class="headerlink" title="2.1       Outline of Our Approach"></a>2.1       Outline of Our Approach</h4>
+<p>We came to an approach to measurethe success of smart growth by treating the reference objects as the factors inthe process of smart growth:</p>
+<p>•    Economy</p>
+<p>•    Equity</p>
+<p>•    Environment</p>
+<p>•    Happiness</p>
+<p>By analyzing theobjects in order relation, we developed an index named: Successful Smart Growthindex (SSG)(<em>Figure 1</em>).</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f1.jpg" alt="img" /></center>
+
+<center>Figure 1: <em>Framework of SSGindex</em></center>
+
+<p>The ten principles are shown in <em>Table 1</em> with corresponding codes from <em>P1</em> to <em>P10</em>:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Principles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Mix land  uses</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Take  advantage of compact building design</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Create a  range of housing opportunities and choices</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>Create  walkable neighborhoods</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>Foster  distinctive, attractive communities with a strong sense of place</td>
+</tr>
+<tr>
+<td>P6</td>
+<td>Preserve  open space, farmland, natural beauty, and critical environmental areas</td>
+</tr>
+<tr>
+<td>P7</td>
+<td>Strengthen  and direct development towards existing communities</td>
+</tr>
+<tr>
+<td>P8</td>
+<td>Provide  a variety of transportation choices</td>
+</tr>
+<tr>
+<td>P9</td>
+<td>Make  development decisions predictable, fair, and cost effective</td>
+</tr>
+<tr>
+<td>P10</td>
+<td>Encourage community and  stakeholder collaboration in development decisions</td>
+</tr>
+</tbody>
+</table>
+<p>Table 1: <em>Codes of tenprinciples</em></p>
+<p>Originatingfrom the problem of urban crawl, based on ten principles, different methods wasoffered to solve it. But if we want to evaluate the progress of the smartgrowth of a city, it is required to analyze the factors which could be affectedby the principles, that is our reference objects. Thus we interpret theprinciples as the influencing factors of the three E0s and happiness.</p>
+<h4 id="2-2-Modeling-of-SSG-index"><a href="#2-2-Modeling-of-SSG-index" class="headerlink" title="2.2       Modeling of SSG index"></a>2.2       Modeling of SSG index</h4>
+<h5 id="2-2-1-Model-assumptions"><a href="#2-2-1-Model-assumptions" class="headerlink" title="2.2.1      Model assumptions"></a>2.2.1      Model assumptions</h5>
+<p>There are a myraid of factors thatcould affect the process of smart growth, it is impossible to consider all ofthem, thus we list out the following assumptions as restrictions of the model:</p>
+<p>•    We would only consider theactions based on the ten principles, all the occasionality outside thedefinition of the principles would be ignored.</p>
+<p>•    As for a developed country, weassume the gap of GNH, EPI, social equity index between its cities and thecountry itself can be ignored. Thus we could use the data of the country torepresent the situation in a specific city.</p>
+<p>•    We consider the total effect ofeach principle to the three E0s and happiness is the same.</p>
+<p>•    We assume none of the varianceratio of three E0s and happiness would be zero.</p>
+<p>•    We ignore the interactionsamong ten principles as well as the three E0s and happiness.</p>
+<h5 id="2-2-2-Parameter-setting"><a href="#2-2-2-Parameter-setting" class="headerlink" title="2.2.2       Parameter setting"></a>2.2.2       Parameter setting</h5>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/t2.jpg" alt="img" /></center>
+
+<center>Table 2: <em>parameter setting</em></center>
+
+<h5 id="2-2-3-The-solution-to-the-model"><a href="#2-2-3-The-solution-to-the-model" class="headerlink" title="2.2.3      The solution to the model"></a>2.2.3      The solution to the model</h5>
+<p>Since different principles mayresult in different effects on the three E0s and happiness, we set weights tomeasure the progress of smart growth and create a fomula of SSG index.</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g1.jpg" alt="img" />(1)</center>
+
+<p>In this formula, the success of the smart growth of the city is evaluated by thevariance ratio of three E0s (∆<em>E</em>1 to∆<em>E</em>3) and happiness (in the fomula means ∆<em>E</em>4), along with different weights caused by the ten principles.Different principle plays a different role in the impact to the three E0s and happiness.[3] For example, as for mix land uses, it would mainly improve the availabilityof the land which may bring positive economic results. Thus, the economicfactor values most. Besides, the multi-used land could improve the livingconvenient level, which is the main factor of happiness. After that, thedecrese of living radius could improve the environment situation which givesthe environment the third place while this action may only present indirecteffect on social equity.</p>
+<p>Now we have theranking to the effect on the three E0s and happiness. In the above example,the ranking order is economy, happiness, environment, equity. In order toemphasize the principal effect, we used a geometric progession (set thevariable <em>r</em> be the ranking of theimpact):</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g2.jpg" alt="img" />(2)</center>
+
+<p>The rest nine principles would beanalyzed with the same method as above. <em>Uji </em>is the element</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f2.jpg" alt="img" /></center>
+<p><br /><center>Figure 2: <em>the contributionrate of ten principles</em></center></p>
+
+<p>in the j-th row and i-th column of <em>Figure 2</em>. Since each principle posesrelatively different effects on the three E0s and happiness, we have already gotthe rank of the priority in <em>Figure 2</em>.In the assumption we consider the the total effect of each principle on thethree E0s and happiness is the same. Thus we define the weight of the smartgrowth <em>Wi</em> is:</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g3.jpg" alt="img" />(3)</center>
+
+<p>After the calculation, we obtain theweight (<em>Wi</em>) of the three E0s and happiness in <em>Figure 3</em>:</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f3.jpg" alt="img" /></center>
+
+<center>Figure 3: <em>the weight of SSGindex</em></center>
+
+<p>Since the SSG index was created to measure the success of the smart growth of a city, thus, after outputing the result of the index, some analysis could be used:</p>
+<p>•<strong>SSG</strong> &gt; <strong>0</strong> The smart growth of the city is very likely to be a success.</p>
+<p>•<strong>SSG</strong> &lt;  <strong>0</strong> The city doesnot matches the principles of smart growth.</p>
+<p>•<strong>SSG</strong> = <strong>0</strong> The plan of the city attended to one thing and lost sight of another.</p>
+<h4 id="2-3-Evaluation-of-the-Model"><a href="#2-3-Evaluation-of-the-Model" class="headerlink" title="2.3       Evaluation of the Model"></a>2.3       Evaluation of the Model</h4>
+<p>To assess whether a model cansolve a problem or not, we need to figure out the comprehensiveness. In orderto assess the success of the smart growth, we consulted 4 indexes:</p>
+<p>• <strong>GDP </strong>(GrossDomestic Product)</p>
+<p>• <strong>Gini Coefficient</strong></p>
+<p>• <strong>EPI </strong>(EnvironmentPerformance Index)</p>
+<p>• <strong>GNH </strong>(Gross National Happiness)</p>
+<p>Referring tothe contribution rate in <em>Figure 2</em>, weobtain the significance ordering of the indexes and give out a weighted sum. Asfor the success of smart growth, we interpret it as the combined effect of our4 reference objects: Economy, Equity, Environment, Happiness. Thus, the SSGindex includes all the aspects of smart growth.</p>
+<h5 id="2-3-1-Strengths"><a href="#2-3-1-Strengths" class="headerlink" title="2.3.1      Strengths"></a>2.3.1      Strengths</h5>
+<p>•    Consider the aspects of tenprinciples can not be covered by three E0s, we chose happiness as the forthparameter to evaluate the success of smart growth.</p>
+<p>•    During the process of settingthe index, we determine the contribution rate of ten principles as thereference of deciding the weights of three E0s and happiness. The complexity of theproblem was simplified because of the decrease of dimension.</p>
+<p>•    When we decide the weight ofthree E0s and happiness by analyzing the contribution rate of tenprinciples, the use of order relations can represent different influence madeby different principle; the geometric compare scale shows our good handling onprimary effect and secondary effect.</p>
+<h5 id="2-3-2-Weeknesses"><a href="#2-3-2-Weeknesses" class="headerlink" title="2.3.2      Weeknesses"></a>2.3.2      Weeknesses</h5>
+<p>•    The comparison scale of themodel to set the weight is relatively subjective.</p>
+<p>•    The number of variable factorsin the model is not enough and the model is rather simple.</p>
+<p>Thus, this model may be affectedby other factors.</p>
+<h3 id="3-Task-2-Case-Study"><a href="#3-Task-2-Case-Study" class="headerlink" title="3         Task 2: Case Study"></a>3         Task 2: Case Study</h3>
+<h4 id="3-1-The-smart-growth-plan-of-TAKASAKI-City-Japan"><a href="#3-1-The-smart-growth-plan-of-TAKASAKI-City-Japan" class="headerlink" title="3.1       The smart growth plan of TAKASAKI City, Japan"></a>3.1       The smart growth plan of TAKASAKI City, Japan</h4>
+<p>From the annual report of TAKASAKICity[4] , we analyzed the actions that could pose positive effects based on thesmart growth principles. And three E0s and happiness are the referenceobjects of the principles. Thus, the <em>Figure4 </em>focuses on the actions related to the reference objects.</p>
+<p>Firstly, as for the reforming of land distribution, it matches <strong>P1</strong>. This action would create a multi-function community and theutility of land. The government of TAKASAKI strengthen a lot of infrastructureand the quality of roads which would greatly improve the convenience of thecitizens and redistribute the social resources, which matches <strong>P7 </strong>, <strong>P4 </strong>and <strong>P8</strong>. In orderto make the environmental situation better, more budgets were invested tolandscape planning and afforestation. Both of them can be treated as the partof sustainable development and they match <strong>P6 </strong>and <strong>P5</strong>. The maintenance of parking lots and the restriction on the outdooradvertisements could give the citizens a more pleasant home. Thus we believethat these matches <strong>P5</strong>.</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f4.jpg" alt="img" /></center>
+
+<center>Figure 4: <em>Current smart growthplan of TAKASAKI city</em></center>
+
+<h4 id="3-2-The-smart-growth-plan-of-Mobile-City-US"><a href="#3-2-The-smart-growth-plan-of-Mobile-City-US" class="headerlink" title="3.2       The smart growth plan of Mobile City, US"></a>3.2       The smart growth plan of Mobile City, US</h4>
+<p>Similarly, we obtained the actionsof the Mobile City in the USA (<em>Figure 5</em>)from the annual report [5].</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f5.jpg" alt="img" /></center>
+
+<center>Figure 5: <em>Current smart growthplan of Mobile city</em></center>
+
+<p>As for mobile city in the US,enhancing business sevice would make the companies in the city morecompetitive, thus, it matches <strong>P9</strong>. Trafficengineering includes the improvement of the road and public transportation, sothis area would benefit <strong>P4 </strong>and <strong>P7</strong>. The landfill ability is related to <strong>P6</strong>. Morebudget on the public safety area could improve the sense of safety among thecitizens while the increasing number of parks could build them a bettercommunity to live in, thus, they match <strong>P5 </strong>and <strong>P7</strong>.</p>
+<h4 id="3-3-Assessment-of-the-plan-in-two-cities-by-SSG-index"><a href="#3-3-Assessment-of-the-plan-in-two-cities-by-SSG-index" class="headerlink" title="3.3       Assessment of the plan in two cities by SSG index"></a>3.3       Assessment of the plan in two cities by SSG index</h4>
+<p>In the condition when the societyhas spare resources and the salaries are relatively stable, from the theory ofmultiplier [6], the fiscal expenditure is positively correlated to economicgrowth. As for a developed country, we assume the gap of GNH, EPI, socialequity index between the its cities and the country itself can be ignored. Thuswe could use the data of the country to represent the situation in a specificcity.[7][8]</p>
+<h5 id="3-3-1-Calculation"><a href="#3-3-1-Calculation" class="headerlink" title="3.3.1      Calculation"></a>3.3.1      Calculation</h5>
+<p>Referring to our SSG index whichcould measure the success of the smart growth, we have already got the formulain <em>equation (1)</em>.</p>
+<p>we needto get a result based on the weights (which has been obtained in <em>Figure 3</em> and the</p>
+<p>variance ratio of the followingreference objects:</p>
+<p>•    <strong>Economically prosperous </strong>(<em>Table 3</em>): Based on the assumption,according to the theory of multiplier, we could approximately replace thevariance ratio of the economic growth with the variance ratio of fiscalexpenditure. From the financial statements of the city, we could get the dataand figure out the variance ratio of fiscal expenditure.</p>
+<table>
+<thead>
+<tr>
+<th><em>FE</em>2</th>
+<th>budget of  fiscal expenditure of this year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>FE</em>1</td>
+<td>fiscal expenditure of last  year</td>
+</tr>
+</tbody>
+</table>
+<center>Table 3: <em>Calculation parameterof Economically prosperous</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/gg.JPG" alt="img" />(4)</center>
+
+<p>•    <strong>Social justice </strong>(<em>Table 4</em>): Based on the definition of the Gini coefficient [9] andsocial justice [10], as well as the completeness of the Gini coefficient, weuse the variance ratio of Gini coefficient as the reference index of socialjustice.</p>
+<table>
+<thead>
+<tr>
+<th><em>SJ</em>2</th>
+<th>Gini index  of this year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>SJ</em>1</td>
+<td>Gini index of last year</td>
+</tr>
+</tbody>
+</table>
+<center>Table 4: <em>Calculation parameterof Social justice</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g4.jpg" alt="img" />(5)</center>
+
+<p>•    <strong>Environment sustainable </strong>(<em>Table 5</em>): We evaluate the success of asustainable environment by using the variance ratio of EnvironmentalPerformance Index[8] as the parameter.</p>
+<table>
+<thead>
+<tr>
+<th><em>EPI</em>2</th>
+<th>EPI index  of this year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>EPI</em>1</td>
+<td>EPI index of last year</td>
+</tr>
+</tbody>
+</table>
+<center>Table 5: <em>Calculation parameterof Environment sustainable</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g6.jpg" alt="img" />(6)</center>
+
+<p>•    <strong>Happiness </strong>(<em>Table 6</em>): Based on the definition of the GNH (Gross NationalHappiness)[11], the measurement of happiness [12] could be judged by thevariance ratio of GNH.</p>
+<table>
+<thead>
+<tr>
+<th><em>H</em>2</th>
+<th>GNH index  of this year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>H</em>1</td>
+<td>GNH index of last year</td>
+</tr>
+</tbody>
+</table>
+<center>Table 6: <em>Calculation parameterof Happiness</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g7.jpg" alt="img" />(7)</center>
+
+<p>Using equation <em>(1)</em>, we have <em>Figure 6</em>.</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f6.jpg" alt="img" /></center>
+
+<center>Figure 6: <em>The SSG index of thegrowth plan in TAKASAKI and Mobile City</em></center>
+
+<h5 id="3-3-2-Result"><a href="#3-3-2-Result" class="headerlink" title="3.3.2      Result"></a>3.3.2      Result</h5>
+<p>In <em>Figure 6</em>, the SSG index of TAKASAKI city is -0.094097012, thus wedefine this city as <strong>The city does notmatches the principles of smart growth.</strong></p>
+<p>In the MobileCity the result is 0.869158697, thus we define it as <strong>The smart growth plan the city is very likely to be a success.</strong></p>
+<h3 id="4-Task-3-amp-4-Our-Smart-Growth-Plan"><a href="#4-Task-3-amp-4-Our-Smart-Growth-Plan" class="headerlink" title="4         Task 3 &amp; 4: Our Smart Growth Plan"></a>4         Task 3 &amp; 4: Our Smart Growth Plan</h3>
+<p>Based on the ten principles of smartgrowth, we developed a plan with 6 initiatives: (consult <em>table 1 </em>about the codes of ten principles)</p>
+<p>•    build commercial center (<strong>P1</strong>)</p>
+<p>•    encourage the green commutingby introducing free bicycles (<strong>P8</strong>)</p>
+<p>•    timly restriction of communitytraffic to allow pedestrian-oriented activities (<strong>P4</strong>, <strong>P5</strong>)</p>
+<p>•    direct participation in policymaking in a small range (<strong>P10</strong>)</p>
+<p>•    improve medical benefits (<strong>P7</strong>)</p>
+<p>•    perfect the infrastructure inthe residential area (<strong>P7</strong>, <strong>P5</strong>)</p>
+<h4 id="4-1-TAKASAKI-City"><a href="#4-1-TAKASAKI-City" class="headerlink" title="4.1       TAKASAKI City"></a>4.1       TAKASAKI City</h4>
+<p>TAKASAKI City is becoming a centerof handicraft industry and trade in Kanto region [13]. And the city is in themiddle of the traffic network, which would attract the people to do bussinessactivities. Thus, the increase of number of the commercial centers would benecessary.</p>
+<p>According to therelationship between natural landscape and human [14], we value the necessityof building a eco-friendly city. Plus, the topography of the city is gentle.Thus we encourage the green commuting by introducing free bicycles.</p>
+<p>Moreover, tenprinciples emphasize the importance of an attractive community. So action 3, 5and 6 of our plan were made for it.</p>
+<p>Lastly, inorder to have the citizens participate in the administration and discussion ofstate affairs, we decided to carry out the action of direct participation inpolicy making in a small range.</p>
+<h4 id="4-2-Mobile-City"><a href="#4-2-Mobile-City" class="headerlink" title="4.2       Mobile City"></a>4.2       Mobile City</h4>
+<p>Mobile is a city rich in tourismresources [15]. Thus we believe the increase number of the commercial centerswould pose positive effect on tourism. Analyzing the map [16] of the Mobilecity, the topography of the city is convenient for bicycles introducing.</p>
+<p>And there is acarnival in the city called Mardi Gras [17], thus we believe timly restrictionof community traffic to allow pedestrian-oriented activities would benecessary.</p>
+<p>Following the ten principles,actions 4 and 5 would improve the happiness in the city.</p>
+<p>Moreover, theoccurrence of hurricane in this area [18] is frequent, so the infrastructure inthe residential area aims to protect the citizens from the damage of thehurricane.</p>
+<h4 id="4-3-A-more-robust-model-to-evaluatethe-individual-initiatives-FSGP-index"><a href="#4-3-A-more-robust-model-to-evaluatethe-individual-initiatives-FSGP-index" class="headerlink" title="4.3       A more robust model to evaluatethe individual initiatives: FSGP index"></a>4.3       A more robust model to evaluatethe individual initiatives: FSGP index</h4>
+<h5 id="4-3-1-Assumption"><a href="#4-3-1-Assumption" class="headerlink" title="4.3.1      Assumption"></a>4.3.1      Assumption</h5>
+<p>•    The population factor wouldonly affect economy factor and happiness factor.</p>
+<p>•    Population factor canapproximately replace all the factors of smart growth in a city.</p>
+<h5 id="4-3-2-Parameter-setting"><a href="#4-3-2-Parameter-setting" class="headerlink" title="4.3.2      Parameter setting"></a>4.3.2      Parameter setting</h5>
+<h5 id="4-3-3-The-process-of-enhancing-theSSG-model"><a href="#4-3-3-The-process-of-enhancing-theSSG-model" class="headerlink" title="4.3.3      The process of enhancing theSSG model"></a>4.3.3      The process of enhancing theSSG model</h5>
+<p>In order to evaluate whether a planadheres to the smart growth principles or not, we enhanced the original SSGindex.</p>
+<p>For eachinitiative, we need to calculate the contribution to the three E0s and happiness.And thus, we developed an index named SGP (Smart Growth Plan) based on SSGindex:</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g8.jpg" alt="img" />(8)</center>
+
+<p>Assume the initiative involves principles <em>Pj</em>$_{1}$ … <em>Pj</em>$_{n}$ (n ≤ 10). Thus:</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/g9.jpg" alt="img" />(9)</center>
+
+<p>and the value of <em>Wi</em>could be found in <em>Figure 3</em>.</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/t7.jpg" alt="img" /></center>
+
+<center>Table 7: <em>parameter setting</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f7.jpg" alt="img" /></center>
+
+<center>Figure 7: <em>The SGP index of theinitiatives in our smart growth plan</em></center>
+
+<p>Using theformula <em>8</em>, we obtain the SGP indexfor each initiative and formed a table (shown in <em>Figure 7</em>:</p>
+<p>Inspired by thetheory of optimum population, we considered the relationship of populationdensity and GNP, and tried to find out the best population density. Then, we comparedthe the best population density and the current population density so that theadjustment coefficient of the adjustment to SSG index. After that, wecalculated by using the adjustment algebraic model and obtained a new resultnamed Final Smart Growth Plan (FSGP).</p>
+<p>Now we start to optimize the modelof FSGP.</p>
+<p>Based on thetheory of optimum population, we decided to use quadratic function simulationto figure the relation between the population and GNP in the states of US andcounties in</p>
+<p>Japan. And we have the figureshowing the results: (<em>Figure 8</em>, <em>Figure 9</em>)</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f8.jpg" alt="img" /></center>
+
+<center>Figure 8: <em>The relation betweenthe population and GNP in the states of US</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f9.jpg" alt="img" /></center>
+
+<center>Figure 9: <em>The relation betweenthe population and GNP in the counties of Japan</em></center>
+
+<p>We determinedthe proper population density for development as the population density of thestates or counties which is higher than the average GNP. Thus we used thestraight line: y = average GNP to cut out the figure of the correspondingcites.(<em>Figure 10</em>, <em>Figure 11</em>) (shown in next page)</p>
+<p>We found outthe straight line and the fitting function intersects in 2 places (L and H).Andwe figured out the extreme point M. Thus we define the city with the populationdensity in</p>
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f10.jpg" alt="img" /></center>
+
+<center>Figure 10: <em>The relationbetween the population and GNP in the states of US after using the straightline y = average GNP to cut out</em></center>
+
+<center><img src="https://raw.githubusercontent.com/wonggwan/Photo_backup/master/icm/f11.jpg" alt="img" /></center>
+
+<center>Figure11: <em>The relation between the populationand GNP in the counties of Japan after using the straight line y = average GNPto cut out</em></center>
+
+<p>the interval of L to H (L, H) as thecondition which the economy development is effective to the smart growth of thecity. The population density of the city which does not locate in the intervalwould be treated as inapporopriate in development.</p>
+<p>Futhermore,we introduced the limitation factor of population A. With a certain populationwhich is suitable for city development, a slightly increase in the populationdensity would bring relatively great GNP effect. When the population densityalmost approaches the optimized population density, a large scale of populationdensity increase would only bring slight effect to GNP.</p>
+<p>This curve ofthe function of population density and GNP is convex, which proves thecorrectness of the fitting figure.</p>
+<p>Since under theinfluence of population factor, the initiative of the plan on the economiclevel could not reach the ideal result. Thus, we defined the limitation factorA as the real number in the interval of [0, 1]. Thus, we concluded the theregulation of change and adjusted the economy
+</p>
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page1592/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1591/">1591</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1592/">1592</a></li>
+      
+    
+      
+        <li><strong class="current-page">1593</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1594/">1594</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1595/">1595</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page1594/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

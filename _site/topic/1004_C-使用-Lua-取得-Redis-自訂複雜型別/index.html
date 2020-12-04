@@ -1,0 +1,997 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>C# 使用 Lua 取得 Redis 自訂複雜型別 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 使用 Lua 取得 Redis 自訂複雜型別">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/1004_C-%E4%BD%BF%E7%94%A8-Lua-%E5%8F%96%E5%BE%97-Redis-%E8%87%AA%E8%A8%82%E8%A4%87%E9%9B%9C%E5%9E%8B%E5%88%A5/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/1004_C-%E4%BD%BF%E7%94%A8-Lua-%E5%8F%96%E5%BE%97-Redis-%E8%87%AA%E8%A8%82%E8%A4%87%E9%9B%9C%E5%9E%8B%E5%88%A5/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>C# 使用 Lua 取得 Redis 自訂複雜型別</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~7 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">C# 使用 Lua 取得 Redis 自訂複雜型別</h1>
+      <h2 id="c-使用-lua-取得-redis-自訂複雜型別">C# 使用 Lua 取得 Redis 自訂複雜型別</h2>
+
+<p>之前筆記 <a href="https://blog.yowko.com/redis-lua-dcitionary/" target="_blank" rel="noopener noreferrer">在 Redis 中使用 Lua 的 Dictionary</a> 紀錄到在 Redis 中使用 Lua 時可以如何模擬並使用 Dictionary，而筆記最後也提到透過這樣的方式處理時，Lua 的回傳值會不如預期，所以今天要來紀錄個人的做法，但我無法確定是不是最好的方法 XD，有錯請大家指教了</p>
+
+<h2 id="基本環境說明">基本環境說明</h2>
+
+<ol>
+<li>macOS Catalina 10.15.1</li>
+<li>.NET Core SDK 3.1.100</li>
+<li>redis-cli 5.0.5</li>
+
+<li><p>NuGet packages</p>
+
+<ul>
+<li>StackExchange.Redis 2.0.601</li>
+<li>Newtonsoft.Json 12.0.3</li>
+<li>MessagePack 1.8.80</li>
+</ul></li>
+
+<li><p>測試用 model</p>
+
+<pre><code class="language-cs">public class User
+{
+    public int UserId { get; set; }
+
+    public string Name { get; set; }
+
+    public string Email { get; set; }
+}
+</code></pre></li>
+</ol>
+
+<h2 id="原始-lua-內容">原始 lua 內容</h2>
+
+<p>詳細內容可以參考 <a href="https://blog.yowko.com/redis-lua-dcitionary/" target="_blank" rel="noopener noreferrer">在 Redis 中使用 Lua 的 Dictionary</a></p>
+
+<pre><code class="language-lua">local allUsersKey=&#34;users&#34;
+local userdataPrefixKey=&#34;userdata&#34;
+-- 取得所有 user
+local allUsers = redis.call(&#34;smembers&#34;,  allUsersKey)
+--逐一處理所有 user
+local results = {} for userIndex, userId in ipairs(allUsers) do
+    -- 單一 user 的 key
+    local userdataKey=userdataPrefixKey .. &#34;:&#34; .. userId
+    -- 取得單一 user 的所有屬性值
+    local getAll= redis.call(&#34;HGETALL&#34;, userdataKey)
+    -- 暫存欄位名稱
+    local tmpSubKey=&#34;&#34;
+    -- 處理所有欄位屬性
+    local tmpSubData = {}
+    -- 將 userId 當做 object 的一個屬性
+    tmpSubData[&#34;userId&#34;]=userId
+    for index,value in ipairs (getAll) do
+    -- 如果 index 是單數則為欄位名稱，偶數為屬性值
+    if index % 2 == 1 then
+        tmpSubKey= value
+    else
+        -- 使用名稱設定 table 
+        tmpSubData[tmpSubKey]=value
+    end
+    end
+    -- 將個別 user object 存入 table 中
+    table.insert(results, tmpSubData)
+end
+return results
+</code></pre>
+
+<h2 id="回傳-json">回傳 json</h2>
+
+<p>將最終結果使用 <code>cjson.encode</code> 轉為 json</p>
+
+<ul>
+<li><p>lua</p>
+
+<pre><code class="language-lua">local allUsersKey=&#34;users&#34;
+local userdataPrefixKey=&#34;userdata&#34;
+
+-- 取得所有 user
+local allUsers = redis.call(&#34;smembers&#34;,  allUsersKey)
+
+--逐一處理所有 user
+local results = {} for userIndex, userId in ipairs(allUsers) do
+  -- 單一 user 的 key
+  local userdataKey=userdataPrefixKey .. &#34;:&#34; .. userId
+  -- 取得單一 user 的所有屬性值
+  local getAll= redis.call(&#34;HGETALL&#34;, userdataKey)
+  -- 暫存欄位名稱
+  local tmpSubKey=&#34;&#34;
+  -- 處理所有欄位屬性
+  local tmpSubData = {}
+  -- 將 userId 當做 object 的一個屬性
+  tmpSubData[&#34;userId&#34;]=userId
+  for index,value in ipairs (getAll) do
+    -- 如果 index 是單數則為欄位名稱，偶數為屬性值
+    if index % 2 == 1 then
+      tmpSubKey= value
+    else
+      -- 使用名稱設定 table 
+      tmpSubData[tmpSubKey]=value
+    end
+  end
+  -- 將個別 user object 存入 table 中
+  table.insert(results, tmpSubData)
+end
+return cjson.encode(results)
+</code></pre></li>
+
+<li><p>C#</p>
+
+<pre><code class="language-cs">//準備 redis 連線
+var redis = ConnectionMultiplexer.Connect(&#34;127.0.0.1:6379&#34;);
+var db = redis.GetDatabase();
+
+//從專案中取得 lua (lua 設為 EmbeddedResource)
+var script = string.Empty;
+var assembly = Assembly.GetExecutingAssembly();
+const string resourceName = &#34;TestRedisLuaDictionary.user.lua&#34;;
+//載入 lua 檔案
+await using (var stream = assembly.GetManifestResourceStream(resourceName))
+{
+    using var reader = new StreamReader(stream);
+    script = reader.ReadToEnd();
+}
+//將文字內容轉為 lua
+var prepared = LuaScript.Prepare(script);
+//執行 lua
+var redisResult = db.ScriptEvaluate(prepared);
+//將 redis 回傳內容使用 json 轉為物件
+var result = JsonConvert.DeserializeObject&lt;User[]&gt;(redisResult.ToString());
+
+Console.WriteLine(result);
+</code></pre></li>
+
+<li><p>實際結果</p>
+
+<pre><code class="language-txt">[{&#34;userId&#34;:&#34;1&#34;,&#34;name&#34;:&#34;yowko&#34;,&#34;email&#34;:&#34;yowko@yowko.com&#34;},{&#34;userId&#34;:&#34;3&#34;,&#34;name&#34;:&#34;test&#34;,&#34;email&#34;:&#34;test@test.com&#34;},{&#34;userId&#34;:&#34;5&#34;,&#34;name&#34;:&#34;poc&#34;,&#34;email&#34;:&#34;poc@poc.com&#34;}]
+</code></pre></li>
+</ul>
+
+<h2 id="回傳-messagepack">回傳 MessagePack</h2>
+
+<ul>
+<li><p>lua</p>
+
+<pre><code class="language-lua">local allUsersKey=&#34;users&#34;
+local userdataPrefixKey=&#34;userdata&#34;
+
+-- 取得所有 user
+local allUsers = redis.call(&#34;smembers&#34;,  allUsersKey)
+
+--逐一處理所有 user
+local results = {} for userIndex, userId in ipairs(allUsers) do
+-- 單一 user 的 key
+local userdataKey=userdataPrefixKey .. &#34;:&#34; .. userId
+-- 取得單一 user 的所有屬性值
+local getAll= redis.call(&#34;HGETALL&#34;, userdataKey)
+-- 暫存欄位名稱
+local tmpSubKey=&#34;&#34;
+-- 處理所有欄位屬性
+local tmpSubData = {}
+-- 將 userId 當做 object 的一個屬性
+tmpSubData[&#34;userId&#34;]=userId
+for index,value in ipairs (getAll) do
+    -- 如果 index 是單數則為欄位名稱，偶數為屬性值
+    if index % 2 == 1 then
+    tmpSubKey= value
+    else
+    -- 使用名稱設定 table 
+    tmpSubData[tmpSubKey]=value
+    end
+end
+-- 將個別 user object 存入 table 中
+table.insert(results, tmpSubData)
+end
+
+return cmsgpack.pack(results)
+</code></pre></li>
+
+<li><p>C#</p>
+
+<ul>
+<li><p>轉換程式</p>
+
+<blockquote>
+<p>相關詳細說明可以參考之前筆記 <a href="https://blog.yowko.com/property-value-dictionary-to-object/" target="_blank" rel="noopener noreferrer">C# - Property 與 Value 的 Dictionary 轉為 Object</a></p>
+</blockquote>
+
+<pre><code class="language-cs">private static T DictionaryToObject&lt;T&gt;(IDictionary&lt;String, Object&gt; dictionary) where T : class, new()
+{
+    // 取得 T 所有 property
+    var myPropertyInfo = typeof(T).GetProperties();
+    // 將 property 的 name 轉為小寫當 key，value 為原始大小寫，讓傳入的資料無論大小寫皆可轉換
+    var properties = myPropertyInfo
+        .Select(a =&gt; new KeyValuePair&lt;string, string&gt;(a.Name.ToLowerInvariant(), a.Name))
+        .ToDictionary(a =&gt; a.Key, a =&gt; a.Value);
+
+    // 建立 T 實體
+    var instance = Activator.CreateInstance&lt;T&gt;();
+
+    //處理所有欄位
+    foreach (var (key, value) in dictionary)
+    {
+        var name = key.ToLowerInvariant();
+
+        //欄位名稱不存在就換下一個
+        if (!properties.TryGetValue(name, out var property)) continue;
+
+        var prop = typeof(T).GetProperty(property);
+
+        //依據不同型別來做轉換，只意思寫 int 與 string，請自行擴充
+        switch (prop.PropertyType)
+        {
+            case { } intType when intType == typeof(int):
+                prop.SetValue(instance, Convert.ToInt32(value), null);
+
+                break;
+            case { } stringType when stringType == typeof(string):
+                prop.SetValue(instance, Convert.ToString(value), null);
+
+                break;
+        }
+    }
+
+    return instance;
+}
+</code></pre></li>
+
+<li><p>實際使用</p>
+
+<pre><code class="language-cs">//準備 redis 連線
+var redis = ConnectionMultiplexer.Connect(&#34;127.0.0.1:6379&#34;);
+var db = redis.GetDatabase();
+
+//從專案中取得 lua (lua 設為 EmbeddedResource)
+var script = string.Empty;
+var assembly = Assembly.GetExecutingAssembly();
+const string resourceName = &#34;TestRedisLuaDictionary.user.lua&#34;;
+//載入 lua 檔案
+await using (var stream = assembly.GetManifestResourceStream(resourceName))
+{
+    using var reader = new StreamReader(stream);
+    script = reader.ReadToEnd();
+}
+//將文字內容轉為 lua
+var prepared = LuaScript.Prepare(script);
+//執行 lua
+var redisResult = db.ScriptEvaluate(prepared);
+//將 redis 回傳內容轉為 byte[] 再透過 MessagePack 反序列化為 Dictionary&lt;string, object&gt;[]
+var result = MessagePackSerializer
+        .Deserialize&lt;Dictionary&lt;string, object&gt;[]&gt;((byte[]) redisResult);
+
+// 將 Dictionary&lt;string, object&gt;[] 轉為 User
+var outputResult = result.Select(DictionaryToObject&lt;User&gt;);
+
+Console.WriteLine(JsonConvert.SerializeObject(outputResult));
+</code></pre></li>
+</ul></li>
+
+<li><p>實際結果</p>
+
+<pre><code class="language-txt">[{&#34;UserId&#34;:1,&#34;Name&#34;:&#34;yowko&#34;,&#34;Email&#34;:&#34;yowko@yowko.com&#34;},{&#34;UserId&#34;:3,&#34;Name&#34;:&#34;test&#34;,&#34;Email&#34;:&#34;test@test.com&#34;},{&#34;UserId&#34;:5,&#34;Name&#34;:&#34;poc&#34;,&#34;Email&#34;:&#34;poc@poc.com&#34;}]
+</code></pre>
+
+<ul>
+<li><p>redis 回傳的 MessagePack 原始資料</p>
+
+<pre><code class="language-txt">���userId�1�name�yowko�email�yowko@yowko.com��userId�3�name�test�email�test@test.com��userId�5�name�poc�email�poc@poc.com
+</code></pre></li>
+</ul></li>
+</ul>
+
+<h2 id="心得">心得</h2>
+
+<p>透過 json 與 MessagePack 都可以將 redis 中 lua 回傳自訂型別的 dictionary 轉換為 object，當然 json 在使用上方便許多：程式碼較少，redis 的回傳內容可讀性也高，但 MessagePack 有壓縮的功用，在傳輸速度上有優勢，這個就看專案需求來選擇囉</p>
+
+<h2 id="參考資訊">參考資訊</h2>
+
+<ol>
+<li><a href="https://redis.io/commands/eval" target="_blank" rel="noopener noreferrer">EVAL script numkeys key [key …] arg [arg …]</a></li>
+<li><a href="https://blog.yowko.com/property-value-dictionary-to-object/" target="_blank" rel="noopener noreferrer">C# - Property 與 Value 的 Dictionary 轉為 Object</a></li>
+</ol>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1003_lua%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1003_lua%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1003_lua%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/1004_C-%E4%BD%BF%E7%94%A8-Lua-%E5%8F%96%E5%BE%97-Redis-%E8%87%AA%E8%A8%82%E8%A4%87%E9%9B%9C%E5%9E%8B%E5%88%A5/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/1004_C-%E4%BD%BF%E7%94%A8-Lua-%E5%8F%96%E5%BE%97-Redis-%E8%87%AA%E8%A8%82%E8%A4%87%E9%9B%9C%E5%9E%8B%E5%88%A5/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/1004_C-%E4%BD%BF%E7%94%A8-Lua-%E5%8F%96%E5%BE%97-Redis-%E8%87%AA%E8%A8%82%E8%A4%87%E9%9B%9C%E5%9E%8B%E5%88%A5/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1003_lua%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,1014 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>lua全局变量的二三坑 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lua全局变量的二三坑">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>lua全局变量的二三坑</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~3 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">lua全局变量的二三坑</h1>
+      <head>
+  <meta charset="utf-8" />
+  
+  <title>lua全局变量的二三坑 | CloudKey Ocean</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  
+    <meta name="keywords" content="ngx-lua," />
+  
+
+  <meta name="description" content="背景  最近正在开发关于WebService相关系统，其中有两个模块使用的是（nginx+lua）框架，业务逻辑用lua语言实现。而从这两个新模块上线到正常运行，一共发生了两次请求错乱的线上问题：  123query A:  http:://uriA + argsA在经过proxy（or webui）这一层处理之后，请求传到下一层module变成了queryB，导致请求错乱，影响线上服务。quer" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="lua全局变量的二三坑" />
+<meta property="og:url" content="http://cloudkey.github.io/2015/12/01/lua-global-variable-trap/index.html" />
+<meta property="og:site_name" content="CloudKey Ocean" />
+<meta property="og:description" content="背景  最近正在开发关于WebService相关系统，其中有两个模块使用的是（nginx+lua）框架，业务逻辑用lua语言实现。而从这两个新模块上线到正常运行，一共发生了两次请求错乱的线上问题：  123query A:  http:://uriA + argsA在经过proxy（or webui）这一层处理之后，请求传到下一层module变成了queryB，导致请求错乱，影响线上服务。quer" />
+<meta property="og:image" content="http://cloudkey.github.iohttps://cloudkey.github.io//images/proxy-global-variable.png" />
+<meta property="og:image" content="http://cloudkey.github.iohttps://cloudkey.github.io//images/ui-global-invalid-use.png" />
+<meta property="og:image" content="http://cloudkey.github.iohttps://cloudkey.github.io//images/fix-global-to-local.png" />
+<meta property="og:updated_time" content="2017-01-21T12:16:27.000Z" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="lua全局变量的二三坑" />
+<meta name="twitter:description" content="背景  最近正在开发关于WebService相关系统，其中有两个模块使用的是（nginx+lua）框架，业务逻辑用lua语言实现。而从这两个新模块上线到正常运行，一共发生了两次请求错乱的线上问题：  123query A:  http:://uriA + argsA在经过proxy（or webui）这一层处理之后，请求传到下一层module变成了queryB，导致请求错乱，影响线上服务。quer" />
+<meta name="twitter:image" content="http://cloudkey.github.io/images/proxy-global-variable.png" />
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico" />
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet" />
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css" />
+  
+
+  
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-56303271-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+
+  
+
+
+  
+    <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/atom.xml" rel="noopener noreferrer" target="_blank">
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="ROUND_RECT" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-lua-global-variable-trap" class="article article-type-post" itemprop="blogPost">
+  
+
+  <div class="article-content">
+    
+      <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>  最近正在开发关于WebService相关系统，其中有两个模块使用的是（nginx+lua）框架，业务逻辑用lua语言实现。而从这两个新模块上线到正常运行，一共发生了两次请求错乱的线上问题：<br />  </p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">query A:  http:://uriA + argsA</div><div class="line">在经过proxy（<span class="keyword">or</span> webui）这一层处理之后，请求传到下一层<span class="built_in">module</span>变成了queryB，导致请求错乱，影响线上服务。</div><div class="line">query B:  http:://uriB + argsB</div></pre></td></tr></tbody></table></figure><p></p>
+
+<h2 id="第一次踩坑-amp-amp-追查过程-proxy-："><a href="#第一次踩坑-amp-amp-追查过程-proxy-：" class="headerlink" title="第一次踩坑&amp;&amp;追查过程(proxy)："></a>第一次踩坑&amp;&amp;追查过程(proxy)：</h2><ol>
+<li><p>首先确定入口请求的URL A，经过proxy处理之后，NOTICE日志打印的URL，发现前后的URL不一致，怀疑是经过某个module之后，URL被篡改。同时这种现象一般发生在<strong>前后时间比较靠近的请求之间<em> </em></strong>。</p>
+</li>
+<li><p>线上一台proxy机器打开一台nginx debug日志（注意：日志很大，所以时间不能太长），发现了一个比较诡异的现象：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">1</span> lua upstream: B64A2168</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">2</span> lua upstream: B71D5FF8</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">1</span> lua upstream: B64A2168</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">2</span> lua upstream: B71D5FF8</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">1</span> lua upstream: B64A2168</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">1</span> lua upstream: B64A2168 &lt;===</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">2</span> lua upstream: B71D5FF8</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">2</span> lua upstream: B71D5FF8</div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">1</span> lua upstream: B71D5FF8 &lt;=== </div><div class="line"><span class="number">10</span>:<span class="number">22</span>:<span class="number">42</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">2</span> lua upstream: B71D5FF8</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">5</span> lua upstream: B64B0A20</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">6</span> lua upstream: B64B0FA8</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">5</span> lua upstream: B64B0A20</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">6</span> lua upstream: B64B0FA8</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">5</span> lua upstream: B64B0A20</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">5</span> lua upstream: B64B0A20</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">6</span> lua upstream: B64B0FA8</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">6</span> lua upstream: B64B0FA8</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">5</span> lua upstream: B64B0A20</div><div class="line"><span class="number">10</span>:<span class="number">29</span>:<span class="number">23</span> [<span class="built_in">debug</span>] <span class="number">3505</span>#<span class="number">0</span>: *<span class="number">6</span> lua upstream: B64B0FA8</div></pre></td></tr></tbody></table></figure>
+<p>两个箭头指向的都是req1，但是前后的upstream pointer确发生了改变，第二个箭头表明req1使用了upstream pointer “B71D5FF8”，但是这个pointer这时候req2正在使用，这时候我们觉得很可能是upstream pointer的改变，导致了URL被篡改（也就是reqA -&gt; reqB），但是是什么原因导致upstream pointer改变一时还没有什么头绪。</p>
+</li>
+<li><p>这时候想到了openresty google group和github openresty issue，想看看有没有遇到类似异常情况的。<br />发现有一个帖子<a href="https://github.com/openresty/lua-nginx-module/issues/150" target="_blank" rel="external noopener noreferrer">It seems the socket upstream pointer changed while processing concurrent requests.</a>有点类似我们的情况，仔细看了一下帖子，楼主和春哥的结论是lua global variable不当使用，造成意外的跨请求socket共享，导致异常出现。</p>
+</li>
+<li><p>使用<a href="https://github.com/openresty/nginx-devel-utils/blob/master/lua-releng" target="_blank" rel="external noopener noreferrer">lua-releng</a>脚本check我们的proxy代码发现：<br /><img src="/images/proxy-global-variable.png" alt="proxy-global-variable.png" /></p>
+</li>
+<li><p>飘红的地方使用了非预期的全局变量，改成local之后，小流量上线验证，不再出现请求错乱的情况。</p>
+</li>
+</ol>
+<h2 id="lua全局变量官方说明"><a href="#lua全局变量官方说明" class="headerlink" title="lua全局变量官方说明"></a>lua全局变量官方说明</h2><p>关于lua变量的作用域，官方文档说明：  <a href="https://github.com/openresty/lua-nginx-module#lua-variable-scope" target="_blank" rel="external noopener noreferrer">lua-variable-scope</a><br /></p><figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Generally, use of Lua global variables is a really really bad idea <span class="keyword">in</span> the context of ngx_lua because</div><div class="line"><span class="number">1.</span> misuse of Lua globals has very bad side effects <span class="keyword">for</span> concurrent requests when these variables are actually supposed to be <span class="keyword">local</span> only,</div><div class="line"><span class="number">2.</span> Lua global variables <span class="built_in">require</span> Lua <span class="built_in">table</span> look-up <span class="keyword">in</span> the global environment (which is just a Lua <span class="built_in">table</span>), which is kinda expensive, <span class="keyword">and</span></div><div class="line"><span class="number">3.</span> some Lua global variable references are just typos, which are hard to <span class="built_in">debug</span>.</div><div class="line">It<span class="string">&#39;s highly recommended to always declare them via &#34;local&#34; in the scope that is reasonable.</span></div></pre></td></tr></tbody></table></figure><p></p>
+<p>官方说明：在并发场景下，一些应该使用局部变量的地方如果滥用lua的全局变量可能会导致一些异常的情况出现； 同时全局变量的访问开销代价很大；如果出错很难调试。</p>
+<h2 id="第二次踩坑-ui-module"><a href="#第二次踩坑-ui-module" class="headerlink" title="第二次踩坑(ui module)"></a>第二次踩坑(ui module)</h2><p>经过第一次的经验，我们已经将proxy 和 ui 代码进行了全量的check，修复所有非预期的全局变量的使用。<br />但是，ui上线切新的流量之后，一些服务又出现请求错乱的问题，查看日志发现同一个logid的请求，URL前后又出现不一致情况，并且重试的情况下，有概率的出现。</p>
+<p><strong>当时，第一感觉是全局变量问题，但是我们线上的代码已经用lua-releng脚本check过了，并未有非local变量的情况。</strong></p>
+<p>追查过程：</p>
+<ul>
+<li>因为这次上线是首次使用action/InnerRedirect.lua模块，所以我们的检查重点放在这个module中。</li>
+<li><p>有一个涉及全局变量的地方引起了我们的注意：</p>
+<p><img src="/images/ui-global-invalid-use.png" alt="ui-global-invalid-use.png" /></p>
+<p>飘红的箭头是一个全局的配置，而Conf_Services是一个全局变量，但是这里是赋值给local变量service，而service变量在下面的地方进行了修改：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">service.url = path</div><div class="line">service.args = args</div></pre></td></tr></tbody></table></figure>
+<p>相当于我们把一个全局变量赋值给一个已经申明为local的变量，然后直接对这个local table变量进行修改。<br />这个地方有点怀疑这个<strong>local table变量service，在用全局变量赋值的时候使用的是浅拷贝</strong>，为了验证我们的怀疑，写了下面一个非常简单的lua test script:</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">table_global = { </div><div class="line">    [<span class="string">&#34;key1&#34;</span>] = <span class="string">&#34;key1&#34;</span>,</div><div class="line">    [<span class="string">&#34;key2&#34;</span>] = <span class="string">&#34;key2&#34;</span>,</div><div class="line">    [<span class="string">&#34;key3&#34;</span>] = <span class="string">&#34;key3&#34;</span>,</div><div class="line">}   </div><div class="line"><span class="built_in">print</span>(<span class="string">&#34;global table address: &#34;</span>)</div><div class="line"><span class="built_in">print</span>(table_global)</div><div class="line"></div><div class="line"><span class="keyword">local</span> tmp_table = table_global</div><div class="line"><span class="built_in">print</span>(<span class="string">&#34;local table address: &#34;</span>)</div><div class="line"><span class="built_in">print</span>(tmp_table)</div><div class="line"></div><div class="line">tmp_table[<span class="string">&#34;key3&#34;</span>] = <span class="string">&#34;key333&#34;</span></div><div class="line"><span class="built_in">print</span>(<span class="string">&#34;After modidy local table field: &#34;</span>)</div><div class="line"><span class="built_in">print</span>(table_global[<span class="string">&#34;key3&#34;</span>])</div><div class="line"></div><div class="line">TEST RESULT:</div><div class="line">    global <span class="built_in">table</span> address: </div><div class="line">    <span class="built_in">table</span>: <span class="number">0x539de0</span></div><div class="line">    <span class="keyword">local</span> <span class="built_in">table</span> address: </div><div class="line">    <span class="built_in">table</span>: <span class="number">0x539de0</span></div><div class="line">    After modidy <span class="keyword">local</span> <span class="built_in">table</span> field: </div><div class="line">    key333</div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>更改此处service使用全局配置的方式：</p>
+<p><img src="/images/fix-global-to-local.png" alt="fix-global-to-local.png" /></p>
+<p>上线一台机器出现缩略图错乱的线上机器，不再出现URL被篡改情况。</p>
+<p>而刚才说的只有在第一次请求失败之后，重试才会出现错乱，是因为：在第二次重试的时候，代码逻辑中的<code>compare_str</code>条件才为<code>true</code>，service变量被赋值，因为在重试的时候会出现引入全局变量。</p>
+</li>
+<li><p>lua 中的table使用的是<strong>引用方式<em> </em></strong>，这个大家都清楚，但是<code>table的拷贝是浅拷贝</code>，如果我们在代码不得己需要使用全局的配置，赋值给一个local table，同时在后续的逻辑中更改了这个local table，就有可能会出现引入全局变量的情况。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><p>lua中的全局变量使用需谨慎，可以使用 <a href="https://github.com/openresty/nginx-devel-utils/blob/master/lua-releng" target="_blank" rel="external noopener noreferrer">lua-releng-tool</a> 脚本check非预期的global variable，尽量使用local 申明变量。</p>
+</li>
+<li><p>对于一些全局的Conf，不得不使用全局变量的时候，在table 赋值引用的时候，需要进行特殊处理（例如上面的坑二处理方式）。或者使用clone的方式，进行深拷贝赋值（<a href="http://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value" target="_blank" rel="external noopener noreferrer">lua-clone</a>）。</p>
+</li>
+<li><p>后续对新上传SVN的代码都需要使用lua-releng脚本进行check；<br />同时，在引用全局配置的时候都需要使用特殊方式处理，防止异常case。</p>
+</li>
+</ol>
+
+    
+  </div>
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/11/15/lua-coding-style/">
+        
+    </a>
+    
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr />
+    
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    
+  </section>
+
+  <script>
+    var disqus_shortname = 'cloudkey';
+    
+    var disqus_url = 'http://cloudkey.github.io/2015/12/01/lua-global-variable-trap/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//cloudkey.disqus.com/count.js" async=""></script>
+
+
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+
+
+</body>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/754_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/754_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/754_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/754_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%85%83%E8%A1%A8%E4%B8%8E%E5%85%83%E6%96%B9%E6%B3%95/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

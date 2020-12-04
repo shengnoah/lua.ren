@@ -1,0 +1,782 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>FFLIB之FFLUA——C++嵌入Lua&扩展Lua利器 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FFLIB之FFLUA——C++嵌入Lua&扩展Lua利器">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/722_FFLIB%E4%B9%8BFFLUA-C++%E5%B5%8C%E5%85%A5Lua&%E6%89%A9%E5%B1%95Lua%E5%88%A9%E5%99%A8/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/722_FFLIB%E4%B9%8BFFLUA-C++%E5%B5%8C%E5%85%A5Lua&%E6%89%A9%E5%B1%95Lua%E5%88%A9%E5%99%A8/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>FFLIB之FFLUA——C++嵌入Lua&扩展Lua利器</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~5 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">FFLIB之FFLUA——C++嵌入Lua&扩展Lua利器</h1>
+      <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要:"></a>摘要:</h2>
+<p>在使用C++做服务器开发中，经常会使用到脚本技术，Lua是最优秀的嵌入式脚本之一。Lua的轻量、小巧、概念之简单，都使他变得越来越受欢迎。本人也使用过python做嵌入式脚本，二者各有特点，关于python之后会写相关的文章，python对于我而言更喜欢用来编写工具，我前边一些相关的算法也是用python来实现的。今天主要讲Lua相关的开发技术。Lua具有如下特点：</p>
+<ul>
+<li>Lua 拥有虚拟机的概念，而其全部用标准C实现，不依赖任何库即可编译安装，更令人欣喜的是，整个Lua 的实现代码并不算多，可以直接继承到项目中，并且对项目的编译时间几乎没有什么影响</li>
+<li>Lua的虚拟机是线程安全的，这里讲的线程安全级别指得是STL的线程安全级别，即一个lua虚拟机被一个线程访问是安全的，多个lua虚拟机被多个线程分别访问也是安全的，一个lua虚拟机被多个线程访问是不安全的。</li>
+<li>Lua的概念非常少，数据结构只有table，这样当使用Lua作为项目的配置文件时，即使没有编程功底的策划也可以很快上手编写。</li>
+<li>Lua没有原生的对象，没有class的关键字，这也保障了其概念简单，但是仍然是可以使用Lua面向对象编程的。</li>
+<li>Lua尽管小巧，却支持比较先进的编程范式，lua 中的匿名函数和闭包会让代码写起来更加 优雅和高效，如果某人使用的C++ 编译器还比较老套，不支持C++11，那么可以尽快感受一下lua的匿名函数和闭包。</li>
+<li>Lua是最高效的嵌入式脚本之一（如果不能说最的话，目前证据显示是最）。</li>
+<li>Lua的垃圾回收也可以让C++程序收益匪浅，这也是C++结合脚本技术的重要优势之一。</li>
+<li>Lua 的嵌入非常的容易，CAPI 相对比较简洁，而且文档清晰，当然Lua的Capi需要掌握Lua中独特的堆栈的概念，但仍然足够简单。</li>
+<li>Lua的扩展也非常的容易，将C++是对象、函数导入到lua中会涉及到一些技巧，如果纯粹使用lua CAPI会稍显繁杂，幸运的是一些第三方库简化了这些操作，而FFLUA绝对是最好用的之一。</li>
+</ul>
+<h3 id="嵌入Lua："><a href="#嵌入Lua：" class="headerlink" title="嵌入Lua："></a>嵌入Lua：</h3>
+<p>嵌入lua脚本，必须要把lua脚本载入lua虚拟机，lua中的概念称之为dofile，FFLUA中封装了dofile的操作，由于lua文件可能集中放在某个目录，FFLUA中也提供了设置lua脚本目录的接口：<br /></p>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>  <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str_)</span></span></span><br /><span class="line"><span class="function"><span class="keyword">int</span>  <span class="title">load_file</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; file_name_)</span> <span class="title">throw</span> <span class="params">(<span class="keyword">lua_exception_t</span>)</span></span></span><br /><span class="line">load_file就是执行dofile操作，若出错，则throw异常对象，可以使用exception引用目标对象使用what接口输出代码出错的traceback。</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">template</span>&lt;typenameT&gt;</span><br /><span class="line">    <span class="function"><span class="keyword">int</span>  <span class="title">get_global_variable</span><span class="params">(conststring&amp; field_name_, T&amp; ret_)</span></span>;</span><br /><span class="line">    <span class="keyword">template</span>&lt;typenameT&gt;</span><br /><span class="line">    <span class="function"><span class="keyword">int</span>  <span class="title">get_global_variable</span><span class="params">(constchar* field_name_, T&amp; ret_)</span></span>;</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>有时需要直接执行一些lua语句，lua中有dostring的概念，FFLUA中封装了单独的接口run_string：</p>
+<p>void run_string(constchar* str_) throw (lua_exception_t)<br />嵌入lua时最一般的情况是调用lua中的函数，lua的函数比C++更灵活，可以支持任意多个参数，若未赋值，自动设置为nil，并且可以返回多个返回值。无论如何，从C++角度讲，当你嵌入lua调用lua函数时，你总希望lua的使用方式跟C++越像越好，你不希望繁复的处理调用函数的参数问题，比如C++数据转换成lua能处理的数据，即无趣又容易出错。正也正是FFLUA需要做到，封装调用lua函数的操作，把赋值参数，调用函数，接收返回值的细节做到透明，C++调用者就像调用普通的C++函数一样。使用FFLUA中调用lua函数使用call接口：</p>
+<p>void call(constchar* func_name_) throw (lua_exception_t)<br />当调用出错时，异常信息记录了traceback。</p>
+<p>实际上，FFLUA重载了9个call函数，以来自动适配调用9个参数的lua函数。</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> RET&gt;</span><br /><span class="line">     <span class="function">RET <span class="title">call</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* func_name_)</span> <span class="title">throw</span> <span class="params">(<span class="keyword">lua_exception_t</span>)</span></span>;</span><br /><span class="line">    ......</span><br /><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> RET, <span class="keyword">typename</span> ARG1, <span class="keyword">typename</span> ARG2, <span class="keyword">typename</span> ARG3, <span class="keyword">typename</span> ARG4,</span><br /><span class="line">             <span class="keyword">typename</span> ARG5, <span class="keyword">typename</span> ARG6, <span class="keyword">typename</span> ARG7, <span class="keyword">typename</span> ARG8, <span class="keyword">typename</span> ARG9&gt;</span><br /><span class="line">    <span class="function">RET <span class="title">call</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* func_name_, ARG1 arg1_, ARG2 arg2_, ARG3 arg3_,</span></span></span><br /><span class="line"><span class="function"><span class="params">             ARG4 arg4_, ARG5 arg5_, ARG6 arg6_, ARG7 arg7_,</span></span></span><br /><span class="line"><span class="function"><span class="params">             ARG8 arg8_, ARG9 arg9_)</span> <span class="title">throw</span> <span class="params">(<span class="keyword">lua_exception_t</span>)</span></span>;</span><br /></pre></td></tr></tbody></table></figure>
+<p>需要注明的是：<br />call接口的参数是范型的，自动会使用范型traits机制转换成lua类型，并push到lua堆栈中<br />call接口的返回值也是范式的，这就要求使用call时必须提供返回值的类型，如果lua函数不返回值会怎样？lua中有个特性，只有nil和false的布尔值为false，所以当lua函数返回空时，你仍然可以使用bool类型接收参数，只是调用者忽略其返回值就行了。<br />call只支持一个返回值，虽然lua可以返回多个值，但是call会忽略其他返回值，这也是为了尽可能像是调用C++函数，若要返回多个值，完全可以用table返回。</p>
+<h2 id="扩展LUA："><a href="#扩展LUA：" class="headerlink" title="扩展LUA："></a>扩展LUA：</h2>
+<p>这也是非常重要的操作，嵌入lua总是和扩展lua相伴相行。lua若要操作C++中的对象或函数，那么必须先把C++对应的接口注册都lua中。Lua CAPI提供了一系列的接口拥有完成此操作，但是关于堆栈的操作总是会稍显头疼，fflua极大的简化了注册C++对象和接口的操作，可以说是最简单的注册方式之一（如果不准说最的话）。首先我们整理一下需要哪些注册操作：</p>
+<ul>
+<li>C++ 静态函数注册为lua中的全局函数，这样在lua中调用C++函数就像是调用C++全局函数</li>
+<li>C++对象注册成Lua中的对象，可以通过new接口在lua中创建C++对象</li>
+<li>C++类中的属性注册到lua，lua访问对象的属性就像是访问table中的属性一样。</li>
+<li>C++类中的函数注册到lua中，lua调用其接口就像是调用talbe中的接口一样。</li>
+</ul>
+<p>FFLUA中提供了一个范型接口，适配于注册C++相关数据：<br /></p>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br /><span class="line"><span class="keyword">void</span>  <span class="keyword">fflua_t</span>::reg(T a)</span><br /><span class="line">{</span><br /><span class="line">    a(<span class="keyword">this</span>-&gt;get_lua_state());</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>这样，若要对lua进行注册操作，只需要提供一个仿函数即可，这样可以批量在注册所有的C++数据，当然FFLUA中提供了工具类用于生成仿函数中应该完成的注册操作：</p>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> CLASS_TYPE = <span class="keyword">op_tool_t</span>, <span class="keyword">typename</span> CTOR_TYPE = <span class="keyword">void</span>()&gt;</span><br /><span class="line">class <span class="keyword">fflua_register_t</span></span><br /><span class="line">{</span><br /><span class="line"><span class="keyword">public</span>:</span><br /><span class="line">    <span class="keyword">fflua_register_t</span>(lua_State* ls_):m_ls(ls_){}</span><br /><span class="line">    <span class="keyword">fflua_register_t</span>(lua_State* ls_, <span class="keyword">const</span> <span class="built_in">string</span>&amp; class_name_, <span class="built_in">string</span> inherit_name_ = <span class="string">&#34;&#34;</span>);</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> FUNC_TYPE&gt;</span><br /><span class="line">    <span class="keyword">fflua_register_t</span>&amp; def(FUNC_TYPE func, <span class="keyword">const</span> <span class="built_in">string</span>&amp; s_)</span><br /><span class="line">    {</span><br /><span class="line">        <span class="keyword">fflua_register_router_t</span>&lt;FUNC_TYPE&gt;::call(<span class="keyword">this</span>, func, s_);</span><br /><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br /><span class="line">    }</span><br /><span class="line">};</span><br /></pre></td></tr></tbody></table></figure>
+<p>刚才提到的像lua中的所有注册操作，都可以使用def操作完成。 示例如下：</p>
+<p>//! 注册子类，ctor(int) 为构造函数， foo_t为类型名称， base_t为继承的基类名称<br /></p>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">fflua_register_t</span>&lt;<span class="keyword">foo_t</span>, ctor(<span class="keyword">int</span>)&gt;(ls, <span class="string">&#34;foo_t&#34;</span>, <span class="string">&#34;base_t&#34;</span>)</span><br /><span class="line">            .def(&amp;<span class="keyword">foo_t</span>::print, <span class="string">&#34;print&#34;</span>)        <span class="comment">//! 子类的函数</span></span><br /><span class="line">            .def(&amp;<span class="keyword">foo_t</span>::a, <span class="string">&#34;a&#34;</span>);               <span class="comment">//! 子类的字段</span></span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>尤其特别的是，C++中的继承可以在注册到lua中被保持这样注册过基类的接口，子类就不需要重复注册。</p>
+<p> 高级特性：</p>
+<p>通过以上的介绍，也许你已经了解了FFLUA的设计原则，即：当在编写C++代码时，希望使用LUA就像使用C++本地的代码一样，而在lua中操作C++的数据和接口的时候，又希望C++用起来完全跟table一个样。这样可以大大减轻程序开发的工作，从而把精力更多放大设计和逻辑上。那么做到如何lua才算像C++，C++做到如何才算像lua呢？我们知道二者毕竟相差甚远，我们只需要把常见的操作封装成一直即可，不常见操作则特殊处理。常见操作有：</p>
+<ul>
+<li>C++ 调用lua函数，FFLUA已经封装了call函数，保障了调用lua函数就像调用本地C++函数一样方便</li>
+<li>C++注册接口和对象到lua中，lua中操作对象就像操作table一样直接。</li>
+<li>C++中除了自定义对象，STL是用的最多的了，C++希望lua中能够接收STL的参数，或者能够返回STL数据结构</li>
+<li>Lua中只有table数据结构，Lua希望C++的参数的数据结构支持table，并且lua可以直接把table作为返回值。</li>
+<li>C++的指针需要传递到lua中，同时也希望某些操作，lua可以把C++对象指针作为返回值<br />以上前两者已经介绍了，而后三者FFLUA也是给予 完美支持。通过范型的C++封装，可以将C++ STL完美的转换成luatable，同时在lua返回table的时候，自动根据返回值类型将lua的table转换成C++ STL。FFLUA中只要被注册过的C++对象，都可以把其指针作为参数赋值给lua，甚至在lua中保存。当我讲述以上特性的时候，都是在保证类型安全的前提下。重要的类型检查有：</li>
+</ul>
+<p>STL转成Luatable时，STL中的类型必须是lua支持的，包括基本类型和已经注册过的C++对象指针。并且STL可以嵌套使用，如vector&lt;list<int> &gt;,  不要惊讶，这是支持的，不管嵌套多少层，都是支持的，使用C++模板的递归机制，该特性得到了完美支持。vector、list、set都会转换成table的数组模式，key从1开始累加。而map类型自动适配为table字典。<br />LUA中的table可以被当成返回值转换成C++ STL，转换跟上边刚好是对应的，当然有一个限制，由于C++的STL类型必须是唯一的，如vector<int>的返回值就要求lua中的table所有值都是int。否则FFLUA会返回出错，并提示类型转换失败<br />无论死调用lua中使用C++对象指针，还是LuA中返回C++对象指针，该对象必须是lua可以识别的，即已经被注册的，否则FFLUA会提示转换类型失败。</int></int></p>
+<h3 id="关于重载："><a href="#关于重载：" class="headerlink" title="关于重载："></a>关于重载：</h3>
+<p>关于重载LUA 可以使用lua中内部自己的reload，也可以将fflua对象销毁后，重先创建一个，创建fflua对象的开销和创建lua虚拟机的开销一直，不会有附加开销。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2>
+<ul>
+<li>FFLUA是简化C++嵌入绑定lua脚本的类库</li>
+<li>FFLUA只有三个头文件，不依赖除lua之外的任何的类库，开发者可以非常容易的使用FFLUA</li>
+<li>FFLUA 对于常用的STL数据结构进行了支持</li>
+<li>FFLUA 即使拥有了这么多特性，仍然保持了轻量，只要用过C++，只要用过lua，FFLUA的代码就可以非常清晰的看清其实现，当你了解其内部实现时，你会发现FFLUA已经做到了极简，范型模板展开后的代码就跟你自己原生LUA CAPI 编写的一样直接。</li>
+<li>FFLUA的开源代码：<a href="https://github.com/fanchy/fflua" target="_blank" rel="noopener noreferrer">https://github.com/fanchy/fflua</a></li>
+<li>完整的C++示例代码：</li>
+</ul>
+<figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span><br /><span class="line">69</span><br /><span class="line">70</span><br /><span class="line">71</span><br /><span class="line">72</span><br /><span class="line">73</span><br /><span class="line">74</span><br /><span class="line">75</span><br /><span class="line">76</span><br /><span class="line">77</span><br /><span class="line">78</span><br /><span class="line">79</span><br /><span class="line">80</span><br /><span class="line">81</span><br /><span class="line">82</span><br /><span class="line">83</span><br /><span class="line">84</span><br /><span class="line">85</span><br /><span class="line">86</span><br /><span class="line">87</span><br /><span class="line">88</span><br /><span class="line">89</span><br /><span class="line">90</span><br /><span class="line">91</span><br /><span class="line">92</span><br /><span class="line">93</span><br /><span class="line">94</span><br /><span class="line">95</span><br /><span class="line">96</span><br /><span class="line">97</span><br /><span class="line">98</span><br /><span class="line">99</span><br /><span class="line">100</span><br /><span class="line">101</span><br /><span class="line">102</span><br /><span class="line">103</span><br /><span class="line">104</span><br /><span class="line">105</span><br /><span class="line">106</span><br /><span class="line">107</span><br /><span class="line">108</span><br /><span class="line">109</span><br /><span class="line">110</span><br /><span class="line">111</span><br /><span class="line">112</span><br /><span class="line">113</span><br /><span class="line">114</span><br /><span class="line">115</span><br /><span class="line">116</span><br /><span class="line">117</span><br /><span class="line">118</span><br /><span class="line">119</span><br /><span class="line">120</span><br /><span class="line">121</span><br /><span class="line">122</span><br /><span class="line">123</span><br /><span class="line">124</span><br /><span class="line">125</span><br /><span class="line">126</span><br /><span class="line">127</span><br /><span class="line">128</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;assert.h&gt;</span></span></span><br /><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&#34;lua/fflua.h&#34;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> ff;</span><br /><span class="line"></span><br /><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">base_t</span></span></span><br /><span class="line"><span class="class">{</span></span><br /><span class="line"><span class="keyword">public</span>:</span><br /><span class="line">    <span class="keyword">base_t</span>():v(<span class="number">789</span>){}</span><br /><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dump</span><span class="params">()</span></span></span><br /><span class="line"><span class="function">    </span>{</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;in %s a:%dn&#34;</span>, __FUNCTION__, v);</span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">int</span> v;</span><br /><span class="line">};</span><br /><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">foo_t</span>:</span> <span class="keyword">public</span> <span class="keyword">base_t</span></span><br /><span class="line">{</span><br /><span class="line"><span class="keyword">public</span>:</span><br /><span class="line">    <span class="keyword">foo_t</span>(<span class="keyword">int</span> b):a(b)</span><br /><span class="line">    {</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;in %s b:%d this=%pn&#34;</span>, __FUNCTION__, b, <span class="keyword">this</span>);</span><br /><span class="line">    }</span><br /><span class="line">    ~<span class="keyword">foo_t</span>()</span><br /><span class="line">    {</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;in %sn&#34;</span>, __FUNCTION__);</span><br /><span class="line">    }</span><br /><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int64_t</span> a, <span class="keyword">base_t</span>* p)</span> <span class="keyword">const</span></span></span><br /><span class="line"><span class="function">    </span>{</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;in foo_t::print a:%ld p:%pn&#34;</span>, (<span class="keyword">long</span>)a, p);</span><br /><span class="line">    }</span><br /><span class="line"></span><br /><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dumy</span><span class="params">()</span></span></span><br /><span class="line"><span class="function">    </span>{</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;in %sn&#34;</span>, __FUNCTION__);</span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">int</span> a;</span><br /><span class="line">};</span><br /><span class="line"></span><br /><span class="line"><span class="comment">//! lua talbe 可以自动转换为stl 对象</span></span><br /><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumy</span><span class="params">(<span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt; ret, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a, <span class="built_in">list</span>&lt;<span class="built_in">string</span>&gt; b, <span class="built_in">set</span>&lt;<span class="keyword">int64_t</span>&gt; c)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;in %s begin ------------n&#34;</span>, __FUNCTION__);</span><br /><span class="line">    <span class="keyword">for</span> (<span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;::iterator it =  ret.begin(); it != ret.end(); ++it)</span><br /><span class="line">    {</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;map:%s, val:%s:n&#34;</span>, it-&gt;first.c_str(), it-&gt;second.c_str());</span><br /><span class="line">    }</span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;in %s end ------------n&#34;</span>, __FUNCTION__);</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">lua_reg</span><span class="params">(lua_State* ls)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    <span class="comment">//! 注册基类函数, ctor() 为构造函数的类型</span></span><br /><span class="line">    <span class="keyword">fflua_register_t</span>&lt;<span class="keyword">base_t</span>, ctor()&gt;(ls, <span class="string">&#34;base_t&#34;</span>)  <span class="comment">//! 注册构造函数</span></span><br /><span class="line">                    .def(&amp;<span class="keyword">base_t</span>::dump, <span class="string">&#34;dump&#34;</span>)     <span class="comment">//! 注册基类的函数</span></span><br /><span class="line">                    .def(&amp;<span class="keyword">base_t</span>::v, <span class="string">&#34;v&#34;</span>);          <span class="comment">//! 注册基类的属性</span></span><br /><span class="line"></span><br /><span class="line">    <span class="comment">//! 注册子类，ctor(int) 为构造函数， foo_t为类型名称， base_t为继承的基类名称</span></span><br /><span class="line">    <span class="keyword">fflua_register_t</span>&lt;<span class="keyword">foo_t</span>, ctor(<span class="keyword">int</span>)&gt;(ls, <span class="string">&#34;foo_t&#34;</span>, <span class="string">&#34;base_t&#34;</span>)</span><br /><span class="line">                .def(&amp;<span class="keyword">foo_t</span>::print, <span class="string">&#34;print&#34;</span>)        <span class="comment">//! 子类的函数</span></span><br /><span class="line">                .def(&amp;<span class="keyword">foo_t</span>::a, <span class="string">&#34;a&#34;</span>);               <span class="comment">//! 子类的字段</span></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">fflua_register_t</span>&lt;&gt;(ls)</span><br /><span class="line">                .def(&amp;dumy, <span class="string">&#34;dumy&#34;</span>);                <span class="comment">//! 注册静态函数</span></span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">fflua_t</span> fflua;</span><br /><span class="line">    <span class="keyword">try</span> </span><br /><span class="line">    {</span><br /><span class="line">        <span class="comment">//! 注册C++ 对象到lua中</span></span><br /><span class="line">        fflua.reg(lua_reg);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 载入lua文件</span></span><br /><span class="line">        fflua.add_package_path(<span class="string">&#34;./&#34;</span>);</span><br /><span class="line">        fflua.load_file(<span class="string">&#34;test.lua&#34;</span>);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 获取全局变量</span></span><br /><span class="line">        <span class="keyword">int</span> var = <span class="number">0</span>;</span><br /><span class="line">        assert(<span class="number">0</span> == fflua.get_global_variable(<span class="string">&#34;test_var&#34;</span>, var));</span><br /><span class="line">        <span class="comment">//! 设置全局变量</span></span><br /><span class="line">        assert(<span class="number">0</span> == fflua.set_global_variable(<span class="string">&#34;test_var&#34;</span>, ++var));</span><br /><span class="line"></span><br /><span class="line">        <span class="comment">//! 执行lua 语句</span></span><br /><span class="line">        fflua.run_string(<span class="string">&#34;print(&#34;exe run_string!!&#34;)&#34;</span>);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 调用lua函数, 基本类型作为参数</span></span><br /><span class="line">        <span class="keyword">int32_t</span> arg1 = <span class="number">1</span>;</span><br /><span class="line">        <span class="keyword">float</span>   arg2 = <span class="number">2</span>;</span><br /><span class="line">        <span class="keyword">double</span>  arg3 = <span class="number">3</span>;</span><br /><span class="line">        <span class="built_in">string</span>  arg4 = <span class="string">&#34;4&#34;</span>;</span><br /><span class="line">        fflua.call&lt;<span class="keyword">bool</span>&gt;(<span class="string">&#34;test_func&#34;</span>, arg1, arg2, arg3,  arg4);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 调用lua函数，stl类型作为参数， 自动转换为lua talbe</span></span><br /><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec;        vec.push_back(<span class="number">100</span>);</span><br /><span class="line">        <span class="built_in">list</span>&lt;<span class="keyword">float</span>&gt; lt;         lt.push_back(<span class="number">99.99</span>);</span><br /><span class="line">        <span class="built_in">set</span>&lt;<span class="built_in">string</span>&gt; st;         st.insert(<span class="string">&#34;OhNIce&#34;</span>);</span><br /><span class="line">        <span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; mp;    mp[<span class="string">&#34;key&#34;</span>] = <span class="number">200</span>;</span><br /><span class="line">        fflua.call&lt;<span class="built_in">string</span>&gt;(<span class="string">&#34;test_stl&#34;</span>, vec, lt, st,  mp);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 调用lua 函数返回 talbe，自动转换为stl结构</span></span><br /><span class="line">        vec = fflua.call&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt;(<span class="string">&#34;test_return_stl_vector&#34;</span>);</span><br /><span class="line">        lt  = fflua.call&lt;<span class="built_in">list</span>&lt;<span class="keyword">float</span>&gt; &gt;(<span class="string">&#34;test_return_stl_list&#34;</span>);</span><br /><span class="line">        st  = fflua.call&lt;<span class="built_in">set</span>&lt;<span class="built_in">string</span>&gt; &gt;(<span class="string">&#34;test_return_stl_set&#34;</span>);</span><br /><span class="line">        mp  = fflua.call&lt;<span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; &gt;(<span class="string">&#34;test_return_stl_map&#34;</span>);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 调用lua函数，c++ 对象作为参数, foo_t 必须被注册过</span></span><br /><span class="line">        <span class="keyword">foo_t</span>* foo_ptr = <span class="keyword">new</span> <span class="keyword">foo_t</span>(<span class="number">456</span>);</span><br /><span class="line">        fflua.call&lt;<span class="keyword">bool</span>&gt;(<span class="string">&#34;test_object&#34;</span>, foo_ptr);</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">//! 调用lua函数，c++ 对象作为返回值, foo_t 必须被注册过 </span></span><br /><span class="line">        assert(foo_ptr == fflua.call&lt;<span class="keyword">foo_t</span>*&gt;(<span class="string">&#34;test_ret_object&#34;</span>, foo_ptr));</span><br /><span class="line">        <span class="comment">//! 调用lua函数，c++ 对象作为返回值, 自动转换为基类</span></span><br /><span class="line">        <span class="keyword">base_t</span>* base_ptr = fflua.call&lt;<span class="keyword">base_t</span>*&gt;(<span class="string">&#34;test_ret_base_object&#34;</span>, foo_ptr);</span><br /><span class="line">        assert(base_ptr == foo_ptr);</span><br /><span class="line"> </span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">catch</span> (exception&amp; e)</span><br /><span class="line">    {</span><br /><span class="line">        <span class="built_in">printf</span>(<span class="string">&#34;exception:%sn&#34;</span>, e.what());</span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p>完整的LUA示例代码：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span>&lt;br
+</pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/721_-%E5%AE%9E%E7%8E%B0angluar-%E6%89%8B%E8%AE%B0%E5%85%AB-%E8%BF%87%E6%BB%A4%E5%99%A8/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/721_-%E5%AE%9E%E7%8E%B0angluar-%E6%89%8B%E8%AE%B0%E5%85%AB-%E8%BF%87%E6%BB%A4%E5%99%A8/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/721_-%E5%AE%9E%E7%8E%B0angluar-%E6%89%8B%E8%AE%B0%E5%85%AB-%E8%BF%87%E6%BB%A4%E5%99%A8/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/722_FFLIB%E4%B9%8BFFLUA-C++%E5%B5%8C%E5%85%A5Lua&%E6%89%A9%E5%B1%95Lua%E5%88%A9%E5%99%A8/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/722_FFLIB%E4%B9%8BFFLUA-C++%E5%B5%8C%E5%85%A5Lua&%E6%89%A9%E5%B1%95Lua%E5%88%A9%E5%99%A8/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/722_FFLIB%E4%B9%8BFFLUA-C++%E5%B5%8C%E5%85%A5Lua&%E6%89%A9%E5%B1%95Lua%E5%88%A9%E5%99%A8/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/721_-%E5%AE%9E%E7%8E%B0angluar-%E6%89%8B%E8%AE%B0%E5%85%AB-%E8%BF%87%E6%BB%A4%E5%99%A8/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>通过lua栈了解lua与c的交互 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过lua栈了解lua与c的交互">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/682_%E9%80%9A%E8%BF%87lua%E6%A0%88%E4%BA%86%E8%A7%A3lua%E4%B8%8Ec%E7%9A%84%E4%BA%A4%E4%BA%92/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/682_%E9%80%9A%E8%BF%87lua%E6%A0%88%E4%BA%86%E8%A7%A3lua%E4%B8%8Ec%E7%9A%84%E4%BA%A4%E4%BA%92/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>通过lua栈了解lua与c的交互</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~5 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">通过lua栈了解lua与c的交互</h1>
+      <p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/execute.png" alt="" /><br />其中分析、执行部分都是c语言实现的。<br /></p>
+<h1 id="lua与c的关系"><a href="#lua与c的关系" class="headerlink" title="lua与c的关系"></a>lua与c的关系</h1>
+<p>lua的虚拟机是用c语言实现的，换句话说一段lua指令最终在执行时都是当作c语言来执行的，lua的global表，函数调用栈也都是存在c语言中的一个叫lua_State的结构体中的。<br />举个例子，来看下lua中的加指令 OP_ADD a b c 是如何实现的：<br />lua在运行时，会在c语言中的一个叫luaV_excute的函数中不断执行翻译后的lua指令，OP_ADD就是其中的一条指令(luaV_excute函数太长了，所以只在这里截取OP_ADD的部分，有兴趣可以直接去看lua的源码)<br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> OP_ADD: {</span><br /><span class="line">        arith_op(luai_numadd, TM_ADD);</span><br /><span class="line">        <span class="keyword">continue</span>;</span><br /><span class="line">      }</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>相关的一些宏定义：<br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> arith_op(op,tm) { </span></span><br /><span class="line">        <span class="comment">//获取b，c的值</span></span><br /><span class="line">        TValue *rb = RKB(i); </span><br /><span class="line">        TValue *rc = RKC(i); </span><br /><span class="line">        <span class="comment">//判断是否是b，c数字</span></span><br /><span class="line">        <span class="keyword">if</span> (ttisnumber(rb) &amp;&amp; ttisnumber(rc)) { </span><br /><span class="line">          <span class="comment">//从b，c指向的TValue中将数字字段取出来</span></span><br /><span class="line">          lua_Number nb = nvalue(rb), nc = nvalue(rc); </span><br /><span class="line">          <span class="comment">//进行op运算后放入a中</span></span><br /><span class="line">          setnvalue(ra, op(nb, nc)); </span><br /><span class="line">        } </span><br /><span class="line">        <span class="comment">//如果不是数字，则尝试调用ra，rb的元方法</span></span><br /><span class="line">        <span class="keyword">else</span> </span><br /><span class="line">          Protect(Arith(L, ra, rb, rc, tm)); </span><br /><span class="line">      }</span><br /><span class="line"></span><br /><span class="line"><span class="comment">//判断一个Tvalue是否是数字</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ttisnumber(o)	(ttype(o) == LUA_TNUMBER)</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ttype(o)	((o)-&gt;tt)</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">//根据b的类型获取b对应的TValue</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RKB(i)	check_exp(getBMode(GET_OPCODE(i)) == OpArgK, </span></span><br /><span class="line">	ISK(GETARG_B(i)) ? k+INDEXK(GETARG_B(i)) : base+GETARG_B(i))</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>可以看到，OP_ADD其实就是把b，c（b，c是需要进行加运算的两个数字在函数常量中表中的位置中或调用栈中的位置上的TValue）的值加到了a中。<br />也就是说，每个lua指令最终的实现还是在通过执行c语言语句实现的。</p>
+<h1 id="lua中进行函数调用时栈的状态"><a href="#lua中进行函数调用时栈的状态" class="headerlink" title="lua中进行函数调用时栈的状态"></a>lua中进行函数调用时栈的状态</h1>
+<p>lua和c的交互完全通过栈来进行交互，为了了解lua与c的交互一定要先了解lua的栈。<br />我们常说的lua栈有两种：<br />1.一个总的数据栈：每个lua环境唯一的栈，所有的调用信息都存在这上面。<br />2.每个函数的调用栈：函数的调用栈，其实并不是一个独立的栈，只是数据栈上的一小段。  </p>
+<h2 id="与栈相关的结构体"><a href="#与栈相关的结构体" class="headerlink" title="与栈相关的结构体"></a>与栈相关的结构体</h2>
+<h3 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h3>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>  {</span></span><br /><span class="line">  CommonHeader;</span><br /><span class="line">  lu_byte status;</span><br /><span class="line">  StkId top;  <span class="comment">/* first free slot in the stack */</span></span><br /><span class="line">  StkId base;  <span class="comment">/* base of current function */</span></span><br /><span class="line">  global_State *l_G;</span><br /><span class="line">  CallInfo *ci;  <span class="comment">/* call info for current function */</span></span><br /><span class="line">  <span class="keyword">const</span> Instruction *savedpc;  <span class="comment">/* `savedpc&#39; of current function */</span></span><br /><span class="line">  StkId stack_last;  <span class="comment">/* last free slot in the stack */</span></span><br /><span class="line">  StkId <span class="built_in">stack</span>;  <span class="comment">/* stack base */</span></span><br /><span class="line">  CallInfo *end_ci;  <span class="comment">/* points after end of ci array*/</span></span><br /><span class="line">  CallInfo *base_ci;  <span class="comment">/* array of CallInfo&#39;s */</span></span><br /><span class="line">  <span class="keyword">int</span> stacksize;</span><br /><span class="line">  <span class="keyword">int</span> size_ci;  <span class="comment">/* size of array `base_ci&#39; */</span></span><br /><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">short</span> nCcalls;  <span class="comment">/* number of nested C calls */</span></span><br /><span class="line">  lu_byte hookmask;</span><br /><span class="line">  lu_byte allowhook;</span><br /><span class="line">  <span class="keyword">int</span> basehookcount;</span><br /><span class="line">  <span class="keyword">int</span> hookcount;</span><br /><span class="line">  lua_Hook hook;</span><br /><span class="line">  TValue l_gt;  <span class="comment">/* table of globals */</span></span><br /><span class="line">  TValue env;  <span class="comment">/* temporary place for environments */</span></span><br /><span class="line">  GCObject *openupval;  <span class="comment">/* list of open upvalues in this stack */</span></span><br /><span class="line">  GCObject *gclist;</span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">lua_longjmp</span> *<span class="title">errorJmp</span>;</span>  <span class="comment">/* current error recover point */</span></span><br /><span class="line">  <span class="keyword">ptrdiff_t</span> errfunc;  <span class="comment">/* current error handling function (stack index) */</span></span><br /><span class="line">};</span><br /></pre></td></tr></tbody></table></figure>
+<p>lua_State保存lua运行相关所有信息的结构体，就是lua的运行环境，lua的栈和栈相关的信息都存在这个结构体里。这里说明几个和lua栈紧密相关的几个变量：<br /><strong>stack:</strong> lua栈的实体，在每个lua环境中是唯一的，每个函数的调用栈只是stack上的一小段。<br /><strong>top,base:</strong> 指向当前调用栈的栈顶和栈底。<br /><strong>ci:</strong> 当前函数的调用信息，具体结构下面会讲到。<br /><strong>base_ci:</strong> 函数调用信息的列表，用来记录和恢复当前的调用信息。  </p>
+<h3 id="CallInfo"><a href="#CallInfo" class="headerlink" title="CallInfo"></a>CallInfo</h3>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br /><span class="line"><span class="comment">** informations about a call</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">CallInfo</span> {</span></span><br /><span class="line">  StkId base;  <span class="comment">/* base for this function */</span></span><br /><span class="line">  StkId func;  <span class="comment">/* function index in the stack */</span></span><br /><span class="line">  StkId	top;  <span class="comment">/* top for this function */</span></span><br /><span class="line">  <span class="keyword">const</span> Instruction *savedpc;</span><br /><span class="line">  <span class="keyword">int</span> nresults;  <span class="comment">/* expected number of results from this function */</span></span><br /><span class="line">  <span class="keyword">int</span> tailcalls;  <span class="comment">/* number of tail calls lost under this entry */</span></span><br /><span class="line">} CallInfo;</span><br /></pre></td></tr></tbody></table></figure>
+<p>CallInfo是每一次函数调用的调用信息，这里也说明几个和栈紧密相关的变量。<br /><strong>base:</strong> 当前调用栈的栈底<br /><strong>top:</strong> 当前调用栈的栈顶<br /><strong>func:</strong> 当前调用的函数在stack中的位置<br /><strong>nresults:</strong> 当前函数预期会返回的结果个数，如果返回的数量不够，会用nil补齐</p>
+<h2 id="通过一个例子说明一下"><a href="#通过一个例子说明一下" class="headerlink" title="通过一个例子说明一下"></a>通过一个例子说明一下</h2>
+<p>我们这里在c语言中操作lua来调用c写的函数进行举例，因为用c语言去操作lua的流程更接近lua编译成指令后的过程，看的更清晰一些，又不至于像直接阅读虚拟机指令那么吃力。</p>
+<h3 id="使用的代码"><a href="#使用的代码" class="headerlink" title="使用的代码"></a>使用的代码</h3>
+<p><strong>供lua调用的c函数库（addlib.c）：</strong><br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lua.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lualib.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lauxlib.h&gt;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">addc</span><span class="params">(lua_State *L)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    <span class="comment">//输出一下当前调用栈的元素个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top in addc: %dn&#34;</span>,lua_gettop(L));</span><br /><span class="line">    <span class="keyword">int</span> a,b,c;</span><br /><span class="line">    a = lua_tonumber(L,<span class="number">-1</span>);</span><br /><span class="line">    b = lua_tonumber(L,<span class="number">-2</span>);</span><br /><span class="line">    c = a + b;</span><br /><span class="line">    <span class="comment">//压入结果</span></span><br /><span class="line">    lua_pushnumber(L,c);</span><br /><span class="line">    <span class="comment">//输出压入结果后的调用栈的元素个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top in addc,after push result: %dn&#34;</span>,lua_gettop(L));</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">luaL_Reg</span> <span class="title">lib</span>[] =</span></span><br /><span class="line"><span class="class">{</span></span><br /><span class="line">    {<span class="string">&#34;addc&#34;</span>,addc},</span><br /><span class="line">    {<span class="literal">NULL</span>,<span class="literal">NULL</span>}</span><br /><span class="line">};</span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">luaopen_addlib</span><span class="params">(lua_State *L)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    luaL_register(L,<span class="string">&#34;testadd&#34;</span>,lib);</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p><strong>调用代码：</strong><br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lua.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lualib.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lauxlib.h&gt;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    lua_State* luaEnv = lua_open();</span><br /><span class="line">    <span class="comment">//载入基础库</span></span><br /><span class="line">    luaopen_base(luaEnv);</span><br /><span class="line">    luaL_openlibs(luaEnv);</span><br /><span class="line">    <span class="comment">//输出一下载入库之后的栈中元素个数，lua_gettop(luaEnv)输出luaEnv-&gt;top - luaEnv-&gt;base,也就是当前调用栈中元素的个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top after openlibs: %dn&#34;</span>,lua_gettop(luaEnv));</span><br /><span class="line">    <span class="comment">//载入addlib库</span></span><br /><span class="line">    lua_getglobal(luaEnv,<span class="string">&#34;require&#34;</span>);</span><br /><span class="line">    lua_pushstring(luaEnv,<span class="string">&#34;addlib&#34;</span>);</span><br /><span class="line">    lua_pcall(luaEnv,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br /><span class="line">    <span class="comment">//输出载入addlib库后的栈中元素个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top after require addlib: %dn&#34;</span>,lua_gettop(luaEnv));</span><br /><span class="line">    <span class="comment">//压入需要调用的函数和参数</span></span><br /><span class="line">    lua_getglobal(luaEnv,<span class="string">&#34;testadd&#34;</span>);</span><br /><span class="line">    lua_getfield(luaEnv,<span class="number">-1</span>,<span class="string">&#34;addc&#34;</span>);</span><br /><span class="line">    lua_pushinteger(luaEnv,<span class="number">10</span>);</span><br /><span class="line">    lua_pushinteger(luaEnv,<span class="number">12</span>);</span><br /><span class="line">    <span class="comment">//输出压入后的栈中元素个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top after push function and args: %dn&#34;</span>,lua_gettop(luaEnv));</span><br /><span class="line">    <span class="comment">//调用addc函数</span></span><br /><span class="line">    lua_pcall(luaEnv,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br /><span class="line">    <span class="comment">//输出调用后的栈中元素的个数</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;get top after pcall addc: %dn&#34;</span>,lua_gettop(luaEnv));</span><br /><span class="line">    <span class="keyword">int</span> result = lua_tonumber(luaEnv,<span class="number">-1</span>);</span><br /><span class="line">    <span class="comment">//输出结果</span></span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;addc&#39;s result is : %dn&#34;</span>,result);</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>调用结果：</p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/result1.png" alt="" /></p>
+<h3 id="过程说明"><a href="#过程说明" class="headerlink" title="过程说明"></a>过程说明</h3>
+<p>在c语言中调用一个lua函数的流程：</p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/1.png" alt="" />  </p>
+<h3 id="栈的详细变化过程"><a href="#栈的详细变化过程" class="headerlink" title="栈的详细变化过程"></a>栈的详细变化过程</h3>
+<p>1.通过lua_open创建lua_State,并进行栈的初始化，栈的初始化操作在state_init()函数中。在state_init()中，创建栈的实例和函数调用列表实例，并设置了初始的ci信息，和初始ci的调用栈信息。此时栈是空的，base,top都指向栈的第一个元素。<br /><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/2.png" alt="" /><br />2.打开基本的库后的栈（打开基本库后，栈中会剩余两张表格，但不影响之后的流程，所以先无视掉），因为在打开基本库的时候载入了两张表，所有top增加了2。</p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/3.png" alt="" /><br />3.载入addlib库，用于函数调用（因为调用了返回0个返回值的pcall，所以对栈的内容没有影响，后面说），栈的状态完全没变。<br />4.压入要调用的函数及参数，准备进行调用。  </p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/4.png" alt="" /><br /><strong>5.通过lua_pcall（真正对addc函数的调用是在luaD_precall中）调用addc函数，在luaD_precall函数中会创建新的ci来用于保存addc的调用信息，将base移动到func+1的位置，作为新的ci的栈底。top不动，这样新的调用栈中就有addc的参数信息了。</strong></p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/5.png" alt="" /><br />6.在addc中读取调用栈中的两个参数，计算出结果，并压入栈中。</p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/6.png" alt="" /><br />7.在addc调用结束后，lua会调用luaD_poscall回归到上一层，在回归时lua会根据return n的个数将addc调用栈栈顶的n个元素拷贝到，从addc位置开始的nresults个位置中，若n &lt; nresults，少的部分补nil，并重新计算上一层栈顶。</p>
+<p><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/7.png" alt="" /><br /><strong>小结：</strong><br />①lua用于调用，交互的栈只有一个，每次进行函数调用时并不会新开一个栈来存储调用信息，而是新创建一个ci用于保存被调用函数的信息，并根据被调用函数的位置、参数个数将stack上的一段作为新的ci的调用栈，并将当前的调用信息（当前的函数位置，当前使用的栈的区间等信息）保存为一个callinfo，用于调用后的恢复。<br />②每次在lua中调用一个c函数时，会以函数在栈中的位置加1作为被调用函数callinfo的base，top位置保持不变作为新的调用栈的栈顶（调用lua函数略有不同，调用lua函数会将函数的参数新复制一份，但原理跟调用c函数差不多，所以不多做说明）。<br />③一次函数调用结束后，栈会根据之前保存的callinfo恢复栈的状态，并将函数调用的结果复制到当前栈顶的位置。  </p>
+<h1 id="lua与c的交互"><a href="#lua与c的交互" class="headerlink" title="lua与c的交互"></a>lua与c的交互</h1>
+<h2 id="c调用lua函数"><a href="#c调用lua函数" class="headerlink" title="c调用lua函数"></a>c调用lua函数</h2>
+<p>我们写一个接收一个参数，返回两个结果的PrintHello函数供c语言调用。<br />被调用的lua函数（PrintHello.lua）：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">--接收一个参数，返回两个结果的函数</span></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PrintHello</span><span class="params">(name)</span></span></span><br /><span class="line">    <span class="comment">--输出Hello</span></span><br /><span class="line">    <span class="built_in">print</span>(<span class="string">&#34;Hello &#34;</span>..name);</span><br /><span class="line">    <span class="comment">--给要返回的两个结果复制</span></span><br /><span class="line">    result1 = <span class="string">&#34;the name : &#34;</span>..name;</span><br /><span class="line">    result2 = <span class="string">&#34;something else...&#34;</span>;</span><br /><span class="line">    <span class="comment">--返回结果</span></span><br /><span class="line">    <span class="keyword">return</span> result1,result2;</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>测试用c代码：<br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lua.h&gt;</span></span></span><br /><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lualib.h&gt;</span></span></span><br /><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lauxlib.h&gt;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    <span class="comment">//创建lua运行环境</span></span><br /><span class="line">    lua_State* luaEnv = lua_open();</span><br /><span class="line">    <span class="comment">//打开基础库</span></span><br /><span class="line">    luaopen_base(luaEnv);</span><br /><span class="line">    luaL_openlibs(luaEnv);</span><br /><span class="line">    <span class="comment">//载入PrintHello.lua</span></span><br /><span class="line">    luaL_loadfile(luaEnv,<span class="string">&#34;PrintHello.lua&#34;</span>);</span><br /><span class="line">    <span class="comment">//执行PrintHello.lua，将PrintHello加入Global表中</span></span><br /><span class="line">    lua_pcall(luaEnv,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br /><span class="line">    <span class="comment">//将PrintHello函数、参数压栈，准备调用</span></span><br /><span class="line">    lua_getglobal(luaEnv,<span class="string">&#34;PrintHello&#34;</span>);</span><br /><span class="line">    lua_pushstring(luaEnv,<span class="string">&#34;bard&#34;</span>);</span><br /><span class="line">    <span class="comment">//调用PrintHello函数</span></span><br /><span class="line">    lua_pcall(luaEnv,<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br /><span class="line">    <span class="comment">//取出返回的两个结果并输出</span></span><br /><span class="line">    <span class="keyword">char</span>* result1 = lua_tostring(luaEnv,<span class="number">-2</span>);</span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;%sn&#34;</span>,result1);</span><br /><span class="line">    <span class="keyword">char</span>* result2 = lua_tostring(luaEnv,<span class="number">-1</span>);</span><br /><span class="line">    <span class="built_in">printf</span>(<span class="string">&#34;%sn&#34;</span>,result2);</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>调用结果：<br /><img src="http://arrayindex.me//2018/09/04/通过lua栈了解lua与c的交互/result2.png" alt="" /><br /><strong>小结：</strong><br />①没有看到PrintHello函数有显式从栈中取参数和压入结果的操作，那么取参数和将结果压栈的操作是在哪里进行的：<br /><strong>取参数：</strong> 在luaD_precall函数中，会创建新的ci供PrintHello使用，同时将栈顶的1个参数PrintHello的调用栈中，然后luaV_execute执行对应的PrintHello对应的一段指令，这些指令中会把name参数对应到调用栈的第一个位置去，这样就可以使用这个参数了。<br /><strong>压栈：</strong> PrintHello中的return会被翻译成两个OP_MOVE指令和一条OP_RETURN指令，进行结果的压栈和栈的恢复。<br />②其他操作就和前面说明调用栈的操作差不多了，这里就不做重复的解释。</p>
+<h2 id="lua调用c函数"><a href="#lua调用c函数" class="headerlink" title="lua调用c函数"></a>lua调用c函数</h2>
+<p>我们写一个接收一个参数，返回两个结果的函数<br />供lua调用的c代码(testlib.c)：<br /></p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lua.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lualib.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua5.1/lauxlib.h&gt;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">printHelloInC</span><span class="params">(lua_State* L)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">  <span class="comment">//取出栈中的参数</span></span><br /><span class="line">  <span class="comment">//如果想实现函数重载，可以对栈中的参数数量和参数类型进行判断后进行分别处理，这里只是为了展示lua对c的调用，</span></span><br /><span class="line">  <span class="comment">//所以没有进行参数检查</span></span><br /><span class="line">  <span class="keyword">char</span>* arg0 = lua_tostring(L,<span class="number">-1</span>);</span><br /><span class="line">  <span class="comment">//输出Hello</span></span><br /><span class="line">  <span class="built_in">printf</span>(<span class="string">&#34;Hello %sn&#34;</span>,arg0);</span><br /><span class="line">  <span class="comment">//压入两个要返回的值</span></span><br /><span class="line">  <span class="keyword">char</span>* result1 = <span class="string">&#34;this is result1&#34;</span>;</span><br /><span class="line">  lua_pushstring(L,result1);</span><br /><span class="line">  <span class="keyword">char</span>* result2 = <span class="string">&#34;this is result2&#34;</span>;</span><br /><span class="line">  lua_pushstring(L,result2);</span><br /><span class="line">  <span class="comment">//表示这个函数有2个返回值</span></span><br /><span class="line">  <span class="keyword">return</span> <span class="number">2</span>;</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">luaL_Reg</span> <span class="title">lib</span>[] =</span></span><br /><span class="line"><span class="class">{</span></span><br /><span class="line">    {<span class="string">&#34;printHelloInC&#34;</span>,printHelloInC},</span><br /><span class="line">    {<span class="literal">NULL</span>,<span class="literal">NULL</span>}</span><br /><span class="line">};</span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">luaopen_testlib</span><span class="params">(lua_State *L)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    luaL_register(L,<span class="string">&#34;testlib&#34;</span>,lib);</span><br /><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>lua测试代码：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span>&lt;b
+</pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/681_Lua%E7%9A%84%E5%85%83%E8%A1%A8/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/681_Lua%E7%9A%84%E5%85%83%E8%A1%A8/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/681_Lua%E7%9A%84%E5%85%83%E8%A1%A8/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/682_%E9%80%9A%E8%BF%87lua%E6%A0%88%E4%BA%86%E8%A7%A3lua%E4%B8%8Ec%E7%9A%84%E4%BA%A4%E4%BA%92/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/682_%E9%80%9A%E8%BF%87lua%E6%A0%88%E4%BA%86%E8%A7%A3lua%E4%B8%8Ec%E7%9A%84%E4%BA%A4%E4%BA%92/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/682_%E9%80%9A%E8%BF%87lua%E6%A0%88%E4%BA%86%E8%A7%A3lua%E4%B8%8Ec%E7%9A%84%E4%BA%A4%E4%BA%92/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/681_Lua%E7%9A%84%E5%85%83%E8%A1%A8/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lua编程4之表达式和语句 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua编程4之表达式和语句">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/275_Lua%E7%BC%96%E7%A8%8B4%E4%B9%8B%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/275_Lua%E7%BC%96%E7%A8%8B4%E4%B9%8B%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Lua编程4之表达式和语句</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~4 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Lua编程4之表达式和语句</h1>
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;p&gt;思考并回答以下问题：&lt;br&gt;1.如何创建一个空表？&lt;/p&gt;
+</code></pre></div></div>
+
+<p>学习了数据类型和变量之后，就可以开始写代码的表达式，然后进一步写语句了。</p>
+<h2 id="算术操作符"><a href="https://chebincarl.github.io/#%E7%AE%97%E6%9C%AF%E6%93%8D%E4%BD%9C%E7%AC%A6" class="headerlink" title="算术操作符"></a><span style="color:#EF7060;">算术操作符</span></h2>
+<p>Lua支持常规算术操作符有：二元的“+”、“-”、“*”、“/”、“^”(指数)、“%”(取模)，一元的“-”(负号)。所有这些操作符都可用于实数。</p>
+<p>然而需要特别说明的是取模操作符(%)，Lua中对该操作符的定义为：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">a % b == a - <span class="built_in">floor</span>(a / b) * b</span><br /></pre></td></tr></table></figure>
+
+<p>由此可以推演出x % 1的结果为x的小数部分，而x - x % 1的结果则为x的整数部分。类似的，x - x % 0.01则是x精确到小数点后两位的结果。</p>
+<h2 id="关系操作符"><a href="https://chebincarl.github.io/#%E5%85%B3%E7%B3%BB%E6%93%8D%E4%BD%9C%E7%AC%A6" class="headerlink" title="关系操作符"></a><span style="color:#EF7060;">关系操作符</span></h2>
+<p>Lua支持的关系操作符有：&gt;、&lt;、&gt;=、&lt;=、==、~ =（不等于），所有这些操作符的结果均为true或false。</p>
+<p>操作符==用于相等性测试，操作符~ =用于不等性测试。这两个操作符可以应用于任意两个值。如果两个值的类型不同，Lua就认为他们不等。nil值只与其自身相等。</p>
+<p>对于table、userdata和函数，Lua是通过引用进行比较的。也就是说，只有当他们引用同一个对象时，才视为相等。如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line">a = {}</span><br /><span class="line">a.x = <span class="number">1</span></span><br /><span class="line">a.y = <span class="number">0</span></span><br /><span class="line">b = {}</span><br /><span class="line">b.x = <span class="number">1</span></span><br /><span class="line">b.y = <span class="number">1</span></span><br /><span class="line">c = a</span><br /></pre></td></tr></table></figure>
+
+<p>其结果是a == c，但a ~ = b。<br />对于字符串的比较，Lua是按照字符次序比较的。</p>
+<h2 id="逻辑操作符"><a href="https://chebincarl.github.io/#%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C%E7%AC%A6" class="headerlink" title="逻辑操作符"></a><span style="color:#EF7060;">逻辑操作符</span></h2>
+<p>Lua支持的逻辑操作符有：and、or和not。</p>
+<p>与条件控制语句一样，所有的逻辑操作符都将false和nil视为假，其他的结果均为真。</p>
+<p>和其他大多数语言一样，Lua中的and和or都使用“短路原则”。</p>
+
+<p>在Lua中有一种惯用写法x = x or v，它等价于：if not x then x = v end。</p>
+<p>这里还有一种基于“短路原则”的惯用写法，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line">x = <span class="number">10</span></span><br /><span class="line">y = <span class="number">9</span></span><br /><span class="line"><span class="built_in">max</span> = (x &gt; y) <span class="keyword">and</span> x <span class="keyword">or</span> y</span><br /><span class="line"><span class="built_in">print</span>(<span class="built_in">max</span>) </span><br /></pre></td></tr></table></figure>
+
+<p>这等价于C#语言中max = (x &gt; y) ? x : y。</p>
+<h2 id="字符串连接"><a href="https://chebincarl.github.io/#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%9E%E6%8E%A5" class="headerlink" title="字符串连接"></a><span style="color:#EF7060;">字符串连接</span></h2>
+<p>昨天已经提到了字符串连接操作符(..)，这里再给出一些简单的示例。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">"Hello "</span> .. <span class="string">"World) -- Hello World</span></span><br /><span class="line"><span class="string">print(0 .. 1)  --01</span></span><br /></pre></td></tr></table></figure>
+
+<p>即使连接操作符的操作数为数值类型，在执行时Lua仍会将其自动转换为字符串。</p>
+<h2 id="table构造器"><a href="https://chebincarl.github.io/#table%E6%9E%84%E9%80%A0%E5%99%A8" class="headerlink" title="table构造器"></a><span style="color:#EF7060;">table构造器</span></h2>
+<p>构造器用于构建和初始化table的表达式。这是Lua特有的表达式，也是Lua中最有用、最通用的机制之一。</p>
+<p>其中最简单的构造器是空构造器<span style="color:red">{}</span>，用于创建空table。</p>
+<p>我们通过构造器还可以初始化数组，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line">days = {<span class="string">"Sunday"</span>,<span class="string">"Monday"</span>,<span class="string">"Tuesday"</span>,<span class="string">"Wednesday"</span>,<span class="string">"Thursday"</span>,<span class="string">"Friday"</span>,<span class="string">"Saturday"</span>}</span><br /><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>,#days <span class="keyword">do</span></span><br /><span class="line">    <span class="built_in">print</span>(days[i])</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="comment">--Tuesday</span></span><br /><span class="line"><span class="comment">--Wednesday</span></span><br /><span class="line"><span class="comment">--Thursday</span></span><br /><span class="line"><span class="comment">--Friday</span></span><br /><span class="line"><span class="comment">--Saturday</span></span><br /></pre></td></tr></table></figure>
+
+<p>从输出结果可以看出，days在构造后会将自动初始化，其中days[1]被初始化为”Sunday”，days[2]为”Monday”，以此类推。</p>
+<p>Lua中还提供了另外一种特殊的语法用于初始化记录风格的table。<br />如：a = { x = 10, y = 20 }，其等价于：a = {}; a.x = 10; a.y = 20</p>
+<p>在实际编程时我们也可以将这两种初始化方式组合在一起使用，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line">polyline = {color = <span class="string">"blue"</span>, thickness = <span class="number">2</span>, npoints = <span class="number">4</span>, </span><br /><span class="line">    {x = <span class="number">0</span>, y = <span class="number">0</span>},</span><br /><span class="line">    {x = <span class="number">10</span>, y = <span class="number">0</span>},</span><br /><span class="line">    {x = <span class="number">-10</span>, y = <span class="number">1</span>},</span><br /><span class="line">    {x = <span class="number">0</span>, y = <span class="number">1</span>} }</span><br /><span class="line"><span class="built_in">print</span>(polyline[<span class="string">"color"</span>]);</span><br /><span class="line"><span class="built_in">print</span>(polyline[<span class="number">2</span>].x)</span><br /><span class="line"><span class="built_in">print</span>(polyline[<span class="number">4</span>].y)</span><br /><span class="line"><span class="comment">--输出结果如下：</span></span><br /><span class="line"><span class="comment">--blue</span></span><br /><span class="line"><span class="comment">--10</span></span><br /><span class="line"><span class="comment">--1</span></span><br /></pre></td></tr></table></figure>
+
+<p>除了以上两种构造初始化方式之外，Lua还提供另外一种更为通用的方式，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line">opnames = { [<span class="string">"+"</span>] = <span class="string">"add"</span>, [<span class="string">"-"</span>] = <span class="string">"sub"</span>, [<span class="string">"*"</span>] = <span class="string">"mul"</span>, [<span class="string">"/"</span>] = <span class="string">"div"</span>}</span><br /><span class="line"><span class="built_in">print</span>(opnames[<span class="string">"+"</span>])</span><br /><span class="line">i = <span class="number">20</span>; s = <span class="string">"-"</span></span><br /><span class="line">a = { [i + <span class="number">0</span>] = s, [i + <span class="number">1</span>] = s .. s, [i + <span class="number">2</span>] = s..s..s }</span><br /><span class="line"><span class="built_in">print</span>(a[<span class="number">22</span>])</span><br /></pre></td></tr></table></figure>
+
+<p>对于table的构造器，还有两个需要了解的语法规则，如：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">a = { [<span class="number">1</span>] = <span class="string">"red"</span>, [<span class="number">2</span>] = <span class="string">"green"</span>, [<span class="number">3</span>] = <span class="string">"blue"</span>, }</span><br /></pre></td></tr></table></figure>
+
+<p>这里需要注意最后一个元素的后面仍然可以保留逗号(,)，这一点类似于C语言中的枚举。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">a = {x = <span class="number">10</span>, y = <span class="number">45</span>; <span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span> }</span><br /></pre></td></tr></table></figure>
+
+<p>可以看到上面的声明中同时存在逗号,和分号;两种元素分隔符，这种写法在Lua中是允许的。我们通常会将分号;用于分隔不同初始化类型的元素，如上例中分号之前的初始化方式为记录初始化方式，而后面则是数组初始化方式。</p>
+<h1 id="Lua语句"><a href="https://chebincarl.github.io/#Lua%E8%AF%AD%E5%8F%A5" class="headerlink" title="Lua语句"></a><span style="color:#039BE5;">Lua语句</span></h1>
+<h2 id="赋值语句"><a href="https://chebincarl.github.io/#%E8%B5%8B%E5%80%BC%E8%AF%AD%E5%8F%A5" class="headerlink" title="赋值语句"></a><span style="color:#EF7060;">赋值语句</span></h2>
+<p>Lua中的赋值语句和其它编程语言基本相同，唯一的差别是Lua支持“多重赋值”，如：a, b = 10, 2 * x，其等价于a = 10; b = 2 * x。</p>
+<p>然而需要说明的是，Lua在赋值之前需要先计算等号右边的表达式，在每一个表达式都得到结果之后再进行赋值。因此，我们可以这样写变量交互：x,y = y,x。</p>
+<p>如果等号右侧的表达式数量少于左侧变量的数量，Lua会将左侧多出的变量的值置为nil，如果相反，Lua将忽略右侧多出的表达式。</p>
+<h2 id="局部变量与块"><a href="https://chebincarl.github.io/#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E4%B8%8E%E5%9D%97" class="headerlink" title="局部变量与块"></a><span style="color:#EF7060;">局部变量与块</span></h2>
+<p>Lua中的局部变量定义语法为：local i = 1，其中local关键字表示该变量为局部变量。和全局变量不同的是，局部变量的作用范围仅限于其所在的进程块。Lua中的进程可以为控制结构的执行体、函数执行体或者是一个进程块，如：</p>
+<p>下面的x变量仅在while循环内有效。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> i &lt;= x <span class="keyword">do</span></span><br /><span class="line">    <span class="keyword">local</span> x = i * <span class="number">2</span></span><br /><span class="line">    <span class="built_in">print</span>(x)</span><br /><span class="line">    i = i + <span class="number">1</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>和其它编程语言一样，如果有可能尽量使用局部变量，以免造成全局环境的变量名污染。同时由于局部变量的有效期更短，这样垃圾收集器可以及时对其进行清理，从而得到更多的可用内存。</p>
+<h2 id="流程控制"><a href="https://chebincarl.github.io/#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6" class="headerlink" title="流程控制"></a><span style="color:#EF7060;">流程控制</span></h2>
+<p>Lua中提供的控制语句和其它大多数开发语言所提供的基本相同，因此这里仅仅是进行简单的列举。然后再给出差异部分的详细介绍。如：</p>
+<p>** if then else **</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a &lt; <span class="number">0</span> <span class="keyword">then</span></span><br /><span class="line">    b = <span class="number">0</span></span><br /><span class="line"><span class="keyword">else</span></span><br /><span class="line">    b = <span class="number">1</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>** if elseif else then **</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a &lt; <span class="number">0</span> <span class="keyword">then</span> </span><br /><span class="line">    b = <span class="number">0</span></span><br /><span class="line"><span class="keyword">elseif</span> a == <span class="number">0</span> <span class="keyword">then</span></span><br /><span class="line">    b = <span class="number">1</span></span><br /><span class="line"><span class="keyword">else</span></span><br /><span class="line">    b = <span class="number">2</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>** while **</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="keyword">local</span> i= <span class="number">1</span></span><br /><span class="line"><span class="keyword">while</span> a[i] <span class="keyword">do</span></span><br /><span class="line">    <span class="built_in">print</span>(a[i])</span><br /><span class="line">    i = i + <span class="number">1</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>** repeat **</p>
+<p>类似C#中的while…do</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">repeat</span></span><br /><span class="line">    line = <span class="built_in">io</span>.<span class="built_in">read</span>()</span><br /><span class="line"><span class="keyword">until</span> line ~= <span class="string">""</span> <span class="comment">--直到until的条件为真时结束。</span></span><br /><span class="line"><span class="built_in">print</span>(line)</span><br /></pre></td></tr></table></figure>
+
+<p>** for **</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var=begin,last,step <span class="keyword">do</span> <span class="comment">--如果没有step变量，begin的缺省步长为1。</span></span><br /><span class="line">    i = i + <span class="number">1</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>需要说明的是，for循环开始处的三个变量begin、last和step，如果它们是表达式的返回值，那么该表达式将仅执行一次。再有就是不要在for的循环体内修改变量var的值，否则会导致不可预知的结果。</p>
+<p>** foreach **</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(a) <span class="keyword">do</span>  <span class="comment">--ipairs是Lua自带的系统函数，返回遍历数组的迭代器。</span></span><br /><span class="line">    <span class="built_in">print</span>(v)</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span>      <span class="comment">--打印table t中的所有key。</span></span><br /><span class="line">    <span class="built_in">print</span>(k)</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></table></figure>
+
+<p>见如下示例代码：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /></pre></td><td class="code"><pre><span class="line">days = {<span class="string">"Sunday"</span>, <span class="string">"Monday"</span>, <span class="string">"Tuesday"</span>, <span class="string">"Wednesday"</span>, <span class="string">"Thursday"</span>, <span class="string">"Friday"</span>, <span class="string">"Saturday"</span> }</span><br /><span class="line">revDays = {}</span><br /><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(days) <span class="keyword">do</span></span><br /><span class="line">    revDays[v] = k</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">pairs</span>(revDays) <span class="keyword">do</span></span><br /><span class="line">    <span class="built_in">print</span>(k .. <span class="string">" = "</span> .. revDays[k])</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">--输出结果为：</span></span><br /><span class="line"><span class="comment">--Saturday = 7</span></span><br /><span class="line"><span class="comment">--Tuesday = 3</span></span><br /><span class="line"><span class="comment">--Wednesday = 4</span></span><br /><span class="line"><span class="comment">--Friday = 6</span></span><br /><span class="line"><span class="comment">--Sunday = 1</span></span><br /><span class="line"><span class="comment">--Thursday = 5</span></span><br /><span class="line"><span class="comment">--Monday = 2</span></span><br /></pre></td></tr></table></figure>
+
+<p>** break **<br />和C#语言循环中的break语义完全相同，即跳出最内层循环。</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/274_lua-%E5%85%83%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/274_lua-%E5%85%83%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/274_lua-%E5%85%83%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/275_Lua%E7%BC%96%E7%A8%8B4%E4%B9%8B%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/275_Lua%E7%BC%96%E7%A8%8B4%E4%B9%8B%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/275_Lua%E7%BC%96%E7%A8%8B4%E4%B9%8B%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/274_lua-%E5%85%83%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

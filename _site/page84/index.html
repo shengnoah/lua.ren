@@ -1,0 +1,2686 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page84/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page84/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-12-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/documents/moonscript-reference/">December 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~65 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/documents/moonscript-reference/" rel="bookmark" title="MoonScript Reference" itemprop="url">MoonScript Reference</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <p>{
+  target: “reference/index”
+  template: “reference”
+  title: “Language Guide”
+  short_name: “lang”
+}</p>
+
+<p>MoonScript is a programming language that compiles to
+<a href="http://www.lua.org">Lua</a>. This guide expects the reader to have basic
+familiarity with Lua. For each code snippet below, the MoonScript is on the
+left and the compiled Lua is on right right.</p>
+
+<p>This is the official language reference manual, installation directions and the
+homepage are located at <a href="http://moonscript.org">http://moonscript.org</a>.</p>
+
+<div class="github-buttons">
+<iframe src="http://ghbtns.com/github-btn.html?user=leafo&amp;repo=moonscript&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110px" height="20px"></iframe>
+<iframe src="http://ghbtns.com/github-btn.html?user=leafo&amp;repo=moonscript&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe>
+</div>
+
+<h1 id="the-language">The Language</h1>
+
+<h2 id="whitespace">Whitespace</h2>
+
+<p>MoonScript is a whitespace sensitive language. This means that
+instead of using <code class="highlighter-rouge">do</code> and <code class="highlighter-rouge">end</code> (or <code class="highlighter-rouge">{</code> and <code class="highlighter-rouge">}</code>) to delimit sections of code we
+use line-breaks and indentation.</p>
+
+<p>This means that how you indent your code is important. Luckily MoonScript
+doesn’t care how you do it but only requires that you be consistent.</p>
+
+<p>An indent must be at least 1 space or 1 tab, but you can use as many as you
+like. All the code snippets on this page will use two spaces.</p>
+
+<blockquote>
+  <p>Should you happen to mix tabs and spaces, a tab is equivalent to 4 spaces. I
+shouldn’t be telling you this though because you should never do it.</p>
+</blockquote>
+
+<h2 id="assignment">Assignment</h2>
+
+<p>Assigning to an undeclared name will cause it to be declared as a new local
+variable. The language is dynamically typed so you can assign any value to any
+variable. You can assign multiple names and values at once just like Lua:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123</span><span class="w"> </span><span class="c1">-- uses the existing variable</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you wish to create a global variable it must be done using the
+<a href="#export_statement"><code class="highlighter-rouge">export</code></a> keyword.</p>
+
+<p>The <a href="#local_statement"><code class="highlighter-rouge">local</code></a> keyword can be used to forward declare a
+variable, or shadow an existing one.</p>
+
+<h2 id="update-assignment">Update Assignment</h2>
+
+<p><code class="highlighter-rouge">+=</code>, <code class="highlighter-rouge">-=</code>, <code class="highlighter-rouge">/=</code>, <code class="highlighter-rouge">*=</code>, <code class="highlighter-rouge">%=</code>, <code class="highlighter-rouge">..=</code>, <code class="highlighter-rouge">or=</code>, <code class="highlighter-rouge">and=</code>, <code class="highlighter-rouge">&amp;=</code>, <code class="highlighter-rouge">|=</code>, <code class="highlighter-rouge">&gt;&gt;=</code>, and
+<code class="highlighter-rouge">&lt;&lt;=</code> operators have been added for updating and assigning at the same time.
+They are aliases for their expanded equivalents.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">10</span><span class="w">
+
+</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello "</span><span class="w">
+</span><span class="n">s</span><span class="w"> </span><span class="o">..=</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+
+</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="n">b</span><span class="w"> </span><span class="ow">and</span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="kc">false</span><span class="w">
+
+</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="w">
+</span><span class="n">p</span><span class="w"> </span><span class="err">&amp;</span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span><span class="n">p</span><span class="w"> </span><span class="err">|</span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="n">p</span><span class="w"> </span><span class="o">&gt;&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="n">p</span><span class="w"> </span><span class="o">&lt;&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="comments">Comments</h2>
+
+<p>Like Lua, comments start with <code class="highlighter-rouge">--</code> and continue to the end of the line.
+Comments are not written to the output.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- I am a comment</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="literals--operators">Literals &amp; Operators</h2>
+
+<p>All of the primitive literals in Lua can be used. This applies to numbers,
+strings, booleans, and <code class="highlighter-rouge">nil</code>.</p>
+
+<p>All of Lua’s binary and unary operators are available. Additionally <code class="highlighter-rouge">!=</code> is as
+an alias for <code class="highlighter-rouge">~=</code>.</p>
+
+<p>Unlike Lua, Line breaks are allowed inside of single and double quote strings
+without an escape sequence:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Here is a string
+  that has a line break in it."</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="function-literals">Function Literals</h2>
+
+<p>All functions are created using a function expression. A simple function is
+denoted using the arrow: <code class="highlighter-rouge">-&gt;</code></p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_function</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+</span><span class="n">my_function</span><span class="p">()</span><span class="w"> </span><span class="c1">-- call the empty function</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The body of the function can either be one statement placed directly after the
+arrow, or it can be a series of statements indented on the following lines:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">func_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="s2">"hello world"</span><span class="w">
+
+</span><span class="n">func_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"The value:"</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If a function has no arguments, it can be called using the <code class="highlighter-rouge">!</code> operator,
+instead of empty parentheses. The <code class="highlighter-rouge">!</code> invocation is the preferred way to call
+functions with no arguments.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">func_a</span><span class="o">!</span><span class="w">
+</span><span class="n">func_b</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Functions with arguments can be created by preceding the arrow with a list of
+argument names in parentheses:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="s2">"sum"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Functions can be called by listing the arguments after the name of an expression
+that evaluates to a function. When chaining together function calls, the
+arguments are applied to the closest function to the left.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w">
+
+</span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="s2">"a"</span><span class="p">,</span><span class="w"> </span><span class="s2">"b"</span><span class="p">,</span><span class="w"> </span><span class="s2">"c"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In order to avoid ambiguity in when calling functions, parentheses can also be
+used to surround the arguments. This is required here in order to make sure the
+right arguments get sent to the right functions.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="s2">"x:"</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">),</span><span class="w"> </span><span class="s2">"y:"</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>There must not be any space between the opening parenthesis and the function.</p>
+
+<p>Functions will coerce the last statement in their body into a return statement,
+this is called implicit return:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="s2">"The sum is "</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w">
+</span></code></pre></div></div>
+
+<p>And if you need to explicitly return, you can use the <code class="highlighter-rouge">return</code> keyword:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Just like in Lua, functions can return multiple values. The last statement must
+be a list of values separated by commas:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mystery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mystery</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="fat-arrows">Fat Arrows</h3>
+
+<p>Because it is an idiom in Lua to send an object as the first argument when
+calling a method, a special syntax is provided for creating functions which
+automatically includes a <code class="highlighter-rouge">self</code> argument.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="vi">@value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">num</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="argument-defaults">Argument Defaults</h3>
+
+<p>It is possible to provide default values for the arguments of a function. An
+argument is determined to be empty if its value is <code class="highlighter-rouge">nil</code>. Any <code class="highlighter-rouge">nil</code> arguments
+that have a default value will be replace before the body of the function is run.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_function</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"something"</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"Hello I am"</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"My height is"</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="w">
+</span></code></pre></div></div>
+
+<p>An argument default value expression is evaluated in the body of the function
+in the order of the argument declarations. For this reason default values have
+access to previously declared arguments.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="considerations">Considerations</h3>
+
+<p>Because of the expressive parentheses-less way of calling functions, some
+restrictions must be put in place to avoid parsing ambiguity involving
+whitespace.</p>
+
+<p>The minus sign plays two roles, a unary negation operator and a binary
+subtraction operator. Consider how the following examples compile:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="mi">10</span><span class="w">
+</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w">
+</span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="w"> </span><span class="n">z</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The precedence of the first argument of a function call can be controlled using
+whitespace if the argument is a literal string. In Lua, it is common to leave
+off parentheses when calling a function with a single string or table literal.</p>
+
+<p>When there is no space between a variable and a string literal, the
+function call takes precedence over any following expressions. No other
+arguments can be passed to the function when it is called this way.</p>
+
+<p>Where there is a space following a variable and a string literal, the function
+call acts as show above. The string literal belongs to any following
+expressions (if they exist), which serves as the argument list.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="s2">"hello"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">100</span><span class="w">
+</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func</span><span class="w"> </span><span class="s2">"hello"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">100</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="multi-line-arguments">Multi-line arguments</h3>
+
+<p>When calling functions that take a large number of arguments, it is convenient
+to split the argument list over multiple lines. Because of the white-space
+sensitive nature of the language, care must be taken when splitting up the
+argument list.</p>
+
+<p>If an argument list is to be continued onto the next line, the current line
+must end in a comma. And the following line must be indented more than the
+current indentation. Once indented, all other argument lines must be at the
+same level of indentation to be part of the argument list</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_func</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="w">
+
+</span><span class="n">cool_func</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="w">
+  </span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="w">
+  </span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This type of invocation can be nested. The level of indentation is used to
+determine to which function the arguments belong to.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_func</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="w">
+  </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">another_func</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="w">
+    </span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Because <a href="#table_literals">tables</a> also use the comma as a delimiter, this
+indentation syntax is helpful for letting values be part of the argument list
+instead of being part of the table.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">a_func</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="w">
+  </span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Although uncommon, notice how we can give a deeper indentation for function
+arguments if we know we will be using a lower indentation further on.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">my_func</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="w">
+   </span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The same thing can be done with other block level statements like
+<a href="#conditionals">conditionals</a>. We can use indentation level to determine what
+statement a value belongs to:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="w"> </span><span class="n">func</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hello"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"world"</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"I am inside if"</span><span class="w">
+
+</span><span class="k">if</span><span class="w"> </span><span class="n">func</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hello"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"world"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"I am inside if"</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="table-literals">Table Literals</h2>
+
+<p>Like in Lua, tables are delimited in curly braces.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Unlike Lua, assigning a value to a key in a table is done with <code class="highlighter-rouge">:</code> (instead of
+<code class="highlighter-rouge">=</code>).</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">name:</span><span class="w"> </span><span class="s2">"Bill"</span><span class="p">,</span><span class="w">
+  </span><span class="ss">age:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="p">[</span><span class="s2">"favorite food"</span><span class="p">]:</span><span class="w"> </span><span class="s2">"rice"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The curly braces can be left off if a single table of key value pairs is being
+assigned.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">profile</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="ss">height:</span><span class="w"> </span><span class="s2">"4 feet"</span><span class="p">,</span><span class="w">
+  </span><span class="ss">shoe_size:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">
+  </span><span class="ss">favorite_foods:</span><span class="w"> </span><span class="p">{</span><span class="s2">"ice cream"</span><span class="p">,</span><span class="w"> </span><span class="s2">"donuts"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Newlines can be used to delimit values instead of a comma (or both):</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="w">
+  </span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="w">
+  </span><span class="ss">name:</span><span class="w"> </span><span class="s2">"superman"</span><span class="w">
+  </span><span class="ss">occupation:</span><span class="w"> </span><span class="s2">"crime fighting"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>When creating a single line table literal, the curly braces can also be left
+off:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_function</span><span class="w"> </span><span class="ss">dance:</span><span class="w"> </span><span class="s2">"Tango"</span><span class="p">,</span><span class="w"> </span><span class="ss">partner:</span><span class="w"> </span><span class="s2">"none"</span><span class="w">
+
+</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">type:</span><span class="w"> </span><span class="s2">"dog"</span><span class="p">,</span><span class="w"> </span><span class="ss">legs:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">tails:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The keys of a table literal can be language keywords without being escaped:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tbl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">do:</span><span class="w"> </span><span class="s2">"something"</span><span class="w">
+  </span><span class="ss">end:</span><span class="w"> </span><span class="s2">"hunger"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you are constructing a table out of variables and wish the keys to be the
+same as the variable names, then the <code class="highlighter-rouge">:</code> prefix operator can be used:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hair</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"golden"</span><span class="w">
+</span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="w">
+</span><span class="n">person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">:hair</span><span class="p">,</span><span class="w"> </span><span class="ss">:height</span><span class="p">,</span><span class="w"> </span><span class="ss">shoe_size:</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="n">print_table</span><span class="w"> </span><span class="ss">:hair</span><span class="p">,</span><span class="w"> </span><span class="ss">:height</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you want the key of a field in the table to to be result of an expression,
+then you can wrap it in <code class="highlighter-rouge">[</code> <code class="highlighter-rouge">]</code>, just like in Lua. You can also use a string
+literal directly as a key, leaving out the square brackets. This is useful if
+your key has any special characters.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]:</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+  </span><span class="ss">"hello world":</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+
+<h2 id="comprehensions">Comprehensions</h2>
+
+<p>Comprehensions provide a convenient syntax for constructing a new table by
+iterating over some existing object and applying an expression to its values.
+There are two kinds of comprehensions: list comprehensions and table
+comprehensions. They both produce Lua tables; <em>list comprehensions</em> accumulate
+values into an array-like table, and <em>table comprehensions</em> let you set both
+the key and the value on each iteration.</p>
+
+<h3 id="list-comprehensions">List Comprehensions</h3>
+
+<p>The following creates a copy of the <code class="highlighter-rouge">items</code> table but with all the values
+doubled.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="n">doubled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="w"> </span><span class="n">items</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The items included in the new table can be restricted with a <code class="highlighter-rouge">when</code> clause:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ipairs</span><span class="w"> </span><span class="n">items</span><span class="w">
+</span><span class="n">slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Because it is common to iterate over the values of a numerically indexed table,
+an <code class="highlighter-rouge">*</code> operator is introduced. The doubled example can be rewritten as:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">doubled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">for</code> and <code class="highlighter-rouge">when</code> clauses can be chained as much as desired. The only
+requirement is that a comprehension has at least one <code class="highlighter-rouge">for</code> clause.</p>
+
+<p>Using multiple <code class="highlighter-rouge">for</code> clauses is the same as using nested loops:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">}</span><span class="w">
+</span><span class="n">y_coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}</span><span class="w">
+
+</span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">}</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">x_coords</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">y_coords</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Numeric for loops can also be used in comprehensions:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">evens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="table-comprehensions">Table Comprehensions</h3>
+
+<p>The syntax for table comprehensions is very similar, only differing by using <code class="highlighter-rouge">{</code> and
+<code class="highlighter-rouge">}</code> and taking two values from each iteration.</p>
+
+<p>This example makes a copy of the table<code class="highlighter-rouge">thing</code>:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">thing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">color:</span><span class="w"> </span><span class="s2">"red"</span><span class="w">
+  </span><span class="ss">name:</span><span class="w"> </span><span class="s2">"fast"</span><span class="w">
+  </span><span class="ss">width:</span><span class="w"> </span><span class="mi">123</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">thing_copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">pairs</span><span class="w"> </span><span class="n">thing</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Table comprehensions, like list comprehensions, also support multiple <code class="highlighter-rouge">for</code> and
+<code class="highlighter-rouge">when</code> clauses. In this example we use a <code class="highlighter-rouge">when</code> clause to prevent the value
+associated with the <code class="highlighter-rouge">color</code> key from being copied.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">no_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">pairs</span><span class="w"> </span><span class="n">thing</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">"color"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">*</code> operator is also supported. Here we create a square root look up table
+for a few numbers.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">}</span><span class="w">
+</span><span class="n">sqrts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="nb">math.sqrt</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">numbers</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The key-value tuple in a table comprehension can also come from a single
+expression, in which case the expression should return two values. The
+first is used as the key and the second is used as the value:</p>
+
+<p>In this example we convert an array of pairs to a table where the first item in
+the pair is the key and the second is the value.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tbl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">unpack</span><span class="w"> </span><span class="n">tuple</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">tuple</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">tuples</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="slicing">Slicing</h3>
+
+<p>A special syntax is provided to restrict the items that are iterated over when
+using the <code class="highlighter-rouge">*</code> operator. This is equivalent to setting the iteration bounds and
+a step size in a <code class="highlighter-rouge">for</code> loop.</p>
+
+<p>Here we can set the minimum and maximum bounds, taking all items with indexes
+between 1 and 5 inclusive:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Any of the slice arguments can be left off to use a sensible default. In this
+example, if the max index is left off it defaults to the length of the table.
+This will take everything but the first element:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="p">[</span><span class="mi">2</span><span class="p">,]]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If the minimum bound is left out, it defaults to 1. Here we only provide a step
+size and leave the other bounds blank. This takes all odd indexed items: (1, 3,
+5, …)</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">slice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="p">[,,</span><span class="mi">2</span><span class="p">]]</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="string-interpolation">String Interpolation</h2>
+
+<p>You can mix expressions into string literals using <code class="highlighter-rouge">#{}</code> syntax.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="s2">"I am </span><span class="si">#{</span><span class="nb">math.random</span><span class="o">!</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">}</span><span class="s2">% sure."</span><span class="w">
+</span></code></pre></div></div>
+<p>String interpolation is only available in double quoted strings.</p>
+
+<h2 id="for-loop">For Loop</h2>
+
+<p>There are two for loop forms, just like in Lua. A numeric one and a generic one:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w">
+
+</span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="w"> </span><span class="c1">-- an optional step provided</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">k</span><span class="w">
+
+</span><span class="k">for</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">pairs</span><span class="w"> </span><span class="n">object</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The slicing and <code class="highlighter-rouge">*</code> operators can be used, just like with comprehensions:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">item</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A shorter syntax is also available for all variations when the body is only a
+single line:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="n">item</span><span class="w">
+
+</span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="n">j</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A for loop can also be used as an expression. The last statement in the body of
+the for loop is coerced into an expression and appended to an accumulating
+array table.</p>
+
+<p>Doubling every even number:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">doubled_evens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w">
+  </span><span class="k">else</span><span class="w">
+    </span><span class="n">i</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You can also filter values by combining the for loop expression with the
+<a href="#continue"><code class="highlighter-rouge">continue</code></a> statement.</p>
+
+<p>For loops at the end of a function body are not accumulated into a table for a
+return value (Instead the function will return <code class="highlighter-rouge">nil</code>). Either an explicit
+<code class="highlighter-rouge">return</code> statement can be used, or the loop can be converted into a list
+comprehension.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">func_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="w">
+</span><span class="n">func_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">func_a</span><span class="o">!</span><span class="w"> </span><span class="c1">-- prints nil</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">func_b</span><span class="o">!</span><span class="w"> </span><span class="c1">-- prints table object</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This is done to avoid the needless creation of tables for functions that don’t
+need to return the results of the loop.</p>
+
+<h2 id="while-loop">While Loop</h2>
+
+<p>The while loop also comes in two variations:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w">
+  </span><span class="n">i</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+
+</span><span class="k">while</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">my_function</span><span class="o">!</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Like for loops, the while loop can also be used an expression. Additionally,
+for a function to return the accumulated value of a while loop, the statement
+must be explicitly returned.</p>
+
+<h2 id="continue">Continue</h2>
+
+<p>A <code class="highlighter-rouge">continue</code> statement can be used to skip the current iteration in a loop.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="k">continue</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w">
+</span></code></pre></div></div>
+<p><code class="highlighter-rouge">continue</code> can also be used with loop expressions to prevent that iteration
+from accumulating into the result. This examples filters the array table into
+just even numbers:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">}</span><span class="w">
+</span><span class="n">odds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">my_numbers</span><span class="w">
+  </span><span class="k">continue</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="n">x</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="conditionals">Conditionals</h2>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">have_coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="k">if</span><span class="w"> </span><span class="n">have_coins</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"Got coins"</span><span class="w">
+</span><span class="k">else</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"No coins"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A short syntax for single statements can also be used:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">have_coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="k">if</span><span class="w"> </span><span class="n">have_coins</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="s2">"Got coins"</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="s2">"No coins"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Because if statements can be used as expressions, this can also be written as:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">have_coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">have_coins</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s2">"Got coins"</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">"No coins"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Conditionals can also be used in return statements and assignments:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">is_tall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Rob"</span><span class="w">
+    </span><span class="kc">true</span><span class="w">
+  </span><span class="k">else</span><span class="w">
+    </span><span class="kc">false</span><span class="w">
+
+</span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">is_tall</span><span class="w"> </span><span class="s2">"Rob"</span><span class="w">
+  </span><span class="s2">"I am very tall"</span><span class="w">
+</span><span class="k">else</span><span class="w">
+  </span><span class="s2">"I am not so tall"</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="c1">-- prints: I am very tall</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The opposite of <code class="highlighter-rouge">if</code> is <code class="highlighter-rouge">unless</code>:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">unless</span><span class="w"> </span><span class="nb">os.date</span><span class="p">(</span><span class="s2">"%A"</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Monday"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"it is not Monday!"</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="s2">"You're lucky!"</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="nb">math.random</span><span class="o">!</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="with-assignment">With Assignment</h3>
+
+<p><code class="highlighter-rouge">if</code> and <code class="highlighter-rouge">elseif</code> blocks can take an assignment in place of a conditional
+expression. Upon evaluating the conditional, the assignment will take place and
+the value that was assigned to will be used as the conditional expression. The
+assigned variable is only in scope for the body of the conditional, meaning it
+is never available if the value is not truthy.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">database</span><span class="p">.</span><span class="n">find_user</span><span class="w"> </span><span class="s2">"moon"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">user</span><span class="p">.</span><span class="n">name</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="w"> </span><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">os.getenv</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"You have hello"</span><span class="p">,</span><span class="w"> </span><span class="n">hello</span><span class="w">
+</span><span class="k">elseif</span><span class="w"> </span><span class="n">world</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">os.getenv</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"you have world"</span><span class="p">,</span><span class="w"> </span><span class="n">world</span><span class="w">
+</span><span class="k">else</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"nothing :("</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="line-decorators">Line Decorators</h2>
+
+<p>For convenience, the for loop and if statement can be applied to single
+statements at the end of the line:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="s2">"hello world"</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Rob"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>And with basic loops:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="s2">"item: "</span><span class="p">,</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">items</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="switch">Switch</h2>
+
+<p>The switch statement is shorthand for writing a series of if statements that
+check against the same value. Note that the value is only evaluated once. Like
+if statements, switches can have an else block to handle no matches. Comparison
+is done with the <code class="highlighter-rouge">==</code> operator.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Dan"</span><span class="w">
+</span><span class="k">switch</span><span class="w"> </span><span class="n">name</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="s2">"Robert"</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"You are Robert"</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="s2">"Dan"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Daniel"</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"Your name, it's Dan"</span><span class="w">
+  </span><span class="k">else</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"I don't know about your name"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A switch <code class="highlighter-rouge">when</code> clause can match against multiple values by listing them out
+comma separated.</p>
+
+<p>Switches can be used as expressions as well, here we can assign the result of
+the switch to a variable:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="n">next_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="n">b</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="mi">2</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="mi">3</span><span class="w">
+  </span><span class="k">else</span><span class="w">
+    </span><span class="nb">error</span><span class="w"> </span><span class="s2">"can't count that high!"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We can use the <code class="highlighter-rouge">then</code> keyword to write a switch’s <code class="highlighter-rouge">when</code> block on a single line.
+No extra keyword is needed to write the else block on a single line.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="nb">math.random</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s2">"you are lucky"</span><span class="w">
+  </span><span class="k">when</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s2">"you are almost lucky"</span><span class="w">
+  </span><span class="k">else</span><span class="w"> </span><span class="s2">"not so lucky"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>It is worth noting the order of the case comparison expression. The case’s
+expression is on the left hand side. This can be useful if the case’s
+expression wants to overwrite how the comparison is done by defining an <code class="highlighter-rouge">eq</code>
+metamethod.</p>
+
+<h2 id="object-oriented-programming">Object Oriented Programming</h2>
+
+<p>In these examples, the generated Lua code may appear overwhelming. It is best
+to focus on the meaning of the MoonScript code at first, then look into the Lua
+code if you wish to know the implementation details.</p>
+
+<p>A simple class:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span><span class="w"> </span><span class="nc">Inventory</span><span class="w">
+  </span><span class="ss">new:</span><span class="w"> </span><span class="o">=&gt;</span><span class="w">
+    </span><span class="vi">@items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w">
+
+  </span><span class="ss">add_item:</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w">
+    </span><span class="k">if</span><span class="w"> </span><span class="vi">@items</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="w">
+      </span><span class="vi">@items</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="k">else</span><span class="w">
+      </span><span class="vi">@items</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A class is declared with a <code class="highlighter-rouge">class</code> statement followed by a table-like
+declaration where all of the methods and properties are listed.</p>
+
+<p>The <code class="highlighter-rouge">new</code> property is special in that it will become the constructor.</p>
+
+<p>Notice how all the methods in the class use the fat arrow function syntax. When
+calling methods on a instance, the instance itself is sent in as the first
+argument. The fat arrow handles the creation of a <code class="highlighter-rouge">self</code> argument.</p>
+
+<p>The <code class="highlighter-rouge">@</code> prefix on a variable name is shorthand for <code class="highlighter-rouge">self.</code>. <code class="highlighter-rouge">@items</code> becomes
+<code class="highlighter-rouge">self.items</code>.</p>
+
+<p>Creating an instance of the class is done by calling the name of the class as a
+function.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Inventory</span><span class="o">!</span><span class="w">
+</span><span class="n">inv</span><span class="o">\</span><span class="n">add_item</span><span class="w"> </span><span class="s2">"t-shirt"</span><span class="w">
+</span><span class="n">inv</span><span class="o">\</span><span class="n">add_item</span><span class="w"> </span><span class="s2">"pants"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Because the instance of the class needs to be sent to the methods when they are
+called, the <code>\\</code> operator is used.</p>
+
+<p>All properties of a class are shared among the instances. This is fine for
+functions, but for other types of objects, undesired results may occur.</p>
+
+<p>Consider the example below, the <code class="highlighter-rouge">clothes</code> property is shared amongst all
+instances, so modifications to it in one instance will show up in another:</p>
+
+<pre><code class="language-moononly">class Person
+  clothes: {}
+  give_item: (name) =&gt;
+    table.insert @clothes, name
+
+a = Person!
+b = Person!
+
+a\give_item "pants"
+b\give_item "shirt"
+
+-- will print both pants and shirt
+print item for item in *a.clothes
+</code></pre>
+
+<p>The proper way to avoid this problem is to create the mutable state of the
+object in the constructor:</p>
+
+<pre><code class="language-moononly">class Person
+  new: =&gt;
+    @clothes = {}
+</code></pre>
+
+<h3 id="inheritance">Inheritance</h3>
+
+<p>The <code class="highlighter-rouge">extends</code> keyword can be used in a class declaration to inherit the
+properties and methods from another class.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span><span class="w"> </span><span class="nc">BackPack</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nc">Inventory</span><span class="w">
+  </span><span class="ss">size:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="ss">add_item:</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w">
+    </span><span class="k">if</span><span class="w"> </span><span class="o">#</span><span class="vi">@items</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">error</span><span class="w"> </span><span class="s2">"backpack is full"</span><span class="w">
+    </span><span class="k">super</span><span class="w"> </span><span class="n">name</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Here we extend our Inventory class, and limit the amount of items it can carry.</p>
+
+<p>In this example, we don’t define a constructor on the subclass, so the parent
+class’ constructor is called when we make a new instance. If we did define a
+constructor then we can use the <a href="#super"><code class="highlighter-rouge">super</code></a> method to call the parent
+constructor.</p>
+
+<p>Whenever a class inherits from another, it sends a message to the parent class
+by calling the method <code class="highlighter-rouge">__inherited</code> on the parent class if it exists. The
+function receives two arguments, the class that is being inherited and the
+child class.</p>
+
+<pre><code class="language-moononly">class Shelf
+  @__inherited: (child) =&gt;
+    print @__name, "was inherited by", child.__name
+
+-- will print: Shelf was inherited by Cupboard
+class Cupboard extends Shelf
+</code></pre>
+
+<h3 id="super">Super</h3>
+
+<p><code class="highlighter-rouge">super</code> is a special keyword that can be used in two different ways: It can be
+treated as an object, or it can be called like a function. It only has special
+functionality when inside a class.</p>
+
+<p>When called as a function, it will call the function of the same name in the
+parent class. The current <code class="highlighter-rouge">self</code> will automatically be passed as the first
+argument. (As seen in the <a href="#inheritance">inheritance</a> example above)</p>
+
+<p>When <code class="highlighter-rouge">super</code> is used as a normal value, it is a reference to the parent class
+object.</p>
+
+<p>It can be accessed like any of object in order to retrieve values in the
+parent class that might have been shadowed by the child class.</p>
+
+<p>When the <code>\\</code> calling operator is used with <code class="highlighter-rouge">super</code>, <code class="highlighter-rouge">self</code> is inserted as the
+first argument instead of the value of <code class="highlighter-rouge">super</code> itself. When using <code class="highlighter-rouge">.</code> to
+retrieve a function, the raw function is returned.</p>
+
+<p>A few examples of using <code class="highlighter-rouge">super</code> in different ways:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nc">ParentClass</span><span class="w">
+  </span><span class="ss">a_method:</span><span class="w"> </span><span class="o">=&gt;</span><span class="w">
+    </span><span class="c1">-- the following have the same effect:</span><span class="w">
+    </span><span class="k">super</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+    </span><span class="k">super</span><span class="o">\</span><span class="n">a_method</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+    </span><span class="k">super</span><span class="p">.</span><span class="n">a_method</span><span class="w"> </span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+
+    </span><span class="c1">-- super as a value is equal to the parent class:</span><span class="w">
+    </span><span class="nb">assert</span><span class="w"> </span><span class="k">super</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nc">ParentClass</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">super</code> can also be used on left side of a <a href="#function_stubs">Function Stub</a>.
+The only major difference is that instead of the resulting function being bound
+to the value of <code class="highlighter-rouge">super</code>, it is bound to <code class="highlighter-rouge">self</code>.</p>
+
+<h3 id="types">Types</h3>
+
+<p>Every instance of a class carries its type with it. This is stored in the
+special <code class="highlighter-rouge">__class</code> property. This property holds the class object. The class
+object is what we call to build a new instance. We can also index the class
+object to retrieve class methods and properties.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">BackPack</span><span class="o">!</span><span class="w">
+</span><span class="nb">assert</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">__class</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nc">BackPack</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="nc">BackPack</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="c1">-- prints 10</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="class-objects">Class Objects</h3>
+
+<p>The class object is what we create when we use a <code class="highlighter-rouge">class</code> statement. The class
+object is stored in a variable of the same name of the class.</p>
+
+<p>The class object can be called like a function in order to create new
+instances. That’s how we created instances of classes in the examples above.</p>
+
+<p>A class is made up of two tables. The class table itself, and the <em>base</em> table. The
+<em>base</em> is used as the metatable for all the instances. All properties listed in
+the class declaration are placed in the <em>base</em>.</p>
+
+<p>The class object’s metatable reads properties from the base if they don’t exist
+in the class object. This means we can access functions and properties directly
+from the class.</p>
+
+<p>It is important to note that assigning to the class object does not assign into
+the <em>base</em>, so it’s not a valid way to add new methods to instances. Instead
+the <em>base</em> must explicitly be changed. See the <code class="highlighter-rouge">__base</code> field below.</p>
+
+<p>The class object has a couple special properties:</p>
+
+<p>The name of the class as when it was declared is stored as a string in the
+<code class="highlighter-rouge">__name</code> field of the class object.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">print</span><span class="w"> </span><span class="nc">BackPack</span><span class="p">.</span><span class="n">__name</span><span class="w"> </span><span class="c1">-- prints Backpack</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <em>base</em> object is stored in <code class="highlighter-rouge">__base</code>. We can modify this table to add
+functionality to instances that have already been created and ones that are yet
+to be created.</p>
+
+<p>If the class extends from anything, the parent class object is stored in
+<code class="highlighter-rouge">__parent</code>.</p>
+
+<h3 id="class-variables">Class Variables</h3>
+
+<p>We can create variables directly in the class object instead of in the <em>base</em>
+by using <code class="highlighter-rouge">@</code> in the front of the property name in a class declaration.</p>
+
+<pre><code class="language-moononly">class Things
+  @some_func: =&gt; print "Hello from", @__name
+
+Things\some_func!
+
+-- class variables not visible in instances
+assert Things().some_func == nil
+
+</code></pre>
+
+<p>In expressions, we can use <code class="highlighter-rouge">@@</code> to access a value that is stored in the
+<code class="highlighter-rouge">__class</code> of <code class="highlighter-rouge">self</code>.  Thus, <code class="highlighter-rouge">@@hello</code> is shorthand for <code class="highlighter-rouge">self.__class.hello</code>.</p>
+
+<pre><code class="language-moononly">class Counter
+  @count: 0
+
+  new: =&gt;
+    @@count += 1
+
+Counter!
+Counter!
+
+print Counter.count -- prints 2
+</code></pre>
+
+<p>The calling semantics of <code class="highlighter-rouge">@@</code> are similar to <code class="highlighter-rouge">@</code>. Calling a <code class="highlighter-rouge">@@</code> name will pass
+the class in as the first argument using Lua’s colon syntax.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@@hello</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="class-declaration-statements">Class Declaration Statements</h3>
+
+<p>In the body of a class declaration, we can have normal expressions in addition
+to key/value pairs. In this context, <code class="highlighter-rouge">self</code> is equal to the class object.</p>
+
+<p>Here is an alternative way to create a class variable compared to what’s
+described above:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span><span class="w"> </span><span class="nc">Things</span><span class="w">
+  </span><span class="vi">@class_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello world"</span><span class="w">
+
+</span></code></pre></div></div>
+
+<p>These expressions are executed after all the properties have been added to the
+<em>base</em>.</p>
+
+<p>All variables declared in the body of the class are local to the classes
+properties. This is convenient for placing private values or helper functions
+that only the class methods can access:</p>
+
+<pre><code class="language-moononly">class MoreThings
+  secret = 123
+  log = (msg) -&gt; print "LOG:", msg
+
+  some_method: =&gt;
+    log "hello world: " .. secret
+
+</code></pre>
+
+<h3 id="-and--values"><code class="highlighter-rouge">@</code> and <code class="highlighter-rouge">@@</code> Values</h3>
+
+<p>When <code class="highlighter-rouge">@</code> and <code class="highlighter-rouge">@@</code> are prefixed in front of a name they represent, respectively,
+that name accessed in <code class="highlighter-rouge">self</code> and <code class="highlighter-rouge">self.__class</code>.</p>
+
+<p>If they are used all by themselves, they are aliases for <code class="highlighter-rouge">self</code> and
+<code class="highlighter-rouge">self.__class</code>.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">assert</span><span class="w"> </span><span class="vi">@</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="w">
+</span><span class="nb">assert</span><span class="w"> </span><span class="vi">@@</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">__class</span><span class="w">
+</span></code></pre></div></div>
+
+<p>For example, a quick way to create a new instance of the same class from an
+instance method using <code class="highlighter-rouge">@@</code>:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_instance_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">...</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="vi">@@</span><span class="w"> </span><span class="o">...</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="class-expressions">Class Expressions</h3>
+
+<p>The <code class="highlighter-rouge">class</code> syntax can also be used as an expression which can be assigned to a
+variable or explicitly returned.</p>
+
+<pre><code class="language-moononly">x = class Bucket
+  drops: 0
+  add_drop: =&gt; @drops += 1
+</code></pre>
+
+<h3 id="anonymous-classes">Anonymous classes</h3>
+
+<p>The name can be left out when declaring a class. The <code class="highlighter-rouge">__name</code> attribute will be
+<code class="highlighter-rouge">nil</code>, unless the class expression is in an assignment. The name on the left
+hand side of the assignment is used instead of <code class="highlighter-rouge">nil</code>.</p>
+
+<pre><code class="language-moononly">BigBucket = class extends Bucket
+  add_drop: =&gt; @drops += 10
+
+assert Bucket.__name == "BigBucket"
+</code></pre>
+
+<p>You can even leave off the body, meaning you can write a blank anonymous class
+like this:</p>
+
+<pre><code class="language-moononly">x = class
+</code></pre>
+
+<h2 id="export-statement">Export Statement</h2>
+
+<p>Because all assignments to variables that are not lexically visible will
+be declared as local, special syntax is required to declare a variable globally.</p>
+
+<p>The export keyword makes it so any following assignments to the specified names
+will not be assigned locally.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">export</span><span class="w"> </span><span class="n">var_name</span><span class="p">,</span><span class="w"> </span><span class="n">var_name2</span><span class="w">
+</span><span class="n">var_name</span><span class="p">,</span><span class="w"> </span><span class="n">var_name3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This is especially useful when declaring what will be externally visible in a
+module:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- my_module.moon</span><span class="w">
+</span><span class="n">module</span><span class="w"> </span><span class="s2">"my_module"</span><span class="p">,</span><span class="w"> </span><span class="n">package</span><span class="p">.</span><span class="n">seeall</span><span class="w">
+</span><span class="kd">export</span><span class="w"> </span><span class="n">print_result</span><span class="w">
+
+</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">math.sqrt</span><span class="w"> </span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="w">
+
+</span><span class="n">print_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"Length is "</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w">
+
+</span><span class="c1">-- main.moon</span><span class="w">
+</span><span class="nb">require</span><span class="w"> </span><span class="s2">"my_module"</span><span class="w">
+
+</span><span class="n">my_module</span><span class="p">.</span><span class="n">print_result</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="c1">-- prints the result</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">my_module</span><span class="p">.</span><span class="n">length</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="c1">-- errors, `length` not visible</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Assignment can be combined with the export keyword to assign to global
+variables directly:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">export</span><span class="w"> </span><span class="n">some_number</span><span class="p">,</span><span class="w"> </span><span class="n">message_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="s2">"hello world"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Additionally, a class declaration can be prefixed with the export keyword in
+order to export it.</p>
+
+<p>Export will have no effect if there is already a local variable of the same
+name in scope.</p>
+
+<h3 id="export-all--export-proper">Export All &amp; Export Proper</h3>
+
+<p>The <code class="highlighter-rouge">export</code> statement can also take special symbols <code class="highlighter-rouge">*</code> and <code class="highlighter-rouge">^</code>.</p>
+
+<p><code class="highlighter-rouge">export *</code> will cause any name declared after the statement to be exported in the
+current scope. <code class="highlighter-rouge">export ^</code> will export all proper names, names that begin with a
+capital letter.</p>
+
+<h2 id="local-statement">Local Statement</h2>
+
+<p>Sometimes you want to declare a variable name before the first time you assign
+it. The <code class="highlighter-rouge">local</code> statement can be used to do that.</p>
+
+<p>In this example we declare the variable <code class="highlighter-rouge">a</code> in the outer scope so its value
+can be accessed after the <code class="highlighter-rouge">if</code> statement. If there was no <code class="highlighter-rouge">local</code> statement then
+<code class="highlighter-rouge">a</code> would only be accessible inside the <code class="highlighter-rouge">if</code> statement.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">local</span><span class="w"> </span><span class="n">a</span><span class="w">
+</span><span class="k">if</span><span class="w"> </span><span class="n">something</span><span class="w">
+  </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">a</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">local</code> can also be used to shadow existing variables for the rest of a scope.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="k">if</span><span class="w"> </span><span class="n">something</span><span class="w">
+  </span><span class="kd">local</span><span class="w"> </span><span class="n">x</span><span class="w">
+  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="c1">-- prints 10</span><span class="w">
+</span></code></pre></div></div>
+
+<p>When you have one function that calls another, you typically order them such
+that the second function can access the first. If both functions happen to
+call each other, then you must forward declare the names:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">local</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="w">
+
+</span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">second</span><span class="o">!</span><span class="w">
+
+</span><span class="n">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">first</span><span class="o">!</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The same problem occurs with declaring classes and regular values too.</p>
+
+<p>Because forward declaring is often better than manually ordering your assigns,
+a special form of <code class="highlighter-rouge">local</code> is provided:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">local</span><span class="w"> </span><span class="o">*</span><span class="w">
+
+</span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">data</span><span class="w">
+  </span><span class="n">second</span><span class="o">!</span><span class="w">
+
+</span><span class="n">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">first</span><span class="o">!</span><span class="w">
+
+</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">local *</code> will forward declare all names below it in the current scope.</p>
+
+<p>Similarly to <a href="#export_all_and_export_proper"><code class="highlighter-rouge">export</code></a> one more special form is
+provided, <code class="highlighter-rouge">local ^</code>. This will forward declare all names that begin with a
+capital letter.</p>
+
+<h2 id="import-statement">Import Statement</h2>
+
+<p>Often you want to bring some values from a table into the current scope as
+local variables by their name. The import statement lets us accomplish this:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span><span class="w"> </span><span class="n">insert</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">table</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The multiple names can be given, each separated by a comma:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span><span class="w"> </span><span class="nc">C</span><span class="p">,</span><span class="w"> </span><span class="nc">Ct</span><span class="p">,</span><span class="w"> </span><span class="nc">Cmt</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">lpeg</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Sometimes a function requires that the table be sent in as the first argument
+(when using the <code>\\</code> syntax). As a shortcut, we can prefix the name
+with a <code>\\</code> to bind it to that table:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- some object</span><span class="w">
+</span><span class="n">my_module</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="ss">state:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+  </span><span class="ss">add:</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w">
+    </span><span class="n">self</span><span class="p">.</span><span class="n">state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="w">
+
+</span><span class="k">import</span><span class="w"> </span><span class="o">\</span><span class="n">add</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">my_module</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="mi">22</span><span class="w"> </span><span class="c1">-- equivalent to calling my_module\add 22</span><span class="w">
+</span></code></pre></div></div>
+
+<p>When handing multiple imports you can substitute the comma with a newline and
+any amount of whitespace. When working with a lot of imports you might write
+something like this:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span><span class="w">
+  </span><span class="n">assert_csrf</span><span class="w">
+  </span><span class="n">assert_timezone</span><span class="w">
+  </span><span class="n">not_found</span><span class="w">
+  </span><span class="n">require_login</span><span class="w">
+  </span><span class="n">from</span><span class="w"> </span><span class="nb">require</span><span class="w"> </span><span class="s2">"helpers"</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="with-statement">With Statement</h2>
+
+<p>A common pattern involving the creation of an object is calling a series of
+functions and setting a series of properties immediately after creating it.</p>
+
+<p>This results in repeating the name of the object multiple times in code, adding
+unnecessary noise. A common solution to this is to pass a table in as an
+argument which contains a collection of keys and values to overwrite. The
+downside to this is that the constructor of this object must support this form.</p>
+
+<p>The <code class="highlighter-rouge">with</code> block helps to alleviate this. Within a <code class="highlighter-rouge">with</code> block we can use a
+special statements that begin with either <code class="highlighter-rouge">.</code> or <code>\\</code> which represent
+those operations applied to the object we are using <code class="highlighter-rouge">with</code> on.</p>
+
+<p>For example, we work with a newly created object:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span><span class="w"> </span><span class="nc">Person</span><span class="o">!</span><span class="w">
+  </span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Oswald"</span><span class="w">
+  </span><span class="o">\</span><span class="n">add_relative</span><span class="w"> </span><span class="n">my_dad</span><span class="w">
+  </span><span class="o">\</span><span class="n">save</span><span class="o">!</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="p">.</span><span class="n">name</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">with</code> statement can also be used as an expression which returns the value
+it has been giving access to.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="nc">File</span><span class="w"> </span><span class="s2">"favorite_foods.txt"</span><span class="w">
+  </span><span class="o">\</span><span class="n">set_encoding</span><span class="w"> </span><span class="s2">"utf8"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Or…</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create_person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w">  </span><span class="n">relatives</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="k">with</span><span class="w"> </span><span class="nc">Person</span><span class="o">!</span><span class="w">
+    </span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="w">
+    </span><span class="o">\</span><span class="n">add_relative</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">relatives</span><span class="w">
+
+</span><span class="n">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_person</span><span class="w"> </span><span class="s2">"Leaf"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">dad</span><span class="p">,</span><span class="w"> </span><span class="n">mother</span><span class="p">,</span><span class="w"> </span><span class="n">sister</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>In this usage, <code class="highlighter-rouge">with</code> can be seen as a special form of the K combinator.</p>
+
+<p>The expression in the <code class="highlighter-rouge">with</code> statement can also be an assignment, if you want
+to give a name to the expression.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Hello"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"original:"</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"upper:"</span><span class="p">,</span><span class="w"> </span><span class="o">\</span><span class="n">upper</span><span class="o">!</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="do">Do</h2>
+
+<p>When used as a statement, <code class="highlighter-rouge">do</code> works just like it does in Lua.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">do</span><span class="w">
+  </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">var</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="c1">-- nil here</span><span class="w">
+</span></code></pre></div></div>
+
+<p>MoonScript’s <code class="highlighter-rouge">do</code> can also be used an expression . Allowing you to combine
+multiple lines into one. The result of the <code class="highlighter-rouge">do</code> expression is the last
+statement in its body.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">do</span><span class="w">
+  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">
+  </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="n">i</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">counter</span><span class="o">!</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">counter</span><span class="o">!</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tbl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">key:</span><span class="w"> </span><span class="k">do</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="s2">"assigning key!"</span><span class="w">
+    </span><span class="mi">1234</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="destructuring-assignment">Destructuring Assignment</h2>
+
+<p>Destructuring assignment is a way to quickly extract values from a table by
+their name or position in array based tables.</p>
+
+<p>Typically when you see a table literal, <code class="highlighter-rouge">{1,2,3}</code>, it is on the right hand side
+of an assignment because it is a value. Destructuring assignment swaps the role
+of the table literal, and puts it on the left hand side of an assign
+statement.</p>
+
+<p>This is best explained with examples. Here is how you would unpack the first
+two values from a table:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">thing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thing</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In the destructuring table literal, the key represents the key to read from the
+right hand side, and the value represents the name the read value will be
+assigned to.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">hello:</span><span class="w"> </span><span class="s2">"world"</span><span class="w">
+  </span><span class="ss">day:</span><span class="w"> </span><span class="s2">"tuesday"</span><span class="w">
+  </span><span class="ss">length:</span><span class="w"> </span><span class="mi">20</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="ss">hello:</span><span class="w"> </span><span class="n">hello</span><span class="p">,</span><span class="w"> </span><span class="ss">day:</span><span class="w"> </span><span class="n">the_day</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">hello</span><span class="p">,</span><span class="w"> </span><span class="n">the_day</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This also works with nested data structures as well:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">obj2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">numbers:</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">}</span><span class="w">
+  </span><span class="ss">properties:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="ss">color:</span><span class="w"> </span><span class="s2">"green"</span><span class="w">
+    </span><span class="ss">height:</span><span class="w"> </span><span class="mi">13</span><span class="p">.</span><span class="mi">5</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="p">{</span><span class="ss">numbers:</span><span class="w"> </span><span class="p">{</span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">}}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj2</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w">
+</span></code></pre></div></div>
+<p>If the destructuring statement is complicated, feel free to spread it out over
+a few lines. A slightly more complicated example:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="ss">numbers:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="ss">properties:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="ss">color:</span><span class="w"> </span><span class="n">color</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj2</span><span class="w">
+</span></code></pre></div></div>
+
+<p>It’s common to extract values from at table and assign them the local variables
+that have the same name as the key. In order to avoid repetition we can use the
+<code class="highlighter-rouge">:</code> prefix operator:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="ss">:concat</span><span class="p">,</span><span class="w"> </span><span class="ss">:insert</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">table</span><span class="w">
+</span></code></pre></div></div>
+
+<p>This is effectively the same as import, but we can rename fields we want to
+extract by mixing the syntax:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="ss">:mix</span><span class="p">,</span><span class="w"> </span><span class="ss">:max</span><span class="p">,</span><span class="w"> </span><span class="ss">random:</span><span class="w"> </span><span class="n">rand</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">math</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="destructuring-in-other-places">Destructuring In Other Places</h3>
+
+<p>Destructuring can also show up in places where an assignment implicitly takes
+place. An example of this is a <code class="highlighter-rouge">for</code> loop:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tuples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="p">{</span><span class="s2">"hello"</span><span class="p">,</span><span class="w"> </span><span class="s2">"world"</span><span class="p">}</span><span class="w">
+  </span><span class="p">{</span><span class="s2">"egg"</span><span class="p">,</span><span class="w"> </span><span class="s2">"head"</span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="k">for</span><span class="w"> </span><span class="p">{</span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">}</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">*</span><span class="n">tuples</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We know each element in the array table is a two item tuple, so we can unpack
+it directly in the names clause of the for statement using a destructure.</p>
+
+<h2 id="function-stubs">Function Stubs</h2>
+
+<p>It is common to pass a function from an object around as a value, for example,
+passing an instance method into a function as a callback. If the function
+expects the object it is operating on as the first argument then you must
+somehow bundle that object with the function so it can be called properly.</p>
+
+<p>The function stub syntax is a shorthand for creating a new closure function
+that bundles both the object and function. This new function calls the wrapped
+function in the correct context of the object.</p>
+
+<p>Its syntax is the same as calling an instance method with the <code>\\</code> operator but
+with no argument list provided.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="ss">value:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+  </span><span class="ss">write:</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">print</span><span class="w"> </span><span class="s2">"the value:"</span><span class="p">,</span><span class="w"> </span><span class="vi">@value</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="n">run_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nb">print</span><span class="w"> </span><span class="s2">"running callback..."</span><span class="w">
+  </span><span class="n">func</span><span class="o">!</span><span class="w">
+
+</span><span class="c1">-- this will not work:</span><span class="w">
+</span><span class="c1">-- the function has to no reference to my_object</span><span class="w">
+</span><span class="n">run_callback</span><span class="w"> </span><span class="n">my_object</span><span class="p">.</span><span class="n">write</span><span class="w">
+
+</span><span class="c1">-- function stub syntax</span><span class="w">
+</span><span class="c1">-- lets us bundle the object into a new function</span><span class="w">
+</span><span class="n">run_callback</span><span class="w"> </span><span class="n">my_object</span><span class="o">\</span><span class="n">write</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="the-using-clause-controlling-destructive-assignment">The Using Clause; Controlling Destructive Assignment</h2>
+
+<p>While lexical scoping can be a great help in reducing the complexity of the
+code we write, things can get unwieldy as the code size increases. Consider
+the following snippet:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">
+
+</span><span class="c1">-- many lines of code...</span><span class="w">
+
+</span><span class="n">my_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="k">while</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w">
+    </span><span class="n">i</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+
+</span><span class="n">my_func</span><span class="o">!</span><span class="w">
+
+</span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="c1">-- will print 0</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In <code class="highlighter-rouge">my_func</code>, we’ve overwritten the value of <code class="highlighter-rouge">i</code> mistakenly. In this example it
+is quite obvious, but consider a large, or foreign code base where it isn’t
+clear what names have already been declared.</p>
+
+<p>It would be helpful to say which variables from the enclosing scope we intend
+on change, in order to prevent us from changing others by accident.</p>
+
+<p>The <code class="highlighter-rouge">using</code> keyword lets us do that. <code class="highlighter-rouge">using nil</code> makes sure that no closed
+variables are overwritten in assignment. The <code class="highlighter-rouge">using</code> clause is placed after the
+argument list in a function, or in place of it if there are no arguments.</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">
+
+</span><span class="n">my_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">using</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hello"</span><span class="w"> </span><span class="c1">-- a new local variable is created here</span><span class="w">
+
+</span><span class="n">my_func</span><span class="o">!</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="c1">-- prints 100, i is unaffected</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Multiple names can be separated by commas. Closure values can still be
+accessed, they just cant be modified:</p>
+
+<div class="language-moon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1213</span><span class="w">
+</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="w">
+
+</span><span class="n">my_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">add</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="c1">-- a new local tmp is created</span><span class="w">
+  </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">tmp</span><span class="w">
+  </span><span class="n">k</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">tmp</span><span class="w">
+
+</span><span class="n">my_func</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">k</span><span class="w"> </span><span class="c1">-- these have been updated</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="misc">Misc.</h2>
+
+<h3 id="implicit-returns-on-files">Implicit Returns on Files</h3>
+
+<p>By default, a file will also implicitly return like a function. This is useful
+for writing modules, where you can put your module’s table as the last
+statement in the file so it is returned when loaded with <code class="highlighter-rouge">require</code>.</p>
+
+<h3 id="writing-modules">Writing Modules</h3>
+
+<p>Lua 5.2 has removed the <code class="highlighter-rouge">module</code> function for creating modules. It is
+recommended to return a table instead when defining a module.</p>
+
+<p>We can cleanly define modules by using the shorthand hash table key/value
+syntax:</p>
+
+<pre><code class="language-moonret">
+MY_CONSTANT = "hello"
+
+my_function = -&gt; print "the function"
+my_second_function = -&gt; print "another function"
+
+{ :my_function, :my_second_function, :MY_CONSTANT}
+</code></pre>
+
+<p>If you need to forward declare your values so you can access them regardless of
+their written order you can add <code class="highlighter-rouge">local *</code> to the top of your file.</p>
+
+<h1 id="license-mit">License (MIT)</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Copyright (C) 2017 by Leaf Corcoran
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+</code></pre></div></div>
+
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page83/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page82/">82</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page83/">83</a></li>
+      
+    
+      
+        <li><strong class="current-page">84</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page85/">85</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page86/">86</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page85/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

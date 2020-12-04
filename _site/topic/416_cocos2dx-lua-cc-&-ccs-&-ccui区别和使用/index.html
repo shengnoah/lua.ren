@@ -1,0 +1,934 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>cocos2dx lua cc & ccs & ccui区别和使用 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2dx lua cc & ccs & ccui区别和使用">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/416_cocos2dx-lua-cc-&-ccs-&-ccui%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/416_cocos2dx-lua-cc-&-ccs-&-ccui%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>cocos2dx lua cc & ccs & ccui区别和使用</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~3 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">cocos2dx lua cc & ccs & ccui区别和使用</h1>
+      <p>最近遇到一个问题，网上一些教程，或者官方的一些教程，在对应使用cc，ccs ,ccui的时候，导致我这边没有提示，开始以为是编辑器的问题，然后硬写上去之后，在调试的时候直接报错，经过多次查看Api文档发现，我使用的Api中，并没有这个方法，那么问题来了！</p>
+<ul>
+<li>我应该怎么去调用这个对应的Api呢？</li>
+<li>如何验证使用cocos2dx lua调用Api是正常的呢？</li>
+<li>遇到一个功能或者一个需求，应该如何查找对应的Api呢？</li>
+</ul>
+
+<h5 id="网上有个朋友说了这么一段原话："><a href="#网上有个朋友说了这么一段原话：" class="headerlink" title="网上有个朋友说了这么一段原话："></a>网上有个朋友说了这么一段原话：</h5>
+<blockquote>
+<p>同一个框架里Api名字大小不统一我也就忍了（setBackGround…和setBackground…），可是同一个类名却表达两个不同的东西这个实在让我非常气愤，刚才瞎研究半天ScrollView才发现我程序里用的是ccui.ScrollView对象，而我盯着cc.ScrollView看了半天，我说怎么Api对不上号！</p>
+</blockquote>
+<p>其实大概的意思就是cocos2dx lua对应Api版本号的问题,因为以前cocos用cocos2d-lua写，后来带领大家往quick转，现在合并之后，又带领大家回到cocos2d-lua，所以必定会产生一些规范和版本号的区别。</p>
+<blockquote>
+<p>尤其在2.x和3.x之间的变化比较大，或者是<a href="https://github.com/fusijie/Cocos-Resource" target="_blank" rel="noopener noreferrer">quick版本和整合版</a>的多种调整。</p>
+</blockquote>
+<ul>
+<li><p>这里主要介绍关于cc，ccs ,ccui的区别，使用和注意点，如果要了解更多2.x和3.x版本之前的问题和区别，可以参考这里：</p>
+<ul>
+<li><a href="https://github.com/cocos2d/cocos2d-x/blob/cocos2d-x-3.0/docs/RELEASE_NOTES.md#user-content-use-ccccsccui-gl-and-sp-as-module-name" target="_blank" rel="noopener noreferrer">cocos2d-x v3.0 Release Notes</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="cc-amp-ccs-amp-ccui"><a href="#cc-amp-ccs-amp-ccui" class="headerlink" title="cc &amp; ccs &amp; ccui"></a>cc &amp; ccs &amp; ccui</h2>
+<p>经过可靠资料和官方提供的信息我们可以得出一个大概的结论：</p>
+<ul>
+<li>cc代表Cocos核心: Cocos2DConstants.lua 储存</li>
+<li>ccs代表CocoStudio: StudioConstants.lua 储存</li>
+<li>ccui代表CocoStudio的UI控件: GuiConstants.lua 储存</li>
+</ul>
+<p>cc和ccui倒是很好理解，那么ccs这么理解呢？</p>
+<blockquote>
+<p>其实应该说相当于C++的命名空间，ccs是cocostudio的缩写，代表在CocoStudio的命名空间（只是类似）。</p>
+</blockquote>
+<h5 id="比如我们发现"><a href="#比如我们发现" class="headerlink" title="比如我们发现"></a>比如我们发现</h5>
+<ul>
+<li>之前的cc.ui.xxx是quick自己封装过的控件，</li>
+<li>而ccs里面的对象是c++里面的原生控件</li>
+<li>若使用cc.ui.xxx将出现在ccs里面有交互的时候无法响应touch事件的问题</li>
+<li>必须用ccui.xxx，这个是c++里面的控件，touchEvent也是同一体系的。</li>
+<li>并且ccui.ScrollView 对应 cocos2d::ui::ScrollView，cc.ScrollView 对应 cocos2d::extension::ScrollView</li>
+</ul>
+<h3 id="我们来看看，最简单而且最常用的Button按钮的创建："><a href="#我们来看看，最简单而且最常用的Button按钮的创建：" class="headerlink" title="我们来看看，最简单而且最常用的Button按钮的创建："></a>我们来看看，最简单而且最常用的Button按钮的创建：</h3>
+<h4 id="这是老版的-quick"><a href="#这是老版的-quick" class="headerlink" title="这是老版的(quick)"></a>这是老版的(quick)</h4>
+<pre><code>cc.ui.UIPushButton.new({ normal = &#34;comm_btnGreenBackBack.png&#34;, pressed = &#34;comm_btnGreenBackBack_sel.png&#34; })
+    :onButtonClicked(function()
+        print(&#34;start&#34;)
+    end)
+    :pos( display.cx / 2, display.cy )
+    :addTo(self)
+</code></pre>
+<ul>
+<li><p>在Quick中有三种不同的Button控件，分别是：UIPushButton (按钮控件)、UICheckBoxButton ( CheckButton 控件)和 UICheckBoxButtonGroup ( CheckButton 组控件)。</p>
+<ul>
+<li>其中 UIPushButton 是最常用的按钮控件，它继承自UIButton，我们可以通过 cc.ui.UIPushButton.new(images, options) 方法来创建 UIPushButton。</li>
+<li>参数 images 是 table 类型，它代表各个按钮状态（正常、按下、禁用）下的图片；options 为可选参数，也是 tabl e类型，包含了是否scale9缩放，偏移flipX、flipY值等设置。</li>
+</ul>
+</li>
+</ul>
+<p>onButtonClicked 方法用于监听按钮的点击事件，当点击按钮时，将调用该方法中的代码。如上例中，当我们点击按钮时，会在控制台窗口中打印“start”的字段。同 onButtonClicked 方法类似的还有：</p>
+<pre><code>onButtonPressed(callback)：用于监听按钮的按下事件
+onButtonRelease(callback)：用于监听按钮的释放事件
+onButtonStateChanged(callback)：用于监听按钮的状态改变事件
+</code></pre>
+<h4 id="新版本Button"><a href="#新版本Button" class="headerlink" title="新版本Button"></a>新版本Button</h4>
+<pre><code>    --这是一个按钮
+local btn = ccui.Button:create(&#34;button/btnDog_N.png&#34;, &#34;button/btnDog_P.png&#34;, &#34;button/btnDog_D.png&#34;, 0)
+    :pos(display.cx, 100)
+    :addTo(self)
+    --按钮文字
+    btn:setTitleText(&#34;按钮&#34;)
+    --字体大小
+    btn:setTitleFontSize(25)
+    --偏移
+    btn:setTitleOffset(20, 100)
+    --字体颜色
+    btn:setTitleColor(cc.c3b(255, 255, 255))
+    --按钮的回调函数
+    btn:addTouchEventListener(function(sender, eventType)
+    if (0 == eventType)  then
+        print(&#34;pressed&#34;)
+    elseif (1 == eventType)  then
+          print(&#34;move&#34;)
+    elseif  (2== eventType) then
+          print(&#34;up&#34;)
+    elseif  (3== eventType) then
+        print(&#34;cancel&#34;)
+    end
+end)
+
+--按钮无效
+--btn:setEnabled(false)
+</code></pre>
+<p>以上就是基本按钮的创建，所以平时在开发中要注意一下API的问题，不然很多错误都不知道问题出在哪里！   </p>
+<h5 id="在我们平时使用控件的时候，也同样会遇到一些问题，比如"><a href="#在我们平时使用控件的时候，也同样会遇到一些问题，比如" class="headerlink" title="在我们平时使用控件的时候，也同样会遇到一些问题，比如"></a>在我们平时使用控件的时候，也同样会遇到一些问题，比如</h5>
+<ul>
+<li>quick中的cc.ui.UIPushButton和ccui.Layout是不能共存的，在layout存在的情况下UIPushButton是不能被监听到的</li>
+<li>如果在quick中使用ccui.Button，那么ccui.Button是不能被屏蔽的，也就是说，无论quick中怎么处理不让ccui.Button被点击都无效，只要他存在，就会被点击。</li>
+<li>同时cc.ui.UIScrollView也存在问题，其不能被缩放，但是其父节点可以缩放。</li>
+<li>cc.ui.UIListView也存在不能缩放的问题。</li>
+</ul>
+<blockquote>
+<p>也就是说，以上API中，一旦按设计的分辨率来设计，就不能再被缩放。</p>
+</blockquote>
+<h3 id="Api官方文档验证"><a href="#Api官方文档验证" class="headerlink" title="Api官方文档验证"></a>Api官方文档验证</h3>
+<p>为了验证这个问题我们查看官方文档发现这样的内容：</p>
+<pre><code>Misc Api changes
+Use cc、ccs、ccui gl and sp as module name
+
+Now classes are bound into different modules instead of using global module. This will avoid conflicts with other codes.
+
+    classes in cocos2d、cocos2d::extension、CocosDenshion and cocosbuilder were bound to cc module
+    classes in cocos2d::ui were bound to ccui module
+    classes in spine were bound to sp module
+    classes in cocostudio were bound to ccs module
+    global variables are bound to corresponding modules
+    all funcionts and constants about openGl were bound to gl module
+
+Examples:
+
+    | v2.1                    | v3.0                    |
+    | CCDirector              | cc.Director             |
+    | CCArmature              | ccs.Armature            |
+    | kCCTextAlignmentLeft    | cc.kCCTextAlignmentLeft |
+</code></pre>
+<p>最终所表达的意思其实就是</p>
+<ul>
+<li>现在，类被绑定到不同的模块中，而不是使用全局模块。这将避免与其他代码发生冲突。</li>
+<li>CCOS2D、COCOS2D:：扩展、COCOSDENSHION和COCOSUBIDER绑定到CC模块</li>
+<li>CCOS2D:：UI绑定到CCUI模块</li>
+<li>脊柱类与SP模块结合</li>
+<li>COStudio中的类绑定到CCS模块</li>
+<li>全局变量绑定到相应模块。</li>
+<li>OpenGL的所有函数和常数都绑定到GL模块。</li>
+</ul>
+<blockquote>
+<p>OpenGL和SP可以忽略</p>
+</blockquote>
+<h3 id="实战与代码验证"><a href="#实战与代码验证" class="headerlink" title="实战与代码验证"></a>实战与代码验证</h3>
+<p>最后，我们为了cc，ccs，ccui专门去寻找了一些关于Api所提供的支持和规律。</p>
+<h5 id="cc在Cocos2dConstants-lua中-用来存储cc-模块的常量"><a href="#cc在Cocos2dConstants-lua中-用来存储cc-模块的常量" class="headerlink" title="cc在Cocos2dConstants.lua中,用来存储cc 模块的常量"></a>cc在Cocos2dConstants.lua中,用来存储cc 模块的常量</h5>
+<pre><code>cc = cc or {}
+</code></pre>
+<ul>
+<li>并且每个可调用的文件对应的最前面也有同样的定义,比如有<ul>
+<li>Action.lua</li>
+<li>Animation.lua</li>
+<li>Director.lua</li>
+<li>EventDispatcher.lua</li>
+<li>GLView.lua</li>
+<li>Hide.lua</li>
+<li>Image.lua</li>
+<li>Node.lua</li>
+<li>Scene.lua</li>
+<li>Scheduler.lua</li>
+<li>SpriteFrame.lua</li>
+<li>SpriteFrameCache.lua</li>
+<li>TextureCache.lua</li>
+<li>Timer.lua</li>
+<li>Touch.lua</li>
+<li>UserDefault.lua</li>
+<li>src/cocos/cocos2d/Cocos2d.lua</li>
+<li>src/cocos/cocos2d/Cocos2dConstants.lua</li>
+<li>src/cocos/controller/ControllerConstants.lua</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h5 id="ccs在StudioConstants-lua中-用来存储ccs模块的常量"><a href="#ccs在StudioConstants-lua中-用来存储ccs模块的常量" class="headerlink" title="ccs在StudioConstants.lua中,用来存储ccs模块的常量"></a>ccs在StudioConstants.lua中,用来存储ccs模块的常量</h5>
+<pre><code>ccs = ccs or {}
+</code></pre>
+<ul>
+<li>并且每个可调用的文件对应的最前面也有同样的定义,比如有<ul>
+<li>ActionFrame.lua</li>
+<li>ActionObject.lua</li>
+<li>Armature.lua</li>
+<li>Bone.lua</li>
+<li>ColorFrame.lua</li>
+<li>ComAttribute.lua</li>
+<li>ComController.lua</li>
+<li>Frame.lua</li>
+<li>Skin.lua</li>
+<li>TextureFrame.lua</li>
+<li>Timeline.lua</li>
+<li>VisibleFrame.lua</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h5 id="ccui在GuiConstants-lua中-用来存储ccui模块的常量"><a href="#ccui在GuiConstants-lua中-用来存储ccui模块的常量" class="headerlink" title="ccui在GuiConstants.lua中,用来存储ccui模块的常量"></a>ccui在GuiConstants.lua中,用来存储ccui模块的常量</h5>
+<pre><code>ccui = ccui or {}
+</code></pre>
+<ul>
+<li>并且每个可调用的文件对应的最前面也有同样的定义,比如有<ul>
+<li>Button.lua</li>
+<li>CheckBox.lua</li>
+<li>EditBox.lua</li>
+<li>Helper.lua</li>
+<li>ImageView.lua</li>
+<li>Layout.lua</li>
+<li>ListView.lua</li>
+<li>LoadingBar.lua</li>
+<li>PageView.lua</li>
+<li>ScrollView.lua</li>
+<li>Slider.lua</li>
+<li>Text.lua</li>
+<li>TextField.lua</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h6 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h6>
+<ul>
+<li><a href="https://blog.csdn.net/blackzhangwei/article/details/80088314?utm_source=blogxgwz0" target="_blank" rel="noopener noreferrer">https://blog.csdn.net/blackzhangwei/article/details/80088314?utm_source=blogxgwz0</a><ul>
+<li><a href="https://github.com/fusijie/Cocos2dx-Release-Note/blob/master/cocos2d-x_v3.0_release_notes.md" target="_blank" rel="noopener noreferrer">cocos2d-x_v3.0_release_notes.md</a></li>
+<li><a href="http://blog.csdn.net/ls1122/article/details/38339851" target="_blank" rel="noopener noreferrer">C++11 新特性</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/415_Lua-string-%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/415_Lua-string-%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/415_Lua-string-%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/416_cocos2dx-lua-cc-&-ccs-&-ccui%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/416_cocos2dx-lua-cc-&-ccs-&-ccui%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/416_cocos2dx-lua-cc-&-ccs-&-ccui%E5%8C%BA%E5%88%AB%E5%92%8C%E4%BD%BF%E7%94%A8/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/415_Lua-string-%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

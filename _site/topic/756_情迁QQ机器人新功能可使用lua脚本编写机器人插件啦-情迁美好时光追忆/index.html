@@ -1,0 +1,885 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>情迁QQ机器人新功能可使用lua脚本编写机器人插件啦 · 情迁美好时光追忆 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="情迁QQ机器人新功能可使用lua脚本编写机器人插件啦 · 情迁美好时光追忆">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/756_%E6%83%85%E8%BF%81QQ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BD%BF%E7%94%A8lua%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%95%A6-%E6%83%85%E8%BF%81%E7%BE%8E%E5%A5%BD%E6%97%B6%E5%85%89%E8%BF%BD%E5%BF%86/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/756_%E6%83%85%E8%BF%81QQ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BD%BF%E7%94%A8lua%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%95%A6-%E6%83%85%E8%BF%81%E7%BE%8E%E5%A5%BD%E6%97%B6%E5%85%89%E8%BF%BD%E5%BF%86/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>情迁QQ机器人新功能可使用lua脚本编写机器人插件啦 · 情迁美好时光追忆</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~4 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">情迁QQ机器人新功能可使用lua脚本编写机器人插件啦 · 情迁美好时光追忆</h1>
+      <p>本文将详细介绍Lua机器人插件的使用方法，更详细的内容也可以参考简书哦!机器人1.9.0支持lua插件加载，支持手机端lua编写插件 机器人内置lua编辑器，可以测试，运行机器人功能，<br />lua是一种脚本语言，解释运行，随意修改，无需编译，便于修改和分享，操作简单，开发成本低，传播更方便。</p>
+
+<p>本文章转载自情迁简书 <a href="https://www.jianshu.com/p/92c7bf329653" target="_blank" rel="noopener noreferrer">https://www.jianshu.com/p/92c7bf329653</a> </p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3>
+<p>目前支持机器人lua插件在2018年11月17日发布了，各位记得先情迁下载QQ机器人哈</p>
+<p>本文章会慢慢补充,lua机器人插件能力将在情迁QQ机器人 1.8.8以及以上版本体现.</p>
+<h3 id="安装目录"><a href="#安装目录" class="headerlink" title="安装目录"></a>安装目录</h3>
+<p>新建lua文件 也即是</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">### LUA语法介绍</span><br /><span class="line">不懂lua语法的可以百度一下,  这里大概介绍一下基本的lua语法也就是和其它语言不相同的地方。</span><br /><span class="line">字符串拼接用```..```  数字转文本用```tostring(要转换的变量)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p><strong>方法定义</strong><br />参数名 没有类型,这是脚本语言的特点,简单的不能再简单，如js,python php</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">function 方法名(参数名)</span><br /><span class="line"></span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p>有返回值的方法</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">function 方法名(参数名)</span><br /><span class="line">return true;</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>调用对象方法</strong></p>
+<figure class="highlight plain"><figcaption><span>这里使用```:```而java是用```.```</span></figcaption><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line">**访问对象字段**</span><br /><span class="line">输入```log(robot.name))``` 这是本机器人支持的访问举例.</span><br /><span class="line">**注释**</span><br /><span class="line">lua的注释是用 ```--``` 而java是用```//``` 易语言则用```’```  或者某些语言用```#``` bat 批处理用 ```::</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>类型转换</strong><br />字符串转number</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">str=<span class="string">&#34;333&#34;</span></span><br /><span class="line">value=<span class="built_in">tonumber</span>(str)</span><br /><span class="line">value=value+<span class="number">1</span>  </span><br /></pre></td></tr></tbody></table></figure>
+
+<p>其他类型转字符串</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">obj=333</span><br /><span class="line">value=tostring(obj)</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>变量定义</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">global_var = 1 --全局变量</span><br /><span class="line">local temp_var = 2 --局部变量</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>循环</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line">while (temp &lt; 5) do</span><br /><span class="line">    temp = temp + 1</span><br /><span class="line">    print(&#34;result:&#34; .. tostring(temp)) --这里体现了类型转换的语法。</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">for i = 1, 3 do</span><br /><span class="line">    print(&#34;从1 到 3,当前:&#34; .. tostring(i))</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">for i = 1, 6, 2 do</span><br /><span class="line">    print(&#34;高级用法 当前:&#34; .. tostring(i) .. &#34;,我每下次执行将跳动2次，如果当前为1那么为1,下次则为3，i&gt;6跳出循环&#34;)</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>逻辑分支</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line">if (value1 &gt; 10) then</span><br /><span class="line">    print(&#34;值大于10&#34;)</span><br /><span class="line">    if (value1 == 80) then</span><br /><span class="line">        print(&#34;内循环,等于80&#34;)</span><br /><span class="line">    else</span><br /><span class="line">        print(&#34;不是80，但是肯定&gt;10&#34;)</span><br /><span class="line">    end</span><br /><span class="line">elseif (value1 == 100) then</span><br /><span class="line">    print(&#34;等于100&#34;)</span><br /><span class="line">else</span><br /><span class="line">    print(&#34;不知道等于夺嫂了&#34;)</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p>控制台输出</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">print(&#34;ffff&#34;) --lua本身的语法，这个需要打开adb.exe查看过滤</span><br /><span class="line">System.out日志类型</span><br /></pre></td></tr></tbody></table></figure>
+
+<h3 id="情迁QQ机器人SDK独有api参数"><a href="#情迁QQ机器人SDK独有api参数" class="headerlink" title="情迁QQ机器人SDK独有api参数"></a>情迁QQ机器人SDK独有api参数</h3>
+<p><strong>第一步/必须导包</strong><br />如果不导包，将无法正常使用下面这些方法。博客语法有冲突，勿怪。下面的这行</p>
+<pre><code>require &#34;cn.qssq666.robot.sdk&#34;</code></pre>
+<p>日志提示</p>
+<pre><code>log(&#34;&#34;警告日志&#34;)--输出警告日志
+info(&#34;info日志&#34;)
+debug(&#34;debug日志&#34;)
+error(&#34;红色错误日志&#34;)
+toast(&#34;toast提示日志&#34;)``这个运行后直接弹出气泡提示</code></pre>
+<p><em>lua掌握这一点点你就完全可以操作机器人大部分功能了  关于api方面呢其实和java doc api一样的，所以呢本文没有说明的方法完全可以举一反三的 从java 插件开发文档里面找到</em></p>
+<p><strong>收到消息的回调</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">function onReceiveMsgIsNeedIntercept(msgitem, aiteList, hasAite, hasAiteMe)</span><br /><span class="line"></span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>发送消息给指定人</strong><br />这里的item是必须的，这个函数应该在</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line">``` </span><br /><span class="line">api. sendPrivateMsg(item, qq,message);</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>更多api,完全可以参考java api推算出来，我有空会写一个完整的demo,现在还在架构机器人中….</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /></pre></td><td class="code"><pre><span class="line">require &#34;cn.qssq666.robot.sdk&#34;</span><br /><span class="line"></span><br /><span class="line">--  msgitem 消息体</span><br /><span class="line">-- aitelist 艾特的用户列表（不会包含自己)</span><br /><span class="line">-- hasAite 是否艾特了用户</span><br /><span class="line">-- hasAiteMe  是否艾特了机器人</span><br /><span class="line"></span><br /><span class="line">function onReceiveMsgIsNeedIntercept(msgitem, aiteList, hasAite, hasAiteMe)</span><br /><span class="line">	log(&#34;call onReceiveMsgIsNeedIntercept&#34;)</span><br /><span class="line">	text = msgitem:getMessage() --获取收到的消息内容</span><br /><span class="line">	log(&#34;receiveMsg:&#34; .. text)</span><br /><span class="line">	qq = msgitem:getSenderuin() -- 哪个qq发的消息</span><br /><span class="line">	log(&#34;print toString[&#34; .. msgitem:toString()) --这个方法可以打印昵称,qq,消息内容,发送时间,等等。</span><br /><span class="line"></span><br /><span class="line">	info = &#34;,aiteUser=,&#34; .. tostring(hasAite) .. &#34;,aiteRobot:&#34; .. tostring(hasAiteMe)</span><br /><span class="line">	 --见名知意</span><br /><span class="line">	log(&#34;state:&#34; .. info)</span><br /><span class="line">	return true</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line">--下面的代码无关紧要，自己酌情修改------------------------------</span><br /><span class="line">function onCreate(obj)</span><br /><span class="line">	log(&#34;onCreate call arg type: &#34; .. type(obj))</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line">function getPluginName()</span><br /><span class="line">	return &#34;test plugin&#34;</span><br /><span class="line">end</span><br /><span class="line"></span><br /><span class="line">function onDestory()</span><br /><span class="line">	log(&#34;destory call&#34;)</span><br /><span class="line">end</span><br /></pre></td></tr></tbody></table></figure>
+
+<p>再来一个能用的，发送消息<code>LUA</code>就会自动回复的机器人插件<br />复制下面的内容另存为 任意名.lua文件然后放到内部存储的qssq666/robot_plugin_lua文件夹中，然后运行情迁QQ机器人1.9.0<br />然后进入LUA插件管理就可以看到机器人了，记得进入机器人设置勾选启用机器人插件哦，不然发送消息<code>LUA</code>没有任何反应的哈<br />还可以长按编辑这个插件修改逻辑，也可以点击模拟测试一些机器人方法是否定义的情况。</p>
+<pre><code>-- 编写时间 2018.11
+-- 文件编码 必须是UTF-8 must UTF-8
+-- LUA插件的方法不受执行流程控制,因此测试这些代码的时候只能发送消息然后测试这些方法。
+--或者可以不写在主流程中，比如如下代码的测试专用可以解除注释，当机器人加载的时候会气泡提示的toast调试，
+
+
+require &#34;cn.qssq666.robot.sdk&#34; --必须调用，否则无法使用api,等方法，以及toast等，只能使用print了。
+--测试专用代码区开始 
+
+--可以直接运行 本文件放到内部存储 qssq666/robot_plugin_lua文件夹改后缀名 为.lua 然后在lua插件管理列表刷新然后长按运行或者编辑再运行。
+-- 直接输入 adb push plugin.lua /sdcard/qssq666/robot_plugin_lua/ 推送到手机上。
+
+
+
+
+--toast(&#34;插件被加载，插件名:&#34;..getPluginName())
+--下面的调试代码需要通过日志查看软件或者电脑ADBConsole.exe查看。
+--info(&#34;插件加载了,&#34;)
+--warn(&#34;这是警告日志&#34;)
+--error(&#34;红色错误日志&#34;)
+--log(&#34;也是警告日志语法糖&#34;)
+--debug(&#34;调试信息，&#34;)
+
+--测试专用代码区结束
+
+--  ---------------------机器人插件加载区
+--  msgitem 消息体
+-- aitelist 艾特的用户列表（不会包含自己)
+-- hasAite 是否艾特了用户
+-- hasAiteMe  是否艾特了机器人
+--收到一条消息调用此方法，返回true表示 消息由插件处理
+--，否则交给机器人自身的逻辑，比如自身有点歌系统之类的。
+--本方法不定义将毫无意义。
+function onReceiveMsgIsNeedIntercept(msgitem, aiteList, hasAite, hasAiteMe)
+    log(&#34;call onReceiveMsgIsNeedIntercept&#34;)
+   local text = msgitem:getMessage() --获取收到的消息内容
+    log(&#34;receiveMsg:&#34; .. text)
+    local qq = msgitem:getSenderuin() -- 哪个qq发的消息
+    log(&#34;print toString[&#34; .. msgitem:toString()) --这个方法可以打印昵称,qq,消息内容,发送时间,等等。
+    if (text == &#34;LUA&#34;) then
+        -- chunkname:41 attempt to index ? (a nil value) zhaobu
+        local str=&#34;Wellcome Use Lua Plugin! The is QssqRobot&#34;
+        msgitem:setMessage(str)
+        print(&#34;item is nil?=&#34;..tostring(msgitem:getClass()==nil)..&#34;,className:&#34;..tostring(msgitem:getClass()))
+        print(&#34;api obj is nil?=&#34;..tostring(msgitem:getClass()==nil)..&#34;,className:&#34;..tostring(api:getClass()))
+        print(api:toString())
+        api:showDebugToast(&#34;欢迎使用LUA机器人插件&#34;);
+        -- print();
+        -- print(msgitem:toString())
+        api:sendMsg(msgitem) --是啥子消息我就回复啥消息 ，操作起来比较简单。
+        return true
+     --插件自身处理消息
+    else
+    end
+    info = &#34;,aiteUser=,&#34; .. tostring(hasAite) .. &#34;,aiteRobot:&#34; .. tostring(hasAiteMe)
+    --见名知意
+    log(&#34;state:&#34; .. info)
+    return false
+end
+
+--下面的代码无关紧要，自己酌情修改 ,可以不定义，------------------------------
+--插件被加载的时候出发
+function onCreate(obj)
+    print(&#34;onCreate....[print]&#34;)
+    log(&#34;onCreate call arg type: &#34; .. type(obj))
+end
+--表示机器人最终处理的消息，即将发送的消息，是否拦截
+function onReceiveRobotFinalCallMsgIsNeedIntercept(item, list, aite, haisaiteme)
+    debug(&#34;call onReceiveRobotFinalCallMsgIsNeedIntercept..&#34;);
+    return false
+end
+--插件作者名字 
+function getAuthorName()
+    return &#34;情迁2018&#34;
+end
+--返回插件名称，再插件管理列表可以显示
+function getPluginName()
+    return &#34;test plugin&#34;
+end
+
+--返回本插件的版本号 
+function getVersionName()
+    return &#34;1.0&#34; --返回机器人的版本号
+end
+--返回本插件的版本号 数字标识 整数
+function getVersionCode()
+    return 1;
+end
+--返回编译时间字符串
+function getBuildTime( )
+    -- body
+    return &#34;无&#34;
+end
+
+
+--返回插件的描述信息
+function getDescript()
+    return &#34;这是一个DEMO&#34;
+end
+-- 返回插件demo包名
+function getPackageName()
+    return &#34;cn.qssq666.lua.plugindemo&#34;
+end
+--即将被销毁调用的方法。
+function onDestory()
+    log(&#34;destory call&#34;)
+end</code></pre>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/756_%E6%83%85%E8%BF%81QQ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BD%BF%E7%94%A8lua%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%95%A6-%E6%83%85%E8%BF%81%E7%BE%8E%E5%A5%BD%E6%97%B6%E5%85%89%E8%BF%BD%E5%BF%86/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/756_%E6%83%85%E8%BF%81QQ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BD%BF%E7%94%A8lua%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%95%A6-%E6%83%85%E8%BF%81%E7%BE%8E%E5%A5%BD%E6%97%B6%E5%85%89%E8%BF%BD%E5%BF%86/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/756_%E6%83%85%E8%BF%81QQ%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BD%BF%E7%94%A8lua%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8F%92%E4%BB%B6%E5%95%A6-%E6%83%85%E8%BF%81%E7%BE%8E%E5%A5%BD%E6%97%B6%E5%85%89%E8%BF%BD%E5%BF%86/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/755_lua%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E4%BA%8C%E4%B8%89%E5%9D%91/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,1061 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Writing a DSL in Lua &#8211; LUA教程</title>
+<meta name="description" content="Writing a DSL in Lua">
+<meta name="keywords" content="">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writing a DSL in Lua">
+<meta property="og:description" content="Writing a DSL in Lua">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/225/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/225/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Writing a DSL in Lua</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-09-17T22:50:18+08:00">September 17, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~14 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Writing a DSL in Lua</h1>
+      <p>作者：leafo</p>
+
+<blockquote>DSLs, or domain specific languages, are programming languages that are designed to implement a set of features specific to a particular problem or field. An example could be Make, the build tool, which is a specially designed language for combining commands and files while managing dependencies.</blockquote>
+
+<p>DSLs,“领域特定语言”：是为了特定领域的问题，设计实现了某些功能的编程语言。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* Dropping the parenthesis
+* Chaining
+* Using function environments
+* Implementing the HTML builder
+* Closing
+</code></pre></div></div>
+
+<blockquote>A lot of modern programming languages have so much flexibility in their syntax that it’s possible to build libraries that expose their own mini-languages within the host language. The definition of DSL has broadened to include these kinds of libraries.</blockquote>
+
+<p>很多现代编程语言，语法非常的灵活，用库的形式，在宿主语言中构他们自己的迷你语言。 用DSL扩展自己的库。</p>
+
+<blockquote>In this guide we'll build a DSL for generating HTML. It looks like this:</blockquote>
+<p>这篇我们会用DSL语言生成HTML标记语言，如下：</p>
+
+<p>[code]
+html {
+  body {
+    h1 “Welcome to my Lua site”,
+    a {
+      href = “http://leafo.net”,
+      “Go home”
+    }
+  }}
+[/code]</p>
+
+<blockquote>Before jumping in, here are some DSL building techniques:</blockquote>
+
+<p>至此，有一些DSL的构建技术：</p>
+
+<blockquote>Dropping the parenthesis One of the cases for Lua as described in its initial public release(1996) is that it makes a good configuration language. That’s still true to this day, and Lua is friendly to building DSLs.</blockquote>
+
+<p>1996年的lua发行版的描述中就去掉了括号，使他成为一个出色配置语言，延续至今，LUA是友好的DSLs构建语言。</p>
+
+<blockquote>A unique part about Lua’s syntax is parenthesis are optional in some scenarios when calling functions. Terseness is important when building a DSL, and removing superfluous characters is a good way to do that.</blockquote>
+
+<p>唯一lua语法用到括号的场合是函数调用。构建DSL的关键点就是简洁，剔除多余字符也是很好的途径。</p>
+
+<blockquote>When calling a function that has a single argument of either a table literal or a string literal, the parenthesis are optional.</blockquote>
+
+<p>函数调用时的参数是单参数的表字符串或是字符串。括号是可选。</p>
+
+<p>[code]
+print “hello” –&gt; print(“hello”)my_function { 1,2,3 } –&gt; my_function({1,2,3})</p>
+
+<p>– whitespace isn’t needed, these also work:</p>
+
+<p>空白符非必须，一样管用。</p>
+
+<p>print”hello” –&gt; print(“hello”)
+my_function{ 1,2,3 } –&gt; my_function({1,2,3})
+[/code]</p>
+
+<blockquote>This syntax has very high precedence, the same as if you were using parenthesis:</blockquote>
+
+<p>这是个高优先级的语法， 类似于用括号。</p>
+
+<p>[code]
+tonumber “1234” + 5 – &gt; tonumber(“1234”) + 5
+[/code]</p>
+
+<blockquote>ChainingParenthesis-less invocation can be chained as long as each expression from the left evaluates to a function (or a callable table). Here’s some example syntax for a hypothetical web routing framework:</blockquote>
+
+<p>–&gt;()运操符调用， 链是从一个左值表达式函数（或是一个可调用的表）。这有一个假设的web路由框架的语法的例子。</p>
+
+<p>[code]
+match “/post-comment” {
+  GET = function ()
+    – render the form
+  end,</p>
+
+<p>POST = function ()
+    – save to database
+  end}</p>
+
+<p>[/code]</p>
+
+<blockquote>If it’s not immediately obvious what’s going on, writing the parenthesis in will clear things up. The precedence of the parenthesis-less invocation goes from left to right, so the above is equivalent to:</blockquote>
+<p>如果还是不能立马说明问题，写一个括号就一目了然了。
+–&gt;符的调用优先级是从左到右的，与上面的效果一样。</p>
+
+<p>[code]
+match(“/post-comment”)({ … })
+[/code]</p>
+
+<blockquote>The pattern we would use to implement this syntax would look something like this:</blockquote>
+
+<p>这种模式可以实现这个语法，类似于下面这种：</p>
+
+<p>[code]
+local function match(path)
+  print(“match:”, path)</p>
+
+<p>return function(params)
+    print(“params:”, params)
+    – both path and params are now availble for use here
+  end
+end</p>
+
+<p>[/code]</p>
+
+<blockquote>Using a recursive function constructor it’s possible to make chaining work for any length.</blockquote>
+
+<p>使用递归函数构造,可以是让链变为任意长度。</p>
+
+<blockquote>Using function environments When interacting with a Lua module you regularly have to bring any functions or values into scope using require. When working with a DSL, it’s nice to have all the functionality available without having to manually load anything.</blockquote>
+
+<p>使用函数环境，与lua模块进行交互，你可以require任意一个变量或是函数到作用域。</p>
+
+<blockquote>One option would be to make all the functions and values global variables, but it’s not recommended as it might interfere with other libraries.</blockquote>
+
+<p>可以让全局变量让所有函数都可见，但不推荐这样，可能会影响其它的库。</p>
+
+<blockquote>A function environment can be used to change how a function resolves global variable references within its scope. This can be used to automatically expose a DSL’s functionality without polluting the regular global scope.</blockquote>
+
+<p>函数环境可以用来改变，解决函数作用域范围内的全局变量的引用。</p>
+
+<blockquote>For the sake of this guide I'll assume that setfenv exists in the version of Lua we're using. If you're using 5.2 or above you'll need to provide you own implementation:</blockquote>
+
+<p>这篇我会假设，setfenv已经存在的lua版本中使用。如果你使用的是5.2或是更高版本，你需要自己动手。</p>
+
+<blockquote>Implementing setfenv in Lua 5.2, 5.3, and above Here’s a function run_with_env that runs another function with a particular environment.</blockquote>
+
+<p>[code]
+local function run_with_env(env, fn, …)
+  setfenv(fn, env)
+  fn(…)end
+[/code]</p>
+
+<blockquote>The environment passed will represent the DSL:</blockquote>
+<p>环境传递的就是DSL。</p>
+
+<p>[code]
+local dsl_env = {
+  move = function(x,y)
+    print(“I moved to”, x, y)
+  end,</p>
+
+<p>speak = function(message)
+    print(“I said”, message)
+  end}</p>
+
+<p>run_with_env(dsl_env, function()
+  move(10, 10)
+  speak(“I am hungry!”)end)</p>
+
+<p>[/code]</p>
+
+<blockquote>In this trivial example the benefits might not be obvious, but typically your DSL would be implemented in another module, and each place you invoke it is not necessary to bring each function into scope manually, but rather activate the whole sscope with run_with_env.</blockquote>
+<p>在这平时的例子显示的益处不明显，一般你的DSL可以在其它模块实现，不必要每个地方都调用，让每个函数到作用域里，但是激活整个作用域用run_with_env。</p>
+
+<blockquote>Function environments also let you dynamically generate methods on the fly. Using the __index metamethod implemented as a function, any value can be programmatically created. This is how the HTML builder DSL will be created.</blockquote>
+
+<p>函数环境也让你飞速动态的生成方法。使用__index元方法实现一个函数，任何的变量都可以自动化创建。这是HMTL创建器DSL如何被创建。</p>
+
+<blockquote>Implementing the HTML builder Our goal is to make the following syntax work:</blockquote>
+
+<p>实现HTML构建器，我们的目地就是让下面的语法工作。</p>
+
+<p>[code]</p>
+
+<p>html {
+  body {
+    h1 “Welcome to my Lua site”,
+    a {
+      href = “http://leafo.net”,
+      “Go home”
+    }
+  }}</p>
+
+<p>[/code]</p>
+
+<blockquote>Each HTML tag is represented by a Lua function that will return the HTML string representing that tag with the correct attribute and content if necessary.</blockquote>
+
+<p>每个HTML标签被用一个lua函数表示， 将会返回HTML字符串表示标签正确的属性和正文，如果必要。</p>
+
+<blockquote>Although it would be possible to write code to generate all the HTML tag builder functions ahead of time, a function __index metamethod will be used to generate them on the fly.</blockquote>
+
+<p>虽然它可能提前写代码来生成所有的HTML标签生成器函数， __index函数方法用于快速的生成它。</p>
+
+<blockquote>In order to run code in the context of our DSL, it must be packaged into a function. The render_html function will take that function and convert it to a HTML string:</blockquote>
+
+<p>为了运行我们的DSL正文中代码，它必须打包到函数中。 render_html函数将会把这个函数转换成HTML字符串。</p>
+
+<p>[code]
+render_html(function()
+  return div {
+    img { src = “http://leafo.net/hi” }
+  }end) – &gt; &lt;div&gt;<img src="http://leafo.net/hi" />&lt;/div&gt;
+[/code]</p>
+
+<blockquote>The img tag is self-closing, it has no separate close tag. HTML calls these “void elements”. These will be treated differently in the implementation.</blockquote>
+
+<p>img标签是自动关闭，它没分割符关闭标签。HTML叫这个”空标签”。这个处理会有不现的实现。</p>
+
+<blockquote>render_html might be implemented like this:</blockquote>
+
+<p>render_html实现类似于下面：</p>
+
+<p>[code]
+local function render_html(fn)
+  setfenv(fn, setmetatable({}, {
+    __index = function(self, tag_name)
+      return function(opts)
+        return build_tag(tag_name, opts)
+      end
+    end
+  }))</p>
+
+<p>return fn()
+end
+[/code]</p>
+
+<blockquote>The build_tag function is where all actual work is done. It takes the name of the tag, and the attributes and content as a single table.</blockquote>
+
+<p>build_tag函数是在所有实际工作完成时。它取得标签的名字，属性和正文是一个单个的table。</p>
+
+<blockquote>This function could be optimized by caching the generated functions in the environment table.</blockquote>
+
+<p>这函数是缓冲区优化的，生成的函数在环境table里。</p>
+
+<blockquote>The void elements, as mentioned above, are defined as a simple set:</blockquote>
+
+<p>空元素， 如上所述，定义一个简单的设置：</p>
+
+<p>[code]
+local void_tags = {
+  img = true,
+  – etc…}
+[/code]</p>
+
+<blockquote>The most efficient way to concatenate strings in regular Lua is to accumulate them into a table then call table.concat. Many calls to table.insert could be used to append to this buffer table, but I prefer the following function to allow multiple values to be appended at once:</blockquote>
+
+<p>大多数有效的方式连接字符串在常规的lua中是堆积到table中，当调用table.concat方法时。许多调用talbe.insert可被用于添加到这个缓冲表，但我更喜欢下面的函数，可以允许一次插入多个值。</p>
+
+<p>[code]
+local function append_all(buffer, …)
+  for i=1,select(“#”, …) do
+    table.insert(buffer, (select(i, …)))
+  endend
+[/code]</p>
+
+<p>– example:– <br />
+[code]
+local buffer = {}– <br />
+append_all(buffer, “a”, “b”, c)– 
+buffer now is {“a”, “b”, “c”}
+[/code]</p>
+
+<blockquote>append_all uses Lua’s built in function select to avoid any extra allocations by querying the var args object instead of creating a new table.</blockquote>
+
+<p>append_all 使用lua的构建于函数选择避免任何额外分配，用查询的变理参数对象代替创建新表。</p>
+
+<blockquote>Now the implementation of build_tag:</blockquote>
+
+<p>现在是build_tag的实现。</p>
+
+<p>[code]
+local function build_tag(tag_name, opts)
+  local buffer = {“&lt;”, tag_name}
+  if type(opts) == “table” then
+    for k,v in pairs(opts) do
+      if type(k) ~= “number” then
+        append_all(buffer, “ “, k, ‘=”’, v, ‘”’)
+      end
+    end
+  end</p>
+
+<p>if void_tags[tag_name] then
+    append_all(buffer, “ /&gt;”)
+  else
+    append_all(buffer, “&gt;”)
+    if type(opts) == “table” then
+      append_all(buffer, unpack(opts))
+    else
+      append_all(buffer, opts)
+    end
+    append_all(buffer, “&lt;/”, tag_name, “&gt;”)
+  end</p>
+
+<p>return table.concat(buffer)end
+[/code]</p>
+
+<blockquote>There are a couple interesting things here:</blockquote>
+
+<p>有两个很有趣的事。</p>
+
+<blockquote>The opts argument can either be a string literal or a table. When it’s a table it takes advantage of the fact that Lua tables are both hash tables and arrays at the same time. The hash table portion holds the attributes of the HTML element, and the array portion holds the contents of the element.</blockquote>
+
+<p>选项参数可以是字符串或是table，当时table时，他高级的事实，lua和table同时是哈希表和数组。哈希表的部分何存HTML元素的属性。</p>
+
+<blockquote>
+Checking if the key in a pairs iteration is numeric is a quick way to approximate isolating array like elements. It’s not perfect, but will work for this case.
+</blockquote>
+<p>检查如果KEY在一对迭代是数字是一种快速的方式近似隔离数组像元素。并不完美，但是此种情况可适用。</p>
+
+<p>[code]
+for k,v in pairs(opts) do
+  if type(k) ~= “number” then
+    – access hash table key and values
+  endend
+[/code]</p>
+
+<blockquote>
+When the content of the tag is inserted into the buffer for the table based opts, the following line is used:</blockquote>
+
+<p>当标签的内容插入到缓冲区为有表的基础选择，以下：</p>
+
+<p>[code]
+append_all(buffer, unpack(opts))
+[/code]</p>
+
+<blockquote>
+Lua’s built in function unpack converts the array values in a table to var args. This fits perfectly into the append_all function defined above.
+</blockquote>
+
+<p>lua的内建函数unpack转换数组的值到表变量参数。这完美适应上面的append_all函数所定义的。</p>
+
+<blockquote>
+unpack is table.unpack in Lua 5.2 and above. Closing This simple implementation of an HTML builder that should give you a good introduction to building your own DSLs in Lua.</blockquote>
+
+<p>unpack函数在lua5.2中有，结束这个简单的HTML构建器的实现，应该会给你一个好的介绍在lua中构建你自己的DSL。</p>
+
+<blockquote>
+The HTML builder provided performs no HTML escaping. It’s not suitable for rendering untrusted input. If you're looking for a way to enhance the builder then try adding html escaping. For example:
+</blockquote>
+
+<p>HTML生成器提供的是没HTML脱字符,不太适合用于渲染非信认的输入，如果你想通过新方式增强生成器，尝试添加html脱字符，例如：</p>
+
+<p>[code]
+local unsafe_text = [[<script type="text/javascript">alert('hacked!')</script>]]</p>
+
+<p>render_html(function()
+  return div(unsafe_text)end)</p>
+
+<p>– should not return a functional script tag:–</p>
+<div>
+<script type="text/javascript">alert('hacked!')</script></div>
+
+<p>[/code]</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/224/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/224/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/224/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/225/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/225/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/225/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/224/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

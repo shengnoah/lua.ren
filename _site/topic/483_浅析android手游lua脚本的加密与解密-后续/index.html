@@ -1,0 +1,769 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>浅析android手游lua脚本的加密与解密（后续） &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析android手游lua脚本的加密与解密（后续）">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/483_%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86-%E5%90%8E%E7%BB%AD/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/483_%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86-%E5%90%8E%E7%BB%AD/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>浅析android手游lua脚本的加密与解密（后续）</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~7 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">浅析android手游lua脚本的加密与解密（后续）</h1>
+      <p>  趁着周末，把lua的后续文章也写完了。</p>
+<h1 id="反编译对抗"><a href="#反编译对抗" class="headerlink" title="反编译对抗"></a>反编译对抗</h1>
+<p>  众所周知，<strong>反汇编/反编译</strong> 工具在逆向人员工作中第一步被使用，其地位非常之高，而对于软件保护者来说，如何对抗 <strong>反汇编/反编译</strong> 就显得尤为重要。例如，动态调试中对OD的的检测、内核调试对windbg的破坏、加壳加花对IDA静态分析的阻碍、apktool的bug导致对修改后的apk反编译失败、修改PE头导致OD无法识别、修改 .Net dll中的区段导致ILspy工具失效等等例子，都说明对抗反编译工具是很常用的一种软件保护手段，当然lua的反编译工具也面临这个问题。处理这样的问题无非就几种思路：</p>
+<ol>
+<li>用调试器调试反编译工具为何解析错误，排查原因。</li>
+<li>用调试器调试原引擎是如何解析文件的。</li>
+<li>用文件格式解析工具解析文件，看哪个点解析出错。</li>
+</ol>
+<p>  下面将以3个例子来实战lua反编译是如何对抗与修复。</p>
+
+<h1 id="例子1：一个简单的问题"><a href="#例子1：一个简单的问题" class="headerlink" title="例子1：一个简单的问题"></a>例子1：一个简单的问题</h1>
+<p>  这是在看雪论坛看到的一个问题，问题是由于游戏（可能是征途手游）将lua字符串的长度int32修改为int64，导致反编译失败的一个例子，修复方法请看帖子中本人的回答，地址：<a href="https://bbs.pediy.com/thread-217033.htm" target="_blank" rel="noopener noreferrer">https://bbs.pediy.com/thread-217033.htm</a> </p>
+<h2 id="例子2：2018腾讯游戏安全竞赛"><a href="#例子2：2018腾讯游戏安全竞赛" class="headerlink" title="例子2：2018腾讯游戏安全竞赛"></a>例子2：2018腾讯游戏安全竞赛</h2>
+<p>  这一节以2018腾讯游戏安全竞赛决赛第二题进阶版第1关的题目为例子，主要是讲一下如何修复当lua的opcode被修改的情况，以及如何修复该题对抗lua反编译的问题。</p>
+<h2 id="opcode问题及其修复"><a href="#opcode问题及其修复" class="headerlink" title="opcode问题及其修复"></a>opcode问题及其修复</h2>
+<p>  修复opcode的目的是 当输入题目的luac文件，反汇编工具Chunkspy和反编译工具luadec能够输出正确的结果。</p>
+<p>  首先，我们在ida中分析lua引擎tmgs.dll文件，然后定位到luaV_execute函数（搜索字符串“ ‘for’ limit must be a number ”），发现switch下的case的参数（lua的opcode）是乱序的，到这里我们就能够确认，该题的lua虚拟机opcode被修改了。</p>
+<p>  接着，我们进行修复操作。一种很耗时的办法就是一个一个opcode还原，分析每一个case下面的代码然后找出对应opcode的顺序。但是这一题我们不用这么麻烦，通过对比分析我们发现普通版的题目并没有修改opcode：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">普通版lua引擎的luaV_execute函数</th>
+<th style="text-align:center">进阶版lua引擎的luaV_execute函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="https://litna.top//2018/07/08/浅析android手游lua脚本的加密与解密（后续）/1.png" /></td>
+<td style="text-align:center"><img src="https://litna.top//2018/07/08/浅析android手游lua脚本的加密与解密（后续）/2.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>  观察发现，进阶版的题目只是修改了每个case的数值或者多个值映射到同一个opcode，但是没有打乱case里的代码（也就是说，虚拟机解析opcode代码的顺序没有变，只是修改了对应的数值，这跟梦幻手游的打乱opcode的方法不同）。由于lua5.3只使用到0x2D的opcode，而一个opcode长度为6位（0x3F），该题就将剩余的没有使用的字节映射到同一个opcode下，修复时只需要反过来操作就可以了。分析到这里，我们的修复方案就出来了：</p>
+<ol>
+<li>通过ida分别导出2个版本的 luaV_execute 的文本</li>
+<li>通过python脚本提取opcode的修复表</li>
+<li>在工具（Chunkspy和luadec）初始化lua文件后，用修复表将opcode替换</li>
+<li>测试运行，修复其他bug</li>
+</ol>
+<p>  第一步直接IDA手动导出: File –&gt; Produce file –&gt; Create LST File ；第二步使用python分析，代码如下：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="comment"># 通过扫码IDA导出的文本文件，获取lua字节码的opcode顺序</span></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="params">(filepath)</span>:</span></span><br /><span class="line">    f = open(filepath)</span><br /><span class="line">    lines = f.readlines()</span><br /><span class="line">    opcodes = []</span><br /><span class="line"></span><br /><span class="line">    <span class="comment"># 循环扫码文件的每一行</span></span><br /><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(lines)):</span><br /><span class="line">        line = lines[i]</span><br /><span class="line">        <span class="keyword">if</span> line.find(<span class="string">&#39;case&#39;</span>) != <span class="number">-1</span>:</span><br /><span class="line">            line = line.replace(<span class="string">&#39;case&#39;</span>, <span class="string">&#39;&#39;</span>)</span><br /><span class="line">            line = line.replace(<span class="string">&#39; &#39;</span>, <span class="string">&#39;&#39;</span>)</span><br /><span class="line">            line = line.replace(<span class="string">&#39;n&#39;</span>,<span class="string">&#39;&#39;</span>)</span><br /><span class="line">            line = line.replace(<span class="string">&#39;u:&#39;</span>, <span class="string">&#39;&#39;</span>)</span><br /><span class="line"></span><br /><span class="line">            <span class="comment"># 如果上一行也是case，那么这2个case对应同一个opcode</span></span><br /><span class="line">            <span class="keyword">if</span> lines[i<span class="number">-1</span>].find(<span class="string">&#39;case&#39;</span>) != <span class="number">-1</span>:</span><br /><span class="line">                opcode = opcodes[<span class="number">-1</span>]</span><br /><span class="line">                opcode.append(line)</span><br /><span class="line">            <span class="keyword">else</span>:</span><br /><span class="line">                opcode = []</span><br /><span class="line">                opcode.append(line)</span><br /><span class="line">                opcodes.append(opcode)</span><br /><span class="line">    f.close()</span><br /><span class="line">    <span class="keyword">return</span> opcodes</span><br /><span class="line"></span><br /><span class="line">o1 = get_opcode(<span class="string">u&#39;基础版opcode.txt&#39;</span>)</span><br /><span class="line">o2 = get_opcode(<span class="string">u&#39;进阶版opcode.txt&#39;</span>)</span><br /><span class="line"></span><br /><span class="line"><span class="comment"># 还原</span></span><br /><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(o1)):</span><br /><span class="line">    <span class="keyword">print</span> <span class="string">&#39;基础版：&#39;</span>,o1[i],<span class="string">&#39;t进阶版：&#39;</span>,o2[i]</span><br /><span class="line"></span><br /><span class="line"><span class="comment"># 映射opcode获取修复表</span></span><br /><span class="line">op_tbl = [<span class="number">-1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">64</span>)]</span><br /><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(o1)):</span><br /><span class="line">    o1opcode = o1[i][<span class="number">0</span>]</span><br /><span class="line">    o1opcode = o1opcode.replace(<span class="string">&#39;0x&#39;</span>,<span class="string">&#39;&#39;</span>)</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">for</span> o2opcode <span class="keyword">in</span> o2[i]:</span><br /><span class="line">        o2opcode = o2opcode.replace(<span class="string">&#39;0x&#39;</span>,<span class="string">&#39;&#39;</span>)</span><br /><span class="line">        op_tbl[int(o2opcode,<span class="number">16</span>)] = int(o1opcode,<span class="number">16</span>)</span><br /><span class="line"></span><br /><span class="line"><span class="keyword">print</span> <span class="string">&#39;修复表：&#39;</span>,op_tbl</span><br /></pre></td></tr></tbody></table></figure>
+<p>  运行结果：<br /></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /></pre></td><td class="code"><pre><span class="line">基础版： [<span class="string">&#39;0&#39;</span>]        进阶版： [<span class="string">&#39;6&#39;</span>, <span class="string">&#39;7&#39;</span>, <span class="string">&#39;0x16&#39;</span>, <span class="string">&#39;0x1B&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;1&#39;</span>]        进阶版： [<span class="string">&#39;0x22&#39;</span>, <span class="string">&#39;0x28&#39;</span>, <span class="string">&#39;0x29&#39;</span>, <span class="string">&#39;0x3C&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;2&#39;</span>]        进阶版： [<span class="string">&#39;0x3E&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;3&#39;</span>]        进阶版： [<span class="string">&#39;0x3B&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;4&#39;</span>]        进阶版： [<span class="string">&#39;0x12&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;5&#39;</span>]        进阶版： [<span class="string">&#39;8&#39;</span>, <span class="string">&#39;0x11&#39;</span>, <span class="string">&#39;0x17&#39;</span>, <span class="string">&#39;0x36&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;6&#39;</span>]        进阶版： [<span class="string">&#39;2&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;7&#39;</span>]        进阶版： [<span class="string">&#39;0xD&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;8&#39;</span>]        进阶版： [<span class="string">&#39;0x1A&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;9&#39;</span>]        进阶版： [<span class="string">&#39;1&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xA&#39;</span>]      进阶版： [<span class="string">&#39;0x1D&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xB&#39;</span>]      进阶版： [<span class="string">&#39;0x1F&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xC&#39;</span>]      进阶版： [<span class="string">&#39;0xE&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xD&#39;</span>]      进阶版： [<span class="string">&#39;0x31&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xE&#39;</span>]      进阶版： [<span class="string">&#39;0x2F&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0xF&#39;</span>]      进阶版： [<span class="string">&#39;0x1E&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x12&#39;</span>]     进阶版： [<span class="string">&#39;0x13&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x14&#39;</span>]     进阶版： [<span class="string">&#39;0x2B&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x15&#39;</span>]     进阶版： [<span class="string">&#39;0x1C&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x16&#39;</span>]     进阶版： [<span class="string">&#39;0x2D&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x17&#39;</span>]     进阶版： [<span class="string">&#39;0x19&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x18&#39;</span>]     进阶版： [<span class="string">&#39;0x3F&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x10&#39;</span>]     进阶版： [<span class="string">&#39;0x15&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x13&#39;</span>]     进阶版： [<span class="string">&#39;0x24&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x11&#39;</span>]     进阶版： [<span class="string">&#39;0x3A&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x19&#39;</span>]     进阶版： [<span class="string">&#39;0x18&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1A&#39;</span>]     进阶版： [<span class="string">&#39;0x33&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1B&#39;</span>]     进阶版： [<span class="string">&#39;0xF&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1C&#39;</span>]     进阶版： [<span class="string">&#39;0x34&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1D&#39;</span>]     进阶版： [<span class="string">&#39;0x20&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1E&#39;</span>]     进阶版： [<span class="string">&#39;5&#39;</span>, <span class="string">&#39;9&#39;</span>, <span class="string">&#39;0xA&#39;</span>, <span class="string">&#39;0x25&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x1F&#39;</span>]     进阶版： [<span class="string">&#39;0x30&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x20&#39;</span>]     进阶版： [<span class="string">&#39;0x26&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x21&#39;</span>]     进阶版： [<span class="string">&#39;0x35&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x22&#39;</span>]     进阶版： [<span class="string">&#39;0x38&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x23&#39;</span>]     进阶版： [<span class="string">&#39;0x2A&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x24&#39;</span>]     进阶版： [<span class="string">&#39;0x23&#39;</span>, <span class="string">&#39;0x37&#39;</span>, <span class="string">&#39;0x39&#39;</span>, <span class="string">&#39;0x3D&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x25&#39;</span>]     进阶版： [<span class="string">&#39;0x27&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x27&#39;</span>]     进阶版： [<span class="string">&#39;0x2C&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x28&#39;</span>]     进阶版： [<span class="string">&#39;0x32&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x29&#39;</span>]     进阶版： [<span class="string">&#39;0x21&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x2A&#39;</span>]     进阶版： [<span class="string">&#39;3&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x2B&#39;</span>]     进阶版： [<span class="string">&#39;0xC&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x2C&#39;</span>]     进阶版： [<span class="string">&#39;0x2E&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x2D&#39;</span>]     进阶版： [<span class="string">&#39;0x14&#39;</span>]</span><br /><span class="line">基础版： [<span class="string">&#39;0x26&#39;</span>]     进阶版： [<span class="string">&#39;4&#39;</span>]</span><br /><span class="line">修复表： [<span class="number">-1</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">38</span>, <span class="number">30</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">30</span>, <span class="number">30</span>, <span class="number">-1</span>, <span class="number">43</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">27</span>, <span class="number">-1</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">18</span>, <span class="number">45</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">25</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">21</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">11</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">19</span>, <span class="number">30</span>, <span class="number">32</span>, <span class="number">37</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">35</span>, <span class="number">20</span>, <span class="number">39</span>, <span class="number">22</span>, <span class="number">44</span>, <span class="number">14</span>, <span class="number">31</span>, <span class="number">13</span>, <span class="number">40</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">33</span>, <span class="number">5</span>, <span class="number">36</span>, <span class="number">34</span>, <span class="number">36</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">2</span>, <span class="number">24</span>]</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>  注意了，这里有几个opcode是没有对应关系的（默认是-1），跟踪代码发现，其实这些opcode的功能相当于nop操作，而原本lua是不存在nop的，我们只需在修复的过程中跳过这个字节码即可。</p>
+<p>  最后将获取的修复表替换到工具中，Chunspy修复点在DecodeInst函数中，修改结果如下：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DecodeInst</span><span class="params">(code, iValues)</span></span></span><br /><span class="line">  <span class="keyword">local</span> iSeq, iMask = <span class="built_in">config</span>.iABC, <span class="built_in">config</span>.mABC</span><br /><span class="line">  <span class="keyword">local</span> cValue, cBits, cPos = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br /><span class="line">  <span class="comment">-- decode an instruction</span></span><br /><span class="line">  <span class="keyword">for</span> i = <span class="number">1</span>, #iSeq <span class="keyword">do</span></span><br /><span class="line">    <span class="comment">-- if need more bits, suck in a byte at a time</span></span><br /><span class="line">    <span class="keyword">while</span> cBits &lt; iSeq[i] <span class="keyword">do</span></span><br /><span class="line">      cValue = <span class="built_in">string</span>.<span class="built_in">byte</span>(code, cPos) * (<span class="number">1</span> &lt;&lt; cBits) + cValue</span><br /><span class="line">      cPos = cPos + <span class="number">1</span>; cBits = cBits + <span class="number">8</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">    <span class="comment">-- extract and set an instruction field</span></span><br /><span class="line">    iValues[<span class="built_in">config</span>.nABC[i]] = cValue % iMask[i]</span><br /><span class="line">    cValue = cValue // iMask[i]</span><br /><span class="line">    cBits = cBits - iSeq[i]</span><br /><span class="line">  <span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line">  <span class="comment">-- add by littleNA</span></span><br /><span class="line">  <span class="keyword">local</span> optbl = { <span class="number">-1</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">38</span>, <span class="number">30</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">30</span>, <span class="number">30</span>, <span class="number">-1</span>, <span class="number">43</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">27</span>, <span class="number">-1</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">18</span>, <span class="number">45</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">25</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">21</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">11</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">19</span>, <span class="number">30</span>, <span class="number">32</span>, <span class="number">37</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">35</span>, <span class="number">20</span>, <span class="number">39</span>, <span class="number">22</span>, <span class="number">44</span>, <span class="number">14</span>, <span class="number">31</span>, <span class="number">13</span>, <span class="number">40</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">33</span>, <span class="number">5</span>, <span class="number">36</span>, <span class="number">34</span>, <span class="number">36</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">2</span>, <span class="number">24</span> }    </span><br /><span class="line">  iValues.OP = optbl[iValues.OP+<span class="number">1</span>]  <span class="comment">-- 注意，lua的下标是从1开始的数起的</span></span><br /><span class="line">  <span class="comment">-- add by littleNA end</span></span><br /><span class="line"></span><br /><span class="line">  iValues.opname = <span class="built_in">config</span>.opnames[iValues.OP]   <span class="comment">-- get mnemonic</span></span><br /><span class="line">  iValues.opmode = <span class="built_in">config</span>.opmode[iValues.OP]</span><br /><span class="line"> </span><br /><span class="line"> <span class="comment">-- add by littleNA</span></span><br /><span class="line">  <span class="keyword">if</span> iValues.OP == <span class="number">-1</span> <span class="keyword">then</span></span><br /><span class="line">    iValues.opname = <span class="string">&#34;Nop&#34;</span></span><br /><span class="line">    iValues.opmode = iABx</span><br /><span class="line">  <span class="keyword">end</span></span><br /><span class="line">  <span class="comment">-- add by littleNA end</span></span><br /><span class="line"> </span><br /><span class="line"> <span class="keyword">if</span> iValues.opmode == iABx <span class="keyword">then</span>                 <span class="comment">-- set Bx or sBx</span></span><br /><span class="line">    iValues.Bx = iValues.B * iMask[<span class="number">3</span>] + iValues.C</span><br /><span class="line">  <span class="keyword">elseif</span> iValues.opmode == iAsBx <span class="keyword">then</span></span><br /><span class="line">    iValues.sBx = iValues.B * iMask[<span class="number">3</span>] + iValues.C - <span class="built_in">config</span>.MAXARG_sBx</span><br /><span class="line">  <span class="keyword">elseif</span> iValues.opmode == iAx <span class="keyword">then</span></span><br /><span class="line">    iValues.Ax = iValues.B * iMask[<span class="number">3</span>] * iMask[<span class="number">2</span>] + iValues.C * iMask[<span class="number">2</span>] + iValues.A</span><br /><span class="line">  <span class="keyword">end</span></span><br /><span class="line">  <span class="keyword">return</span> iValues</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>  测试发现出错了，出错结果：<br /><img src="https://litna.top//2018/07/08/浅析android手游lua脚本的加密与解密（后续）/3.png" /></p>
+<p>  从出错的结果可以看出是luac文件的版本号有错误，这里无法识别lua 11的版本其实是题目故意设计让工具识别错误，我们将文件的第4个字节（lua版本号）11修改成53就可以了。正确结果：<br /><img src="https://litna.top//2018/07/08/浅析android手游lua脚本的加密与解密（后续）/4.png" /></p>
+<p>  luadec修复点在ldo.c文件的f_parser函数，并且增加一个RepairOpcode函数，修复如下：<br /></p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">// add by littleNA</span></span><br /><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RepairOpcode</span><span class="params">(Proto* f)</span></span></span><br /><span class="line"><span class="function"></span>{</span><br /><span class="line">    <span class="comment">// opcode 替换表</span></span><br /><span class="line">    <span class="keyword">char</span> optbl[] = { <span class="number">-1</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">38</span>, <span class="number">30</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">30</span>, <span class="number">30</span>, <span class="number">-1</span>, <span class="number">43</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">27</span>, <span class="number">-1</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">18</span>, <span class="number">45</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">25</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">21</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">11</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">19</span>, <span class="number">30</span>, <span class="number">32</span>, <span class="number">37</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">35</span>, <span class="number">20</span>, <span class="number">39</span>, <span class="number">22</span>, <span class="number">44</span>, <span class="number">14</span>, <span class="number">31</span>, <span class="number">13</span>, <span class="number">40</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">33</span>, <span class="number">5</span>, <span class="number">36</span>, <span class="number">34</span>, <span class="number">36</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">36</span>, <span class="number">2</span>, <span class="number">24</span> };</span><br /><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; f-&gt;sizecode; i++)</span><br /><span class="line">    {</span><br /><span class="line">        Instruction code = f-&gt;code[i];</span><br /><span class="line">        OpCode o = GET_OPCODE(code);</span><br /><span class="line">        SET_OPCODE(code, optbl[o]);</span><br /><span class="line"></span><br /><span class="line">        f-&gt;code[i] = code;</span><br /><span class="line">    }</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; f-&gt;sizep; i++)</span><br /><span class="line">    {<span class="comment">// 处理子函数</span></span><br /><span class="line">        RepairOpcode(f-&gt;p[i]);</span><br /><span class="line">    }</span><br /><span class="line">}</span><br /><span class="line"><span class="comment">// add by littleNA end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">f_parser</span> <span class="params">(lua_State *L, <span class="keyword">void</span> *ud)</span> </span>{</span><br /><span class="line">  LClosure *cl;</span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">SParser</span> *<span class="title">p</span> = <span class="title">cast</span>(<span class="title">struct</span> <span class="title">SParser</span> *, <span class="title">ud</span>);</span></span><br /><span class="line">  <span class="keyword">int</span> c = zgetc(p-&gt;z);  <span class="comment">/* read first character */</span></span><br /><span class="line">  &lt;span class="keyword
+</span></pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/482_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/482_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/482_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/483_%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86-%E5%90%8E%E7%BB%AD/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/483_%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86-%E5%90%8E%E7%BB%AD/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/483_%E6%B5%85%E6%9E%90android%E6%89%8B%E6%B8%B8lua%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86-%E5%90%8E%E7%BB%AD/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/482_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

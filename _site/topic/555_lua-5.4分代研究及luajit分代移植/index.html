@@ -1,0 +1,775 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>lua 5.4分代研究及luajit分代移植 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lua 5.4分代研究及luajit分代移植">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/555_lua-5.4%E5%88%86%E4%BB%A3%E7%A0%94%E7%A9%B6%E5%8F%8Aluajit%E5%88%86%E4%BB%A3%E7%A7%BB%E6%A4%8D/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/555_lua-5.4%E5%88%86%E4%BB%A3%E7%A0%94%E7%A9%B6%E5%8F%8Aluajit%E5%88%86%E4%BB%A3%E7%A7%BB%E6%A4%8D/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>lua 5.4分代研究及luajit分代移植</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~8 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">lua 5.4分代研究及luajit分代移植</h1>
+      <h2 id="lua垃圾回收发展历程"><a href="#lua垃圾回收发展历程" class="headerlink" title="lua垃圾回收发展历程"></a>lua垃圾回收发展历程</h2>
+<ul>
+<li><p>为什么不用引用计数？</p>
+<ol>
+<li>引用计数有循环引用问题，会导致内存泄漏</li>
+<li>应用计数嗯外开销大，赋值的时候会带来额外引用计数计算的开销。尤其是在内存比较稳定，没有新内存申请和释放的时候，你也需要承担这部分开销。</li>
+</ol>
+</li>
+<li><p>5.0及以前使用的是stop the world的标记清除法，会卡住所有操作，直到gc完成</p>
+</li>
+<li>5.1引入了分步gc，整个gc过程可以分为好几步，穿插在运行过程中</li>
+<li>5.2引入了分代gc，属于实验性质，实际效果不好，在5.3的时候又移除了</li>
+<li>5.4重新分代了分代gc，具体实现方式会在后面介绍</li>
+</ul>
+<h2 id="分代gc原理"><a href="#分代gc原理" class="headerlink" title="分代gc原理"></a>分代gc原理</h2>
+<p>经验表明，大部分对象在被分配之后很快就被回收掉了，长时间存活的对象很大可能会一直存活下去。所以，垃圾回收可以集中精力去回收刚刚造出来的对象。<br />将所有gc对象分成两种，young和old。当young节点活过了两次gc过程，就会变成old。old节点将不再被清除和遍历。<br />活过两次gc过程也是与5.2 gc过程的最大不同点。5.2 gc只需要活过一次，就算做old。但是往往可能当前在某个函数执行过程中申请了临时变量触发了gc，这时候如果gc完成的话，当前函数堆栈上面申请的所有临时变量都会被误标记为old，导致内存一直在上涨。<br />如何确保往old节点加入新的节点也能正确的遍历？新增touched状态，如果old节点加入新的节点，则该old节点变成touched状态，经过两次gc之后，touched节点又重新变为old节点。</p>
+<h3 id="5-4分代具体实现"><a href="#5-4分代具体实现" class="headerlink" title="5.4分代具体实现"></a>5.4分代具体实现</h3>
+<p><strong>需要对分步gc有一定了解</strong></p>
+<h4 id="新增一个old标记的概念，存放在marked的低三位，标记的具体值为："><a href="#新增一个old标记的概念，存放在marked的低三位，标记的具体值为：" class="headerlink" title="新增一个old标记的概念，存放在marked的低三位，标记的具体值为："></a>新增一个old标记的概念，存放在marked的低三位，标记的具体值为：</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_SURVIVAL	1	<span class="comment">// 当前gc存活下来的对象;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_OLD0		2	<span class="comment">// 当前gc循环被barrier forward的节点，如果被插入的节点为isold()为true的节点;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_OLD1		3	<span class="comment">// 活过了一次完整的gc;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_OLD		4	<span class="comment">// 活过了两次完整的gc，标记为G_OLD，不再被访问;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_TOUCHED1	5	<span class="comment">// old节点被插入新节点;</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> G_TOUCHED2	6	<span class="comment">// G_TOUCHED1节点经过一次完整的gc还没有新的节点插入;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> AGEBITS		7   <span class="comment">// age使用的位mask，age只使用了marked的0,1,2字段;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> getage(o)	((o)-&gt;marked &amp; AGEBITS)</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> setage(o,a)  ((o)-&gt;marked = cast_byte(((o)-&gt;marked &amp; (~AGEBITS)) | a))</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> isold(o)	(getage(o) &gt; G_SURVIVAL)		<span class="comment">// 大于G_SURVIVAL都为old;</span></span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">// 开启lua_assert模式下会先判断age是否为f状态，之后在赋值;</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> changeage(o,f,t)  </span></span><br /><span class="line">    check_exp(getage(o) == (f), (o)-&gt;marked ^= ((f)^(t)))</span><br /></pre></td></tr></tbody></table></figure>
+<p>整个age标记变化过程:</p>
+<ul>
+<li>G_NEW -&gt; G_SURVIVAL -&gt; G_OLD1 -&gt; G_OLD<br />从G_NEW到G_OLD实际上经过了三次gc，但是被打上G_OLD1标记的节点在gc开始前会被重新mark，所以肯定是会进入到G_OLD状态。为什么会有这个过程？因为节点在G_SURVIVAL的状态时候可能会被插入子节点，这时候无论是barrier forward或者barrier back都不会触发isold判断，所以经过这次gc如果G_SURVIVAL直接进入到G_OLD的话，子节点则处在G_SURVIVAL，那下次gc触发的时候子节点可能会被误删。那为什么要增加一个G_SURVIVAL状态？我讲讲自己的理解，可能不太正确。因为lua 5.2证明了一次gc直接进入到old是不理想的，所以如果G_NEW经过一次gc直接进入到G_OLD1，那如果在这时候触发barrier back的时候，该节点无论如何最终会随着没有新的子节点加入，会直接进入到G_OLD标记。这就相当于一次gc之后就判断为old了。所以最佳方案就是引入了G_OLD1节点.</li>
+<li>G_OLD0 -&gt; G_OLD1 -&gt; G_OLD<br />G_OLD0只会在barrier_forward过程中，如果父节点被isold判断成立，则进行mark并且标记为G_OLD0，但是这里会有问题，被mark之后肯定能活过当前gc，那状态肯定能变为G_OLD1，而G_OLD1会在gc开始之前进行一次标记，所以G_OLD1的节点肯定能活过gc过程，这样G_OLD1就一定会变成G_OLD。也就是说打上G_OLD0的节点肯定会变为G_OLD（疑惑？）</li>
+<li>G_OLD0/G_OLD1/G_OLD2/G_TOUCHED2 -&gt; G_TOUCHED1 -&gt; G_TOUCHED2 -&gt; G_OLD<br />因为isold判断函数使用了age &gt; G_SURVIVAL，所以G_OLD0/G_OLD1/G_OLD2/G_TOUCHED2节点如果插入子节点的话，在barrier back过程中都会变为G_TOUCHED1<h4 id="新增gc类型，表示当前处于分步gc还是分代gc，存放在g-gt-gckind"><a href="#新增gc类型，表示当前处于分步gc还是分代gc，存放在g-gt-gckind" class="headerlink" title="新增gc类型，表示当前处于分步gc还是分代gc，存放在g-&gt;gckind"></a>新增gc类型，表示当前处于分步gc还是分代gc，存放在g-&gt;gckind</h4><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">/* kinds of Garbage Collection */</span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KGC_INC		0	<span class="comment">/* incremental gc */</span></span></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KGC_GEN		1	<span class="comment">/* generational gc */</span></span></span><br /></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="新增分代使用的全局变量"><a href="#新增分代使用的全局变量" class="headerlink" title="新增分代使用的全局变量"></a>新增分代使用的全局变量</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>  {</span></span><br /><span class="line">  <span class="comment">// ...</span></span><br /><span class="line">  </span><br /><span class="line">  lu_byte genminormul;  <span class="comment">// 控制执行一次分代小gc的时机</span></span><br /><span class="line">  lu_byte genmajormul;  <span class="comment">// 控制执行一次分代大gc(full gc)的时机</span></span><br /><span class="line">  </span><br /><span class="line">  GCObject *survival;  <span class="comment">// 指向活过一次gc的节点</span></span><br /><span class="line">  GCObject *old;       <span class="comment">// 指向活过两次的gc节点</span></span><br /><span class="line">  GCObject *reallyold; <span class="comment">// 指向被标记为G_OLD的开始节点</span></span><br /><span class="line">  GCObject *finobjsur; <span class="comment">// 意义同上面三个变量，指向的是带有&#34;__gc&#34;元方法的userdata或者table</span></span><br /><span class="line">  GCObject *finobjold; </span><br /><span class="line">  GCObject *finobjrold;</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">//...</span></span><br /><span class="line">} global_State;</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="两种gc之间的转换"><a href="#两种gc之间的转换" class="headerlink" title="两种gc之间的转换"></a>两种gc之间的转换</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">// 进入到分步模式</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">enterinc</span> <span class="params">(global_State *g)</span> </span>{</span><br /><span class="line">  <span class="comment">// 1. 把所有节点标记为白色</span></span><br /><span class="line">  whitelist(g, g-&gt;allgc);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 2. 清空分代的变量</span></span><br /><span class="line">  g-&gt;reallyold = g-&gt;old = g-&gt;survival = <span class="literal">NULL</span>;</span><br /><span class="line">  whitelist(g, g-&gt;finobj);</span><br /><span class="line">  whitelist(g, g-&gt;tobefnz);</span><br /><span class="line">  g-&gt;finobjrold = g-&gt;finobjold = g-&gt;finobjsur = <span class="literal">NULL</span>;</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 3. 初始化gc状态</span></span><br /><span class="line">  g-&gt;gcstate = GCSpause;、</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 4. 初始化gc类型</span></span><br /><span class="line">  g-&gt;gckind = KGC_INC;</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="comment">// 进入到分代模式</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">entergen</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line">  <span class="comment">// 1. 执行一次完整的遍历过程</span></span><br /><span class="line">  luaC_runtilstate(L, bitmask(GCSpause));  <span class="comment">/* prepare to start a new cycle */</span></span><br /><span class="line">  luaC_runtilstate(L, bitmask(GCSpropagate));  <span class="comment">/* start new cycle */</span></span><br /><span class="line">  atomic(L);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 2. 清除过期的对象，同时把所有对象存活的对象标记为G_OLD</span></span><br /><span class="line">  sweep2old(L, &amp;g-&gt;allgc);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 3. 初始化分代变量</span></span><br /><span class="line">  g-&gt;reallyold = g-&gt;old = g-&gt;survival = g-&gt;allgc;</span><br /><span class="line"></span><br /><span class="line">  sweep2old(L, &amp;g-&gt;finobj);</span><br /><span class="line">  g-&gt;finobjrold = g-&gt;finobjold = g-&gt;finobjsur = g-&gt;finobj;</span><br /><span class="line"></span><br /><span class="line">  sweep2old(L, &amp;g-&gt;tobefnz);</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 3. 初始化gc类型</span></span><br /><span class="line">  g-&gt;gckind = KGC_GEN;</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 4. 设置基础内存值</span></span><br /><span class="line">  g-&gt;GCestimate = gettotalbytes(g);  <span class="comment">/* base for memory control */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 5. finishgencycle里做了很多事情，这里用到了它去回调所有设置了&#34;__gc&#34;元方法的table或者userdata</span></span><br /><span class="line">  finishgencycle(L, g);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="分代gc过程"><a href="#分代gc过程" class="headerlink" title="分代gc过程"></a>分代gc过程</h4>
+<ol>
+<li><p>触发gc step，根据gc类型进行不同的操作</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">luaC_step</span> <span class="params">(lua_State *L)</span> </span>{</span><br /><span class="line">  global_State *g = G(L);</span><br /><span class="line">  <span class="keyword">if</span> (g-&gt;gcrunning) {  <span class="comment">/* running? */</span></span><br /><span class="line"></span><br /><span class="line">	<span class="comment">// 根据当前gc处于什么类型进入到不同的step中;</span></span><br /><span class="line">    <span class="keyword">if</span> (g-&gt;gckind == KGC_INC)</span><br /><span class="line">      incstep(L, g);</span><br /><span class="line">	<span class="keyword">else</span></span><br /><span class="line">	  genstep(L, g);</span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>分代step</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">genstep</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 保存基础值，该基础值会在entergen初始化;</span></span><br /><span class="line">  lu_mem majorbase = g-&gt;GCestimate;</span><br /><span class="line">  <span class="keyword">int</span> majormul = getgcparam(g-&gt;genmajormul);</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 判断是否该进行full gen gc;</span></span><br /><span class="line">  <span class="comment">// 判断条件为当前总内存值是否为上次full gc完成内存的(100+genmajormul)%;</span></span><br /><span class="line">  <span class="keyword">if</span> (g-&gt;GCdebt &gt; <span class="number">0</span> &amp;&amp;</span><br /><span class="line">      gettotalbytes(g) &gt; (majorbase / <span class="number">100</span>) * (<span class="number">100</span> + majormul)) {</span><br /><span class="line">    fullgen(L, g);</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">else</span> {</span><br /><span class="line">	<span class="comment">// 执行一次young gc;</span></span><br /><span class="line">    lu_mem mem;</span><br /><span class="line">    youngcollection(L, g);</span><br /><span class="line">    mem = gettotalbytes(g);</span><br /><span class="line">    </span><br /><span class="line">    <span class="comment">// 重新设置下次进行小gc的时机</span></span><br /><span class="line">    luaE_setdebt(g, -(cast(l_mem, (mem / <span class="number">100</span>)) * g-&gt;genminormul));</span><br /><span class="line"></span><br /><span class="line">	<span class="comment">// 重新赋值为基础值;</span></span><br /><span class="line">    g-&gt;GCestimate = majorbase;  <span class="comment">/* preserve base value */</span></span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>full gen gc，很简单的利用enterinc和entergen两个函数</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fullgen</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line">  enterinc(g);</span><br /><span class="line">  entergen(L, g);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>young gc</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">youngcollection</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line">  GCObject **psurvival;  <span class="comment">/* to point to first non-dead survival object */</span></span><br /><span class="line">  lua_assert(g-&gt;gcstate == GCSpropagate);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 将G_OLD1的所有的黑色节点，重新mark一次，原因在age变化过程中有写</span></span><br /><span class="line">  markold(g, g-&gt;survival, g-&gt;reallyold);</span><br /><span class="line">  markold(g, g-&gt;finobj, g-&gt;finobjrold);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 标记节点</span></span><br /><span class="line">  atomic(L);</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 遍历此次创建的节点，free掉没被引用的节点，设置被引用的节点到新的age状态;</span></span><br /><span class="line">  <span class="comment">// 返回的psurvival指向的是g-&gt;survival的上一个节点的next指针;</span></span><br /><span class="line">  <span class="comment">// 这样可以确保g-&gt;survival能进行正确的删除操作</span></span><br /><span class="line">  psurvival = sweepgen(L, g, &amp;g-&gt;allgc, g-&gt;survival);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 对psurvival到g-&gt;reallyold的节点进行相同操作;</span></span><br /><span class="line">  sweepgen(L, g, psurvival, g-&gt;reallyold);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 重新设置三个指针</span></span><br /><span class="line">  g-&gt;reallyold = g-&gt;old;</span><br /><span class="line">  g-&gt;old = *psurvival;  <span class="comment">/* &#39;survival&#39; survivals are old now */</span></span><br /><span class="line">  g-&gt;survival = g-&gt;allgc;  <span class="comment">/* all news are survivals */</span></span><br /><span class="line"></span><br /><span class="line">  <span class="comment">/* repeat for &#39;finobj&#39; lists */</span></span><br /><span class="line">  psurvival = sweepgen(L, g, &amp;g-&gt;finobj, g-&gt;finobjsur);</span><br /><span class="line">  <span class="comment">/* sweep &#39;survival&#39; and &#39;old&#39; */</span></span><br /><span class="line">  sweepgen(L, g, psurvival, g-&gt;finobjrold);</span><br /><span class="line">  g-&gt;finobjrold = g-&gt;finobjold;</span><br /><span class="line">  g-&gt;finobjold = *psurvival;  <span class="comment">/* &#39;survival&#39; survivals are old now */</span></span><br /><span class="line">  g-&gt;finobjsur = g-&gt;finobj;  <span class="comment">/* all news are survivals */</span></span><br /><span class="line"></span><br /><span class="line">  sweepgen(L, g, &amp;g-&gt;tobefnz, <span class="literal">NULL</span>);</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 进行分代gc的后续操作</span></span><br /><span class="line">  finishgencycle(L, g);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>markold</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从from到to，如果节点为G_OLD1并且为黑色，则进行mark，不是黑色表明，该节点已经被mark，所以不用在mark</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">markold</span> <span class="params">(global_State *g, GCObject *from, GCObject *to)</span> </span>{</span><br /><span class="line">  GCObject *p;</span><br /><span class="line">  <span class="keyword">for</span> (p = from; p != to; p = p-&gt;next) {</span><br /><span class="line">    <span class="keyword">if</span> (getage(p) == G_OLD1) {</span><br /><span class="line">      lua_assert(!iswhite(p));</span><br /><span class="line">      <span class="keyword">if</span> (isblack(p)) {</span><br /><span class="line">        black2gray(p);  <span class="comment">/* should be &#39;2white&#39;, but gray works too */</span></span><br /><span class="line">        reallymarkobject(g, p);</span><br /><span class="line">      }</span><br /><span class="line">    }</span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>sweepgen</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从p开始到limit，如果该节点没有被mark过则清除，否则将age设置到下一状态</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> GCObject **<span class="title">sweepgen</span> <span class="params">(lua_State *L, global_State *g, GCObject **p,</span></span></span><br /><span class="line"><span class="function"><span class="params">                            GCObject *limit)</span> </span>{</span><br /><span class="line">  <span class="keyword">static</span> lu_byte nextage[] = {</span><br /><span class="line">    G_SURVIVAL,  <span class="comment">/* from G_NEW */</span></span><br /><span class="line">    G_OLD1,      <span class="comment">/* from G_SURVIVAL */</span></span><br /><span class="line">    G_OLD1,      <span class="comment">/* from G_OLD0 */</span></span><br /><span class="line">    G_OLD,       <span class="comment">/* from G_OLD1 */</span></span><br /><span class="line">    G_OLD,       <span class="comment">/* from G_OLD (do not change) */</span></span><br /><span class="line">    G_TOUCHED1,  <span class="comment">/* from G_TOUCHED1 (do not change) */</span></span><br /><span class="line">    G_TOUCHED2   <span class="comment">/* from G_TOUCHED2 (do not change) */</span></span><br /><span class="line">  };</span><br /><span class="line">  <span class="keyword">int</span> white = luaC_white(g);</span><br /><span class="line">  GCObject *curr;</span><br /><span class="line">  <span class="keyword">while</span> ((curr = *p) != limit) {</span><br /><span class="line">    <span class="keyword">if</span> (iswhite(curr)) {  <span class="comment">/* is &#39;curr&#39; dead? */</span></span><br /><span class="line">      lua_assert(!isold(curr) &amp;&amp; isdead(g, curr));</span><br /><span class="line">      *p = curr-&gt;next;  <span class="comment">/* remove &#39;curr&#39; from list */</span></span><br /><span class="line">      freeobj(L, curr);  <span class="comment">/* erase &#39;curr&#39; */</span></span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">else</span> {  <span class="comment">/* correct mark and age */</span></span><br /><span class="line">      <span class="keyword">if</span> (getage(curr) == G_NEW)</span><br /><span class="line">        curr-&gt;marked = cast_byte((curr-&gt;marked &amp; maskgencolors) | white);</span><br /><span class="line">      setage(curr, nextage[getage(curr)]);</span><br /><span class="line">      p = &amp;curr-&gt;next;  <span class="comment">/* go to next element */</span></span><br /><span class="line">    }</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">return</span> p;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>一些细节<br />分代模式充分利用了grayagain这个链表，在atomic开始之处会把该链表先保存起来，然后置空。因为在atomic的遍历过程中会有新的节点加入到grayagain，例如线程，table或者弱key的table。在gen结束的时候会再次遍历grayagain链表，进行touched状态的相关操作<br />分代只有才gc过程中会处于atomic节点，其他清空下都是一直处于GCSpropagate状态</p>
+</li>
+<li><p>finishgencycle</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">finishgencycle</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line"></span><br /><span class="line">  <span class="comment">// 遍历所有grayagain以及weak系table链表进行操作</span></span><br /><span class="line">  correctgraylists(g);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 查看是否需要进行string表resize操作</span></span><br /><span class="line">  checkSizes(L, g);</span><br /><span class="line">  g-&gt;gcstate = GCSpropagate;  <span class="comment">/* skip restart */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">// 调用所有的table或者userdata的&#34;__gc&#34;元方法</span></span><br /><span class="line">  <span class="keyword">if</span> (!g-&gt;gcemergency)</span><br /><span class="line">    callallpendingfinalizers(L, <span class="number">1</span>);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>correctgraylist</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对列表进行操作，前面说了graygain链表会在最后进行touched相关的操作</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> GCObject **<span class="title">correctgraylist</span> <span class="params">(GCObject **p)</span> </span>{</span><br /><span class="line">  GCObject *curr;</span><br /><span class="line">  <span class="keyword">while</span> ((curr = *p) != <span class="literal">NULL</span>) {</span><br /><span class="line">    <span class="keyword">switch</span> (curr-&gt;tt) {</span><br /><span class="line">      <span class="keyword">case</span> LUA_TTABLE: <span class="keyword">case</span> LUA_TUSERDATA: {</span><br /><span class="line">        GCObject **next = getgclist(curr);</span><br /><span class="line">        <span class="keyword">if</span> (getage(curr) == G_TOUCHED1) {  <span class="comment">/* touched in this cycle? */</span></span><br /><span class="line">          <span class="comment">// 处于G_TOUCHED1状态，则变为G_TOUCHED2，并且保留在grayagain链表</span></span><br /><span class="line">          lua_assert(isgray(curr));</span><br /><span class="line">          gray2black(curr);  <span class="comment">/* make it black, for next barrier */</span></span><br /><span class="line">          changeage(curr, G_TOUCHED1, G_TOUCHED2);</span><br /><span class="line">          p = next;  <span class="comment">/* go to next element */</span></span><br /><span class="line">        }</span><br /><span class="line">        <span class="keyword">else</span> {</span><br /><span class="line">          <span class="keyword">if</span> (!iswhite(curr)) {</span><br />&lt;span class="l
+</pre></td></tr></tbody></table></figure></li></ol>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/554_Evaluating/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/554_Evaluating/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/554_Evaluating/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/555_lua-5.4%E5%88%86%E4%BB%A3%E7%A0%94%E7%A9%B6%E5%8F%8Aluajit%E5%88%86%E4%BB%A3%E7%A7%BB%E6%A4%8D/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/555_lua-5.4%E5%88%86%E4%BB%A3%E7%A0%94%E7%A9%B6%E5%8F%8Aluajit%E5%88%86%E4%BB%A3%E7%A7%BB%E6%A4%8D/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/555_lua-5.4%E5%88%86%E4%BB%A3%E7%A0%94%E7%A9%B6%E5%8F%8Aluajit%E5%88%86%E4%BB%A3%E7%A7%BB%E6%A4%8D/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/554_Evaluating/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

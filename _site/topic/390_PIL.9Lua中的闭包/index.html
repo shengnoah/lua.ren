@@ -1,0 +1,806 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>PIL.9Lua中的闭包 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PIL.9Lua中的闭包">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/390_PIL.9Lua%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/390_PIL.9Lua%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>PIL.9Lua中的闭包</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~6 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">PIL.9Lua中的闭包</h1>
+      <p>Lua中的函数是 <strong>第一类</strong>的值加上合适的<strong>词法域</strong>。那么，函数是<strong>第一类值</strong>意味着什么呢？这是说，在Lua中，一个函数，就是一个和 数字或字符串一样具有某些权限的值。一个程序可以把函数存储在变量中（全局或者局部都可以）和表中，把函数作为参数传递给其他函数，或者以函数作为值返回。</p>
+
+<p>函数具有<strong>词法域</strong>又是什么意思呢？就是说函数可以访问他们包裹函数的变量。</p>
+<p>这两个特性给了Lua巨大的弹性；具体点说，一个程序在运行一段不受信任的代码时（比如从网络上收到的代码）可以重新定义一个函数来增加功能或者擦除一个函数来创建一个安全的环境。更重要的是，这些特性运行我们从函数语言的世界应用很多强大的编程技术到Lua。即使你对函数式编程没有什么兴趣，但是看一下这些技术是非常有价值的，这会让你的程序更小更简单。</p>
+<p>下面的例子说明了函数作为第一类值的情况：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">a = {p = <span class="built_in">print</span>} </span><br /><span class="line">a.p(<span class="string">&#34;hello world&#34;</span>) <span class="comment">-- hello world</span></span><br /><span class="line"><span class="built_in">print</span> = <span class="built_in">math</span>.<span class="built_in">sin</span>  <span class="comment">-- &#39;print&#39; now refers to the sine function</span></span><br /><span class="line">a.p(<span class="built_in">print</span>(<span class="number">1</span>)) <span class="comment">-- 0.8414709848079</span></span><br /><span class="line"><span class="built_in">math</span>.<span class="built_in">sin</span> = a.p <span class="comment">-- &#39;sin&#39; no refers to the print function</span></span><br /><span class="line"><span class="built_in">math</span>.<span class="built_in">sin</span>(<span class="number">10</span>, <span class="number">20</span>)  <span class="comment">-- 20</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>如果函数是值，这些表达式会创建函数么？当然。实际上，在Lua经常编写函数的方式：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  <span class="params">(x)</span></span> <span class="keyword">return</span> <span class="number">2</span>*x <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>其实只是一个被我们称作 <em>语法糖</em>的东西；其只是下面代码的一个比较漂亮的方式：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">foo = <span class="function"><span class="keyword">function</span> <span class="params">(x)</span></span> <span class="keyword">return</span> <span class="number">2</span>*x <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>在表达式右边的赋值部分<code>function (x) return 2*x end</code>是一个函数构造器，同样的方式<code>{ }</code>是一个表构造器。这就是说，一个函数定义，实际上就是一个建立一个类型为<code>function</code>的值并把它赋给一个变量的声明。</p>
+<p>注意，在Lua中，<strong>所有的函数都是匿名的</strong>。和其他值一样，他们没有名字。当我们在谈论一个函数名字的时候，比如<code>print</code>，其实我们是在谈论存储函数的变量。尽管我们经常把函数赋值给全局变量，似乎给了他们一个名字，仍然有几种情况函数会保持匿名。我们来看看例子。</p>
+<p>基本库中，表这个库提供了一个函数<code>table.sort</code>，其会接受一个表，然后排序表的元素。这样的函数必须能接受不受限制的排序方式：升序或降序，数字的或字母的，以键排序表等等。没有尝试提供所有的选项类型，<code>sort</code>提供了一个单一定选项<code>order function（排序函数）</code>：一个获取两个元素，然后返回第一个是否要在排序好的表中比第二个元素先出现。看看下面的例子：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">network = {</span><br /><span class="line">         {name = <span class="string">&#34;grauna&#34;</span>,  IP = <span class="string">&#34;210.26.30.34&#34;</span>},</span><br /><span class="line">         {name = <span class="string">&#34;arraial&#34;</span>, IP = <span class="string">&#34;210.26.30.23&#34;</span>},”</span><br /><span class="line">         {name = <span class="string">&#34;lua&#34;</span>,     IP = <span class="string">&#34;210.26.23.12&#34;</span>},</span><br /><span class="line">         {name = <span class="string">&#34;derain&#34;</span>,  IP = <span class="string">&#34;210.26.23.20&#34;</span>},</span><br /><span class="line">       }</span><br /></pre></td></tr></tbody></table></figure>
+<p>如果我们想以 字段<em>name</em>来排序表，以字母逆序排列，我们只需要这样写：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">table</span>.<span class="built_in">sort</span>(network, <span class="function"><span class="keyword">function</span> <span class="params">(a,b)</span></span> <span class="keyword">return</span> (a.name &gt; b.name) <span class="keyword">end</span>)</span><br /></pre></td></tr></tbody></table></figure>
+<p>这个声明内可以匿名函数是非常方便的。</p>
+<p>一个函数以其他函数作为参数，如<code>sort</code>，我们称它为 <code>高层函数</code>。高层函数是一个强大的编程方法，而以匿名函数来建立他们的函数参数又非常具有弹性。但要记住，高层函数没有特殊的权限；Lua会把所有函数当作第一类值。</p>
+<p>为了更多的展示一下高层函数，我们来写一个常用的高层函数，导数函数。在一个正式的定义中，函数 <em>f</em> 的导数是当  <em>d</em> 变得无穷小时的函数 <em>f’(x) = (f(x + d) - f(x)) / d</em>。根据这个定义，我们可以如下计算出一个近似导数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">derivative</span> <span class="params">(f, delta)</span></span></span><br /><span class="line">	delta = deleta <span class="keyword">or</span> <span class="number">1e-4</span></span><br /><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(x)</span></span></span><br /><span class="line">				<span class="keyword">return</span> (f(x + deleta) - f(x))/deleta </span><br /><span class="line">			<span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>给出一个函数 <em>f</em>，调用 <code>derivative(f)</code>返回（近似）导数，也就是另外一个函数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">c = derivative(<span class="built_in">math</span>.<span class="built_in">sin</span>)</span><br /><span class="line"><span class="built_in">print</span>(<span class="built_in">math</span>.<span class="built_in">cos</span>(<span class="number">5.2</span>), c(<span class="number">5.2</span>))</span><br /><span class="line"><span class="comment">-- 0.46851667130038    0.46856084325086</span></span><br /><span class="line"><span class="built_in">print</span>(<span class="built_in">math</span>.<span class="built_in">cos</span>(<span class="number">10</span>), c(<span class="number">10</span>))</span><br /><span class="line"><span class="comment">-- -0.83907152907645   -0.83904432662041</span></span><br /></pre></td></tr></tbody></table></figure>
+<h1 id="非全局函数"><a href="#非全局函数" class="headerlink" title="非全局函数"></a>非全局函数</h1>
+<p>一个很明显的结论就是，我们不但可以把函数存储在全局变量，而且也可以存在在表字段或者局部变量内。</p>
+<p>我们已经看到了很多个把函数放在表字段内的例子：大多数Lua库使用这种方法（如 io.read, math.sin）。为了建立这样的函数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">Lib = {}</span><br /><span class="line">Lib.foo = <span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x + y <span class="keyword">end</span></span><br /><span class="line">Lib.goo = <span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x - y <span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="built_in">print</span>(Lib.foo(<span class="number">2</span>,<span class="number">3</span>), Lib.goo(<span class="number">2</span>, <span class="number">3</span>))</span><br /><span class="line"><span class="comment">-- 5  -1</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>当然，我们也可以使用 表构造器：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">Lib = {
+        foo = <span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x + y <span class="keyword">end</span>,
+        goo = <span class="function"><span class="keyword">function</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x - y <span class="keyword">end</span>
+}</span><br /></pre></td></tr></tbody></table></figure>
+<p>Lua，也提供了特别的方式来定义这样的函数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">Lib = {}
+<span class="function"><span class="keyword">function</span> <span class="title">Lib.foo</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x + y <span class="keyword">end</span>
+<span class="function"><span class="keyword">function</span> <span class="title">Lib.goo</span> <span class="params">(x,y)</span></span> <span class="keyword">return</span> x - y <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>在<a href="/Lua/lua中的表及面向对象.html">lua中的面向对象</a>一节中，我们可以看到，把函数放在表字段中是实现面向对象的重要部分。</p>
+<p>当我们把函数存储在一个局部变量中时，我们获得了一个 <em>局部函数</em>  就是说这个函数被限制在给定的范围内。这样的定义对于 <strong>包</strong> 来说是非常有用的：因为Lua把每个 chunk 当作函数处理，一个 chunk可以定义 局部函数，其只在当前的 chunk内可见。词法域 保证了这个 chunk内的其他函数可以访问这个 局部函数。</p>
+<p>Lua这样以一个语法糖的方式使用局部函数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">f</span> <span class="params">(params)</span></span></span><br /><span class="line">	body</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>这样在进行递归定义函数的时候会出现一个微妙的错误，因为这种方式不会工作。看一下下面的定义：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> fact = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span></span></span><br /><span class="line">				<span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span></span><br /><span class="line">				<span class="keyword">else</span> <span class="keyword">return</span> n*fact(n<span class="number">-1</span>) <span class="comment">-- buggy</span></span><br /><span class="line">				<span class="keyword">end</span></span><br /><span class="line">				<span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>Lua编译函数体中调用<code>fact(n - 1)</code>时，局部的<code>fact</code>并没有定义完成。因此，这个表示式会尝试调用一个全局的 <code>fact</code>，而不是本地的这个。我们可以通过先定义变量，然后再定义函数体来避免这个错误：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> fact</span><br /><span class="line">fact = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span></span></span><br /><span class="line">			<span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="number">1</span></span><br /><span class="line">			<span class="keyword">else</span> <span class="keyword">return</span> n*fact(n<span class="number">-1</span>)</span><br /><span class="line">			<span class="keyword">end</span></span><br /><span class="line">		<span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>现在 函数内的<code>fact</code>就引用本地的变量。在定义函数的时候其值不重要，在函数执行时，<code>fact</code>会有正确的值。</p>
+<p>当Lua展开其对局部函数的语法糖时，其不使用这种写法。这样的定义 :</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span>  <span class="params">(params)</span></span> body <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>会展开成：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> foo; foo = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span></span> body <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>因此，我们可以这样来使用递归函数而不用有其他担心。</p>
+<p>当然，这在我们使用非直接的递归函数时不会起作用。这样的情况下，我们必须使用一种显式的声明：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="keyword">local</span> f <span class="comment">-- &#34;forward&#34; declaration</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">g</span> <span class="params">()</span></span></span><br /><span class="line">	some code </span><br /><span class="line">	f()</span><br /><span class="line">	some code</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> <span class="params">()</span></span></span><br /><span class="line">	some code</span><br /><span class="line">	g ()</span><br /><span class="line">	some code</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>注意，在最后一个第一中不要写 <em>local</em>。否则，Lua会创建一个新的 本地变量 <em>f</em> ，并使 原来 的 <em>f</em> 变成未定义的。</p>
+<h1 id="词法域"><a href="#词法域" class="headerlink" title="词法域"></a>词法域</h1>
+<p>在我们写一个被其他函数包围的函数时，其可以完全的访问包围函数的变量；我们把这个特性叫做 <strong>词法定界</strong>。 这个可见性规则听起来可能很明显，但不是的。词法定界加上嵌套的第一类函数，给了Lua很大的力量，但很多语言并不支持这样的结合。</p>
+<p>我们以一个简单的例子开始。我们有一个学习名字的表，已经一张名字和学位等级映射的表；我们想通过学生的学位来排序学生名字那张表，高学位的在前。我们可以向下面这样做：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line">names = {<span class="string">&#34;Peter&#34;</span>, <span class="string">&#34;Paul&#34;</span>, <span class="string">&#34;Mary&#34;</span>}</span><br /><span class="line">grades = {Mary = <span class="number">10</span>, Paul = <span class="number">7</span>, Peter = <span class="number">8</span>}
+<span class="built_in">table</span>.<span class="built_in">sort</span>(names, <span class="function"><span class="keyword">function</span> <span class="params">(n1, n2)</span></span></span><br /><span class="line">						<span class="keyword">return</span> grades[n1] &gt; grades[n2]</span><br /><span class="line">						<span class="keyword">end</span></span><br /><span class="line">			)</span><br /></pre></td></tr></tbody></table></figure>
+<p>现在，假如我们想建立一个函数来做这个任务：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortbygrade</span> <span class="params">(names, grades)</span></span>
+        <span class="built_in">table</span>.<span class="built_in">sort</span>(names, <span class="function"><span class="keyword">function</span> <span class="params">(n1, n2)</span></span>
+          <span class="keyword">return</span> grades[n1] &gt; grades[n2]
+        <span class="keyword">end</span>)</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>后面这个例子有趣的一点就是，<code>sort</code>中的匿名函数访问了 <em>grades</em> ，而这是 包围函数 <code>sortbygrade</code> 的参数。 在匿名函数中， <em>grades</em> 不是一个全局变量，也不是一个局部变量，我们把它叫做 <em>非局部变量</em>。（因为历史原因，非局部变量，也被叫做  <em>上值(upvalues)</em>）</p>
+<p>我们这点会非常有趣？因为函数，是第一类值，可以 <strong>逃脱</strong> 其变量的原始范围。看一下下面的代码：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newCounter</span> <span class="params">()</span></span></span><br /><span class="line">	<span class="keyword">local</span> count = <span class="number">0</span></span><br /><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br /><span class="line">				count = count + <span class="number">1</span></span><br /><span class="line">				<span class="keyword">return</span> count </span><br /><span class="line">			<span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line">c1 = newCounter()</span><br /><span class="line"></span><br /><span class="line"><span class="built_in">print</span>(c1()) <span class="comment">-- 1</span></span><br /><span class="line"><span class="built_in">print</span>(c1()) <span class="comment">-- 2</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>在这些代码中，匿名函数引用了一个非局部变量<em>count</em> ，来保持其计数器。然而，在我们调用这个匿名函数的时候，变量 <em>count</em> 看起来已经在其范围之外了， 因为建立这个变量的函数 <code>newCounter</code> 已经返回了。然而，Lua会正确的处理这样的情况，使用了<code>closure(闭包)</code>的概念。 简单地说， <strong>闭包</strong> 就是一个函数 加上其需要访问的所有 非局部变量。 如果我们再次调用  <code>newCounter</code>，其会建立一个新的局部变量 <em>count</em> 并加上一个新的闭包，不在新的变量上作用：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"></span><br /><span class="line">c2 = newCounter()</span><br /><span class="line"><span class="built_in">print</span>(c2()) <span class="comment">-- 1</span></span><br /><span class="line"></span><br /><span class="line"><span class="built_in">print</span>(c1()) <span class="comment">-- 3</span></span><br /><span class="line"><span class="built_in">print</span>(c2()) <span class="comment">-- 2</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>因此， <em>c1, c2</em>是不同的闭包。他们都是一同一个函数来建立，但是每个在不同的 局部变量 <em>count</em> 上动作。</p>
+<p>技术上讲，Lua中的值是闭包，而不是这个函数。函数只是闭包的一种原型。但是呢，在不混淆的情况下， 我们会继续使用 函数  来引用一个闭包。</p>
+<p>闭包在很多上下文中非常有价值。如我们所见，其作为高层函数的参数非常有用，比如<code>sort</code>。 闭包对于建立其他函数的函数也非常有价值，如 <code>newCounter</code>或 导数例子；这和方法允许Lua程序把高端编程技术和函数世界相结合。闭包对 <em>回调(callback)</em>函数也很有用。一个典型的例子就是在我们在GUI工具中建立一个按钮的时候。每个按钮都在用户按这个按钮时调用一个 回调函数 ；但我们需要每个按钮干不同的事情。</p>
+<p>具体来说，一个数字计算器需要10个类似的按钮，每个数字一个。我们可以通过一个函数来创建他们：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">diginButton</span> <span class="params">(digit)</span></span></span><br /><span class="line">	<span class="keyword">return</span> Button { lable = <span class="built_in">tostring</span>(digit),</span><br /><span class="line">						action = <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br /><span class="line">									add_to_display(digit)</span><br /><span class="line">									<span class="keyword">end</span></span><br /><span class="line">						}</span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>在这个例子中，我们假装 <code>Button</code>是一个创建新按钮的工具函数；<em>label</em> 是按钮的标签； <em>action</em> 是按下按钮时的回调函数。 回调函数可能会在 <code>digitButton</code>完成任务后很久才会被调用，但其仍然可以访问 <em>digit</em> 变量。</p>
+<p>闭包在不同的上下文中也很有价值。因为函数存储于普通的变量中，我们可以在Lua重新定义函数，即使是预定义的函数。这也是为什么Lua如此扩展性好的原因之一。假如我们想要重新定义 <code>sin</code>来操作角度而不是弧度。这个新函数把其参数进行转换然后调用原来的 <code>sin</code>函数来做真正的工作。代码类似下面：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">local</span> oldSin = <span class="built_in">math</span>.<span class="built_in">sin</span></span><br /><span class="line"><span class="built_in">math</span>.<span class="built_in">sin</span> = <span class="function"><span class="keyword">function</span> <span class="params">(x)</span></span></span><br /><span class="line">				<span class="keyword">return</span> oldSin(x * (<span class="built_in">math</span>.<span class="built_in">pi</span> / <span class="number">180</span>))</span><br /><span class="line">			<span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>一个更清楚的方式是像下面一定义：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="keyword">do</span></span><br /><span class="line">	<span class="keyword">local</span> oldSin = <span class="built_in">math</span>.<span class="built_in">sin</span></span><br /><span class="line">	<span class="keyword">local</span> k = <span class="built_in">math</span>.<span class="built_in">pi</span> / <span class="number">180</span></span><br /><span class="line">	<span class="built_in">math</span>.<span class="built_in">sin</span> = <span class="function"><span class="keyword">function</span> <span class="params">(x)</span></span></span><br /><span class="line">					<span class="keyword">return</span> oldSin(x * k)</span><br /><span class="line">				 <span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>代码使用 <strong>do .. end</strong>来限制本地变量 <em>oldSin</em> 的词法范围；其只在当前 chunk内可见。其只能通过 新函数来访问。</p>
+<p>可以用同样的方法来建立安全的环境，也叫做沙盒。安全环境在运行不受信任的歹时非常重要，这样的代码通过服务从网络获得。具体来说，为了限制一个程序可以访问的文件，我们可以用闭包来重新定义 <code>io.open</code>函数：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">do</span></span><br /><span class="line">	<span class="keyword">local</span> oldOpen = <span class="built_in">io</span>.<span class="built_in">open</span></span><br /><span class="line">	<span class="keyword">local</span> access_OK = <span class="function"><span class="keyword">function</span> <span class="params">(filename, mode)</span></span></span><br /><span class="line">							check_access</span><br /><span class="line">						  <span class="keyword">end</span></span><br /><span class="line">	<span class="built_in">io</span>.<span class="built_in">open</span> = <span class="function"><span class="keyword">function</span> <span class="params">(filename, mode)</span></span></span><br /><span class="line">					<span class="keyword">if</span> access_OK(filename, mode)</span><br /><span class="line">						<span class="keyword">return</span> oldOpen（filename, mode)</span><br /><span class="line">					<span class="keyword">else</span></span><br /><span class="line">						<span class="keyword">return</span> <span class="literal">nil</span>, <span class="string">&#34;access dinied&#34;</span></span><br /><span class="line">					<span class="keyword">end</span></span><br /><span class="line">				<span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>我们让这个例子变得很好的地方是在这重新定义后，没有其他方式来调用不受限制的 <code>io.open</code>函数版本，其只能通过新函数来访问。其将不受限制的版本在闭包中以一个变量保存，外部将不能访问。通过这样的技术，我们可以在Lua自身建立沙盒，有常用的好处：简单 和弹性。Lua提供了 meta-mechanism，而不是 one-size-fits-all的方式，我们可以根据我们的需求来定义我们的环境。</p>
+<h1 id="函数编程的好处"><a href="#函数编程的好处" class="headerlink" title="函数编程的好处"></a>函数编程的好处</h1>
+<p>为了给予更多函数编程的例子，我们来开发一个几合形状的简单系统。目的是开发一个表示几何形状的系统，一个形状是一系列点的集合。我们需要能表示所有类型的形状，并以几种方式来结合和修改形状。</p>
+<p>为了实现这个系统，我们要寻找好的数据结构来表达形状；我们可以尝试面向对象的方式并定义一些形状的层级。或者我们可以在更高的抽象层面工作，并通过形状的特点函数来表示我们的设置。</p>
+<p>每个几何区域都是一系列点的集合，我们可以通过特征函数来代表一个区域；这就是说，我们可以通过一个函数来代表一个区域，这个函数得到一个点后，会返回这个点是否属于区域内。</p>
+<p>下面的函数代表了一个圆，中心(1.0, 3.0)，半径 4.5:</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">disk1</span> <span class="params">(x,y)</span></span></span><br /><span class="line">	<span class="keyword">return</span> (x - <span class="number">1.0</span>)^<span class="number">2</span> + (y - <span class="number">3.0</span>)^<span class="number">2</span> &lt;= <span class="number">4.5</span>^<span class="number">2</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>集合高层函数和词法定界，很容易定义滚个 圆盘工厂，其以给定的半径和中心来建立圆盘：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">disk</span> <span class="params">(cx, cy, r)</span></span></span><br /><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(x, y)</span></span></span><br /><span class="line">				<span class="keyword">return</span> (x - cx)^<span class="number">2</span> + (y - cy)^<span class="number">2</span> &lt;= r^<span class="number">2</span></span><br /><span class="line">			 <span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>调用 <code>disk(1.0, 3.0, 4.5)</code>和 disk1一样。</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/38_Lua%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-Gc%E7%AF%87-%E4%BA%8C-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%89%AF%E6%9C%AC/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/38_Lua%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-Gc%E7%AF%87-%E4%BA%8C-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%89%AF%E6%9C%AC/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/38_Lua%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-Gc%E7%AF%87-%E4%BA%8C-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%89%AF%E6%9C%AC/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/390_PIL.9Lua%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/390_PIL.9Lua%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/390_PIL.9Lua%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/38_Lua%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-Gc%E7%AF%87-%E4%BA%8C-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%89%AF%E6%9C%AC/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,1350 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page1371/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page1371/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/153_Lua%E8%A1%A8%E5%AD%98%E5%82%A8%E4%BC%98%E5%8C%96/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/153_Lua%E8%A1%A8%E5%AD%98%E5%82%A8%E4%BC%98%E5%8C%96/" rel="bookmark" title="Lua表存储优化" itemprop="url">Lua表存储优化</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <p>用Python脚本实现对 Lua表的压缩</p>
+
+<p><br /></p>
+<hr />
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2>
+<p>在研发过程中，通常会定义一些Excel表格，规定行列值让策划填写，然后，转成lua的table文件，直接使用。</p>
+<p>但是，随着研发进行，项目迭代，表格将越来越大。</p>
+<p>如果表格中存在大量重复数据，或者表格中很多列数值重复，则可以通过数据压缩给表减减肥。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2>
+<p>利用python实现lua表的数据压缩</p>
+<ul>
+<li>excel表内存在大量 <strong>同列不同行</strong> 内容一致</li>
+<li>excel表内存在大量 <strong>复合型</strong> 单元格内容一致</li>
+</ul>
+<p>具体代码，均在github中： <a href="https://github.com/lt-tree/CompressLuaTable" target="_blank" rel="noopener noreferrer">ltree98’s github  -&gt;  CompressLua</a></p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<h1 id="参照方案"><a href="#参照方案" class="headerlink" title="参照方案"></a>参照方案</h1>
+<p>这是我在网上看到的文章： </p>
+<p>​    <a href="https://blog.uwa4d.com/archives/1490.html" target="_blank" rel="noopener noreferrer">Lua配置表存储优化方案</a></p>
+<p>总结的来说，就是</p>
+<ul>
+<li>利用lua的元表机制。如果在table中取的值不存在，会去它的元表中查找（如果元表存在）。</li>
+<li>将重复的table，提取出来，将所有使用的地方引用过去。</li>
+</ul>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<h1 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h1>
+<p>在参照方案的文章中，也提供了解决方法，但是在使用过程中遇见一些问题。</p>
+<h2 id="对同一文件压缩后文件MD5可能不一致"><a href="#对同一文件压缩后文件MD5可能不一致" class="headerlink" title="对同一文件压缩后文件MD5可能不一致"></a>对同一文件压缩后文件MD5可能不一致</h2>
+<p>对同一个lua文件，进行减肥，在减肥后，虽然最终体重一样，但是可能这次瘦了肚子，下次瘦了腿。</p>
+<p>主要原因就是参照方案使用lua处理，对同一个table遍历顺序是不稳定的，即table中存在 A B C 元素，可能这次遍历顺序是 A-B-C，下次遍历顺序可能就是 B-A-C；稳定性得不到保证。</p>
+<p>lua的官网对于table的遍历描述一直是：</p>
+<blockquote>
+<p>The order in which the indices are enumerated is not specified, <em>even for numeric indices</em>. (To traverse a table in numeric order, use a numerical <strong>for</strong> or the <a href="http://www.lua.org/manual/5.1/manual.html#pdf-ipairs" target="_blank" rel="noopener noreferrer"><code>ipairs</code></a> function.)</p>
+</blockquote>
+<p>就是 索引在遍历过程中的次序是不固定的，即使是数字索引也不固定。</p>
+<p>因为，项目中使用热更机制是比较两个文件的MD5，决定是否更新该文件。</p>
+<p>所以，这个问题就显得很严重，每次热更要更新所有的表。当然，这个问题也可以通过做备份等方式来弥补，但是毕竟治标不治本。</p>
+<p><em>但是用不同的lua版本发现：</em></p>
+<p><em>使用 lua5.1 版本 生成的压缩文件是一致的</em></p>
+<p><em>使用 lua5.3版本 生成的压缩文件是不一致的</em></p>
+<p><br /></p>
+<p><br /></p>
+<h2 id="复杂度高"><a href="#复杂度高" class="headerlink" title="复杂度高"></a>复杂度高</h2>
+<p>虽然是现成的，但是也没法直接拿来用；</p>
+<p>还是要根据项目现状进行修改。</p>
+<p>在整合过程中，发现逻辑比较复杂，而且工具集与我们现有的python不符。（如果用其他工具集，又要去配置相应环境等，比较麻烦）。</p>
+<p><br /></p>
+<p><br /></p>
+<p><br /></p>
+<h1 id="修改方案"><a href="#修改方案" class="headerlink" title="修改方案"></a>修改方案</h1>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3>
+<ul>
+<li>解决 Excel表 内存在大量 同列不同行 内容一致</li>
+<li>解决 Excel表内存在大量 复合型单元格 内容一致</li>
+</ul>
+<h3 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h3>
+<ul>
+<li>对于重复table，只存一份，其他引用过去</li>
+<li>设计一个基础元表，存储Excel每列 最频繁的值；其他表缺省 最频繁的值</li>
+<li>设置 只读属性</li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3>
+<ul>
+<li>Lua作用域内存放最大的local变量个数为 200个，超过的需要放入临时数组</li>
+<li>输出到lua文件，key值不可存在特殊字符($、- 等)</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3>
+<ul>
+<li>Lua表的可读性变差，需要跳转获取最终值</li>
+<li>使用元表实现，若后续处理（比如 加密，修改操作 等）也存在使用元表，增加处理的复杂度</li>
+</ul>
+<p><br /></p>
+<p><br /></p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3>
+<ul>
+<li><p>Excel表：Excel转换成Lua的表，一般结构为</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">local</span> tableName = {</span><br /><span class="line">    ...</span><br /><span class="line">}</span><br /><span class="line"><span class="keyword">return</span> tableName</span><br /></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>默认表：未来的元表，存储Excel中每列最频繁的元素</p>
+</li>
+<li><p>重复表：Excel表中各单元格重复的 复合型元素（array/table） </p>
+</li>
+</ul>
+<p><br /></p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3>
+<ol>
+<li><p>遍历表，进行统计</p>
+<ul>
+<li><p>统计Excel表中各列元素出现次数</p>
+</li>
+<li><p>统计Excel表中 单元格复合型元素 出现次数</p>
+</li>
+</ul>
+</li>
+<li><p>构造 重复表</p>
+<ul>
+<li>筛选 单元格复合型元素 次数大于1的元素，构建重复表</li>
+</ul>
+</li>
+<li><p>构造 默认表</p>
+<ul>
+<li>根据各列最频繁元素，构造默认表</li>
+</ul>
+</li>
+<li><p>整理 Excel表</p>
+<ul>
+<li>根据默认表，将重复的字段忽略 </li>
+</ul>
+</li>
+<li><p>输出 各表</p>
+<ul>
+<li>根据 重复表，替换并输出 重复表</li>
+<li>根据 重复表，替换并输出 Excel表</li>
+<li>根据 重复表，替换并输出 默认表</li>
+</ul>
+</li>
+<li><p>设置 元表 及 只读属性</p>
+</li>
+</ol>
+<p><br /></p>
+<h3 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h3>
+<p><strong>最新代码请移步 <a href="https://github.com/lt-tree/CompressLuaTable" target="_blank" rel="noopener noreferrer">lt-tree的github</a></strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span><br /><span class="line">69</span><br /><span class="line">70</span><br /><span class="line">71</span><br /><span class="line">72</span><br /><span class="line">73</span><br /><span class="line">74</span><br /><span class="line">75</span><br /><span class="line">76</span><br /><span class="line">77</span><br /><span class="line">78</span><br /><span class="line">79</span><br /><span class="line">80</span><br /><span class="line">81</span><br /><span class="line">82</span><br /><span class="line">83</span><br /><span class="line">84</span><br /><span class="line">85</span><br /><span class="line">86</span><br /><span class="line">87</span><br /><span class="line">88</span><br /><span class="line">89</span><br /><span class="line">90</span><br /><span class="line">91</span><br /><span class="line">92</span><br /><span class="line">93</span><br /><span class="line">94</span><br /><span class="line">95</span><br /><span class="line">96</span><br /><span class="line">97</span><br /><span class="line">98</span><br /><span class="line">99</span><br /><span class="line">100</span><br /><span class="line">101</span><br /><span class="line">102</span><br /><span class="line">103</span><br /><span class="line">104</span><br /><span class="line">105</span><br /><span class="line">106</span><br /><span class="line">107</span><br /><span class="line">108</span><br /><span class="line">109</span><br /><span class="line">110</span><br /><span class="line">111</span><br /><span class="line">112</span><br /><span class="line">113</span><br /><span class="line">114</span><br /><span class="line">115</span><br /><span class="line">116</span><br /><span class="line">117</span><br /><span class="line">118</span><br /><span class="line">119</span><br /><span class="line">120</span><br /><span class="line">121</span><br /><span class="line">122</span><br /><span class="line">123</span><br /><span class="line">124</span><br /><span class="line">125</span><br /><span class="line">126</span><br /><span class="line">127</span><br /><span class="line">128</span><br /><span class="line">129</span><br /><span class="line">130</span><br /><span class="line">131</span><br /><span class="line">132</span><br /><span class="line">133</span><br /><span class="line">134</span><br /><span class="line">135</span><br /><span class="line">136</span><br /><span class="line">137</span><br /><span class="line">138</span><br /><span class="line">139</span><br /><span class="line">140</span><br /><span class="line">141</span><br /><span class="line">142</span><br /><span class="line">143</span><br /><span class="line">144</span><br /><span class="line">145</span><br /><span class="line">146</span><br /><span class="line">147</span><br /><span class="line">148</span><br /><span class="line">149</span><br /><span class="line">150</span><br /><span class="line">151</span><br /><span class="line">152</span><br /><span class="line">153</span><br /><span class="line">154</span><br /><span class="line">155</span><br /><span class="line">156</span><br /><span class="line">157</span><br /><span class="line">158</span><br /><span class="line">159</span><br /><span class="line">160</span><br /><span class="line">161</span><br /><span class="line">162</span><br /><span class="line">163</span><br /><span class="line">164</span><br /><span class="line">165</span><br /><span class="line">166</span><br /><span class="line">167</span><br /><span class="line">168</span><br /><span class="line">169</span><br /><span class="line">170</span><br /><span class="line">171</span><br /><span class="line">172</span><br /><span class="line">173</span><br /><span class="line">174</span><br /><span class="line">175</span><br /><span class="line">176</span><br /><span class="line">177</span><br /><span class="line">178</span><br /><span class="line">179</span><br /><span class="line">180</span><br /><span class="line">181</span><br /><span class="line">182</span><br /><span class="line">183</span><br /><span class="line">184</span><br /><span class="line">185</span><br /><span class="line">186</span><br /><span class="line">187</span><br /><span class="line">188</span><br /><span class="line">189</span><br /><span class="line">190</span><br /><span class="line">191</span><br /><span class="line">192</span><br /><span class="line">193</span><br /><span class="line">194</span><br /><span class="line">195</span><br /><span class="line">196</span><br /><span class="line">197</span><br /><span class="line">198</span><br /><span class="line">199</span><br /><span class="line">200</span><br /><span class="line">201</span><br /><span class="line">202</span><br /><span class="line">203</span><br /><span class="line">204</span><br /><span class="line">205</span><br /><span class="line">206</span><br /><span class="line">207</span><br /><span class="line">208</span><br /><span class="line">209</span><br /><span class="line">210</span><br /><span class="line">211</span><br /><span class="line">212</span><br /><span class="line">213</span><br /><span class="line">214</span><br /><span class="line">215</span><br /><span class="line">216</span><br /><span class="line">217</span><br /><span class="line">218</span><br /><span class="line">219</span><br /><span class="line">220</span><br /><span class="line">221</span><br /><span class="line">222</span><br /><span class="line">223</span><br /><span class="line">224</span><br /><span class="line">225</span><br /><span class="line">226</span><br /><span class="line">227</span><br /><span class="line">228</span><br /><span class="line">229</span><br /><span class="line">230</span><br /><span class="line">231</span><br /><span class="line">232</span><br /><span class="line">233</span><br /><span class="line">234</span><br /><span class="line">235</span><br /><span class="line">236</span><br /><span class="line">237</span><br /><span class="line">238</span><br /><span class="line">239</span><br /><span class="line">240</span><br /><span class="line">241</span><br /><span class="line">242</span><br /><span class="line">243</span><br /><span class="line">244</span><br /><span class="line">245</span><br /><span class="line">246</span><br /><span class="line">247</span><br /><span class="line">248</span><br /><span class="line">249</span><br /><span class="line">250</span><br /><span class="line">251</span><br /><span class="line">252</span><br /><span class="line">253</span><br /><span class="line">254</span><br /><span class="line">255</span><br /><span class="line">256</span><br /><span class="line">257</span><br /><span class="line">258</span><br /><span class="line">259</span><br /><span class="line">260</span><br /><span class="line">261</span><br /><span class="line">262</span><br /><span class="line">263</span><br /><span class="line">264</span><br /><span class="line">265</span><br /><span class="line">266</span><br /><span class="line">267</span><br /><span class="line">268</span><br /><span class="line">269</span><br /><span class="line">270</span><br /><span class="line">271</span><br /><span class="line">272</span><br /><span class="line">273</span><br /><span class="line">274</span><br /><span class="line">275</span><br /><span class="line">276</span><br /><span class="line">277</span><br /><span class="line">278</span><br /><span class="line">279</span><br /><span class="line">280</span><br /><span class="line">281</span><br /><span class="line">282</span><br /><span class="line">283</span><br /><span class="line">284</span><br /><span class="line">285</span><br /><span class="line">286</span><br /><span class="line">287</span><br /><span class="line">288</span><br /><span class="line">289</span><br /><span class="line">290</span><br /><span class="line">291</span><br /><span class="line">292</span><br /><span class="line">293</span><br /><span class="line">294</span><br /><span class="line">295</span><br /><span class="line">296</span><br /><span class="line">297</span><br /><span class="line">298</span><br /><span class="line">299</span><br /><span class="line">300</span><br /><span class="line">301</span><br /><span class="line">302</span><br /><span class="line">303</span><br /><span class="line">304</span><br /><span class="line">305</span><br /><span class="line">306</span><br /><span class="line">307</span><br /><span class="line">308</span><br /><span class="line">309</span><br /><span class="line">310</span><br /><span class="line">311</span><br /><span class="line">312</span><br /><span class="line">313</span><br /><span class="line">314</span><br /><span class="line">315</span><br /><span class="line">316</span><br /><span class="line">317</span><br /><span class="line">318</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">###################################################################</span></span><br /><span class="line"><span class="comment">##</span></span><br /><span class="line"><span class="comment">##  tools</span></span><br /><span class="line"><span class="comment">##</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="params">(dict_temp)</span>:</span></span><br /><span class="line">	<span class="string">&#34;&#34;&#34;Count dictionary&#39;s deep</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">		Args:</span></span><br /><span class="line"><span class="string">			dict_temp: dict</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">		Returns:</span></span><br /><span class="line"><span class="string">			int : deep</span></span><br /><span class="line"><span class="string">	&#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    deep = <span class="number">0</span></span><br /><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> dict_temp.values():</span><br /><span class="line">        <span class="keyword">if</span> isinstance(item, dict):</span><br /><span class="line">            temp_deep = count_dict_deep(item)</span><br /><span class="line">            <span class="keyword">if</span> temp_deep &gt; deep:</span><br /><span class="line">                deep = temp_deep</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">return</span> deep+<span class="number">1</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_weight</span><span class="params">(obj1)</span>:</span></span><br /><span class="line">	<span class="string">&#34;&#34;&#34;Calculate obj&#39;s weight</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">		Args:</span></span><br /><span class="line"><span class="string">			obj1: tuple[dict&#39;s string, dict&#39;s frequency]</span></span><br /><span class="line"><span class="string">		</span></span><br /><span class="line"><span class="string">		Returns:</span></span><br /><span class="line"><span class="string">			int : weight</span></span><br /><span class="line"><span class="string">	&#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    dict1 = eval(obj1[<span class="number">0</span>])</span><br /><span class="line">    times1 = obj1[<span class="number">1</span>]</span><br /><span class="line"></span><br /><span class="line">    deep1 = count_dict_deep(dict1)</span><br /><span class="line">    ans = deep1 + <span class="number">1</span>/times1</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">return</span> ans</span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_table_frequency</span><span class="params">(unit_dict, dict_frequency)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Count table frequency</span></span><br /><span class="line"><span class="string">        </span></span><br /><span class="line"><span class="string">        Count table frequency and record as {table string: times}</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            unit_dict: dict, need analyse data</span></span><br /><span class="line"><span class="string">            dict_frequency: dict, the record&#39;s set</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    unit_str = str(unit_dict)</span><br /><span class="line">    <span class="keyword">if</span> unit_str <span class="keyword">in</span> dict_frequency:</span><br /><span class="line">        dict_frequency[unit_str] = dict_frequency[unit_str] + <span class="number">1</span></span><br /><span class="line">    <span class="keyword">else</span>:</span><br /><span class="line">        dict_frequency[unit_str] = <span class="number">1</span></span><br /><span class="line"></span><br /><span class="line">    <span class="comment"># traversing sub dict</span></span><br /><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> unit_dict.values():</span><br /><span class="line">        <span class="keyword">if</span> isinstance(item, dict):</span><br /><span class="line">            count_table_frequency(item, dict_frequency)</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_table_value_frequency</span><span class="params">(key, value, item_frequency)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Count table value frequency</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Count every excel column element appear times.</span></span><br /><span class="line"><span class="string">        Record as {</span></span><br /><span class="line"><span class="string">                    key1 : {element1 : times, element2: times, ...}</span></span><br /><span class="line"><span class="string">                    key2 : {element1 : times, element2: times, ...}</span></span><br /><span class="line"><span class="string">                    ...</span></span><br /><span class="line"><span class="string">                    }</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            key: string</span></span><br /><span class="line"><span class="string">            value: string or dict</span></span><br /><span class="line"><span class="string">            item_frequency: dict, the record&#39;s set</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">if</span> isinstance(value, dict):</span><br /><span class="line">        value = str(value)</span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> item_frequency.keys():</span><br /><span class="line">        <span class="keyword">if</span> value <span class="keyword">in</span> item_frequency[key].keys():</span><br /><span class="line">            item_frequency[key][value] = item_frequency[key][value] + <span class="number">1</span></span><br /><span class="line">        <span class="keyword">else</span>:</span><br /><span class="line">            item_frequency[key][value] = <span class="number">1</span></span><br /><span class="line">    <span class="keyword">else</span>:</span><br /><span class="line">        item_frequency[key] = {}</span><br /><span class="line">        item_frequency[key][value] = <span class="number">1</span></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">traverse_table</span><span class="params">(excel_dict, dict_frequency, item_frequency)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Traverse table.</span></span><br /><span class="line"><span class="string">        </span></span><br /><span class="line"><span class="string">        Analyse lua table.</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            excel_dict: dict</span></span><br /><span class="line"><span class="string">            dict_frequency: dict</span></span><br /><span class="line"><span class="string">            item_frequency: dict</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> sorted(excel_dict):</span><br /><span class="line">        <span class="keyword">if</span> isinstance(excel_dict[key], dict):</span><br /><span class="line">            count_table_frequency(excel_dict[key], dict_frequency)</span><br /><span class="line"></span><br /><span class="line">            <span class="keyword">for</span> k, v <span class="keyword">in</span> excel_dict[key].items():</span><br /><span class="line">                count_table_value_frequency(k, v, item_frequency)</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_repeat_dict</span><span class="params">(item_dict, repeat_dict)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Check repeat dict</span></span><br /><span class="line"><span class="string">        </span></span><br /><span class="line"><span class="string">        Check repeat dict and return the repeat index, if not exist in repeat dict return -1.</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            item_dict: dict</span></span><br /><span class="line"><span class="string">            repeat_dict: dict</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Returns:</span></span><br /><span class="line"><span class="string">            int</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    dict_str = str(item_dict)</span><br /><span class="line">    <span class="keyword">if</span> dict_str <span class="keyword">in</span> repeat_dict.keys():</span><br /><span class="line">        <span class="keyword">return</span> repeat_dict[dict_str]</span><br /><span class="line">    <span class="keyword">else</span>:</span><br /><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">replace_repeat_dict</span><span class="params">(item_dict, repeat_dict, cur_index = <span class="number">-1</span>)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Replace repeat dict</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Check if element exist in repeat dict and replace by designation string.</span></span><br /><span class="line"><span class="string">    </span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            item_dict: dict</span></span><br /><span class="line"><span class="string">            repeat_dict: dict</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    cur_index = <span class="number">-1</span></span><br /><span class="line"></span><br /><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> item_dict.items():</span><br /><span class="line">        <span class="keyword">if</span> isinstance(value, dict):</span><br /><span class="line">            index = check_repeat_dict(value, repeat_dict)</span><br /><span class="line">            <span class="keyword">if</span> index != <span class="number">-1</span> <span class="keyword">and</span> (index &lt; cur_index <span class="keyword">or</span> cur_index == <span class="number">-1</span>):</span><br /><span class="line">                <span class="keyword">if</span> index &gt; <span class="number">190</span>:</span><br /><span class="line">                    item_dict[key] = REPEAT_KEY_PREFIX + <span class="string">&#39;[&#39;</span> + str(index - LOCAL_TABLE_MAX) + <span class="string">&#39;]&#39;</span></span><br /><span class="line">                <span class="keyword">else</span>:</span><br /><span class="line">                    item_dict[key] = REPEAT_KEY_PREFIX + str(index)</span><br /><span class="line">            <span class="keyword">else</span>:</span><br /><span class="line">                replace_repeat_dict(value, repeat_dict, cur_index)</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">output_file</span><span class="params">(table_name, file_path, repeat_dict, final_dict, default_dict)</span>:</span></span><br /><span class="line">    <span class="string">&#34;&#34;&#34;Output file</span></span><br /><span class="line"><span class="string"></span></span><br /><span class="line"><span class="string">        Args:</span></span><br /><span class="line"><span class="string">            table_name: string</span></span><br /><span class="line"><span class="string">            file_path: path</span></span><br /><span class="line"><span class="string">            repeat_dict: dict</span></span><br /><span class="line"><span class="string">            final_dict: dict</span></span><br /><span class="line"><span class="string">            default_dict: dict</span></span><br /><span class="line"><span class="string">    &#34;&#34;&#34;</span></span><br /><span class="line"></span><br /><span class="line">    file_handler = codecs.open(file_path, <span class="string">&#39;a&#39;</span>, encoding=<span class="string">&#39;utf-8&#39;</span>)</span><br /><span class="line"></span><br /><span class="line">    <span class="comment"># output repeat dict</span></span><br /><span class="line">    <span class="keyword">for</span> dictStr, index <span class="keyword">in</span> sorted(repeat_dict.items(), key=<span class="keyword">lambda</span> item:item[<span class="number">1</span>]):</span><br /><span class="line"></span><br /><span class="line">        <span class="comment"># replace repeat item by repeat_dict </span></span><br /><span class="line">        repeat_dict_item = eval(dictStr)</span><br /><span class="line">        replace_repeat_dict(repeat_dict_item, repeat_dict, index)</span><br /><span class="line"></span><br /><span class="line">        <span class="keyword">if</span> index &lt;= LOCAL_TABLE_MAX:</span><br /><span class="line">            <span class="comment"># file_handler.write(&#34;local %s = {n&#34; % (REPEAT_KEY_PREFIX + str(index)))</span></span><br /><span class="line">            file_handler.write(<span class="string">&#34;local %s = {n&#34;</span> % (REPEAT_KEY_PREFIX + str(index)))</span><br /><span class="line">            convert.convert_dict_lua_file(file_handler, repeat_dict_item, <span class="number">1</span>)</span><br /><span class="line">            file_handler.write(<span class="string">&#34;}n&#34;</span>)</span><br /><span class="line">        <span class="keyword">else</span>:</span><br /><span class="line">            <span class="keyword">if</span> index == (LOCAL_TABLE_MAX + <span class="number">1</span>):</span><br /><span class="line">                file_handler.write(<span class="string">&#34;nlocal __rt = createtable and createtable(%d, 0) or {}n&#34;</span> % (len(repeat_dict)-LOCAL_TABLE_MAX))</span><br /><span class="line">            </span><br /><span class="line">            file_handler.write(<span class="string">&#34;__rt[%d] = {n&#34;</span> % (index - LOCAL_TABLE_MAX))</span><br /><span class="line">            convert.convert_dict_lua_file(file_handler, repeat_dict_item, <span class="number">1</span>)</span><br /><span class="line">            file_handler.write(<span class="string">&#34;}n&#34;</span>)       </span><br /><span class="line"></span><br /><span class="line">    <span class="comment"># output final dict</span></span><br /><span class="line">    replace_repeat_dict(final_dict, repeat_dict)</span><br /><span class="line">    file_handler.write(<span class="string">&#34;nlocal %s = {n&#34;</span> % (table_name))</span><br /><span class="line">    convert.convert_dict_lua_file(file_handler, final_dict, <span class="number">1</span>)</span><br /><span class="line">    file_handler.write(<span class="string">&#34;}n&#34;</span>)</span><br /><span class="line"></span><br /><span class="line">    <span class="comment"># output default dict</span></span><br />&lt;span clas
+</pre></td></tr></tbody></table></figure>
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page1370/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1369/">1369</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1370/">1370</a></li>
+      
+    
+      
+        <li><strong class="current-page">1371</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1372/">1372</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1373/">1373</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page1372/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

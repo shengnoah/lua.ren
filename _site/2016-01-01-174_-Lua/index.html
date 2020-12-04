@@ -1,0 +1,207 @@
+<p>读书笔记： Programming in Lua, 4th Edition.</p>
+
+<h3 id="替换字符串">替换字符串</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&#34;one string&#34;</span>
+<span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&#34;one&#34;</span><span class="p">,</span> <span class="s2">&#34;another&#34;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">one</span> <span class="n">string</span>      <span class="n">another</span> <span class="n">string</span>
+<span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="计算字符串长度">计算字符串长度</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&#34;hello&#34;</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="s2">&#34;good bye&#34;</span><span class="p">)</span>
+<span class="mi">8</span>
+</code></pre></div></div>
+
+<h3 id="连接字符串">连接字符串</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="s2">&#34;Hello &#34;</span> <span class="o">..</span> <span class="s2">&#34;World&#34;</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="o">&gt;</span> <span class="s2">&#34;result is &#34;</span> <span class="o">..</span> <span class="mi">3</span>
+<span class="n">result</span> <span class="n">is</span> <span class="mi">3</span>
+</code></pre></div></div>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&#34;Hello&#34;</span>
+<span class="o">&gt;</span> <span class="n">a</span> <span class="o">..</span> <span class="s2">&#34; World&#34;</span>
+<span class="n">Hello</span> <span class="n">World</span>
+</code></pre></div></div>
+
+<h3 id="字符串表示">字符串表示</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="s2">&#34;a line&#34;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="s1">&#39;another line&#39;</span>
+</code></pre></div></div>
+
+<p>They are equivalent; the only difference is that inside each kind of quote we can use the other quote without
+escapes.</p>
+
+<h3 id="多行字符串">多行字符串</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="s">[[
+&gt;&gt; &lt;html&gt;
+&gt;&gt; &lt;head&gt;
+&gt;&gt; &lt;title&gt;An HTML Page&lt;/title&gt;
+&gt;&gt; &lt;/head&gt;
+&gt;&gt; &lt;body&gt;
+&gt;&gt; &lt;a href=&#34;http://www.lua.org&#34;&gt;Lua&lt;/a&gt;
+&gt;&gt; &lt;/body&gt;
+&gt;&gt; &lt;/html&gt;
+&gt;&gt; ]]</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="n">An</span> <span class="n">HTML</span> <span class="n">Page</span><span class="o">&lt;/</span><span class="n">title</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&#34;http://www.lua.org&#34;</span><span class="o">&gt;</span><span class="n">Lua</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="数字和字符串的转换">数字和字符串的转换</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">..</span> <span class="mi">20</span><span class="p">)</span>
+<span class="mi">1020</span>
+</code></pre></div></div>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="s2">&#34;10&#34;</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="mi">11</span><span class="p">.</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;  -3  &#34;</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">3</span>
+<span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34; 10e4 &#34;</span><span class="p">)</span>
+<span class="mi">100000</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;10e&#34;</span><span class="p">)</span>
+<span class="kc">nil</span>
+</code></pre></div></div>
+
+<p>By default, tonumber assumes decimal notation, but we can specify any base between 2 and 36 for the
+conversion</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;100101&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mi">37</span>
+<span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;fff&#34;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="mi">4095</span>
+<span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;-ZZ&#34;</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+<span class="o">-</span><span class="mi">1295</span>
+<span class="o">&gt;</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s2">&#34;987&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="kc">nil</span>
+</code></pre></div></div>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&#34;10&#34;</span><span class="p">)</span>
+<span class="kc">true</span>
+</code></pre></div></div>
+
+<h2 id="string-库">string 库</h2>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">string.len</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;</span> <span class="nb">string.rep</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">abcabcabc</span>
+<span class="o">&gt;</span> <span class="nb">string.reverse</span><span class="p">(</span><span class="s2">&#34;A Long Line!&#34;</span><span class="p">)</span>
+<span class="err">!</span><span class="n">eniL</span> <span class="n">gnoL</span> <span class="n">A</span>
+<span class="o">&gt;</span> <span class="nb">string.lower</span><span class="p">(</span><span class="s2">&#34;A Long Line!&#34;</span><span class="p">)</span>
+<span class="n">a</span> <span class="n">long</span> <span class="n">line</span><span class="err">!</span>
+<span class="o">&gt;</span> <span class="nb">string.upper</span><span class="p">(</span><span class="s2">&#34;A Long Line!&#34;</span><span class="p">)</span>
+<span class="n">A</span> <span class="n">LONG</span> <span class="n">LINE</span><span class="err">!</span>
+</code></pre></div></div>
+
+<h3 id="字符串比较">字符串比较</h3>
+
+<p>As a typical use, if we want to compare two strings regardless of case, we can write something like this:</p>
+
+<p><strong>string.lower(a) &lt; string.lower(b)</strong></p>
+
+<h3 id="截取字符串">截取字符串</h3>
+
+<p>The call string.sub(s, i, j) extracts a piece of the string s, from the i-th to the j-th character
+inclusive. (The first character of a string has index 1.) We can also use negative indices, which count from
+the end of the string: index -1 refers to the last character, -2 to the previous one, and so on. Therefore, the
+call string.sub(s, 1, j) gets a prefix of the string s with length j; string.sub(s, j, -1)
+gets a suffix of the string, starting at the j-th character; and string.sub(s, 2, -2) returns a copy
+of the string s with the first and last characters removed:</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&#34;[in brackets]&#34;</span>
+<span class="o">&gt;</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">in</span> <span class="n">brackets</span>
+<span class="o">&gt;</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">[</span><span class="k">in</span>
+<span class="o">&gt;</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="o">&gt;</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="p">[</span><span class="k">in</span> <span class="n">brackets</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="nb">string.sub</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="k">in</span> <span class="n">brackets</span>
+</code></pre></div></div>
+
+<h3 id="ascii转换">ASCII转换</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.char</span><span class="p">(</span><span class="mi">97</span><span class="p">))</span>
+<span class="n">a</span>
+<span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.char</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">cde</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.byte</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">))</span>
+<span class="mi">97</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.byte</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="mi">98</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.byte</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="mi">99</span>
+</code></pre></div></div>
+
+<p>A call like string.byte(s, i, j) returns multiple values with the numeric representation of all
+characters between indices i and j (inclusive):</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.byte</span><span class="p">(</span><span class="s2">&#34;abc&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="mi">97</span>      <span class="mi">98</span>
+</code></pre></div></div>
+
+<p>A nice idiom is {string.byte(s, 1, -1)}, which creates a list with the codes of all characters in s.</p>
+
+<h3 id="stringformat">string.format</h3>
+
+<p>和C语言的printf是一样的。</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;x = %d y = %d&#34;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">10</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="o">&gt;</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;x = %x&#34;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">c8</span>
+<span class="o">&gt;</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;x = 0x%X&#34;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mh">0xC8</span>
+<span class="o">&gt;</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;x = %f&#34;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">200</span><span class="p">.</span><span class="mi">000000</span>
+<span class="o">&gt;</span> <span class="n">tag</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&#34;h1&#34;</span><span class="p">,</span> <span class="s2">&#34;a title&#34;</span>
+<span class="o">&gt;</span> <span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;&lt;%s&gt;%s&lt;%s&gt;&#34;</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">a</span> <span class="n">title</span><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;pi = %.4f&#34;</span><span class="p">,</span> <span class="nb">math.pi</span><span class="p">))</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="mi">3</span><span class="p">.</span><span class="mi">1416</span>
+<span class="o">&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">1990</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&#34;%02d/%02d/%04d&#34;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="mi">05</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">1990</span>
+</code></pre></div></div>
+
+<h3 id="字符串查找">字符串查找</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">string.find</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">,</span> <span class="s2">&#34;wor&#34;</span><span class="p">)</span>
+<span class="mi">7</span>       <span class="mi">9</span>
+<span class="o">&gt;</span> <span class="nb">string.find</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">,</span> <span class="s2">&#34;war&#34;</span><span class="p">)</span>
+<span class="kc">nil</span>
+</code></pre></div></div>
+
+<h3 id="字符串替换">字符串替换</h3>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">,</span> <span class="s2">&#34;l&#34;</span><span class="p">,</span> <span class="s2">&#34;.&#34;</span><span class="p">)</span>
+<span class="n">he</span><span class="o">..</span><span class="n">o</span> <span class="n">wor</span><span class="p">.</span><span class="n">d</span>     <span class="mi">3</span>
+<span class="o">&gt;</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">,</span> <span class="s2">&#34;ll&#34;</span><span class="p">,</span> <span class="s2">&#34;..&#34;</span><span class="p">)</span>
+<span class="n">he</span><span class="o">..</span><span class="n">o</span> <span class="n">world</span>     <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="s2">&#34;hello world&#34;</span><span class="p">,</span> <span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;.&#34;</span><span class="p">)</span>
+<span class="n">hello</span> <span class="n">world</span>     <span class="mi">0</span>
+</code></pre></div></div>

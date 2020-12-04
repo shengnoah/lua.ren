@@ -1,0 +1,811 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>lua应用 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lua应用">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/1026_lua%E5%BA%94%E7%94%A8/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/1026_lua%E5%BA%94%E7%94%A8/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>lua应用</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~3 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">lua应用</h1>
+      <p>关于Lua脚本语言在太阳神三国杀中的应用<br /></p>
+<h2 id="关于神杀"><a href="#关于神杀" class="headerlink" title="关于神杀"></a>关于神杀</h2>
+<p>太阳神三国杀，是一款基于C++ QT GUI框架的三国杀非官方开源软件，开发者：Moligaloo（太阳神上），现在由Mogara团队继续维护源码。在实现游卡三国杀游戏规则的基础上，还拥有自己独特的功能和元素：原创技能卡牌配音；原创扩展包倚天、欢乐；原创扩展模式双将、剧情、闯关、国战等。拥有智能AI可以实现联机和单机的两种游戏方式，并能通过DIY接口进行自由的个性化修改和添加更多元素。  </p>
+<h2 id="关于Lua"><a href="#关于Lua" class="headerlink" title="关于Lua"></a>关于Lua</h2>
+<p>Lua是一个小巧的脚本语言。它是巴西里约热内卢天主教大学（Pontifical Catholic University of Rio de Janeiro）里的一个由Roberto Ierusalimschy、Waldemar Celes 和 Luiz Henrique de Figueiredo三人所组成的研究小组于1993年开发的。 其设计目的是为了通过灵活嵌入应用程序中从而为应用程序提供灵活的扩展和定制功能。Lua由标准C编写而成，几乎在所有操作系统和平台上都可以编译，运行。Lua并没有提供强大的库，这是由它的定位决定的。所以Lua不适合作为开发独立应用程序的语言。Lua 有一个同时进行的JIT项目，提供在特定平台上的即时编译功能。<br />Lua脚本可以很容易的被C/C++ 代码调用，也可以反过来调用C/C++的函数，这使得Lua在应用程序中可以被广泛应用。不仅仅作为扩展脚本，也可以作为普通的配置文件，代替XML,ini等文件格式，并且更容易理解和维护。Lua由标准C编写而成，代码简洁优美，几乎在所有操作系统和平台上都可以编译，运行。一个完整的Lua解释器不过200k，在目前所有脚本引擎中，Lua的速度是最快的。这一切都决定了Lua是作为嵌入式脚本的最佳选择。<br />而神杀就可以通过lua来进行扩展包的添加</p>
+<h1 id="上手操作"><a href="#上手操作" class="headerlink" title="上手操作"></a>上手操作</h1>
+<h2 id="创建自己的扩展包"><a href="#创建自己的扩展包" class="headerlink" title="创建自己的扩展包"></a>创建自己的扩展包</h2>
+<h3 id="创建扩展包"><a href="#创建扩展包" class="headerlink" title="创建扩展包"></a>创建扩展包</h3>
+<p>在三国杀中，有许许多多的包，标准，风林火山，一将成名……那么我们能不能自己创建一个包呢？答案是可以的，我们新建一个lua文件。命名为自己想要的名称就可以了。例如，这次我们以<s>迫害</s>王强为例，建立一个王强包吧。为了方便，我们把包名定为wangqiang.lua，将文件建立在extensions文件夹中，并在里面添上以下代码：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">module(<span class="string">&#34;extensions.wangqiang&#34;</span>, <span class="built_in">package</span>.<span class="built_in">seeall</span>)</span><br /><span class="line">extension = sgs.Package(<span class="string">&#34;wangqiang&#34;</span>)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>这两句的通用格式为：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">module(<span class="string">&#34;extensions.扩展包名称&#34;</span>,<span class="built_in">package</span>.<span class="built_in">seeall</span>)</span><br /><span class="line">extension = sgs.Package(<span class="string">&#34;扩展包名称&#34;</span>)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>但是，游戏可不知道wangqiang代表什么文字，它只会一五一十的把wangqiang写上去，这可怎么办？这时候便需要一个翻译表，使用sgs.LoadTranslationTable来进行创建。格式如下：<br />[“原文”] = “译文”<br />两句之间用英文逗号分隔开来，例如：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">sgs.LoadTranslationTable {</span><br /><span class="line">    [<span class="string">&#39;wangqiang&#39;</span>] = <span class="string">&#39;王强包&#39;</span>,</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>保存之后我们进入游戏康康。<br /><img src="https://DZDcyj.github.io//2019/06/04/Lua应用/王强包效果.png" alt="王强包效果" /><br />哈哈快看，王强包在右下角看的清清楚楚。这样一来，王强包的添加就到此完成了。</p>
+<h3 id="创建自己的新武将"><a href="#创建自己的新武将" class="headerlink" title="创建自己的新武将"></a>创建自己的新武将</h3>
+<p>包有了，但里面是空的啊。这个时候，我们就要向里面装东西了。既然这次我们是以王强为例进行<s>迫害</s>。那么新武将就决定是王强了，和变量命名规则一样，我们以wangqiang作为其名称进行创建：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">wangqiang = sgs.General(extension,<span class="string">&#34;wangqiang&#34;</span>,<span class="string">&#34;ri&#34;</span>,<span class="string">&#34;4&#34;</span>) </span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>创建武将的函数原型如下：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /></pre></td><td class="code"><pre><span class="line">sgs.General(</span><br /><span class="line">	<span class="built_in">package</span>,</span><br /><span class="line">	name,</span><br /><span class="line">	kingdom,</span><br /><span class="line">	max_hp=<span class="number">4</span>,</span><br /><span class="line">	male=<span class="literal">true</span>,</span><br /><span class="line">	hidden=<span class="literal">false</span>,</span><br /><span class="line">	never_shown=<span class="literal">false</span>,</span><br /><span class="line">)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>翻译过来即是：<br />sgs.General(扩展包,姓名,国籍,体力上限,性别,是否隐藏,是否完全隐藏)<br />相关参数：</p>
+<ol>
+<li>package（扩展包）：统一写extension就行了。</li>
+<li>name（姓名）：没忘刚才好不容易起的名字吧？wangqiang，就它了！另外，如果是主公武将，需要在名字后面加上$符号，来显示这个武将”超凡脱俗”的气质。比如曹操就是caocao$什么的。</li>
+<li>kingdom（所属势力）：列在下面了——<br /> ☆魏势力：wei<br /> ☆蜀势力：shu<br /> ☆吴势力：wu<br /> ☆群雄势力：qun<br /> ☆神武将：god<br />当然，出于特殊的<s>迫害</s>目的，王强的国籍是自定义的，这个不在这里讨论。  </li>
+<li>max_hp（体力上限）：就是勾玉的数目，不写的话默认是4。</li>
+<li>male（性别）：填true就是男性，填false就是女性，……什么都不写也是男性！(函数默认参数的知识点！)</li>
+<li>hidden（是否隐藏）：填true就是隐藏了，填false就是不隐藏，默认当然是不隐藏了～</li>
+<li>never_shown（是否完全隐藏）：依然是填true隐藏、填false或者默认是不隐藏。上面那个隐藏只是在游戏中不会被系统列在选将名单里，开自由选将的话还是能选到的（比如测试包里的五星诸葛亮）；这个完全隐藏可是连自由选将都没希望找到的，当然现在我们的游戏中还没有这样的武将就是了……  </li>
+</ol>
+<p>建立完成之后，不要忘记向翻译表里添加东西啊：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /></pre></td><td class="code"><pre><span class="line">sgs.LoadTranslationTable {</span><br /><span class="line">    [<span class="string">&#39;wangqiang&#39;</span>] = <span class="string">&#39;王强包&#39;</span>,</span><br /><span class="line">    [<span class="string">&#39;Wangqiang&#39;</span>] = <span class="string">&#39;王强&#39;</span>,</span><br /><span class="line">    [<span class="string">&#39;&amp;Wangqiang&#39;</span>] = <span class="string">&#39;王强&#39;</span>,</span><br /><span class="line">    [<span class="string">&#39;designer:Wangqiang&#39;</span>] = <span class="string">&#39;王建军&#39;</span>,</span><br /><span class="line">    [<span class="string">&#39;illustrator:Wangqiang&#39;</span>] = <span class="string">&#39;王强&#39;</span>,</span><br /><span class="line">    [<span class="string">&#39;#Wangqiang&#39;</span>] = <span class="string">&#39;猪精&#39;</span>,</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>其中：<br />[“武将名称”] 就是对武将本身名字的翻译；<br />[“&amp;武将名称”]是游戏中显示的武将名字，比如☆SP貂蝉在游戏中显示为“貂蝉”而没有那些前缀，就是这里规定的；<br />[“#武将名称”] 则是对武将称号的翻译，像☆SP貂蝉的称号“暗黑的傀儡师”之类的都是在这里添加的。<br />另外，武将设计者的名字由 [“designer:武将名称”] 提供，不写的话默认为“官方”。还不快快签上自己的大名？<br />武将台词配音者的名字由 [“cv:武将名称”] 提供，默认为”官方”；武将插画绘制者的名字由 [“illustrator:武将名称”] 提供，默认为”KayaK”。可以在武将一览的右上角看到这三部分的信息。<br />添加完毕，我们进入游戏康康吧：<br /><img src="https://DZDcyj.github.io//2019/06/04/Lua应用/王强包王强.png" alt="王强包效果" /><br />好，王强就这样被安排的明明白白。</p>
+<h3 id="武将美化"><a href="#武将美化" class="headerlink" title="武将美化"></a>武将美化</h3>
+<p>额，关于武将牌面的制作，这里就不多讲了。</p>
+<h3 id="添加技能"><a href="#添加技能" class="headerlink" title="添加技能"></a>添加技能</h3>
+<p>王强总归现在是个白板，玩起来No行，怎么办呢，我们可以添加技能进去。这样一来有2个方案：1. 添加游戏中已有技能 2. 自己动手写技能。我们首先介绍一下如何为武将添加技能，添加技能有一个函数，它有两个原型：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">addSkill(skill)</span><br /><span class="line">addSkill(skill_name)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>其中skill是一个技能对象，而skill_name是一个字符串，引用一个已存在的技能，例如，为我们的王强添加一个技能“耀武”的代码如下：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">wangqiang:addSkill(<span class="string">&#34;yaowu&#34;</span>)</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p><em>耀武: 锁定技，当一名角色使用【杀】对你伤害时，若之为：红色，来源选择是否回复1点体力，若其选择否，其摸一张牌；不为红色，你摸一张牌。 </em><br />因为是引用的别人的技能(华雄)，所以使用带引号的技能名称，但是终究不过瘾，我们能不能自己写技能呢，答案当然是可以的。</p>
+<h3 id="创建自己的技能"><a href="#创建自己的技能" class="headerlink" title="创建自己的技能"></a>创建自己的技能</h3>
+<h4 id="技能类型"><a href="#技能类型" class="headerlink" title="技能类型"></a>技能类型</h4>
+<p>神杀中的技能类型大约有以下几类：</p>
+<ul>
+<li>视为技(ViewAsSkill)</li>
+<li>触发技(TriggerSkill)</li>
+<li>禁止技(ProhibitSkill)</li>
+<li>距离修改技(DistanceSkill)</li>
+<li>手牌上限技(MaxCardsSkill)</li>
+<li>锁定视为技(FilterSkill)</li>
+<li>目标模式技(TargetModSkill)</li>
+</ul>
+<h5 id="视为技"><a href="#视为技" class="headerlink" title="视为技"></a>视为技</h5>
+<p>简单来讲，视为技能就是将X张手牌视作X技能的技能卡使用，实现相关的效果。以界孙权的技能制衡为例：<br /><em>制衡: 出牌阶段限一次，你可以弃置至少一张牌，然后若你以此法弃置了所有手牌，你摸X+1张牌，否则你摸X张牌。（X为你以此法弃置的牌数） </em><br />翻译过来就是：出牌阶段限一次，你可以弃置X张牌，视作你使用了1张“制衡技能卡”。而技能卡则是这样的：<br /><em>制衡技能卡：你摸Y张牌(若你以此法弃置了所有手牌，则Y=X+1，否则Y=X)</em><br />如此一来，许多技能即是由这种技能卡所堆积而成的了。</p>
+<h5 id="触发技"><a href="#触发技" class="headerlink" title="触发技"></a>触发技</h5>
+<p>触发技其实在三国杀里比较常见，通常是以阶段触发技为主，例如貂蝉的“闭月”：<br /><em>闭月: 结束阶段开始时，你可以摸X张牌。（若你没有手牌，X为2，否则X为1）</em><br />这就是一个典型的触发技，当进入到你的结束阶段时，触发技能效果。你摸X张牌，而X的值由你的手牌数而定。</p>
+<h5 id="禁止技"><a href="#禁止技" class="headerlink" title="禁止技"></a>禁止技</h5>
+<p>禁止技的效果是不能成为某种牌的目标。例如：贾诩的“帷幕”：<br /><em>帷幕: 锁定技，你不是黑色锦囊牌的合法目标。</em><br />通常来讲，在确定目标时，就已经进行了判断，与于禁的“毅重”不同，于禁的“毅重”是成为了黑色杀的目标之后，再触发技能。也就是说，假如于禁和贾诩单挑，于禁有一张黑色的【过河拆桥】，那么于禁是不能使用这张牌的（因为没有合法目标），而如果贾诩有黑色的【杀】则可以指定于禁为目标，但是会触发“毅重”的效果，终止【杀】的结算。<br /><em>毅重: 锁定技，若你的装备区里没有防具牌，黑色【杀】对你无效。</em></p>
+<h5 id="距离修改技"><a href="#距离修改技" class="headerlink" title="距离修改技"></a>距离修改技</h5>
+<p>距离修改技即是修改玩家之间的技能，熟悉的便是“马术”“飞影”以及白马公孙瓒的“义从”了：<br /><em>马术: 锁定技，你与其他角色的距离-1。</em><br /><em>飞影: 锁定技，其他角色与你的距离+1</em><br /><em>义从: 锁定技，若你的体力值：大于2，你与其他角色的距离-1；不大于2，其他角色与你的距离+1。</em>  </p>
+<h5 id="手牌上限技"><a href="#手牌上限技" class="headerlink" title="手牌上限技"></a>手牌上限技</h5>
+<p>顾名思义，这个技能可以修改你的手牌上限。<br />有增加上限的，例如刘表的“宗室”：<br /><em>宗室: 锁定技，你的手牌上限+X。（X为势力数）</em><br />也有固定上限的，例如新版周泰的“不屈”：<br /><em>不屈: 锁定技，当你处于濒死状态时，你将牌堆顶的一张牌置于武将牌上，称为“创”，然后若此“创”与其他“创”点数均不同，你将体力值回复至1点，否则你将此“创”置入弃牌堆；锁定技，若有“创”，你的手牌上限为X（X为“创”数）。</em><br />技能的第二个效果即是固定手牌上限了。</p>
+<h5 id="锁定视为技"><a href="#锁定视为技" class="headerlink" title="锁定视为技"></a>锁定视为技</h5>
+<p>这个其实与视为技类似，只不过多了强制性，例如神关羽的“武神”：<br /><em>武神: 锁定技，你的红桃手牌视为【杀】；锁定技，你使用红桃【杀】无距离限制。</em><br />对比普通关羽的“武圣”：<br /><em>武圣: 你可以将一张红色牌当【杀】使用或打出。</em><br />很明显，这是锁定技，也就是说，神关羽的红桃手牌不能自由地控制它的属性，只能当作【杀】打出，而关羽则可以根据需要将红色手牌以不同的牌面进行使用。  </p>
+<h5 id="目标模式技"><a href="#目标模式技" class="headerlink" title="目标模式技"></a>目标模式技</h5>
+<p>这个技能类型即是规定了使用牌的目标，例如：虎牢关吕布的“神戟”既是一个典型的例子：<br /><em>神戟: 若你的装备区里没有武器牌，你使用【杀】的额外目标数上限+2。</em><br />平常的【杀】只能杀1个人，但是通过这种技能，我们可以指定多名角色为目标。</p>
+<h5 id="实例-王强技能"><a href="#实例-王强技能" class="headerlink" title="实例-王强技能"></a>实例-王强技能</h5>
+<p>那么我们为王强设计的技能如下：<br /><em>为情所困: 锁定技，限定技，准备阶段开始时，若场上存在女性角色且你的体力上限大于2，则你减体力上限至2。锁定技，你不是【决斗】【南蛮入侵】【万箭齐发】【杀】的合法目标。</em><br />将技能拆开来看，既是一个触发技和一个禁止技的结合。于是我们可以创建两个技能，再将其中一个进行隐藏。我们首先进行禁止技的创建吧：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /></pre></td><td class="code"><pre><span class="line">LuaWeiqingsuokunPro = sgs.CreateProhibitSkill {</span><br /><span class="line">    name = <span class="string">&#39;LuaWeiqingsuokunPro&#39;</span>,</span><br /><span class="line">    is_prohibited = <span class="function"><span class="keyword">function</span><span class="params">(self, from, to, card)</span></span></span><br /><span class="line">        <span class="keyword">if</span> to:hasSkill(<span class="string">&#39;LuaWeiqingsuokunPro&#39;</span>) <span class="keyword">then</span></span><br /><span class="line">            <span class="keyword">return</span> card:isKindOf(<span class="string">&#39;Duel&#39;</span>) <span class="keyword">or</span> card:isKindOf(<span class="string">&#39;Slash&#39;</span>) <span class="keyword">or</span> card:isKindOf(<span class="string">&#39;SavageAssault&#39;</span>) <span class="keyword">or</span></span><br /><span class="line">                card:isKindOf(<span class="string">&#39;ArcheryAttack&#39;</span>)</span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>看起来似乎有点长啊，但实际上并不复杂，类似的我们以C/C++的语法也能理解它。首先是创建了一个名为LuaWeiqingsuokunPro的禁止技技能对象。它的名称(name)是LuaWeiqingsuokunPro，而is_prohibited即是判断准则，card是目标卡牌，return card:isKindOf(“卡牌类型”)即是不能成为此种卡牌的目标。具体的卡牌名称可以在lang文件夹下进行查阅，注意要把下划线去掉并且做好大小写区分。例如，当一名角色准备使用【决斗】指定目标时，这个时候card就是Duel，而这个function返回的值就是true，那么is_prohibited就是true了。王强就不能被选中成为这张【决斗】的目标了。<br />那么接下来，我们实现第一个功能吧：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /></pre></td><td class="code"><pre><span class="line">LuaWeiqingsuokun = sgs.CreateTriggerSkill {</span><br /><span class="line">    name = <span class="string">&#39;#LuaWeiqingsuokun&#39;</span>,</span><br /><span class="line">    frequency = sgs.Skill_Compulsory,</span><br /><span class="line">    events = {sgs.EventPhaseStart},</span><br /><span class="line">    on_trigger = <span class="function"><span class="keyword">function</span><span class="params">(self, event, player, data)</span></span></span><br /><span class="line">        <span class="keyword">local</span> room = player:getRoom()</span><br /><span class="line">        <span class="keyword">if</span> player:getPhase() == sgs.Player_Start <span class="keyword">then</span></span><br /><span class="line">            <span class="keyword">if</span> player:getMark(<span class="string">&#39;LuaQingkun&#39;</span>) == <span class="number">0</span> <span class="keyword">then</span></span><br /><span class="line">                <span class="keyword">if</span> player:getMaxHp() &gt; <span class="number">2</span> <span class="keyword">then</span></span><br /><span class="line">                    <span class="keyword">local</span> others = room:getOtherPlayers(player)</span><br /><span class="line">                    <span class="keyword">for</span> _, target <span class="keyword">in</span> sgs.qlist(others) <span class="keyword">do</span></span><br /><span class="line">                        <span class="keyword">if</span> target:isFemale() <span class="keyword">then</span></span><br /><span class="line">                            room:sendCompulsoryTriggerLog(player, self:objectName())</span><br /><span class="line">                            room:loseMaxHp(player, player:getMaxHp() - <span class="number">2</span>)</span><br /><span class="line">                            <span class="keyword">break</span></span><br /><span class="line">                        <span class="keyword">end</span></span><br /><span class="line">                    <span class="keyword">end</span></span><br /><span class="line">                    room:addPlayerMark(player, <span class="string">&#39;LuaQingkun&#39;</span>)</span><br /><span class="line">                <span class="keyword">end</span></span><br /><span class="line">            <span class="keyword">end</span></span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>唔，看起来有点长，我们进行一下拆分吧<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /></pre></td><td class="code"><pre><span class="line">LuaWeiqingsuokun = sgs.CreateTriggerSkill {</span><br /><span class="line">    name = <span class="string">&#39;#LuaWeiqingsuokun&#39;</span>,</span><br /><span class="line">    frequency = sgs.Skill_Compulsory,</span><br /><span class="line">    events = {sgs.EventPhaseStart},</span><br /><span class="line">    on_trigger = <span class="function"><span class="keyword">function</span><span class="params">(self, event, player, data)</span></span></span><br /><span class="line">       <span class="comment">-- statements</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>这些是触发技的基本要素：名称（name）、类型（发动频率/frequency）、响应事件（events）、触发的动作（on_trigger）还有就是省略的<br />能否触发（can_trigger），它的默认值是存活且拥有本技能，所以未列出。这里的技能名称前面加了#符号，代表不会占用技能格，也就是没有技能按钮。<br />好了，王强的技能是锁定技，那么使用枚举类型sgs.Skill_Compulsory进行定义。查看源码可以看到所有的技能类型：<br /></p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /></pre></td><td class="code"><pre><span class="line">...</span><br /><span class="line"><span class="class"><span class="keyword">class</span>  :</span> <span class="keyword">public</span> QObject</span><br /><span class="line">{</span><br /><span class="line">	<span class="keyword">enum</span> Frequency{</span><br /><span class="line">        Frequent,	<span class="comment">// 默认触发技</span></span><br /><span class="line">        NotFrequent,	<span class="comment">// 询问触发技</span></span><br /><span class="line">        Compulsory,	<span class="comment">// 锁定技</span></span><br /><span class="line">        Limited,	<span class="comment">// 限定技</span></span><br /><span class="line">        Wake		<span class="comment">// 觉醒技</span></span><br /><span class="line">    };</span><br /><span class="line">	...</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>即是对应的，默认触发技(符合条件时自动选择触发，可以更改为每次询问)，每次询问的触发技，锁定技（符合条件直接执行），限定技，觉醒技<br />那么王强的是一个限定技，我们只需要加入触发一次之后不再次触发的条件就好了。我们使用标签来判断王强有没有执行过判断吧。不过首先要判断是否处于准备阶段，我们使用getPhase()来获取玩家当前的阶段。同样，它也有一些枚举值，我在此列出：<br /></p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span> :</span> <span class="keyword">public</span> QObject</span><br /><span class="line">{</span><br /><span class="line">...</span><br /><span class="line"><span class="keyword">public</span>:</span><br /><span class="line">    <span class="keyword">enum</span> Phase {RoundStart, Start, Judge, Draw, Play, Discard, Finish, NotActive, PhaseNone};</span><br /><span class="line">...</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>分别对应：回合开始、准备阶段、判定阶段、摸牌阶段、出牌阶段、弃牌阶段、结束阶段、回合外、空阶段<br />但是光有玩家还是不够的，我们需要帮手来完成一系列的操作，它就是游戏的“房主”房间room。我们首先获取玩家的room，再利用room为所欲为：<br /></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /></pre></td><td class="code"><pre><span class="line">...</span><br /><span class="line">on_trigger = <span class="function"><span class="keyword">function</span><span class="params">(self, event, player, data)</span></span></span><br /><span class="line">        <span class="keyword">local</span> room = player:getRoom()</span><br /><span class="line">        <span class="keyword">if</span> player:getPhase() == sgs.Player_Start <span class="keyword">then</span>  						<span class="comment">-- 如果是准备阶段</span></span><br /><span class="line">            <span class="keyword">if</span> player:getMark(<span class="string">&#39;LuaQingkun&#39;</span>) == <span class="number">0</span> <span class="keyword">then</span>						<span class="comment">-- 如果LuaQingkun标记数为0</span></span><br /><span class="line">                <span class="keyword">if</span> player:getMaxHp() &gt; <span class="number">2</span> <span class="keyword">then</span>							<span class="comment">-- 体力上限大于2才接着进行下面的操作</span></span><br /><span class="line">                    <span class="keyword">local</span> others = room:getOtherPlayers(player)					<span class="comment">-- 获取其他的玩家列表</span></span><br /><span class="line">                    <span class="keyword">for</span> _, target <span class="keyword">in</span> sgs.qlist(others) <span class="keyword">do</span>					<span class="comment">-- 遍历其他的玩家</span></span><br /><span class="line">                        <span class="keyword">if</span> target:isFemale() <span class="keyword">then</span>						<span class="comment">-- 如果玩家性别为女</span></span><br /><span class="line">                            room:sendCompulsoryTriggerLog(player, self:objectName())		<span class="comment">-- 显示消息（X玩家的“为情所困”被触发）</span></span><br /><span class="line">                            room:loseMaxHp(player, player:getMaxHp() - <span class="number">2</span>)			<span class="comment">-- 失去对应的体力上限值</span></span><br /><span class="line">                            <span class="keyword">break</span>								<span class="comment">-- 因为已经找到了女性，没有继续遍历的必要了，跳出循环</span></span><br /><span class="line">                        <span class="keyword">end</span></span><br /><span class="line">                    <span class="keyword">end</span></span><br /><span class="line">                    room:addPlayerMark(player, <span class="string">&#39;LuaQingkun&#39;</span>)					<span class="comment">-- 添加一个LuaQingkun标记，防止重复进行</span></span><br /><span class="line">                <span class="keyword">end</span></span><br /><span class="line">            <span class="keyword">end</span></span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /></pre></td></tr></tbody></table></figure>
+<p></p>
+<p>好了，我们进入游戏看看效果吧。<br />看这个袁绍用的【万箭齐发】根本伤不到王强，真的太逊了。（王强：这个袁绍就是逊啦）<br /><img src="https://DZDcyj.github.io//2019/06/04/Lua应用/为情所困效果1.png" alt="为情所困效果" /><br />士兵（女）：听你这么说，你很勇哦。<br /><img src="https://DZDcyj.github.io//2019/06/04/Lua应用/士兵女.png" alt="士兵女" /><br />哦豁，场上有女角色出现了！到了王强的回合……<br /><img src="https://DZDcyj.github.io//2019/06/04/Lua应用/为情所困效果2.png" alt="为情所困效果" /><br />噔 噔 咚 ，王强现在只有2点体力上限了，真是太不幸了。<br />那么，到这里为止，本次的解说<s>迫害</s>也就到此结束了。</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1025_lua-metatable/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1025_lua-metatable/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1025_lua-metatable/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/1026_lua%E5%BA%94%E7%94%A8/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/1026_lua%E5%BA%94%E7%94%A8/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/1026_lua%E5%BA%94%E7%94%A8/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/1025_lua-metatable/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

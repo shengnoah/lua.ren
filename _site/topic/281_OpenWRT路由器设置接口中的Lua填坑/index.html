@@ -1,0 +1,942 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>OpenWRT路由器设置接口中的Lua填坑 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenWRT路由器设置接口中的Lua填坑">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/281_OpenWRT%E8%B7%AF%E7%94%B1%E5%99%A8%E8%AE%BE%E7%BD%AE%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84Lua%E5%A1%AB%E5%9D%91/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/281_OpenWRT%E8%B7%AF%E7%94%B1%E5%99%A8%E8%AE%BE%E7%BD%AE%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84Lua%E5%A1%AB%E5%9D%91/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>OpenWRT路由器设置接口中的Lua填坑</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~6 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">OpenWRT路由器设置接口中的Lua填坑</h1>
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                    &lt;p&gt;刚结束一个急活，主要是整理某个 OpenWRT 路由的设置接口，网页服务主要用的是 Nginx，网页用的是 BackBone 和 jQuery 配合，后端设置服务主要用的是 Lua（由 Nginx 代理）调用 OpenWRT 的 UCI 和 ubus。一开始我以为只需要前端稍微调整下就行了，后来发现后边跟着的 Lua 得一起整，顺带补了不少 OpenWRT 的基础知识，下边简单梳(还)理(债)…… 
+                                    &lt;/p&gt;
+                                    &lt;h2 id="UCI"&gt;&lt;a href="https://marsgt.github.io/#UCI" class="headerlink" title="UCI"&gt;&lt;/a&gt;UCI&lt;/h2&gt;
+                                    &lt;h3 id="基础知识"&gt;&lt;a href="https://marsgt.github.io/#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86" class="headerlink" title="基础知识"&gt;&lt;/a&gt;基础知识&lt;/h3&gt;
+                                    &lt;p&gt;UCI 是“Unified Configuration Interface”（统一配置接口）的缩写，是 OpenWrt 系统的核心配置框架，它的主要作用是整合系统里不同的设置项，并提供一个统一的接口。OpenWrt 系统配置文档默认被集中放在了 &lt;code&gt;/etc/config&lt;/code&gt; 这里（当然也可以放在其它地方），这些 UCI 文档有自己特殊的语法，比如一个典型的无线配置可能是：&lt;/p&gt;
+                                    &lt;pre&gt;&lt;code&gt;config wifi-device 'radio0'
+option type 'mac80211'
+option channel 'auto'
+option hwmode '11g'
+option path 'platform/qca953x_wmac'
+option htmode 'HT20'
+option disabled '0'
+</code></pre></div></div>
+
+<p>config wifi-iface
+    option ifname ‘wlan0’
+    option device ‘radio0’
+    option network ‘lan’
+    option mode ‘ap’
+    option encryption ‘none’
+    option ssid ‘TestSSID’
+&lt;/code&gt;&lt;/pre&gt;
+                                        &lt;p&gt;这里以 config 开头的行代表了一个 config 节点，其格式为：<br /><code>config 'section-type' 'section'</code><br />section-type 处的值是节点类型，而 section 则是节点名称。另外，config 节点允许匿名节点的存在（意即直接跳过<code>'section'</code>，就像第二个的 config 节点那样，<code>wifi-iface</code>只是节点类型而不是节点名，这里要注意），引号在 UCI 文档中也不是必须的，严格来讲只有值里带有空格或制表符时才需要使用，使用时也要注意，其必须成对出现才有效（比如一对单引号或者一对双引号，交叉使用会导致语法错误）。<br />以 option 开头的是选项，格式为：<br /><code>option 'key' 'value'</code><br />这是比较典型的 key-value 格式，就不再赘述了。除此之外，还有种 list 列表选项，被用来描述形如数组类的设置，格式与 option 非常相似：<br /><code>list 'list-key' 'list-value'</code><br />如果 list-key 相同的话，那么这实际上就是个数组式的设置项，举个栗子，system 设置里的 NTP：&lt;/p&gt;
+                                        &lt;pre&gt;<code>config timeserver 'ntp'
+    option enabled '1'
+    option enable_server '0'
+    list server '0.openwrt.pool.ntp.org'
+    list server '1.openwrt.pool.ntp.org'
+    list server '2.openwrt.pool.ntp.org'
+    list server '3.openwrt.pool.ntp.org'
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;这里的 NTP Server 设置实际上就是个数组。&lt;/p&gt;
+                                        &lt;h3 id="UCI-的调用"&gt;<a href="https://marsgt.github.io/#UCI-%E7%9A%84%E8%B0%83%E7%94%A8" class="headerlink" title="UCI 的调用"></a>UCI 的调用&lt;/h3&gt;
+                                        &lt;p&gt;在 OpenWRT 系统里调用 UCI 一般有两种方法，通过命令行或者是调用 Lua API。这里首先说命令行。<br />OpenWRT 官方文档里提到，使用awk、grep等命令来解析Openwrt的配置文档是低效和不明智的做法，并建议在类似的场景下，应该优先使用命令行形式调用。<br />UCI 命令行语法为（在命令行下直接输入 <code>uci</code> 即可看到）：&lt;/p&gt;
+                                        &lt;pre&gt;<code>用法: uci [&lt;options&gt;] &lt;command&gt; [&lt;arguments&gt;]</code></p>
+
+<p>命令:
+    batch
+    export     [&lt;config&gt;]
+    import     [&lt;config&gt;]
+    changes    [&lt;config&gt;]
+    commit     [&lt;config&gt;]
+    add        &lt;config&gt; &lt;section-type&gt;
+    add_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;=&lt;string&gt;
+    show       [&lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]]
+    get        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]
+    set        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;value&gt;
+    delete     &lt;config&gt;[.&lt;section[.&lt;option&gt;]]
+    rename     &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;name&gt;
+    revert     &lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]</p>
+
+<p>参数:
+    -c &lt;path&gt;  设置用于存储配置文档的文档夹 (默认位于: /etc/config)
+    -d &lt;str&gt;   使用’uci show’命令时，为 list 类型的值设置分隔符
+    -f &lt;file&gt;  使用指定的 &lt;file&gt; 作为输入，而不是默认的 stdin
+    -m         导入时，合并数据到现有的设置中
+    -n         导出时，命名匿名节 (默认)
+    -N         不要命名匿名节
+    -p &lt;path&gt;  添加一个配置文档的搜索路径
+    -P &lt;path&gt;  添加一个配置文档的搜索路径并将其作为默认设置
+    -q         安静默认 (不打印错误信息)
+    -s         强制使用严格模式 (在解析出现错误时停止，默认)
+    -S         关闭严格模式
+    -X         在’show’命令上显示匿名节点ID (如果有的话)
+&lt;/code&gt;&lt;/pre&gt;
+                                        &lt;p&gt;平时（命令行下）常用的主要是 <code>show</code>，<code>get</code>，<code>set</code>，<code>changes</code> 和 <code>commit</code> 这几个。<br />使用 UCI 时，需要特别注意下它的读写规则：UCI 在读取时，会首先读取内存中的缓存，而后才是文档；而写入则与此相反，增删改都是在操作缓存，需要手动提交才会将设置项写入到系统中。所以，在编写路由设置系统时，最后的提交操作是切不可忘的一步。<br />还有一种调用 UCI 的方法，是使用 Lua，文末的参考内容[3]中有详细的 API 列表（记得在开头用 <code>local uci = require "los.uci".cursor()</code> 语句引入）。<br />在使用 Lua 调用时，有个需要注意的点是匿名节点，比如上文中的无线配置里，有个 <code>wifi-iface</code> 类型的匿名节点，在命令行里使用 <code>uci show wireless</code> 可以看到：&lt;/p&gt;
+                                        &lt;pre&gt;<code>wireless.radio1=wifi-device
+wireless.radio1.type='mac80211'
+wireless.radio1.channel='auto'
+wireless.radio1.hwmode='11g'
+wireless.radio1.path='platform/qca953x_wmac'
+wireless.radio1.htmode='HT20'
+wireless.radio1.disabled='0'
+wireless.@wifi-iface[0]=wifi-iface
+wireless.@wifi-iface[0].ifname='wlan0'
+wireless.@wifi-iface[0].device='mt7620'
+wireless.@wifi-iface[0].network='lan'
+wireless.@wifi-iface[0].mode='ap'
+wireless.@wifi-iface[0].encryption='none'
+wireless.@wifi-iface[0].ssid='TestSSID'
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;这里可以看到很多键名类似 <code>@wifi-iface[0]</code> 的设置项，这就是匿名节点的设置项了。如果在命令行里加入 <code>-X</code> 参数变成 <code>uci -X show wireless</code>，则可以看到：&lt;/p&gt;
+                                        &lt;pre&gt;<code>wireless.radio1=wifi-device
+wireless.radio1.type='mac80211'
+wireless.radio1.channel='auto'
+wireless.radio1.hwmode='11g'
+wireless.radio1.path='platform/qca953x_wmac'
+wireless.radio1.htmode='HT20'
+wireless.radio1.disabled='0'
+wireless.cfg043579=wifi-iface
+wireless.cfg043579.ifname='wlan1'
+wireless.cfg043579.device='radio1'
+wireless.cfg043579.network='lan'
+wireless.cfg043579.mode='ap'
+wireless.cfg043579.encryption='none'
+wireless.cfg043579.ssid='TestSSID'
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;这时 <code>@wifi-iface[0]</code> 变成了 <code>cfg043579</code>，这才是这个匿名节点真实的引用名（系统自动生成的）。<br />而同样的，在撰写相对应的 Lua 语句时，也不能写成：&lt;/p&gt;
+                                        &lt;pre class=" language-lua"&gt;<code class="language-lua">uci<span class="token punctuation">:</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"wireless"</span><span class="token punctuation">,</span> <span class="token string">"@wifi-iface[0]"</span><span class="token punctuation">,</span> <span class="token string">"ssid"</span><span class="token punctuation">,</span> <span class="token string">"NewSSID"</span><span class="token punctuation">)</span>
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;虽然可以在命令行执行 <code>uci set wireless.@wifi-iface[0].ssid='NewSSID'</code>，但是在 Lua 上这么写系统是不会鸟你的（更何况还有个隐性的问题，是设置被改动过后，匿名节点的位置有可能会变，比如会跑到 <code>@wifi-iface[1]</code> 去，这可能会发生在拥有多个匿名节点的配置文档里）。所以这个时候，就需要使用 <code>uci:foreach</code> 去遍历某个设置类型的所有设置节点（注：返回 false 终止遍历），在遍历出的内容里，有几个特殊的、键名以英文字符 <code>.</code> 开头的成员：&lt;/p&gt;
+                                        &lt;ul&gt;
+                                            &lt;li&gt;<code>[.index]</code>: 设置节点的索引&lt;/li&gt;
+                                            &lt;li&gt;<code>[.name]</code>: 设置节点的名称（即真实的引用名，<code>cfg043579</code> 这种）&lt;/li&gt;
+                                            &lt;li&gt;<code>[.type]</code>: 设置节点的类型（如 <code>wifi-iface</code>）&lt;/li&gt;
+                                            &lt;li&gt;<code>[.anonymous]</code>: 指示该设置节点是否匿名&lt;/li&gt;
+                                        &lt;/ul&gt;
+                                        &lt;p&gt;这样，通过遍历所有项目并筛选符合条件的配置项，将 <code>[.name]</code> 中的内容缓存下来，就可以用：&lt;/p&gt;
+                                        &lt;pre class=" language-lua"&gt;<code class="language-lua">uci<span class="token punctuation">:</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"wireless"</span><span class="token punctuation">,</span> <span class="token string">"cfg043579"</span><span class="token punctuation">,</span> <span class="token string">"ssid"</span><span class="token punctuation">,</span> <span class="token string">"NewSSID"</span><span class="token punctuation">)</span>
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;这种方法去调用了。<br />这里放个自己写的用于遍历无线设置的函数（双频设备，每个频段只有一个信号，通过设备 ID 来识别）：&lt;/p&gt;
+                                        &lt;pre class=" language-lua"&gt;<code class="language-lua"><span class="token keyword">function</span> <span class="token function">getWirelessInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">local</span> wifiConfig <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    uci<span class="token punctuation">:</span><span class="token function">foreach</span><span class="token punctuation">(</span>
+        <span class="token string">"wireless"</span><span class="token punctuation">,</span>
+        <span class="token string">"wifi-iface"</span><span class="token punctuation">,</span>
+        <span class="token keyword">function</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> s<span class="token punctuation">.</span>device <span class="token operator">==</span> <span class="token string">"mt7620"</span> <span class="token keyword">then</span>
+                <span class="token keyword">if</span> <span class="token keyword">not</span> wifiConfig<span class="token punctuation">.</span>mt7620 <span class="token keyword">then</span>
+                    wifiConfig<span class="token punctuation">[</span><span class="token string">"mt7620"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+                <span class="token keyword">end</span>
+                <span class="token keyword">local</span> key <span class="token operator">=</span> <span class="token string">""</span>
+                <span class="token keyword">if</span> s<span class="token punctuation">.</span>key <span class="token keyword">then</span>
+                    key <span class="token operator">=</span> s<span class="token punctuation">.</span>key
+                <span class="token keyword">end</span>
+                wifiConfig<span class="token punctuation">.</span>mt7620 <span class="token operator">=</span> <span class="token punctuation">{</span>
+                    name <span class="token operator">=</span> s<span class="token punctuation">[</span><span class="token string">".name"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    ssid <span class="token operator">=</span> s<span class="token punctuation">.</span>ssid<span class="token punctuation">,</span>
+                    ency <span class="token operator">=</span> s<span class="token punctuation">.</span>encryption<span class="token punctuation">,</span>
+                    pass <span class="token operator">=</span> key
+                <span class="token punctuation">}</span>
+            <span class="token keyword">elseif</span> s<span class="token punctuation">.</span>device <span class="token operator">==</span> <span class="token string">"mt7612"</span> <span class="token keyword">then</span>
+                <span class="token keyword">if</span> <span class="token keyword">not</span> wifiConfig<span class="token punctuation">.</span>mt7612 <span class="token keyword">then</span>
+                    wifiConfig<span class="token punctuation">[</span><span class="token string">"mt7612"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+                <span class="token keyword">end</span>
+                <span class="token keyword">local</span> key <span class="token operator">=</span> <span class="token string">""</span>
+                <span class="token keyword">if</span> s<span class="token punctuation">.</span>key <span class="token keyword">then</span>
+                    key <span class="token operator">=</span> s<span class="token punctuation">.</span>key
+                <span class="token keyword">end</span>
+                wifiConfig<span class="token punctuation">.</span>mt7612 <span class="token operator">=</span> <span class="token punctuation">{</span>
+                    name <span class="token operator">=</span> s<span class="token punctuation">[</span><span class="token string">".name"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    ssid <span class="token operator">=</span> s<span class="token punctuation">.</span>ssid<span class="token punctuation">,</span>
+                    ency <span class="token operator">=</span> s<span class="token punctuation">.</span>encryption<span class="token punctuation">,</span>
+                    pass <span class="token operator">=</span> key
+                <span class="token punctuation">}</span>
+            <span class="token keyword">end</span>
+        <span class="token keyword">end</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">return</span> wifiConfig
+<span class="token keyword">end</span>
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;不过，在实践中，我认为最有效的手段是将匿名节点转化成普通的具名节点，这样 Lua 就可以直接调用，比写挨个遍历内容的逻辑要简单也清晰的多。&lt;/p&gt;
+                                        &lt;p&gt;下边再说说 ubus。&lt;/p&gt;
+                                        &lt;h2 id="ubus"&gt;<a href="https://marsgt.github.io/#ubus" class="headerlink" title="ubus"></a>ubus&lt;/h2&gt;
+                                        &lt;p&gt;ubus 即是 OpenWrt micro bus 架构，是 OpenWrt 为了提供守护进程和应用进程间的通讯而开发的项目。简单来说，想获取系统运行的一些状态，是可以用 ubus 来查看的，而且相比用 UCI 查询，由于 ubus 获取的直接是系统信息而不是设置项，所以可以避免由于错误配置带来的配置项与系统状态不符合的问题。也是因为这个原因，我推荐读取设置(状态)时用 ubus，写入设置时用 UCI。<br />当然 ubus 也并不是没有问题，目前比较通用的说法是，在数据内容超过 60k 时不建议用，另外如果有多线程、或者逻辑上有递归时也不建议用（命令发出以后，接受到的信息可能是另一条命令的返回内容）。&lt;/p&gt;
+                                        &lt;h3 id="ubus-的调用"&gt;<a href="https://marsgt.github.io/#ubus-%E7%9A%84%E8%B0%83%E7%94%A8" class="headerlink" title="ubus 的调用"></a>ubus 的调用&lt;/h3&gt;
+                                        &lt;p&gt;同 UCI 类似，调用 ubus 也分为命令行方式与 Lua 调用方式。而与 UCI 将设置文档命名为包（package）不同的是，ubus 将其调度单位称为“命名空间”（namespace），系统后台会默认驻留一个名为 ubusd 的守护进程，使用友好的 JSON 格式进行交互。<br />在命令行中输入 <code>ubus list</code> 就可以看到所有通过RPC服务器注册的命名空间：&lt;/p&gt;
+                                        &lt;pre&gt;<code>dhcp
+hostapd.wlan0
+hostapd.wlan1
+log
+network
+network.device
+network.interface
+network.interface.lan
+network.interface.loopback
+network.interface.wan
+network.interface.wan6
+network.wireless
+service
+session
+system
+uci
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;加个参数变成 <code>ubus -v list</code>，就可以详细列出这些命名空间所提供的方法了。调用方法用 <code>call</code> 关键字，比如，查看系统 WiFi 状态就可以用：&lt;/p&gt;
+                                        &lt;pre class=" language-bash"&gt;<code class="language-bash">ubus call network.wireless status <span class="token string">'{}'</span>
+</code>&lt;/pre&gt;
+                                        &lt;p&gt;<em>（参数一定要带上，即使为空。格式为 JSON）</em>&lt;/p&gt;
+                                        &lt;p&gt;除此以外，还有：&lt;/p&gt;
+                                        &lt;ul&gt;
+                                            &lt;li&gt;获取系统信息（上线时间、内存用量、SWAP信息等）
+                                                &lt;pre class=" language-bash"&gt;<code class="language-bash">ubus call system info <span class="token string">'{}'</span>
+</code>&lt;/pre&gt;
+                                            &lt;/li&gt;
+                                            &lt;li&gt;获取设备信息（设备型号、固件版本等）
+                                                &lt;pre class=" language-bash"&gt;<code class="language-bash">ubus call system board <span class="token string">'{}'</span>
+</code>&lt;/pre&gt;
+                                            &lt;/li&gt;
+                                            &lt;li&gt;获取 WiFi 上已连接的客户端
+                                                &lt;pre class=" language-bash"&gt;<code class="language-bash">ubus call hostapd.wlan0 get_clients <span class="token string">'{}'</span>
+</code>&lt;/pre&gt;
+                                            &lt;/li&gt;
+                                            &lt;li&gt;获取路由物理设备信息（如 MAC 型号、工作状态等）
+                                                &lt;pre class=" language-bash"&gt;<code class="language-bash">ubus call network.device status <span class="token string">'{"name":"eth0"}'</span>
+</code>&lt;/pre&gt; 等等。<br />除了命令行直接调用外，ubus 也可以使用 Lua 调用，由于没有 UCI 那劳什子匿名节点的问题，所以直接用
+                                                &lt;pre class=" language-lua"&gt;<code class="language-lua"><span class="token keyword">local</span> ubus <span class="token operator">=</span> require <span class="token string">"ubus"</span>
+</code>&lt;/pre&gt; 引入，在调用前用
+                                                &lt;pre class=" language-lua"&gt;<code class="language-lua"><span class="token keyword">local</span> conn <span class="token operator">=</span> ubus<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code>&lt;/pre&gt; 连接服务，在调用后用
+                                                &lt;pre class=" language-lua"&gt;<code class="language-lua">conn<span class="token punctuation">:</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code>&lt;/pre&gt; 关闭就好。<br />比如我自己写的一段从 ubus 上拿 WiFi 信息的函数：
+                                                &lt;pre class=" language-lua"&gt;<code class="language-lua"><span class="token keyword">local</span> <span class="token keyword">function</span> <span class="token function">getWirelessStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">local</span> conn <span class="token operator">=</span> ubus<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token keyword">not</span> conn <span class="token keyword">then</span>
+      <span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Failed to connect to ubusd"</span><span class="token punctuation">)</span>
+  <span class="token keyword">end</span>
+  <span class="token keyword">local</span> info <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token keyword">local</span> status <span class="token operator">=</span> conn<span class="token punctuation">:</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">"network.wireless"</span><span class="token punctuation">,</span> <span class="token string">"status"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> <span class="token function">pairs</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span> <span class="token keyword">do</span>
+      info<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> v
+  <span class="token keyword">end</span>
+  conn<span class="token punctuation">:</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>    
+  <span class="token keyword">return</span> info
+<span class="token keyword">end</span>
+</code>&lt;/pre&gt;
+                                            &lt;/li&gt;
+                                        &lt;/ul&gt;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                    &lt;h2 id="参考内容"&gt;&lt;a href="https://marsgt.github.io/#%E5%8F%82%E8%80%83%E5%86%85%E5%AE%B9" class="headerlink" title="参考内容"&gt;&lt;/a&gt;参考内容&lt;/h2&gt;
+                                    &lt;ol&gt;
+                                        &lt;li&gt;&lt;a href="https://openwrt.org/start?id=zh/docs/guide-user/base-system/uci" target="_blank" rel="noopener noreferrer"&gt;OpenWRT官网 - UCI系统&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="https://openwrt.org/start?id=zh/docs/techref/uci" target="_blank" rel="noopener noreferrer"&gt;OpenWRT官网 - UCI技术参考资料&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/openwrt/luci/master/documentation/api/modules/luci.model.uci.html" target="_blank" rel="noopener noreferrer"&gt;LuaDoc - luci.model.uci (英)&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="https://openwrt.org/start?id=zh/docs/techref/ubus" target="_blank" rel="noopener noreferrer"&gt;OpenWRT官网 - ubus&lt;/a&gt;&lt;/li&gt;
+                                    &lt;/ol&gt;
+</code></pre></div></div>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/280_nginx+lua/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/280_nginx+lua/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/280_nginx+lua/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/281_OpenWRT%E8%B7%AF%E7%94%B1%E5%99%A8%E8%AE%BE%E7%BD%AE%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84Lua%E5%A1%AB%E5%9D%91/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/281_OpenWRT%E8%B7%AF%E7%94%B1%E5%99%A8%E8%AE%BE%E7%BD%AE%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84Lua%E5%A1%AB%E5%9D%91/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/281_OpenWRT%E8%B7%AF%E7%94%B1%E5%99%A8%E8%AE%BE%E7%BD%AE%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84Lua%E5%A1%AB%E5%9D%91/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/280_nginx+lua/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,938 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>浅谈 ngx_lua 在 UPYUN 的应用 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 ngx_lua 在 UPYUN 的应用">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/395_%E6%B5%85%E8%B0%88-ngx_lua-%E5%9C%A8-UPYUN-%E7%9A%84%E5%BA%94%E7%94%A8/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/395_%E6%B5%85%E8%B0%88-ngx_lua-%E5%9C%A8-UPYUN-%E7%9A%84%E5%BA%94%E7%94%A8/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>浅谈 ngx_lua 在 UPYUN 的应用</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~6 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">浅谈 ngx_lua 在 UPYUN 的应用</h1>
+      <p><a href="https://github.com/openresty/lua-nginx-module">ngx_lua</a> 是一个 NGINX 的第三方扩展模块，它能够将 Lua 代码嵌入到 NGINX 中来执行。</p>
+
+<p><img src="http://onepiece.b0.upaiyun.com/assets/ngxlua.png" alt="NGINX+LUA" /></p>
+
+<p>UPYUN CDN 大量使用了 NGINX 作为反向代理服务器，其中绝大部分的业务逻辑已经由 Lua 来驱动了。</p>
+
+<p>这个主题之前在 <a href="http://city.oschina.net/beijing/event/174830">OSC 源创会 2014 北京站</a> 和 <a href="http://segmentfault.com/e/dday2015-nj">SegmentFault D-Day 2015 南京站</a> 有做过简单分享，Slide 在这里：《<a href="http://www.slideshare.net/timebug/using-ngxlua-in-upyun">Using ngx_lua in UPYUN</a>》，大家有兴趣可以先看下，更多资料也可以在 <a href="https://github.com/timebug/using-ngxlua-in-upyun">Github</a> 上获取。不过两次分享都由于个人时间安排上的不足，对 Keynote 后半部分偏实践的内容并没有做过多地展开，未免有些遗憾，因此，本文作为一个补充将尝试以文字的形式来谈谈这块内容 :-)</p>
+
+<h3 id="ngx_lua-和-openresty">ngx_lua 和 Openresty</h3>
+
+<p><a href="http://openresty.org/">Openresty</a> 是一套基于 NGINX 核心的相对完整的 Web 应用开发框架，包含了 ngx_lua 在内的众多第三方优秀的 NGINX C 模块，同时也集成了一系列常用的 <code class="highlighter-rouge">lua-resty-*</code> 类库，例如 redis, mysql 等，特别地，Openresty 依赖的 NGINX 核心和 LuaJIT 版本都是经过非常充分的测试的，也打了不少必要的补丁。</p>
+
+<p>UPYUN CDN 并没有直接基于 Openresty 来开发，而是借鉴了 Openresty 的组织方式，把 ngx_lua 以及我们需要用到的 <code class="highlighter-rouge">lua-resty-*</code> 类库直接集成进来自己维护。这样做的原因是因为我们自身也有不少 C 模块存在，同时对 NGINX 核心偶尔也会有一些二次开发的需求，反而直接用 Openresty 会觉得有点不方便。除此之外，需要 ngx_lua 的地方，还是强烈推荐直接用 Openresty。</p>
+
+<h3 id="lua-的性能">Lua 的性能</h3>
+
+<p>相比 C 模块，Lua 模块在开发效率上有着天然的优势，语言表达能力也更强些，我们目前除了一些业务无关的基础模块首选用 C 来实现外，其它能用 Lua 的基本上都用 Lua 了。这里大家可能比较关心的是脚本语言性能问题，关于这一点，从我们的实践来看，其实不必过于担心的，我们几个比较大的业务模块例如防盗链等用 Lua 重写后，在线下压测和线上运行过程中，均没有发现任何明显的性能衰退迹象。当然，这里很大一部分功劳要归于 <a href="http://luajit.org/">LuaJIT</a>，相比 Lua 官方的 VM，LuaJIT 在性能上有着非常大的提升，另外，还可以利用 LuaJIT FFI 直接调用 C 级别的函数来优化 Lua 代码中可能存在的性能热点。</p>
+
+<p>我们目前线上用的就是 LuaJIT 最新的 2.1 开发版，性能相比稳定版又有不少提升，具体可参考 LuaJIT 这个 <a href="http://wiki.luajit.org/NYI">NYI</a> 列表。特别地，这里推荐用 Openresty 维护的 <a href="https://github.com/openresty/luajit2">Fork</a> 版本，兼容性更加有保障。</p>
+
+<p><img src="http://onepiece.b0.upaiyun.com/assets/how-ngxlua-works.png" alt="LuaJIT" /></p>
+
+<blockquote>
+  <p>如上图所示，LuaJIT 在运行时会将热的 Lua 字节码直接翻译成机器码缓存起来执行。</p>
+</blockquote>
+
+<p>另外，通过 <a href="https://www.techempower.com/benchmarks/">techempower</a> 网站对 Openresty 的性能评测来看，相比 node.js, cowboy, beego 等，NGINX + ngx_lua + LuaJIT 这个组合的性能表现还是非常强劲的。</p>
+
+<h3 id="元数据同步与缓存">元数据同步与缓存</h3>
+
+<p>UPYUN CDN 线上通过 Redis 主从复制的方式由中心节点向外围节点同步用户配置，另外，由于 Redis 本身不支持加密传输，我们还在此基础上利用 <a href="http://bencane.com/2014/02/18/sending-redis-traffic-through-an-ssl-tunnel-with-stunnel/">stunnel</a> 对传输通道进行了加密，保障数据传输的安全性。</p>
+
+<blockquote>
+  <p>缓存是万金油！</p>
+</blockquote>
+
+<p>当然，不是说节点上有了 Redis 就能直接把它当做主要的缓存层来用了，要知道从 NGINX 到 Redis 获取数据是要消耗一次网络请求的，而这个毫秒级别的网络请求对于外围节点巨大的访问量来说是不可接受的。所以，在这里 Redis 更多地承担着数据存储的角色，而主要的缓存层则是在 NGINX 的共享内存上。</p>
+
+<p>根据业务特点，我们的缓存内容与数据源是不需要严格保持一致的，既能够容忍一定程度的延迟，因此这里简单采用被动更新缓存的策略即可。ngx_lua 提供了一系列共享内存相关的 API (<a href="http://wiki.nginx.org/HttpLuaModule#lua_shared_dict">ngx.shared.DICT</a>)，可以很方便地通过设置过期时间来使得缓存被动过期，值得一提的是，当缓存的容量超过预先申请的内存池大小的时候，ngx.shared.DICT.set 方法则会尝试以 LRU 的形式淘汰一部分内容。</p>
+
+<p>以下代码片段给出了一个简陋的实现，当然我们下面会提到这个实现其实存在不少问题，但基本结构大致上是一样的，可以看到下面区分了 4 种状态，分别是：HIT 和 MISS, HIT_NEGATIVE 和 NO_DATA，前两者是对于有数据的情况而言的，后两者则是对于数据不存在的情况而言的，一般来说，对于 NO_DATA 我们会给一个相对更短的过期时间，因为数据不存在这种情况是没有一个固定的边界的，容易把容量撑满。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local metadata = ngx.shared.metadata
+
+-- local key, bucket = ...
+
+local value = metadata:get(key)
+if value ~= nil then
+    if value == &#34;404&#34; then
+        return   -- HIT_NEGATIVE
+    else
+        return value -- HIT
+    end
+end
+
+local rds = redis:new()
+local ok, err = rds:connect(&#34;127.0.0.1&#34;, 6379)
+if not ok then
+    metadata:set(key, &#34;404&#34;, 120) -- expires 2 minutes
+    return -- NO_DATA
+end
+
+res, err = rds:hget(&#34;upyun:&#34; .. bucket, &#34;:something&#34;)
+if not res or res == ngx.null then
+    metadata:set(key, &#34;404&#34;, 120)
+    return -- NO_DATA
+end
+
+metadata:set(key, res, 300) -- expires 5 minutes
+rds:set_keepalive()
+
+return res -- MISS
+</code></pre></div></div>
+
+<blockquote>
+  <p>什么是 Dog-Pile 效应？</p>
+</blockquote>
+
+<p>在缓存系统中，当缓存过期失效的时候，如果此时正好有大量并发请求进来，那么这些请求将会同时落到后端数据库上，可能造成服务器卡顿甚至宕机。</p>
+
+<p>很明显上面的代码也存在这个问题，当大量请求进来查询同一个 <code class="highlighter-rouge">key</code> 的缓存返回 <code class="highlighter-rouge">nil</code> 的时候，所有请求就会去连接 Redis，直到其中有一个请求再次将这个 <code class="highlighter-rouge">key</code> 的值缓存起来为止，而这两个操作之间是存在时间窗口的，无法确保原子性：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local value = metadata:get(key)
+if value ~= nil then
+    -- HIT or HIT_NEGATIVE
+end
+
+-- Fetch from Redis
+</code></pre></div></div>
+
+<p>避免 Dog-Pile 效应一种常用的方法是采用主动更新缓存的策略，用一个定时任务主动去更新需要变更的缓存值，这样就不会出现某个缓存过期的情况了，数据会永远存在，不过，这个不适合我们这里的场景；另一种常用的方法就是加锁了，每次只允许一个请求去更新缓存，其它请求在更新完之前都会等待在锁上，这样一来就确保了查询和更新缓存这两个操作的原子性，没有时间窗口也就不会产生该效应了。</p>
+
+<blockquote>
+  <p><a href="https://github.com/openresty/lua-resty-lock">lua-resty-lock</a> - 基于共享内存的非阻塞锁实现。</p>
+</blockquote>
+
+<p>首先，我们先来消除下大家对锁的抗拒，事实上这把共享内存锁非常轻量。第一，它是非阻塞的，也就是说锁的等待并不会导致 NGINX Worker 进程阻塞；第二，由于锁的实现是基于共享内存的，且创建时总会设置一个过期时间，因此这里不用担心会发生死锁，哪怕是持有这把锁的 NGINX Worker Crash 了。</p>
+
+<p>那么，接下来我们只要利用这把锁按如下步骤来更新缓存即可：</p>
+
+<ol>
+  <li>检查某个 Key 的缓存是否命中，如果 MISS，则进入步骤 2。</li>
+  <li>初始化 <code class="highlighter-rouge">resty.lock</code> 对象，调用 <code class="highlighter-rouge">lock</code> 方法将对应的 Key 锁住，检查第一个返回值（即等待锁的时间），如果返回 <code class="highlighter-rouge">nil</code>，按相应错误处理；反之则进入步骤 3。</li>
+  <li>再次检查这个 Key 的缓存是否命中，如果依然 MISS，则进入步骤 4；反之，则通过调用 <code class="highlighter-rouge">unlock</code> 方法释放掉这把锁。</li>
+  <li>通过数据源（这里特是 Redis）查询数据，把查询到的结果缓存起来，最后通过调用 <code class="highlighter-rouge">unlock</code> 方法释放当前 Hold 住的这把锁。</li>
+</ol>
+
+<p>具体代码实现请参考：<a href="https://github.com/openresty/lua-resty-lock#for-cache-locks">lua-resty-lock#for-cache-locks</a></p>
+
+<blockquote>
+  <p>当数据源故障的时候怎么办？NO_DATA？</p>
+</blockquote>
+
+<p>同样，我们以上面的代码片段为例，当 Redis 返回出现 <code class="highlighter-rouge">err</code> 的时候，此时的状态即不是 MISS 也不是 NO_DATA，而这里统一把它归类到 NO_DATA 了，这就可能会引发一个严重的问题，假设线上这么一台 Redis 挂了，此时，所有更新缓存的操作都会被标记为 NO_DATA 状态，原本旧的拷贝可能还能用的，只是可能不是最新的罢了，而现在却都变成空数据缓存起来了。</p>
+
+<p>那么如果我们能在这种情况下让缓存不过期是不是就能解决问题了？答案是 yes。</p>
+
+<blockquote>
+  <p><a href="https://github.com/cloudflare/lua-resty-shcache">lua-resty-shcache</a> - 基于 ngx.shared.DICT 实现了一个完整的缓存状态机，并提供了适配接口</p>
+</blockquote>
+
+<p>恩，这个库几乎解决了我们上面提到的所有问题：1. 内置缓存锁实现 2. 故障时使用陈旧的拷贝 - STALE</p>
+
+<p>所以，不想折腾的话，直接用它就是的。另外，它还提供了序列化、反序列化的接口，以 UPYUN 为例，我们的元数据原始格式是 JSON，为了减少内存大小，我们又引入了 <a href="http://msgpack.org/">MessagePack</a>，所以最终缓存在 NGINX 共享内存上是被 MessagePack 进一步压缩过的二进制字节流。</p>
+
+<p>当然，我们在这基础上还增加了一些东西，例如 shcache 无法区分数据源中数据不存在和数据源连接不上两种状态，因此我们额外新增了一个 NET_ERR 状态来标记连接不上这种情况。</p>
+
+<blockquote>
+  <p>序列化、反序列化太耗时？！</p>
+</blockquote>
+
+<p>由于 ngx.shared.DICT 只能存放字符串形式的值（Lua 里面字符串和字节流是一回事），所以即使缓存命中，那么在使用前，还是需要将其反序列化为 Lua Table 才行。而无论是 JSON 还是 MessagePack，序列化、反序列操作都是需要消耗一些 CPU 的。</p>
+
+<p>如果你的业务场景无法忍受这种程度的消耗，那么不妨可以尝试下这个库：<a href="https://github.com/openresty/lua-resty-lrucache">lua-resty-lrucache</a>。它直接基于 LuaJIT FFI 实现，能直接将 Lua Table 缓存起来，这样就不需要额外的序列化反序列化过程了。当然，我们目前还没尝试这么做，如果要做的话，建议在 shcache 共享内存缓存层之上再加一层 lrucache，也就是多一级缓存层出来，且这层缓存层是 Worker 独立的，当然缓存过期时间也应该设置得更短些。</p>
+
+<h3 id="节点健康检查">节点健康检查</h3>
+
+<blockquote>
+  <p>被动健康检查与主动健康检查。</p>
+</blockquote>
+
+<p>我们先来看下 NGINX 基本的被动健康检查机制：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>upstream api.com {
+    server 127.0.0.1:12354 max_fails=15 fail_timeout=30s;
+    server 127.0.0.1:12355 max_fails=15 fail_timeout=30s;
+    server 127.0.0.1:12356 max_fails=15 fail_timeout=30s;
+
+    proxy_next_upstream error timeout http_500;
+    proxy_next_upstream_tries 2;
+}
+</code></pre></div></div>
+
+<p>主要由 <code class="highlighter-rouge">max_failes</code> 和 <code class="highlighter-rouge">fail_timeout</code> 两个配置项来控制，表示在 <code class="highlighter-rouge">fail_timeout</code> 时间内如果该 server 异常次数累计达到 <code class="highlighter-rouge">max_failes</code> 次，那么在下一个 <code class="highlighter-rouge">fail_timeout</code> 时间内，我们就认为这台 server 宕机了，即在这段时间内不会再将请求转发给它。</p>
+
+<p>其中判断某次转发到后端的请求是否异常是由 <code class="highlighter-rouge">proxy_next_upstream</code> 这个指令决定的，默认只有 error 和 timeout，这里新增了 http_500 这种情况，即当后端响应 500 的时候我们也认为异常。</p>
+
+<p><code class="highlighter-rouge">proxy_next_upstream_tries</code> 是 NGINX 1.7.5 版本后才引入的指令，可以允许自定义重试次数，原本默认重试次数等于 upstream 内配置的 server 个数（当然标记为 down 的除外）。</p>
+
+<p>但只有被动健康检查的话，我们始终无法回避一个问题，即我们始终要将真实的线上请求转发到可能已经宕机的后端去，否则我们就无法及时感知到这台宕机的机器当前是不是已经恢复了。当然，NGINX Plus 商业版是有主动健康检查功能的，它通过 <a href="http://nginx.com/products/application-health-checks/">health_check</a> 这个指令来实现，当然我们这里就不展开说了，说多了都是泪。另外 Taobao 开源的 <a href="http://tengine.taobao.org/">Tengine</a> 也支持这个<a href="http://tengine.taobao.org/document_cn/http_upstream_check_cn.html">特性</a>，建议大家也可以尝试下。</p>
+
+<blockquote>
+  <p>lua-resty-checkups - 纯 Lua 实现的节点健康检查模块。</p>
+</blockquote>
+
+<p>这个模块目前是根据我们自身业务特点高度定制化的，因此暂时就没有开源出来了。agentzh 维护的 <a href="https://github.com/openresty/lua-resty-upstream-healthcheck">lua-resty-upstream-healthcheck</a> 模块跟我们这个很像但很多地方使用习惯都不太一样，当然，如果当初就有这样一个模块的话，说不定就不会重造轮子了 :-)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- app/etc/config.lua
+
+_M.global = {
+    checkup_timer_interval = 5,
+    checkup_timer_overtime = 60,
+}
+
+_M.api = {
+    timeout = 2,
+    typ = &#34;general&#34;, -- http, redis, mysql etc.
+
+    cluster = {
+        {   -- level 1
+            try = 2,
+            servers = {
+                { host = &#34;127.0.0.1&#34;, port = 12354 },
+                { host = &#34;127.0.0.1&#34;, port = 12355 },
+                { host = &#34;127.0.0.1&#34;, port = 12356 },
+            }
+        },
+        {   -- level 2
+            servers = {
+                { host = &#34;127.0.0.1&#34;, port = 12360 },
+                { host = &#34;127.0.0.1&#34;, port = 12361 },
+            }
+        },
+    },
+}
+</code></pre></div></div>
+
+<p>上面简单给出了这个模块的一个配置示例，checkups 同时包括了主动和被动健康检查两种机制，我们看到上面 <code class="highlighter-rouge">checkup_timer_interval</code> 的配置项，就是用来设置主动健康检查间隔时间的。</p>
+
+<p>特别地，我们会在 NGINX Worker 初始阶段创建一个全局唯一的 timer 定时器，它会根据设置的间隔时间进行轮询，对所监控的后端节点进行心跳检查，如果发现异常就会主动将此节点暂时从可用列表中剔除掉；反之，就会重新加入进来。<code class="highlighter-rouge">checkup_timer_overtime</code> 配置项，跟我们使用了共享内存锁有关，它用来确保即使 timer 所在的 Worker 由于某种异常 Crash 了，其它 Worker 也能在这个时间过期后新起一个新的 timer，当然存活的 timer 会始终去更新这个共享内存锁的状态。</p>
+
+<p>其它被动健康检查方面，跟 NGINX 核心提供的机制差不多，我们也是仿照他们设计的，唯一有点区别的是，我们提供了无限层级的 server 配置策略，例如上面就配置了两个 server 层级，默认始终使用 level 1，当且仅当 level 1 的节点全部宕机的时候，此时才会切换使用 level 2，如果有配置 level 3 / level 4 的话，可以依次类推，特别地，每层 level 多个节点默认都是轮询的，当然我们也提供配置项可以特殊设置为一致性哈希的均衡策略。NGINX 核心提供的 <code class="highlighter-rouge">backup</code> 指令实际上也能实现类似的主备模式，但最多只能设置一组备份点，当然，常规情况下是够用了，我们最多也只用到了三个层级，即设置两组备份点。</p>
+
+<p>另外，基于 <a href="https://github.com/openresty/lua-upstream-nginx-module">lua-upstream-nginx-module</a> 模块，checkups 还能直接访问 nginx.conf 中的 upstream 配置，也可以修改某个 server 的状态，这样主动健康检查就能使用在 NGINX 核心的 upstream 模块上了。</p>
+
+<h3 id="其它">其它</h3>
+
+<p>当然，ngx_lua 在 UPYUN 还有很多方面的应用，例如流式上传、跨多个 NGINX 实例的访问速率控制等，这里就不一一展开了，这次 Keynote 中也没有提到，以后有机会我们再谈谈。</p>
+
+<h3 id="eof">EOF</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class="share"&gt;
+  &lt;wb:share-button id="wb_share_button" appkey="350720329" addition="text" type="button" ralateuid="2495973364"&gt;&lt;/wb:share-button&gt;
+  &lt;script type="text/javascript"&gt;
+    var wbbtn = document.getElementById("wb_share_button");
+    wbbtn.title = document.title+" ";
+  &lt;/script&gt;
+  &lt;a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="UPYUN"&gt;Tweet&lt;/a&gt;
+
+  &lt;script&gt;!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');&lt;/script&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/394_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/394_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/394_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/395_%E6%B5%85%E8%B0%88-ngx_lua-%E5%9C%A8-UPYUN-%E7%9A%84%E5%BA%94%E7%94%A8/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/395_%E6%B5%85%E8%B0%88-ngx_lua-%E5%9C%A8-UPYUN-%E7%9A%84%E5%BA%94%E7%94%A8/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/395_%E6%B5%85%E8%B0%88-ngx_lua-%E5%9C%A8-UPYUN-%E7%9A%84%E5%BA%94%E7%94%A8/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/394_Lua-%E6%B1%89%E5%AD%97%E6%8B%BC%E9%9F%B3%E9%A6%96%E5%AD%97%E6%AF%8D%E6%8F%90%E5%8F%96/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

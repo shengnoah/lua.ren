@@ -1,0 +1,790 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lua入门教程：垃圾回收 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua入门教程：垃圾回收">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/671_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/671_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Lua入门教程：垃圾回收</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~2 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Lua入门教程：垃圾回收</h1>
+      <p>Lua 使用的是自动内存管理，所以我们不需要自己手动取删除创建后的对象，Lua 通过垃圾回收（garbage collection）的方式自动删除成为来及的对象，从而将程序员从内存管理的负担中解放出来。</p>
+<p>虽然在理想的环境中，垃圾回收对我们来说是不可见的，但其却不是万能的，比如某些关键的性能点，我们可能需要停止垃圾回收，或者让它只在特定的时间点运行，这就需要额外的垃圾回收方式来辅助。</p>
+<p>Lua 采用了弱引用表（weak table)、析构器（finalizer）和函数 collectgarbage 的机制来作为辅助垃圾回收。</p>
+<h2 id="弱引用表"><a href="#弱引用表" class="headerlink" title="弱引用表"></a>弱引用表</h2>
+<p>所谓弱引用（weak reference）是一种不在垃圾回收考虑范围内的对象引用。弱引用表允许收集 Lua 中还可以被程序访问的对象，它告知 Lua 语言一个引用不应该阻止对一个对象的回收机制。</p>
+<p>一个典型的内存泄漏的场景是如果我们在数组中存储一些活跃的对象，我们只需要把对象插入到数组中去即可，一旦对象成为了数组中一部分，在数组销毁之前，该对象是永远无法回收的，虽然数组中的对象可能没有任何其他地方引用它，但其仍然被数组引用，除非我们告诉 Lua 数组中的引用不应该阻止此对象的回收。</p>
+<p>表由键和值组成，键和值都是强引用，垃圾回收默认不会回收一个可访问的作为表中键和值的对象。而在一个弱引用表中，键和值都可以是弱引用，一旦某个键或值被回收，那么其对应的整个键值对也会被回收。</p>
+<p>一个表是否为弱引用表由其元表中的 <code>__mode</code> 字段决定，其值应该是个字符串：</p>
+<ul>
+<li>当字符串是 “k” 时，这个表的键是弱引用。</li>
+<li>当字符串是 “v” 时，这个表的值时弱引用。</li>
+<li>当字符串是 “kv” 时，表中的键和值都是弱引用。</li>
+</ul>
+
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line">t = {}</span><br /><span class="line"><span class="built_in">setmetatable</span>(t, {<span class="built_in">__mode</span> = <span class="string">&#34;k&#34;</span>})</span><br /><span class="line"></span><br /><span class="line">k = {}</span><br /><span class="line">t[k] = <span class="number">1</span></span><br /><span class="line"></span><br /><span class="line">k = {} </span><br /><span class="line">t[k] = <span class="number">2</span></span><br /><span class="line"></span><br /><span class="line"><span class="built_in">collectgarbage</span>() <span class="comment">-- 强制垃圾回收</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">for</span> _, v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span> <span class="built_in">print</span>(v) <span class="keyword">end</span>  <span class="comment">--&gt; 2</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>上面例子中，第二个 <code>k = {}</code> 覆盖了指向了第一个键的索引，调用 <code>collectgarbage</code> 强制垃圾回收器进行一次完整的垃圾回收，由于第一个键没有了其他引用，所以 Lua 会回收该键对象，并从表中删除对应的元素。</p>
+<p>最后，请注意，只有对象可以从弱表中移除，而像数字和布尔这样的“值”是不可回收的。</p>
+<h2 id="析构器"><a href="#析构器" class="headerlink" title="析构器"></a>析构器</h2>
+<p>析构器（Finalizer）是一个与对象关联的函数，当该对象即将被会收时该函数会被调用。Lua语言通过元方法 <code>__gc</code> 实现析构器：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /></pre></td><td class="code"><pre><span class="line">o = {x = <span class="string">&#34;hello&#34;</span>}</span><br /><span class="line"><span class="built_in">setmetatable</span>(o, {<span class="built_in">__gc</span> = <span class="function"><span class="keyword">function</span><span class="params">(o)</span></span> <span class="built_in">print</span>(o.x) <span class="keyword">end</span>})</span><br /><span class="line">o = <span class="literal">nil</span></span><br /><span class="line"><span class="built_in">collectgarbage</span>() <span class="comment">--&gt; hi</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>上例中，对象 o 创建了一个带有 <code>__gc</code> 元方法的元表，然后清理对象 o 的引用，调用 <code>collectgarbage</code> 函数强制执行一次完整的垃圾回收，对象 o 被回收时，会调用表的析构器，也就是元方法 <code>__gc</code>。</p>
+<h3 id="逆序调用"><a href="#逆序调用" class="headerlink" title="逆序调用"></a>逆序调用</h3>
+<p>当垃圾回收期在同一个周期析构多个对象时，它会按照对象被标记为需要析构处理的顺序逆序调用这些对象的析构器：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line">mt = {<span class="built_in">__gc</span> = <span class="function"><span class="keyword">function</span><span class="params">(o)</span></span> <span class="built_in">print</span>(o.x) <span class="keyword">end</span>}</span><br /><span class="line"></span><br /><span class="line">obj = <span class="literal">nil</span></span><br /><span class="line"><span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">3</span> <span class="keyword">do</span></span><br /><span class="line">    obj = <span class="built_in">setmetatable</span>({x = i}, mt)</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line">obj = <span class="literal">nil</span></span><br /><span class="line"></span><br /><span class="line"><span class="built_in">collectgarbage</span>()</span><br /><span class="line">    <span class="comment">--&gt; 3</span></span><br /><span class="line">    <span class="comment">--&gt; 2</span></span><br /><span class="line">    <span class="comment">--&gt; 1</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>上面代码，创建了三个对象，分别设置了析构器，运行垃圾回收后，可以看到第一个被析构的对象是最后被标记的对象。</p>
+<h3 id="复苏"><a href="#复苏" class="headerlink" title="复苏"></a>复苏</h3>
+<p>当一个析构器被调用时，它的参数是正在被析构的对象。因此，这个对象会至少在析构期间重新变成活跃状态，我们称之为<strong>临时复苏</strong>。而在析构期间，我们无法阻止该对象被存储在某个全局变量中，使得该对象在析构器返回后任然可访问，我们称之为<strong>永久复苏</strong>。</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line">a = {x = <span class="string">&#34;hello&#34;</span>}</span><br /><span class="line">b = {f = a}</span><br /><span class="line"><span class="built_in">setmetatable</span>(b, {<span class="built_in">__gc</span> = <span class="function"><span class="keyword">function</span><span class="params">(o)</span></span> <span class="built_in">print</span>(o.f.x) <span class="keyword">end</span>})</span><br /><span class="line">a, b = <span class="literal">nil</span></span><br /><span class="line"><span class="built_in">collectgarbage</span>()</span><br /></pre></td></tr></tbody></table></figure>
+<p>上面代码中，对象 b 的析构会访问 a，所以在 a 在 b 析构前都不能被回收，Lua 会在运行析构器之前同时复苏 b 和 a。</p>
+<p>需要注意的是，Lua 会在两个阶段回收具有析构器的对象：</p>
+<ul>
+<li>第一个阶段为发现不可达的带有析构器的对象，并调用析构器开始执行，执行完成后标记为已被析构</li>
+<li>第二个阶段的垃圾回收又发现该对象不可达时，它就会将该对象删除。</li>
+</ul>
+<p>因此，如果我们想保证我们程序所有垃圾都能真正被释放，那么我们必须调用两次 <code>collectgarbage</code> 函数。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2>
+<p>垃圾回收（Garbage Collector, GC）算法的原理大体可以概括为：遍历系统中的所有对象，看哪些对象没有被引用，没有引用关系的就认为是可以回收的对象，对其进行删除。</p>
+<p>对于如何找出没有“引用” 的对象有以下几种主流算法：</p>
+<ul>
+<li><strong>引用计数 GC 算法</strong>，当对象被引用时，该对象引用计数加一，反之则减一。当引用计数为 0 时则认为该对象没有被引用，可以被回收删除。该算法有点是只需要对引用计数，不需要对每个对象进行扫描遍历，但有个先天的不足就是很难处理循环引用的问题。</li>
+<li><strong>标记清楚 GC 算法</strong>，每次做GC扫描时，首先扫描并且标记所有对象，被扫描过并且被标记的对象认为时可达的，不能被回收；而没有被标记的对象认为是可回收的。</li>
+</ul>
+<h3 id="双色标记-清除算法"><a href="#双色标记-清除算法" class="headerlink" title="双色标记-清除算法"></a>双色标记-清除算法</h3>
+<p>Lua 5.0 使用的 GC 算法是<strong>双色标记-清除</strong>（Tow-Color Mark and Sweep）算法，其算法原理也很简单：</p>
+<ul>
+<li>创建新对象，对象的颜色被标记为白色，并加入到对象链表中。</li>
+<li>标记阶段，取出对象链表中未扫描的元素，标记为黑色，并遍历该对象关联的其他对象，也标记为黑色。</li>
+<li>回收阶段，遍历所有对象，如果是白色，则认为该对象没有被引用，逐个回收；否则加入重新加入到对象链表等待下一轮GC检查。</li>
+</ul>
+<p>这种垃圾收集器被称为“stop-the-world”（全局暂停）式的收集器，其垃圾回收过程中是不能被打断的，因为你无法在标记与清除的过程中对新加入的对象进行标记判断，无法确认新对象到底应该是白色还是黑色。假设在 GC 回收阶段，如果把新对象标记为白色，那么该对象会在没有遍历其关联对象的情况下被回收；如果被标记为黑色，那么这个对象本轮并没有被扫描就被认为不能回收。所以，在双色清除算法中，标记阶段和回收阶段必须合并在一起才能完成。</p>
+<p>正因为双标记清除算法不能被打断，所以其每次GC操作的代价都非常大。GC 过程中，程序必须停下来，不能做任何其他操作。</p>
+<h3 id="三色增量标记清除算法"><a href="#三色增量标记清除算法" class="headerlink" title="三色增量标记清除算法"></a>三色增量标记清除算法</h3>
+<p>Lua 5.1 使用了<strong>增量式的三色标记清除算法</strong>（Thi-Color-Incremental Mark and Sweep）,这种算法与前面的相比，每个对象新增加了一种颜色，这样的好处在于：它不必在要求GC阶段停止主程序的运行，这个GC过程是增量的，可以被终端再恢复并继续运行。3中颜色分类如下：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /></pre></td><td class="code"><pre><span class="line">- 白色，表示对象没有被GC标记过，任何对象创建时的默认状态，如果GC扫描结束后任然是白色，则说明该对象没有被引用，可以被回收。</span><br /><span class="line">- 灰色，表示对象已经被GC标记过，但该对象关联的其他对象还没有没访问标记过。</span><br /><span class="line">- 黑色，表示对象已经被GC标记过，且该对象关联的其他对象也被访问标记过。</span><br /></pre></td></tr></tbody></table></figure>
+<p>引入灰色节点后，算法不再要去一次性完整的执行完毕，而是把已经扫描但是其引用的还未扫描的对象置为灰色。在标记过程中，只要还要元素是灰色，则算法标记过程会一直持续下去，即使中间被打断并去执行其他操作，也不会受影响。</p>
+<h3 id="紧急垃圾回收"><a href="#紧急垃圾回收" class="headerlink" title="紧急垃圾回收"></a>紧急垃圾回收</h3>
+<p>Lua 5.2 引入了紧急垃圾收集（emergency collection），当内存分配失败时，Lua 会强制进行一次完整的垃圾收集，然后再次尝试重新分配。这种紧急功能可以发生在程序进行内存分配的任意时刻。</p>
+<h2 id="控制垃圾回收"><a href="#控制垃圾回收" class="headerlink" title="控制垃圾回收"></a>控制垃圾回收</h2>
+<p>Lua 提供了函数 <code>collectgarbage ([opt [, arg]])</code> 来让我们可以辅助垃圾收集器进行一些额外的控制。该函数第一个参数是一个可选字符串，用来说明执行何种操作，而有些选项需要第二个参数：</p>
+<ul>
+<li>“collect”: 做一次完整的垃圾收集循环，如果不提供任何参数，这将是默认选项。</li>
+<li>“isrunning”: 返回表示收集器是否在工作的布尔值。</li>
+<li>“stop”: 停止垃圾收集器的自动运行，直到再次调用<code>restart</code>前，只能显示的调用垃圾收集器。</li>
+<li>“restart”: 重启垃圾收集器到自动运行。</li>
+<li>“count”: 以 KB 字节数为单位返回 Lua 使用的总内存数。其结果为浮点数，所以只需要乘上 1024 就能得到 Lua 使用的准确字节数。</li>
+<li>“step”: 单步运行垃圾收集器。 步长“大小”由 arg 控制，指定在分配了多少个字节后垃圾回收一个做什么。</li>
+<li>“setpause”: 将 arg 设为收集器的间歇率。</li>
+<li>“setstepmul”: 将 arg 设为收集器的 步进倍率。</li>
+</ul>
+<p>任何垃圾回收器都是使用CPU时间来换内存空间的。在极端情况下，垃圾收集器可能无法运行。但是，不消耗CPU时间将会消耗大量的内存空间。而在另外一种极端情况下，垃圾回收器可能在一次赋值后就得完成一次完整的垃圾收集。程序如果想使用尽可能小的内存，是要以付出大量的CPU计算量为代价的。</p>
+<p><code>collectgarbage</code> 函数的 <code>setpause</code> 与 <code>setstepmul</code> 参数可以让我们在CPU与内存消耗之间找一个平衡点，以寻求尽可能大的运行效率。</p>
+<p>参数 <code>setpause</code> 用于控制垃圾回收器在一次收集完成后需要等待多久时间再开始新一轮的收集。当其选项的值设为 0 时，表示上一次垃圾回收完成后立刻开始新一轮的收集工作；当选项值设为 200% 时，表示重启垃圾回收器前需要等待内存使用翻倍。如果想消耗更多的 CPU 时间去换取更低的内存消耗，可以把这个值设的小一点。</p>
+<p>参数 <code>setstepmul</code> 控制对没分配 1KB 内存时垃圾回收器应该进行多少工作。该选项值越高则垃圾回收器使用的增量越小。其默认值为 200%，当参数值低于 100 % 时会使垃圾回收运行的很慢，以至于可能一次收集都完成不了；而当参数设置为 100000000% 这样巨大的值时，其表现将是一个非增量的垃圾回收器。</p>
+<p>对于上面的一些参数来说，其默认值已经足够好了，而对于一些特殊应用来说，手工实验控制则可能更好，比如游戏应用中，某些关键阶段我们必须调用 <code>collectgarbage(&#34;stop&#34;)</code> 来停止回收，并在关键阶段执行完成后，再调用 <code>collectgarbage(&#34;restart&#34;)</code> 来重启垃圾收集器。</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/670_Lua%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/670_Lua%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/670_Lua%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/671_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/671_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/671_Lua%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/670_Lua%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,1937 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page1300/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page1300/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/218_XLua/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~14 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/218_XLua/" rel="bookmark" title="XLua" itemprop="url">XLua</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;blockquote&gt;
+</code></pre></div></div>
+<p>从<strong><a href="https://github.com/Tencent/xLua" target="_blank" rel="noopener noreferrer"><font color="steelblue" size="3">这里</font></a></strong>下载一个zip压缩包，解压后会有Assets等几个文档夹，其他文档夹放进你所创建的unity工程的Assets同级的目录下，然后把加压出来的Assets里的文档和文档夹复制进unity项目的Assets文档夹里即可。</p>
+<p>&lt;/blockquote&gt;</p>
+<h1 id="XLua教程"><a href="https://LianBai.github.io/#XLua%E6%95%99%E7%A8%8B" class="headerlink" title="XLua教程"></a>XLua教程</h1>
+<h2 id="XLua加载文档"><a href="https://LianBai.github.io/#XLua%E5%8A%A0%E8%BD%BD%E6%96%87%E4%BB%B6" class="headerlink" title="XLua加载文档"></a>XLua加载文档</h2>
+<h3 id="加载字符串"><a href="https://LianBai.github.io/#%E5%8A%A0%E8%BD%BD%E5%AD%97%E7%AC%A6%E4%B8%B2" class="headerlink" title="加载字符串"></a>加载字符串</h3>
+<pre><code>1.LuaEnv luaenv = new LuaEnv();  
+2.luaenv.DoString("print('hello world')");  
+</code></pre>
+<blockquote>
+<p>第1行是用来实例LuaEnv虚拟机的，类似于用这个类来实现所有lua的操作，尽量定义为全局，这样优化<br />第2行是通过DoString函数来加载lua脚本，也可直接加载lua脚本内容，如上述代码，print(‘hello world’)就是lua的代码内容。加载就是把lua的脚本加载到luaenv虚拟机里。</p>
+</blockquote>
+<h3 id="加载lua文档"><a href="https://LianBai.github.io/#%E5%8A%A0%E8%BD%BDlua%E6%96%87%E4%BB%B6" class="headerlink" title="加载lua文档"></a>加载lua文档</h3>
+<pre><code>LuaEnv luaenv = new LuaEnv();
+//方法一
+public TextAsset lua_001;
+//方法二
+private TextAsset lua_002;
+//方法三
+//在Start函数里luaenv.DoString("require 'LuaText/lua_003'");
+void Start()
+{
+    lua_002 = Resources.Load&lt;TextAsset&gt;("LuaText/lua_002.lua");
+    luaenv.DoString(lua_001.text);
+    luaenv.DoString(lua_002.text);
+    luaenv.DoString("require 'LuaText/lua_003'");
+}
+
+void Update()
+{
+
+}
+void OnDestroy()
+{
+    luaenv.Dispose();
+}
+</code></pre>
+<blockquote>
+<p>lua脚本在放在Resources文档夹的时候，后缀必须加上.txt，例如<strong>lua_001.lua.txt</strong>，因为Resources对支持的文档类型有限，也就是无法用Resouces读取.lua文档。  </p>
+<p>方法一是在脚本所挂物体上，通过拖拽赋值变量的方法，直接把lua的脚本拖拽到脚本的变量上，然后通过DoString执行lua文档<br />方法二是先定义TextAsset变量，然后在初始化的时候读取Resources里的文档，然后赋值到变量上，然后通过DoString执行lua文档。<br />方法三此处主要是对require和loader的理解，可以吧loader看成是指向某个路径里的一个个文档，require实际上就是调用一个个loader去加载，和自己所输入文档名字匹配，有一个成功，就不再往下进行查找，全部失败则报找不到文档的错误，目前xLua除了包含自己原本的loader外还包含了Resource所加载的loader，也就是require也可直接读取Resources目录下的文档，类似Resources的读取，但是因为Resource支持的文档类型有限，所以如果lua脚本放进了Resources文档里，就必须在后面加一个.txt的后缀，就像<strong>lua_001.lua.txt</strong>。<br />建议在整个进程中加载脚本只用一个DoString(“require’main’”),然后在main.lua脚本里可以加载自己所需要的其他脚本，其实就只把main.lua脚本看成一个接口脚本，然后在这个脚本里加载其他的lua脚本。  </p>
+</blockquote>
+<h3 id="自定义Loader"><a href="https://LianBai.github.io/#%E8%87%AA%E5%AE%9A%E4%B9%89Loader" class="headerlink" title="自定义Loader"></a>自定义Loader</h3>
+<pre><code>LuaEnv luaenv = null;
+void Start () {
+    luaenv = new LuaEnv();
+    LuaEnv.CustomLoader loader = CustomLoaderMethod;
+    luaenv.AddLoader(loader);
+    luaenv.DoString("require('main')");
+}
+
+
+
+// Update is called once per frame
+void Update () {
+
+}
+private byte[] CustomLoaderMethod(ref string filepath)
+{
+    if(filepath== "main")
+    {
+        TextAsset lua_003 = Resources.Load&lt;TextAsset&gt;("LuaText/lua_003.lua");
+        return System.Text.Encoding.UTF8.GetBytes(lua_003.text);
+    }
+    return null;
+}
+</code></pre>
+<blockquote>
+<p>有些脚本可能是进程运行下载下来的，或者是自定义的文档格式里头解压出来的，或者是需要解密的，所以存在文档不在指定的目录里，或者不是规定的lua脚本或者lua.txt格式，这样可有使用自定的loader，就类似于上面脚本，假如loader只包含原生的loader，这样就无法读取Resources里的文档夹，这样可以自定义loader,然后根据所要查找的lua脚本名字，指定到对应所在的地址，然后读取到需要的脚本，把文档里的内容一byte[]的形式回调回来即可，这样require(“脚本名字”)就可以直接执行脚本，不论脚本在什么位置，只要脚本所在的位置已经增加到loader上即可，即用LuaEnv.AddLoader（自己定义的loader），定义loader可以用LuaEnv.CustomLoader loader名字=CustomLoaderMethod来定义loader,用private byte[] CustomLoaderMethod(ref string filepath)函数来实现自己定义的loader.<br />通过AddLoader可以注册个回调，该回调参数是字符串，lua代码里头调用require时，参数将会透传给回调，回调中就可以根据这个参数去加载指定文档，如果需要支持调试，需要把filepath修改为真实路径传出。该回调返回值是一个byte数组，如果为空表示该loader找不到，否则则为lua文档的内容。 有了这个就简单了，用IIPS的IFS？没问题。写个loader调用IIPS的接口读文档内容即可。文档已经加密？没问题，自己写loader读取文档解密后返回即可。。。（<strong>此处的IIPS是什么可以不做了解</strong>）</p>
+</blockquote>
+<h2 id="C-访问Lua"><a href="https://LianBai.github.io/#C-%E8%AE%BF%E9%97%AELua" class="headerlink" title="C#访问Lua"></a>C#访问Lua</h2>
+<h3 id="访问全局基本类型"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E5%85%A8%E5%B1%80%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B" class="headerlink" title="访问全局基本类型"></a>访问全局基本类型</h3>
+<p>lua脚本  </p>
+<pre><code>a = 10  
+b = 100  
+c = "LianBai"
+</code></pre>
+<p>c#脚本   </p>
+<pre><code>LuaEnv luaenv = null;
+private TextAsset luatext;
+void Start () 
+{
+    luaenv = new LuaEnv();
+    luatext = Resources.Load&lt;TextAsset&gt;("LuaText/lua_004.lua");
+    luaenv.DoString(luatext.text);
+    int a = luaenv.Global.Get&lt;int&gt;("a");
+    string b = luaenv.Global.Get&lt;string&gt;("b");
+    string c = luaenv.Global.Get&lt;string&gt;("c");
+    print("a = "+a);
+    print("b = " + b);
+    print("c = " + c);
+}
+</code></pre>
+<blockquote>
+<p>C#访问Lua脚本里的变量其实很简单，只需要先用DoString加载脚本，然后在通过luaenv.Global.Get&lt;变量类型&gt;(“变量名”);即可读取自己所需要的基础变量。</p>
+</blockquote>
+<h3 id="访问一个全局的table"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E5%85%A8%E5%B1%80%E7%9A%84table" class="headerlink" title="访问一个全局的table"></a>访问一个全局的table</h3>
+<p>lua脚本  </p>
+<pre><code>d ={
+    x1=2,
+    x2=3,
+    x3="LianBai",
+    4,
+    5,
+    6,
+    add = function(self,a,b)
+        return a+b
+    end
+}
+</code></pre>
+<h4 id="映射到一个普通的class"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84class" class="headerlink" title="映射到一个普通的class"></a>映射到一个普通的class</h4>
+<p>C#脚本</p>
+<pre><code>public class Table1
+{
+    public int x2;
+    public int x1;
+    public string x3;
+}
+Table1 table1 = luaenv.Global.Get&lt;Table1&gt;("d");
+</code></pre>
+<blockquote>
+<p>可以自己测试输出table1的结果，根据结果可以看出lua的table映射到C#的class的时候，并不是按照顺序一一对应进行映射的，而是根据名字映射，lua的table中的x1变量只会映射到C#的class中的x1变量中，如果lua的table里没有class中所包含的变量，则会在class中赋值为空，如果lua中table变量多余class，多余的也不会赋值过来，只会把class所包含的赋值过来。</p>
+</blockquote>
+<h4 id="映射到一个Dictionary中"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AADictionary%E4%B8%AD" class="headerlink" title="映射到一个Dictionary中"></a>映射到一个Dictionary中</h4>
+<p>C#脚本</p>
+<pre><code>Dictionary&lt;string,double&gt; table2= luaenv.Global.Get&lt;Dictionary&lt;string,double&gt;&gt;("d");
+print("table1.x1:" + table2["x1"]);
+print("table1.x2:" + table2["x2"]);
+</code></pre>
+<blockquote>
+<p>在映射到Dictionary的时候，只会映射符合Dictionary自己定义的规则的变量，把变量名存为keys，把变量值存为对应的数据，所以不会把x3等后面的数据存到Dictionary里。</p>
+</blockquote>
+<h4 id="映射到一个List里"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AAList%E9%87%8C" class="headerlink" title="映射到一个List里"></a>映射到一个List里</h4>
+<p>C#脚本</p>
+<pre><code>List&lt;double&gt; table3= luaenv.Global.Get&lt;List&lt;double&gt;&gt;("d");
+print("List的Count" + table3.Count);
+foreach(double i in table3)
+{
+    print("i:" + i);
+}
+</code></pre>
+<blockquote>
+<p>在映射到List中，也只会映射到符合List规则的变量，但是有一点要注意的是，table中带keys的不会映射进List，不管储存的变量是不是符合规则，都不会映射进去，所以在上述脚本打印的时候，table3存的值是lua脚本中table中的4,5,6,三个变量。</p>
+</blockquote>
+<h4 id="映射到一个interface"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AAinterface" class="headerlink" title="映射到一个interface"></a>映射到一个interface</h4>
+<p>C#脚本</p>
+<pre><code>[CSharpCallLua]
+public interface ITable4
+{
+    int x1 { get; set; }
+    int x2 { get; set; }
+    string x3 { get; set; }
+    int add(int a, int b);
+}
+
+ITable4 table4 = luaenv.Global.Get&lt;ITable4&gt;("d");
+print("table4 x1 = " + table4.x1);
+print("table4 x2 = " + table4.x2);
+print("table4 x3 = " + table4.x3);
+print("table4 add = " + table4.add(5, 6));
+</code></pre>
+<blockquote>
+<p>什么是interface？<strong><a href="http://www.runoob.com/csharp/csharp-interface.html" target="_blank" rel="noopener noreferrer"><font color="steelblue" size="3">点击这里</font></a></strong>。理解清楚interface后，从代码里我们可以看出接口类多了一个[CSharpCallLua]，这是在为这个类打上了一个标签，因为与LUA交互的代理和类型需要添加 CSharpCallLua 标签，xlua的特性之一就是标记，这一次与lua交互的特性标记则是[CSharpCallLua]，只有这样写，才可支持热更新。然后接口类的继承和普通类类似，也是根据变量名字一一对应的关系。</p>
+</blockquote>
+<h4 id="映射到一个LuaTable变量"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AALuaTable%E5%8F%98%E9%87%8F" class="headerlink" title="映射到一个LuaTable变量"></a>映射到一个LuaTable变量</h4>
+<p>C#脚本</p>
+<pre><code>LuaTable table5= luaenv.Global.Get&lt;LuaTable&gt;("d");
+print("table5长度:" + table5.Length);
+print("table5.x1:" + table5.Get&lt;int&gt;("x1"));
+print("table5.x2:" + table5.Get&lt;int&gt;("x2"));
+print("table5.x3:" + table5.Get&lt;string&gt;("x3"));
+</code></pre>
+<blockquote>
+<p>这是一种by ref方式，所以不会生成代码，但是这种方式比较慢，并且没有变量检测。</p>
+</blockquote>
+<h3 id="访问一个funaction"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AAfunaction" class="headerlink" title="访问一个funaction"></a>访问一个funaction</h3>
+<p>Lua脚本</p>
+<pre><code>function e()
+{
+    print("lua脚本的函数")
+}
+function f(a, b)
+    print('a', a, 'b', b)
+    return 1, 2, {x1 = 1024,x2 = 2048}
+end
+function ret_e()
+    print("LuaScripts return e function")
+    return e
+end
+</code></pre>
+<h4 id="映射到一个委托（Action或者delgate）"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E5%88%B0%E4%B8%80%E4%B8%AA%E5%A7%94%E6%89%98%EF%BC%88Action%E6%88%96%E8%80%85delgate%EF%BC%89" class="headerlink" title="映射到一个委托（Action或者delgate）"></a>映射到一个委托（Action或者delgate）</h4>
+<p>C#脚本</p>
+<pre><code>public static class AddGenerateList
+{
+     [CSharpCallLua]
+       public static List&lt;Type&gt; CSharpCallLua = new List&lt;Type&gt;()
+    {
+        typeof(Action),
+        typeof(Action&lt;bool&gt;),
+    };
+}
+
+Action function1 = luaenv.Global.Get&lt;Action&gt;("e");
+function1();
+</code></pre>
+<blockquote>
+<p>在把函数映射到Action的时候，一定要把Action添加到生成列表，脚本中第一个静态的AddGenerateList类就是把Action增加到生成列表里。然后才可把函数映射到Action中。否则将会报错。</p>
+</blockquote>
+<h4 id="lua脚本多返回值映射"><a href="https://LianBai.github.io/#lua%E8%84%9A%E6%9C%AC%E5%A4%9A%E8%BF%94%E5%9B%9E%E5%80%BC%E6%98%A0%E5%B0%84" class="headerlink" title="lua脚本多返回值映射"></a>lua脚本多返回值映射</h4>
+<p>C#脚本</p>
+<pre><code>[CSharpCallLua]
+public delegate int Function2(int a, string b, out int c, out Table1 d);
+
+Function2 function2 = luaenv.Global.Get&lt;Function2&gt;("f");
+Table1 table1;
+int fun2_02;
+int fun2_01 = function2(66, "LianBai", out fun2_02, out table1);
+print("fun2_01:" + fun2_01);
+print("fun2_02:" + fun2_02);
+print("table1.x1:" + table1.x1);
+print("table1.x2:" + table1.x2);
+</code></pre>
+<blockquote>
+<p>lua脚本里的函数支持多个返回值，而且返回值的类型也不同，在C#访问lua函数的时候，可以通过上述方法接收lua函数的多个返回值，第一个返回值直接接收映射过来函数的返回值，正如上述脚本里的fun2_01就是第一个返回值，然后后面的返回值均可用out接收，不过映射前声明的时候要用上述的声明方法：<br />[CSharpCallLua]<br />public delegate 第一个返回值类型 Function(参数1,参数2，…, out 第二个返回值,out 第三个返回值，…)</p>
+</blockquote>
+<h4 id="映射lua返回复杂类型的函数"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84lua%E8%BF%94%E5%9B%9E%E5%A4%8D%E6%9D%82%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%87%BD%E6%95%B0" class="headerlink" title="映射lua返回复杂类型的函数"></a>映射lua返回复杂类型的函数</h4>
+<p>C#脚本</p>
+<pre><code>[CSharpCallLua]
+public delegate Action Function3();
+
+Function3 function3 = luaenv.Global.Get&lt;Function3&gt;("ret_e");
+print("第一步：");
+function3();
+print("第二步：");
+Action function3_01 = function3();
+function3_01();
+</code></pre>
+<blockquote>
+<p>在C#访问lua的函数返回类型是复杂类型的时候，可以用委托接收，例如上述脚本，访问的函数的返回值是一个函数，在访问的时候，同样用委托接收，不过是两层委托，例如Function3的定义，function3所访问的就是访问对应的函数，然后用一个委托接收function3的返回值，然后就可以访问所返回的函数。</p>
+</blockquote>
+<h3 id="使用建议"><a href="https://LianBai.github.io/#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE" class="headerlink" title="使用建议"></a>使用建议</h3>
+<blockquote>
+<p>1.访问lua全局数据，特别是table以及function，代价比较大，建议尽量少做，比如在初始化时把要调用的lua function获取一次（映射到delegate）后，保存下来，后续直接调用该delegate即可。table也类似。 </p>
+</blockquote>
+<blockquote>
+<p>2.如果lua测的实现的部分都以delegate和interface的方式提供，使用方可以完全和xLua解耦：由一个专门的模块负责xlua的初始化以及delegate、interface的映射，然后把这些delegate和interface设置到要用到它们的地方。</p>
+</blockquote>
+<h2 id="Lua访问C-脚本"><a href="https://LianBai.github.io/#Lua%E8%AE%BF%E9%97%AEC-%E8%84%9A%E6%9C%AC" class="headerlink" title="Lua访问C#脚本"></a>Lua访问C#脚本</h2>
+<h3 id="lua创建一个C-的对象"><a href="https://LianBai.github.io/#lua%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAC-%E7%9A%84%E5%AF%B9%E8%B1%A1" class="headerlink" title="lua创建一个C#的对象"></a>lua创建一个C#的对象</h3>
+<p>Lua脚本</p>
+<pre><code>local CShapObject = CS.UnityEngine.GameObject("LianBai")
+</code></pre>
+<blockquote>
+<p>通过上述方法可以用lua脚本创建一个新的gameobject,后面跟的字符串就是物体的名字，所以创建新物体的lua脚本就是<strong>local lua函数名 = CS.对象(class)命名空间.C#对象(class)名(参数)</strong>。</p>
+</blockquote>
+<h3 id="lua访问C-的静态属性、静态方法"><a href="https://LianBai.github.io/#lua%E8%AE%BF%E9%97%AEC-%E7%9A%84%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95" class="headerlink" title="lua访问C#的静态属性、静态方法"></a>lua访问C#的静态属性、静态方法</h3>
+<p>C#脚本</p>
+<pre><code>LuaEnv luaenv = null;
+private TextAsset luatext;
+namespace MySpace
+{
+    [LuaCallCSharp]
+    public static class CShapStaticClass
+    {
+        public static int a = 10;
+        public static string b = "LianBai";
+    }
+}
+
+luaenv = new LuaEnv();
+luatext = Resources.Load&lt;TextAsset&gt;("LuaText/lua_005.lua"); 
+luaenv.DoString(luatext.text);
+print(CShapStaticClass.a);
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local CShapObject = CS.UnityEngine.GameObject("LianBai")
+local a=CS.MySpace.CShapStaticClass.a
+local b=CS.MySpace.CShapStaticClass.b
+CS.MySpace.CShapStaticClass.a=66
+print(a);
+print(b);
+</code></pre>
+<blockquote>
+<p>lua在访问c#的静态变量时与创建对象类似，CS.命名空间.静态类.静态变量<br />如果需要经常访问的类，可以先用局部变量引用后访问，除了减少敲代码的时间，还能提高性能。</p>
+</blockquote>
+<h3 id="lua访问C-成员属性、方法"><a href="https://LianBai.github.io/#lua%E8%AE%BF%E9%97%AEC-%E6%88%90%E5%91%98%E5%B1%9E%E6%80%A7%E3%80%81%E6%96%B9%E6%B3%95" class="headerlink" title="lua访问C#成员属性、方法"></a>lua访问C#成员属性、方法</h3>
+<h4 id="lua访问普通的类"><a href="https://LianBai.github.io/#lua%E8%AE%BF%E9%97%AE%E6%99%AE%E9%80%9A%E7%9A%84%E7%B1%BB" class="headerlink" title="lua访问普通的类"></a>lua访问普通的类</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass02
+{
+    public int c = 99;
+    public void Class02Fun01()
+    {
+        Debug.Log("This is CShapClass01's function d");
+    }
+}
+</code></pre>
+<p>lua脚本</p>
+<pre><code>local LuaClass02 = CS.MySpace.CShapClass02
+local luaclass02 = LuaClass02()
+print(luaclass02.c)
+luaclass02.c = 88
+luaclass02:Class02Fun01()
+</code></pre>
+<blockquote>
+<p>lua在访问C#的成员属性和方法的时候，先用变量映射出C#的类，然后再用一个变量接收。local 变量1 = CS.类所在命名空间.类名,变量1是映射过来的对象的声明，需要自己定义一个对象，local 变量2 = 变量1()，即变量2就是所映射过来的类的实例，通过<strong>变量2.变量名</strong>就可访问变量，通过<strong>变量2: 函数名()</strong>就可启用C#的函数。</p>
+</blockquote>
+<h4 id="lua访问继承的类"><a href="https://LianBai.github.io/#lua%E8%AE%BF%E9%97%AE%E7%BB%A7%E6%89%BF%E7%9A%84%E7%B1%BB" class="headerlink" title="lua访问继承的类"></a>lua访问继承的类</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass01
+{
+    public static int a = 1;
+    public static string b = "LianBai";
+    public static void Class01Fun01()
+    {
+        Debug.Log("This is Class01Fun01");
+    }
+    public void Class01Fun02()
+    {
+        Debug.Log("This is Class01Fun02");
+    }
+}
+[LuaCallCSharp]
+public class CShapClass02: CShapClass01
+{
+    public int c = 99;
+    public void Class02Fun01()
+    {
+        Debug.Log("This is CShapClass01's function d");
+    }
+}
+</code></pre>
+<p>lua脚本  </p>
+<pre><code>local LuaClass02 = CS.MySpace.CShapClass02
+local luaclass02 = LuaClass02()
+print(luaclass02.c)
+print(LuaClass02.a)
+print(LuaClass02.b)
+luaclass02.c = 88
+luaclass02:Class02Fun01()
+LuaClass02.Class01Fun01()
+luaclass02:Class01Fun02()
+</code></pre>
+<blockquote>
+<p>lua在访问C#的含有继承类的类的时候，访问基类普通变量和访问子类一样，用<strong>变量2.变量名</strong>，和<strong>变量2：函数名</strong>来访问，但是在访问基类的静态变量的时候，通过<strong>变量1.变量名</strong>来访问基类<strong>静态变量</strong>，通过<strong>变量1：函数名</strong>来访问基类<strong>静态函数</strong>。xlua支持（通过派生类）访问基类的静态属性，静态方法，（通过派生类实例）访问基类的成员属性，成员方法。</p>
+</blockquote>
+<h4 id="访问复杂函数"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0" class="headerlink" title="访问复杂函数"></a>访问复杂函数</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass02
+{
+    public int c = 99;
+    public void Class02Fun01()
+    {
+        Debug.Log("This is CShapClass01's function d");
+    }
+    public double Class02Fun02(CShapClass01 cshapclass01,ref int x1,out string x2,Action luafun,out Action csfun)
+    {
+        Debug.Log(cshapclass01.c + " : " + cshapclass01.d);
+        luafun();
+        x1 = x1 * cshapclass01.c;
+        x2 = "CShapClass01.d = " + cshapclass01.d;
+        csfun = () =&gt;
+        {
+            Debug.Log("This is CsFun");
+        };
+        Debug.Log(x1 + " : " + x2);
+        return 6.66;
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass02 = CS.MySpace.CShapClass02
+local luaclass02 = LuaClass02()
+function LuaFun()
+    print("This is LuaFun")
+end
+local cshapclass01,x1,x2,csfun = luaclass02:Class02Fun02({c = 100,d = "LianHei"},88,LuaFun)
+print("cshapclass01:",cshapclass01)
+print("x1:", x1)
+print("x2:", x2)
+print("csfun:", csfun)
+csfun();
+</code></pre>
+<blockquote>
+<p>参数的输入输出属性（out，ref）<br />Lua调用测的参数处理规则：C#的普通参数算一个输入形参，ref修饰的算一个输入形参，out不算，然后从左往右对应lua 调用测的实参列表；<br />Lua调用测的返回值处理规则：C#函数的返回值（如果有的话）算一个返回值，out算一个返回值，ref算一个返回值，然后从左往右对应lua的多返回值。  </p>
+<p>上述话的意思是lua在映射复杂的函数的时候，C#函数中的参数中有普通参数，ref定义的参数，out定义的参数，例如上述的<em>Class02Fun02</em>函数中<em>CShapClass01 cshapclass01</em>是普通的参数，就是我们正常定义的参数，<em>ref int x1</em>和<em>out string x2</em>分别是ref和out定义的参数，在lua调用的时候，<em>luaclass02:Class02Fun02({c = 100,d = “LianHei”},88,LuaFun)</em>，第一个表<em>{c = 100,d = “LianHei”}</em>是给<em>cshapclass01</em>传参数，88传给的是x1,LuaFun是传给的,Action luafun,因为x2和csfun是out形容的参数，所以不用传递。  </p>
+<p>ref定义的参数，在调用的时候要传参数，在返回的时候也要接收，out定义的参数在调用的时候不用传递参数，但是在接收的时候要接收参数<br />在调用这个函数的时候会执行C#脚本里面的函数，然后函数会有返回值，如果函数本身就有返回值，则lua脚本在接收的第一个返回值就是函数的返回值，然后在C#函数中有些参数是ref或者out参数，这些参数从左往右依次都是函数的返回值，所以在C#函数里必须为这些参数赋值。</p>
+</blockquote>
+<h4 id="访问重载方法"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E9%87%8D%E8%BD%BD%E6%96%B9%E6%B3%95" class="headerlink" title="访问重载方法"></a>访问重载方法</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass03
+{
+    public void CShapFun()
+    {
+        Debug.Log("This is NULL");
+    }
+    public void CShapFun(int a)
+    {
+        Debug.Log("This is int");
+    }
+    public void CShapFun(string a)
+    {
+        Debug.Log("This is string");
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass03 = CS.MySpace.CShapClass03
+local luaclass03 = LuaClass03()
+luaclass03:CShapFun()
+luaclass03:CShapFun(2)
+luaclass03:CShapFun("LianBai")
+</code></pre>
+<blockquote>
+<p>在C#里运行脚本可以看出，在访问重载函数的时候，只要改变穿进去的参数，就会自动调用重载对应的函数。<br />注意：xlua只一定程度上支持重载函数的调用，因为lua的类型远远不如C#丰富，存在一对多的情况，比如C#的int，float，double都对应于lua的number，上面的例子中TestFunc如果有这些重载参数，第一行将无法区分开来，只能调用到其中一个（生成代码中排前面的那个）</p>
+</blockquote>
+<h4 id="调用操作符"><a href="https://LianBai.github.io/#%E8%B0%83%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%A6" class="headerlink" title="调用操作符"></a>调用操作符</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass03
+{
+    public int a = 66;
+    public string b = "LianBai";
+    public static CShapClass03 operator + (CShapClass03 class1, CShapClass03 class2)
+    {
+        CShapClass03 ret = new CShapClass03();
+        ret.a = class1.a + class2.a;
+        ret.b = class1.b + class2.b;
+        return ret;
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass03 = CS.MySpace.CShapClass03
+local luaclass03 = LuaClass03()
+local luaclass04 = LuaClass03()
+print(luaclass03.a)
+print(luaclass04.b)
+luaclass04.a = 88
+print(luaclass04.a)
+print("This ",(luaclass03 + luaclass04).a)
+luaclass03.b="I am "
+print((luaclass03+luaclass04).b)
+</code></pre>
+<blockquote>
+<p>在lua使用所访问的对象的操作符的时候，在对象内部必须重载此运算符，这样才可以使用此运算符，C#的运算符可以自己百度查询。然后在类里面即可像C#里面一样调用，允许操作的运算符有：<br />+，-，*，/，==，一元-，&lt;，&lt;=， %，[]</p>
+</blockquote>
+<h4 id="访问含默认值方法"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E5%90%AB%E9%BB%98%E8%AE%A4%E5%80%BC%E6%96%B9%E6%B3%95" class="headerlink" title="访问含默认值方法"></a>访问含默认值方法</h4>
+<p>C#脚本</p>
+<pre><code>public void CShapClass03DefaultFun(int a = 66,string b = "LianBai",string c = null)
+{
+    Debug.Log("a = " + a + " b = " + b + " c = " + c);
+}
+</code></pre>
+<p>Lua脚本  </p>
+<pre><code>local LuaClass03 = CS.MySpace.CShapClass03
+local luaclass03 = LuaClass03()
+luaclass03:CShapClass03DefaultFun()
+luaclass03:CShapClass03DefaultFun(88)
+luaclass03:CShapClass03DefaultFun(88,"LianHei")
+luaclass03:CShapClass03DefaultFun(88,"LianHei","COOL")
+</code></pre>
+<blockquote>
+<p>在访问含有默认值的方法时，在lua里调用函数和C#调用有默认值参数的函数一样，如果所给的实参少于形参，则会用默认值补上。  </p>
+</blockquote>
+<h4 id="访问可变参数方法"><a href="https://LianBai.github.io/#%E8%AE%BF%E9%97%AE%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95" class="headerlink" title="访问可变参数方法"></a>访问可变参数方法</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass03
+{
+    public int a = 66;
+    public string b = "LianBai";
+    public void CShapClassVariableFun(int a,params string[] str)
+    {
+        string s = null;
+        foreach(string c in str)
+        {
+            s = s + c +" ";
+        }
+        Debug.Log("a = " + a + "  str = " + s);
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass03 = CS.MySpace.CShapClass03
+local luaclass03 = LuaClass03()
+luaclass03:CShapClassVariableFun(10,"I")
+luaclass03:CShapClassVariableFun(20,"I","am")
+luaclass03:CShapClassVariableFun(30,"I","am","LianBai")
+</code></pre>
+<blockquote>
+<p>lua在访问的方法中含有可变参数（<a href="http://www.runoob.com/csharp/csharp-param-arrays.html" target="_blank" rel="noopener noreferrer"><font color="steelblue">params</font></a>）的时候，也可以类似于在C#脚本的使用方法传进去参数。</p>
+</blockquote>
+<h4 id="映射枚举并访问枚举"><a href="https://LianBai.github.io/#%E6%98%A0%E5%B0%84%E6%9E%9A%E4%B8%BE%E5%B9%B6%E8%AE%BF%E9%97%AE%E6%9E%9A%E4%B8%BE" class="headerlink" title="映射枚举并访问枚举"></a>映射枚举并访问枚举</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public enum MyEnum
+{
+    x1 = 66,
+    x2 = 88,
+    x3 = 99
+}
+[LuaCallCSharp]
+public class CShapClass04
+{
+    public MyEnum CShapEnumFun(MyEnum e)
+    {
+        Debug.Log("MyEnum:" + e);
+        return e;
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaEnum = CS.MySpace.MyEnum
+print(LuaEnum.__CastFrom("x1"),LuaEnum.__CastFrom("x2"),LuaEnum.__CastFrom("x3"))
+local LuaClass04 = CS.MySpace.CShapClass04
+local luaclass04 = LuaClass04()
+local luaenum = luaclass04:CShapEnumFun(CS.MySpace.MyEnum.x1)
+print(luaenum,luaenum == LuaEnum.x1)
+print(LuaEnum.__CastFrom(0),LuaEnum.__CastFrom(1),LuaEnum.__CastFrom(2))
+</code></pre>
+<blockquote>
+<p>在映射枚举的时候，直接像类一样直接声明枚举对象就可调用，方法是：<strong>local 变量1 = CS.枚举所在命名空间.枚举名</strong>，然后就可以通过<strong>变量1.key值</strong>就可访问枚举中的对象。<br />在映射类里面含有枚举参数的时候，可以直接通过<strong>CS.枚举所在命名空间.枚举名.key值”</strong>直接传进key对应的值，也可直接通过映射过来的变量1，通过<strong>变量1.key值”</strong>访问对应的key值。<br />如果枚举类加入到生成代码的话，枚举类将支持<strong>__CastFrom()</strong>方法，可以实现从一个整数或者字符串到枚举值的转换。（<font color="red">注：CastFrom前面是两个英文的下划线</font>)  </p>
+</blockquote>
+<h4 id="Lua访问C-委托"><a href="https://LianBai.github.io/#Lua%E8%AE%BF%E9%97%AEC-%E5%A7%94%E6%89%98" class="headerlink" title="Lua访问C#委托"></a>Lua访问C#委托</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class CShapClass04
+{
+    public MyEnum CShapEnumFun(MyEnum e)
+    {
+        Debug.Log("MyEnum:" + e);
+        return e;
+    }
+    public static Action&lt;string&gt; CShapStaticAction;
+    public Action&lt;string&gt; CShapAction = (param) =&gt;
+    {
+        Debug.Log("This is My CShapAction：" + param);
+    };
+public delegate void CShapDelegate(string obj);
+}
+[LuaCallCSharp]
+public class CShapClass05
+{
+    public CShapClass04.CShapDelegate MyClassFun = null;
+    public CShapClass05()
+    {
+        MyClassFun = new CShapClass04.CShapDelegate(MyAction) ;
+    }
+    private void MyAction(string obj)
+    {
+        Debug.Log("This is My CShapDelegates：" + obj);
+    }
+}
+
+MySpace.CShapClass04.CShapStaticAction += MyStaticAction;
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass04 = CS.MySpace.CShapClass04
+local luaclass04 = LuaClass04()
+local LuaClass05 = CS.MySpace.CShapClass05
+local luaclass05 = LuaClass05()
+LuaClass04.CShapStaticAction("LianBai")
+luaclass04.CShapAction("LianBai")
+local MyLuaClass = luaclass05.MyClassFun
+上MyLuaClass("LianBai")
+MyLuaClass("LianBai")
+local function LuaAction(str)
+    print("This is LuaAction :",str)
+end
+local luaaction = LuaAction + LuaClass04.CShapStaticAction
+luaaction("+")
+local luaaction = LuaClass04.CShapStaticAction - LuaAction
+luaaction("-")
+local luaaction = LuaClass04.CShapStaticAction + LuaAction
+luaaction("+2")
+local luaaction = LuaClass04.CShapStaticAction - LuaAction
+luaaction("-2")
+</code></pre>
+<blockquote>
+<p>C#的委托关键字是delegate,Action和Func都是别人封装好的委托，通过上述方法可以观测到，delegate在定义委托的时候，默认就是静态的方法，但是Action定义委托的时候需要手动添加关键字，如果没有添加关键字，只能通过对象调用，但是无法传递参数，因为delegate本身是静态的，所以导致无法使用，关于delegate和Action、Func的区别请<strong><a href="https://blog.csdn.net/cubesky/article/details/39577879" target="_blank" rel="noopener noreferrer"><font color="steelblue" size="3">点击这里</font></a></strong>  、<br />通过上述脚本，测试可发现，lua在访问委托的时候，和调用普通的函数方法一样。<br />+操作符：对应C#的+操作符，把两个调用串成一个调用链，右操作数可以是同类型的C# delegate或者是lua函数。<br />-操作符：和+相反，把一个delegate从调用链中移除。<br />+操作符左右任意一个是delegate就可以，但是-操作符delegate必须放在左边<br />Ps：delegate属性可以用 一个luafunction来赋值。</p>
+</blockquote>
+<h4 id="Lua访问类的事件-Event"><a href="https://LianBai.github.io/#Lua%E8%AE%BF%E9%97%AE%E7%B1%BB%E7%9A%84%E4%BA%8B%E4%BB%B6-Event" class="headerlink" title="Lua访问类的事件(Event)"></a>Lua访问类的事件(Event)</h4>
+<p>C#脚本  </p>
+<pre><code>[LuaCallCSharp]
+public class DelegateClass
+{
+    public delegate void MyDelegate();  //定义一个委托
+    public event MyDelegate myevent;    //定义了一个事件
+    public void ClassFun01()
+    {
+        myevent();
+    }
+}
+</code></pre>
+<p>Lua脚本  </p>
+<pre><code>local LuaClass = CS.MySpace01.DelegateClass
+local luaclass = LuaClass()
+local function luafun01()
+    print("This is luafun01")
+end
+local function luafun02()
+    print("This is luafun02")
+end
+luaclass:myevent("+",luafun01)
+luaclass:ClassFun01()
+luaclass:myevent("+",luafun02)
+luaclass:ClassFun01()
+luaclass:myevent("-",luafun01)
+luaclass:ClassFun01()
+</code></pre>
+<blockquote>
+<p>Lua在访问<a href="http://www.runoob.com/csharp/csharp-event.html" target="_blank" rel="noopener noreferrer"><font color="steelblue">Event</font></a>的时候，添加事件回调的方法是<strong>类对象:委托名(“+”,函数名)</strong>，同样的，在移除事件回调的时候是<strong>类对象:委托名(“-“,函数名)</strong>。</p>
+</blockquote>
+<h4 id="Lua访问64位整数"><a href="https://LianBai.github.io/#Lua%E8%AE%BF%E9%97%AE64%E4%BD%8D%E6%95%B4%E6%95%B0" class="headerlink" title="Lua访问64位整数"></a>Lua访问64位整数</h4>
+<p>C#脚本</p>
+<pre><code>public ulong LongFun(long l)
+{
+    return (ulong)l + 1;
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass = CS.MySpace01.DelegateClass
+local luaclass = LuaClass()
+local a = luaclass:LongFun(11)
+print(type(a),a+10,a+100,a+1000,a+10000)
+</code></pre>
+<blockquote>
+<p>Lua53版本64位整数（long，ulong）映射到原生的64未整数，而luaji版本t，相当于lua5.1的标准，本身不支持64位，xlua做了个64位支持的扩展库，C#的long和ulong都将映射到userdata：<br />支持在lua里头进行64位的运算，比较，打印<br />支持和lua number的运算，比较<br />要注意的是，在64扩展库中，实际上只有int64，ulong也会先强转成long再传递到lua，而对ulong的一些运算，比较，我们采取和java一样的支持方式，提供一组API，详情请看API文档。</p>
+</blockquote>
+<h4 id="C-复杂类型和table的转换"><a href="https://LianBai.github.io/#C-%E5%A4%8D%E6%9D%82%E7%B1%BB%E5%9E%8B%E5%92%8Ctable%E7%9A%84%E8%BD%AC%E6%8D%A2" class="headerlink" title="C#复杂类型和table的转换"></a>C#复杂类型和table的转换</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public class MyClass01
+{
+    public int a;
+    public void Show()
+    {
+        Debug.Log("This is MyClass01's a:" + a);
+    }
+}
+[LuaCallCSharp]
+public class MyClass02
+{
+    public MyClass01 a;
+    public string b;
+    public void Show()
+    {
+        a.Show();
+        Debug.Log("This is MyClass02's b:" + a);
+    }
+
+}
+[LuaCallCSharp]
+public class MyClass03
+{
+    public void Set(MyClass02 my)
+    {
+        my.Show();
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass = CS.MySpace01.MyClass03
+local luaclass = LuaClass()
+luaclass:Set({a={a=66},b="LianBai"})
+</code></pre>
+<blockquote>
+<p>Lua在访问复杂的Class参数时，一个{}就是一个类，如果想用上述方法，变量必须public，这样lua才能根据变量名进行赋值，就像一开头讲的，根据变量名字进行赋值。</p>
+</blockquote>
+<h4 id="Lua获取C-的类型-相当于C-的typeof"><a href="https://LianBai.github.io/#Lua%E8%8E%B7%E5%8F%96C-%E7%9A%84%E7%B1%BB%E5%9E%8B-%E7%9B%B8%E5%BD%93%E4%BA%8EC-%E7%9A%84typeof" class="headerlink" title="Lua获取C#的类型(相当于C#的typeof)"></a>Lua获取C#的类型(相当于C#的typeof)</h4>
+<p>Lua脚本<br />    print(typeof(CS.MySpace01))</p>
+<blockquote>
+<p>要获取CS.MySpace01类的Type信息，可以用上述脚本</p>
+</blockquote>
+<h4 id="Lua强转数据"><a href="https://LianBai.github.io/#Lua%E5%BC%BA%E8%BD%AC%E6%95%B0%E6%8D%AE" class="headerlink" title="Lua强转数据"></a>Lua强转数据</h4>
+<p>C#脚本</p>
+<pre><code>[LuaCallCSharp]
+public interface MyClass04
+{
+    void  Show(int a, string b);
+}
+[LuaCallCSharp]
+public class MyClass05 : MyClass04
+{
+    public int ID = 88;
+    public void Show(int a, string b)
+    {
+        Debug.Log(a);
+        Debug.Log(b);
+    }
+    public MyClass04 GetClass04()
+    {
+        return new MyClass05();
+    }
+}
+</code></pre>
+<p>Lua脚本</p>
+<pre><code>local LuaClass01 = CS.MySpace01.MyClass05 
+local luaclass01 = LuaClass01()
+local luainterface01 = luaclass01:GetClass04()
+luainterface01:Show(66,"LianBai")
+assert(luainterface01.ID == 88)
+--assert(luainterface01.ID == nil)
+
+local LuaClass02 = CS.MySpace01.MyClass05 
+local luaclass02 = LuaClass02()
+local luainterface02 = luaclass02:GetClass04()
+cast(luainterface02,typeof(CS.MySpace01.MyClass04))
+luainterface02:Show(88,"LianHei")
+--assert(luainterface02.ID == 88)
+assert(luainterface02.ID == nil)
+</code></pre>
+<h1 id="XLua配置"><a href="https://LianBai.github.io/#XLua%E9%85%8D%E7%BD%AE" class="headerlink" title="XLua配置"></a>XLua配置</h1>
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page1299/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1298/">1298</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1299/">1299</a></li>
+      
+    
+      
+        <li><strong class="current-page">1300</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1301/">1301</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page1302/">1302</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page1301/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

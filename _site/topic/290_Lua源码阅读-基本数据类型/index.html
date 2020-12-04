@@ -1,0 +1,741 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lua源码阅读：基本数据类型 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua源码阅读：基本数据类型">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/290_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/290_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Lua源码阅读：基本数据类型</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~11 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Lua源码阅读：基本数据类型</h1>
+      <p>关于Lua中基本数据类型的底层实现方式，本篇是IState。</p>
+
+<h3 id="lState"><a href="#lState" class="headerlink" title="lState"></a>lState</h3>
+<h4 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h4>
+<p>在lState.h中定义了lua_State的结构体，这是每个 Lua 函数都会接受的表示当前状态的结构，最主要的成员包括运行栈 stack, 栈用于表示函数调用、传递参数及返回值：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="comment">** &#39;per thread&#39; state</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="class"><span class="keyword">struct</span>  {</span></span><br /><span class="line">  CommonHeader;	<span class="comment">/*  */</span></span><br /><span class="line">  lu_byte status;	<span class="comment">/* 解析容器的，用于记录中间状态 */</span></span><br /><span class="line">  </span><br /><span class="line">  global_State *l_G;	<span class="comment">/* 全局状态机 */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/*调用栈：调用栈的信息管理*/</span></span><br /><span class="line">  CallInfo *ci;  <span class="comment">/* call info for current function 当前函数的运行信息 */</span></span><br /><span class="line">  CallInfo base_ci;  <span class="comment">/* CallInfo for first level (C calling Lua) 调用栈的头部指针 */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 数据栈：栈指针地址管理 */</span></span><br /><span class="line">  StkId top;  <span class="comment">/* first free slot in the stack 指向线程栈的栈顶 */</span></span><br /><span class="line">  StkId stack_last;  <span class="comment">/* last free slot in the stack 线程栈的最后一个位置 */</span></span><br /><span class="line">  StkId <span class="built_in">stack</span>;  <span class="comment">/* stack base 栈的指针，当前运行的位置 */</span></span><br /><span class="line"></span><br /><span class="line">  GCObject *gclist;   <span class="comment">/* GC列表 */</span></span><br /><span class="line">	<span class="keyword">const</span> Instruction *oldpc;  <span class="comment">/* last pc traced 在当前thread 的解释执行指令的过程中，指向最后一次执行的指令的指针 */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span>  *<span class="title">twups</span>;</span>  <span class="comment">/* list of threads with open upvalues */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">lua_longjmp</span> *<span class="title">errorJmp</span>;</span>  <span class="comment">/* current error recover point */</span></span><br /><span class="line">  UpVal *openupval;  <span class="comment">/* list of open upvalues in this stack */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* Hook 相关管理 - 服务于debug模块 */</span></span><br /><span class="line">  lua_Hook hook;</span><br /><span class="line">  <span class="keyword">ptrdiff_t</span> errfunc;  <span class="comment">/* current error handling function (stack index) */</span></span><br /><span class="line">  <span class="keyword">int</span> stacksize;</span><br /><span class="line">  <span class="keyword">int</span> basehookcount;</span><br /><span class="line">  <span class="keyword">int</span> hookcount;</span><br /><span class="line">  lu_byte hookmask;</span><br /><span class="line">  lu_byte allowhook;</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 跟C语言通信 管理 */</span></span><br /><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">short</span> nny;  <span class="comment">/* number of non-yieldable calls in stack */</span></span><br /><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">short</span> nCcalls;  <span class="comment">/* number of nested C calls */</span></span><br /><span class="line">};</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="GCUnion"><a href="#GCUnion" class="headerlink" title="GCUnion"></a>GCUnion</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="comment">** Union of all collectable objects (only for conversions)</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="keyword">union</span> GCUnion {</span><br /><span class="line">  GCObject gc;  <span class="comment">/* common header */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">TString</span> <span class="title">ts</span>;</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Udata</span> <span class="title">u</span>;</span></span><br /><span class="line">  <span class="keyword">union</span> Closure cl;</span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Table</span> <span class="title">h</span>;</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Proto</span> <span class="title">p</span>;</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span>  <span class="title">th</span>;</span>  <span class="comment">/* thread */</span></span><br /><span class="line">};</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="global-state"><a href="#global-state" class="headerlink" title="global_state"></a>global_state</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="comment">** &#39;global state&#39;, shared by all threads of this state</span></span><br /><span class="line"><span class="comment">** lua全局状态机</span></span><br /><span class="line"><span class="comment">** 作用：管理全局数据、全局字符串表、内存管理函数</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">global_State</span> {</span></span><br /><span class="line">  <span class="keyword">const</span> lua_Number *version;  <span class="comment">/* pointer to version number 版本号 */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 内存管理 */</span></span><br /><span class="line">  lua_Alloc frealloc;  <span class="comment">/* function to reallocate memory Lua的全局内存分配器 */</span></span><br /><span class="line">  <span class="keyword">void</span> *ud;         <span class="comment">/* auxiliary data to &#39;frealloc&#39; 分配器的userdata */</span></span><br /><span class="line">  </span><br /><span class="line">  lu_mem totalbytes;  <span class="comment">/* number of bytes currently allocated - GCdebt */</span></span><br /><span class="line">  l_mem GCdebt;  <span class="comment">/* bytes allocated not yet compensated by the collector */</span></span><br /><span class="line">  lu_mem GCmemtrav;  <span class="comment">/* memory traversed by the GC */</span></span><br /><span class="line">  lu_mem GCestimate;  <span class="comment">/* an estimate of the non-garbage memory in use */</span></span><br /><span class="line">  TValue l_registry;</span><br /><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> seed;  <span class="comment">/* randomized seed for hashes */</span></span><br /><span class="line">  lu_byte currentwhite;</span><br /><span class="line">  lu_byte gcstate;  <span class="comment">/* state of garbage collector */</span></span><br /><span class="line">  lu_byte gckind;  <span class="comment">/* kind of GC running */</span></span><br /><span class="line">  lu_byte gcrunning;  <span class="comment">/* true if GC is running */</span></span><br /><span class="line">  GCObject *allgc;  <span class="comment">/* list of all collectable objects */</span></span><br /><span class="line">  GCObject **sweepgc;  <span class="comment">/* current position of sweep in list */</span></span><br /><span class="line">  GCObject *finobj;  <span class="comment">/* list of collectable objects with finalizers */</span></span><br /><span class="line">  GCObject *gray;  <span class="comment">/* list of gray objects */</span></span><br /><span class="line">  GCObject *grayagain;  <span class="comment">/* list of objects to be traversed atomically */</span></span><br /><span class="line">  GCObject *weak;  <span class="comment">/* list of tables with weak values */</span></span><br /><span class="line">  GCObject *ephemeron;  <span class="comment">/* list of ephemeron tables (weak keys) */</span></span><br /><span class="line">  GCObject *allweak;  <span class="comment">/* list of all-weak tables */</span></span><br /><span class="line">  GCObject *tobefnz;  <span class="comment">/* list of userdata to be GC */</span></span><br /><span class="line">  GCObject *fixedgc;  <span class="comment">/* list of objects not to be collected */</span></span><br /><span class="line"></span><br /><span class="line">  Mbuffer buff;  <span class="comment">/* temporary buffer for string concatenation */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 字符串管理 */</span></span><br /><span class="line"> 	stringtable strt;  <span class="comment">/* hash table for strings */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* GC管理 */</span></span><br /><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> gcfinnum;  <span class="comment">/* number of finalizers to call in each GC step */</span></span><br /><span class="line">  <span class="keyword">int</span> gcpause;  <span class="comment">/* size of pause between successive GCs */</span></span><br /><span class="line">  <span class="keyword">int</span> gcstepmul;  <span class="comment">/* GC &#39;granularity&#39; */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 线程管理 */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span>  *<span class="title">mainthread</span>;</span> <span class="comment">/* 主线程 */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span>  *<span class="title">twups</span>;</span>  <span class="comment">/* list of threads with open upvalues 闭包了当前线程变量的其他线程列表 */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 错误处理 */</span></span><br /><span class="line">  lua_CFunction panic;  <span class="comment">/* to be called in unprotected errors */</span></span><br /><span class="line">  TString *memerrmsg;  <span class="comment">/* memory-error message */</span></span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 虚函数表 */</span></span><br /><span class="line">  TString *tmname[TM_N];  <span class="comment">/* array with tag-method names 预定义方法名字数组 */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Table</span> *<span class="title">mt</span>[<span class="title">LUA_NUMTAGS</span>];</span>  <span class="comment">/* metatables for basic types 每个基本类型一个metatable */</span></span><br /><span class="line">} global_State;</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="创建栈结构："><a href="#创建栈结构：" class="headerlink" title="创建栈结构："></a>创建栈结构：</h4>
+<p>lua_newstate主要用于创建一个主线程栈结构，分配lua_State和global_State。</p>
+<p>对外通过lua_State结构暴露给用户，而global_State挂载在lua_State上。</p>
+<p>通过这种结构，每个线程会独立维护自己的线程栈和函数栈。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span><br /><span class="line">69</span><br /><span class="line">70</span><br /><span class="line">71</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function">LUA_API lua_State *<span class="title">lua_newstate</span> <span class="params">(lua_Alloc f, <span class="keyword">void</span> *ud)</span> </span>{</span><br /><span class="line">  <span class="keyword">int</span> i;</span><br /><span class="line">  lua_State *L;</span><br /><span class="line">  global_State *g;</span><br /><span class="line">  <span class="comment">/* 分配一个lua_State结构的内容块 */</span></span><br /><span class="line">  LG *l = cast(LG *, (*f)(ud, <span class="literal">NULL</span>, LUA_TTHREAD, <span class="keyword">sizeof</span>(LG)));</span><br /><span class="line">  <span class="keyword">if</span> (l == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br /><span class="line">  L = &amp;l-&gt;l.l;</span><br /><span class="line">  g = &amp;l-&gt;g;</span><br /><span class="line">  L-&gt;next = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;tt = LUA_TTHREAD;</span><br /><span class="line">  g-&gt;currentwhite = bitmask(WHITE0BIT);</span><br /><span class="line">  L-&gt;marked = luaC_white(g);</span><br /><span class="line">  </span><br /><span class="line">  <span class="comment">/* 初始化一个线程的栈结构数据 */</span></span><br /><span class="line">  preinit_thread(L, g);</span><br /><span class="line">  g-&gt;frealloc = f;</span><br /><span class="line">  g-&gt;ud = ud;</span><br /><span class="line">  g-&gt;mainthread = L;</span><br /><span class="line">  g-&gt;seed = makeseed(L);</span><br /><span class="line">  g-&gt;gcrunning = <span class="number">0</span>;  <span class="comment">/* no GC while building state */</span></span><br /><span class="line">  g-&gt;GCestimate = <span class="number">0</span>;</span><br /><span class="line">  g-&gt;strt.size = g-&gt;strt.nuse = <span class="number">0</span>;</span><br /><span class="line">  g-&gt;strt.hash = <span class="literal">NULL</span>;</span><br /><span class="line">  setnilvalue(&amp;g-&gt;l_registry);</span><br /><span class="line">  luaZ_initbuffer(L, &amp;g-&gt;buff);</span><br /><span class="line">  g-&gt;panic = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;version = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;gcstate = GCSpause;</span><br /><span class="line">  g-&gt;gckind = KGC_NORMAL;</span><br /><span class="line">  g-&gt;allgc = g-&gt;finobj = g-&gt;tobefnz = g-&gt;fixedgc = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;sweepgc = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;gray = g-&gt;grayagain = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;weak = g-&gt;ephemeron = g-&gt;allweak = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;twups = <span class="literal">NULL</span>;</span><br /><span class="line">  g-&gt;totalbytes = <span class="keyword">sizeof</span>(LG);</span><br /><span class="line">  g-&gt;GCdebt = <span class="number">0</span>;</span><br /><span class="line">  g-&gt;gcfinnum = <span class="number">0</span>;</span><br /><span class="line">  g-&gt;gcpause = LUAI_GCPAUSE;</span><br /><span class="line">  g-&gt;gcstepmul = LUAI_GCMUL;</span><br /><span class="line">  <span class="keyword">for</span> (i=<span class="number">0</span>; i &lt; LUA_NUMTAGS; i++) g-&gt;mt[i] = <span class="literal">NULL</span>;</span><br /><span class="line">  <span class="keyword">if</span> (luaD_rawrunprotected(L, f_luaopen, <span class="literal">NULL</span>) != LUA_OK) {</span><br /><span class="line">    <span class="comment">/* memory allocation error: free partial state */</span></span><br /><span class="line">    close_state(L);</span><br /><span class="line">    L = <span class="literal">NULL</span>;</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">return</span> L;</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="comment">** preinitialize a thread with consistent values without allocating</span></span><br /><span class="line"><span class="comment">** any memory (to avoid errors)</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preinit_thread</span> <span class="params">(lua_State *L, global_State *g)</span> </span>{</span><br /><span class="line">  G(L) = g;	<span class="comment">/* 将global_State结构挂载在lua_State上 #define G(L)	(L-&gt;l_G) */</span></span><br /><span class="line">  L-&gt;<span class="built_in">stack</span> = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;ci = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;stacksize = <span class="number">0</span>;</span><br /><span class="line">  L-&gt;twups = L;  <span class="comment">/* thread has no upvalues */</span></span><br /><span class="line">  L-&gt;errorJmp = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;nCcalls = <span class="number">0</span>;</span><br /><span class="line">  L-&gt;hook = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;hookmask = <span class="number">0</span>;</span><br /><span class="line">  L-&gt;basehookcount = <span class="number">0</span>;</span><br /><span class="line">  L-&gt;allowhook = <span class="number">1</span>;</span><br /><span class="line">  resethookcount(L);</span><br /><span class="line">  L-&gt;openupval = <span class="literal">NULL</span>;</span><br /><span class="line">  L-&gt;nny = <span class="number">1</span>;</span><br /><span class="line">  L-&gt;status = LUA_OK;</span><br /><span class="line">  L-&gt;errfunc = <span class="number">0</span>;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="销毁栈结构："><a href="#销毁栈结构：" class="headerlink" title="销毁栈结构："></a>销毁栈结构：</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 关闭lua栈 */</span></span><br /><span class="line"><span class="function">LUA_API <span class="keyword">void</span> <span class="title">lua_close</span> <span class="params">(lua_State *L)</span> </span>{</span><br /><span class="line">  L = G(L)-&gt;mainthread;  <span class="comment">/* only the main thread can be closed */</span></span><br /><span class="line">  lua_lock(L);</span><br /><span class="line">  close_state(L);</span><br /><span class="line">}</span><br /><span class="line"></span><br /><span class="line"><span class="comment">/* 释放lua栈结构 */</span></span><br /><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">close_state</span> <span class="params">(lua_State *L)</span> </span>{</span><br /><span class="line">  global_State *g = G(L);</span><br /><span class="line">  luaF_close(L, L-&gt;<span class="built_in">stack</span>);  <span class="comment">/* close all upvalues for this thread 释放栈结构的upvalues */</span></span><br /><span class="line">  luaC_freeallobjects(L);  <span class="comment">/* collect all objects 释放全部对象 */</span></span><br /><span class="line">  <span class="keyword">if</span> (g-&gt;version)  <span class="comment">/* closing a fully built state? */</span></span><br /><span class="line">    luai_userstateclose(L);</span><br /><span class="line">  luaM_freearray(L, G(L)-&gt;strt.hash, G(L)-&gt;strt.size);</span><br /><span class="line">  luaZ_freebuffer(L, &amp;g-&gt;buff);</span><br /><span class="line">  freestack(L);</span><br /><span class="line">  lua_assert(gettotalbytes(g) == <span class="keyword">sizeof</span>(LG));</span><br /><span class="line">  (*g-&gt;frealloc)(g-&gt;ud, fromstate(L), <span class="keyword">sizeof</span>(LG), <span class="number">0</span>);  <span class="comment">/* free main block */</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="数据栈与调用栈："><a href="#数据栈与调用栈：" class="headerlink" title="数据栈与调用栈："></a>数据栈与调用栈：</h4>
+<p>数据栈结构由一个StkID结构存储。lua中的数据分为值类型和引用类型。引用类型需要GC机制管理。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> Value {</span><br /><span class="line">  GCObject *gc;    <span class="comment">/* collectable objects 存放所有需要垃圾回收的类型的对象 */</span></span><br /><span class="line">  <span class="keyword">void</span> *p;         <span class="comment">/* light userdata 存放轻量用户数据 */</span></span><br /><span class="line">  <span class="keyword">int</span> b;           <span class="comment">/* booleans */</span></span><br /><span class="line">  lua_CFunction f; <span class="comment">/* light C functions 存放一个方法 */</span></span><br /><span class="line">  lua_Integer i;   <span class="comment">/* integer numbers 存放int数字 */</span></span><br /><span class="line">  lua_Number n;    <span class="comment">/* float numbers 存放float数字 */</span></span><br /><span class="line">};</span><br /><span class="line"></span><br /><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">lua_TValue</span> {</span></span><br /><span class="line">  TValuefields;</span><br /><span class="line">};</span><br /><span class="line"></span><br /><span class="line"><span class="comment">// #define TValuefields	Value value_; int tt_</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">typedef</span> TValue *StkId;  <span class="comment">/* index to stack elements */</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>调用栈存放在CallInfo中，以数组的形式存放在虚拟机的对象里。其中CallInfo中的ci-&gt;func指向正在执行的函数在数据栈上的位置l-&gt;top（正在调用的函数一定位于数据栈上。）</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="comment">** Information about a call.</span></span><br /><span class="line"><span class="comment">** When a thread yields, &#39;func&#39; is adjusted to pretend that the</span></span><br /><span class="line"><span class="comment">** top function has only the yielded values in its stack; in that</span></span><br /><span class="line"><span class="comment">** case, the actual &#39;func&#39; value is saved in field &#39;extra&#39;. </span></span><br /><span class="line"><span class="comment">** When a function calls another with a continuation, &#39;extra&#39; keeps</span></span><br /><span class="line"><span class="comment">** the function index so that, in case of errors, the continuation</span></span><br /><span class="line"><span class="comment">** function can be called with the correct top.</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">CallInfo</span> {</span></span><br /><span class="line">  StkId func;  <span class="comment">/* function index in the stack func 指向正在执行的函数在数据栈上的位置 */</span></span><br /><span class="line">  StkId	top;  <span class="comment">/* top for this function */</span></span><br /><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">CallInfo</span> *<span class="title">previous</span>, *<span class="title">next</span>;</span>  <span class="comment">/* dynamic call link */</span></span><br /><span class="line">  <span class="keyword">union</span> {</span><br /><span class="line">    <span class="class"><span class="keyword">struct</span> {</span>  <span class="comment">/* only for Lua functions */</span></span><br /><span class="line">      StkId base;  <span class="comment">/* base for this function */</span></span><br /><span class="line">      <span class="keyword">const</span> Instruction *savedpc;</span><br /><span class="line">    } l;</span><br /><span class="line">    <span class="class"><span class="keyword">struct</span> {</span>  <span class="comment">/* only for C functions */</span></span><br /><span class="line">      lua_KFunction k;  <span class="comment">/* continuation in case of yields */</span></span><br /><span class="line">      <span class="keyword">ptrdiff_t</span> old_errfunc;</span><br /><span class="line">      lua_KContext ctx;  <span class="comment">/* context info. in case of yields */</span></span><br /><span class="line">    } c;</span><br /><span class="line">  } u;</span><br /><span class="line">  <span class="keyword">ptrdiff_t</span> extra;</span><br /><span class="line">  <span class="keyword">short</span> nresults;  <span class="comment">/* expected number of results from this function */</span></span><br /><span class="line">  lu_byte callstatus;</span><br /><span class="line">} CallInfo;</span><br /></pre></td></tr></tbody></table></figure>
+<h4 id="栈初始化和释放："><a href="#栈初始化和释放：" class="headerlink" title="栈初始化和释放："></a>栈初始化和释放：</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre>&lt;spa
+</pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/28_Linux-%E4%B8%8B-lua-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8F%8A%E5%AE%89%E8%A3%85-luafilesystem/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/28_Linux-%E4%B8%8B-lua-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8F%8A%E5%AE%89%E8%A3%85-luafilesystem/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/28_Linux-%E4%B8%8B-lua-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8F%8A%E5%AE%89%E8%A3%85-luafilesystem/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/290_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/290_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/290_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/28_Linux-%E4%B8%8B-lua-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%8F%8A%E5%AE%89%E8%A3%85-luafilesystem/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

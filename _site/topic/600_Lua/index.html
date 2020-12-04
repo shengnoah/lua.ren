@@ -1,0 +1,789 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lua &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/600_Lua/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/600_Lua/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Lua</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~3 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Lua</h1>
+      <h2 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h2>
+<p>ngx_http_lua_module - 将Lua的功能嵌入到Nginx HTTP服务器中。</p>
+<p>这个模块没有与Nginx源码一起发布。详见<a href="#">安装介绍</a></p>
+<h2 id="内容列表"><a href="#内容列表" class="headerlink" title="内容列表"></a>内容列表</h2>
+<ul>
+<li><a href="#名称">名称</a></li>
+<li><a href="#状态">状态</a></li>
+<li><a href="#版本">版本</a></li>
+<li><a href="#概要">概要</a></li>
+<li><a href="#描述">描述</a></li>
+</ul>
+<h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2>
+<p>已经发布。</p>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2>
+<p>此文档基于2017年4月8日发布的ngx_lua <a href="https://github.com/openresty/lua-nginx-module/tags" target="_blank" rel="external noopener noreferrer">v0.10.8</a>。</p>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div></pre></td><td class="code"><pre><div class="line"># 设置纯lua外部库的搜索路径 (&#39;;;&#39; 是默认路径):</div><div class="line"> lua_package_path &#39;/foo/bar/?.lua;/blah/?.lua;;&#39;;</div><div class="line"></div><div class="line"> # 设置用C实现的Lua外部库的搜索路径 (也可以用 &#39;;;&#39;):</div><div class="line"> lua_package_cpath &#39;/bar/baz/?.so;/blah/blah/?.so;;&#39;;</div><div class="line"></div><div class="line"> server {</div><div class="line">     location /lua_content {</div><div class="line">         # MIME type determined by default_type:</div><div class="line">         default_type &#39;text/plain&#39;;</div><div class="line"></div><div class="line">         content_by_lua_block {</div><div class="line">             ngx.say(&#39;Hello,world!&#39;)</div><div class="line">         }</div><div class="line">     }</div><div class="line"></div><div class="line">     location /nginx_var {</div><div class="line">         # MIME type determined by default_type:</div><div class="line">         default_type &#39;text/plain&#39;;</div><div class="line"></div><div class="line">         # try access /nginx_var?a=hello,world</div><div class="line">         content_by_lua_block {</div><div class="line">             ngx.say(ngx.var.arg_a)</div><div class="line">         }</div><div class="line">     }</div><div class="line"></div><div class="line">     location = /request_body {</div><div class="line">         client_max_body_size 50k;</div><div class="line">         client_body_buffer_size 50k;</div><div class="line"></div><div class="line">         content_by_lua_block {</div><div class="line">             ngx.req.read_body()  -- explicitly read the req body</div><div class="line">             local data = ngx.req.get_body_data()</div><div class="line">             if data then</div><div class="line">                 ngx.say(&#34;body data:&#34;)</div><div class="line">                 ngx.print(data)</div><div class="line">                 return</div><div class="line">             end</div><div class="line"></div><div class="line">             -- body may get buffered in a temp file:</div><div class="line">             local file = ngx.req.get_body_file()</div><div class="line">             if file then</div><div class="line">                 ngx.say(&#34;body is in file &#34;, file)</div><div class="line">             else</div><div class="line">                 ngx.say(&#34;no body found&#34;)</div><div class="line">             end</div><div class="line">         }</div><div class="line">     }</div><div class="line"></div><div class="line">     # transparent non-blocking I/O in Lua via subrequests</div><div class="line">     # (well, a better way is to use cosockets)</div><div class="line">     location = /lua {</div><div class="line">         # MIME type determined by default_type:</div><div class="line">         default_type &#39;text/plain&#39;;</div><div class="line"></div><div class="line">         content_by_lua_block {</div><div class="line">             local res = ngx.location.capture(&#34;/some_other_location&#34;)</div><div class="line">             if res then</div><div class="line">                 ngx.say(&#34;status: &#34;, res.status)</div><div class="line">                 ngx.say(&#34;body:&#34;)</div><div class="line">                 ngx.print(res.body)</div><div class="line">             end</div><div class="line">         }</div><div class="line">     }</div><div class="line"></div><div class="line">     location = /foo {</div><div class="line">         rewrite_by_lua_block {</div><div class="line">             res = ngx.location.capture(&#34;/memc&#34;,</div><div class="line">                 { args = { cmd = &#34;incr&#34;, key = ngx.var.uri } }</div><div class="line">             )</div><div class="line">         }</div><div class="line"></div><div class="line">         proxy_pass http://blah.blah.com;</div><div class="line">     }</div><div class="line"></div><div class="line">     location = /mixed {</div><div class="line">         rewrite_by_lua_file /path/to/rewrite.lua;</div><div class="line">         access_by_lua_file /path/to/access.lua;</div><div class="line">         content_by_lua_file /path/to/content.lua;</div><div class="line">     }</div><div class="line"></div><div class="line">     # use nginx var in code path</div><div class="line">     # CAUTION: contents in nginx var must be carefully filtered,</div><div class="line">     # otherwise there&#39;ll be great security risk!</div><div class="line">     location ~ ^/app/([-_a-zA-Z0-9/]+) {</div><div class="line">         set $path $1;</div><div class="line">         content_by_lua_file /path/to/lua/app/root/$path.lua;</div><div class="line">     }</div><div class="line"></div><div class="line">     location / {</div><div class="line">        client_max_body_size 100k;</div><div class="line">        client_body_buffer_size 100k;</div><div class="line"></div><div class="line">        access_by_lua_block {</div><div class="line">            -- check the client IP address is in our black list</div><div class="line">            if ngx.var.remote_addr == &#34;132.5.72.3&#34; then</div><div class="line">                ngx.exit(ngx.HTTP_FORBIDDEN)</div><div class="line">            end</div><div class="line"></div><div class="line">            -- check if the URI contains bad words</div><div class="line">            if ngx.var.uri and</div><div class="line">                   string.match(ngx.var.request_body, &#34;evil&#34;)</div><div class="line">            then</div><div class="line">                return ngx.redirect(&#34;/terms_of_use.html&#34;)</div><div class="line">            end</div><div class="line"></div><div class="line">            -- tests passed</div><div class="line">        }</div><div class="line"></div><div class="line">        # proxy_pass/fastcgi_pass/etc settings</div><div class="line">     }</div><div class="line"> }</div></pre></td></tr></tbody></table></figure>
+<p><a href="#内容列表">回到内容列表</a></p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2>
+<p>通过标准的Lua5.1解释器或者<a href="http://luajit.org/luajit.html" target="_blank" rel="external noopener noreferrer">LuaJIT2.0/2.1</a>以及借助Nginx的子请求，此模块将Lua嵌入到Nginx中，允许将强大的Lua线程集成到Nginx事件模块中。</p>
+<p>与<a href="https://httpd.apache.org/docs/trunk/mod/mod_lua.html" target="_blank" rel="external noopener noreferrer">Apcache’s mod_lua</a>和<a href="http://redmine.lighttpd.net/wiki/1/Docs:ModMagnet" target="_blank" rel="external noopener noreferrer">Lighttpd’s mod_magnet</a>不同的是，使用此模块执行Lua代码，在网络传输中完全是非阻塞的，只要使用此模块提供的<a href="https://github.com/openresty/lua-nginx-module#nginx-api-for-lua" target="_blank" rel="external noopener noreferrer">Nginx API for Lua</a>来处理上游服务的请求，例如MySQL, PostgreSQL, Memcached,Redis 或上游Http web服务。</p>
+<p>至少以下Lua库和Nginx模块可以和ngx_lua模块一起使用:</p>
+<ul>
+<li><a href="https://github.com/openresty/lua-resty-memcached" target="_blank" rel="external noopener noreferrer">lua-resty-memcached</a></li>
+<li><a href="https://github.com/openresty/lua-resty-mysql" target="_blank" rel="external noopener noreferrer">lua-resty-mysql</a></li>
+<li><a href="https://github.com/openresty/lua-resty-redis" target="_blank" rel="external noopener noreferrer">lua-resty-redis</a></li>
+<li><a href="https://github.com/openresty/lua-resty-dns" target="_blank" rel="external noopener noreferrer">lua-resty-dns</a></li>
+<li><a href="https://github.com/openresty/lua-resty-upload" target="_blank" rel="external noopener noreferrer">lua-resty-upload</a></li>
+<li><a href="https://github.com/openresty/lua-resty-websocket" target="_blank" rel="external noopener noreferrer">lua-resty-websocket</a></li>
+<li><a href="https://github.com/openresty/lua-resty-lock" target="_blank" rel="external noopener noreferrer">lua-resty-lock</a></li>
+<li><a href="https://github.com/cloudflare/lua-resty-logger-socket" target="_blank" rel="external noopener noreferrer">lua-resty-logger-socket</a></li>
+<li><a href="https://github.com/openresty/lua-resty-lrucache" target="_blank" rel="external noopener noreferrer">lua-resty-lrucache</a></li>
+<li><a href="https://github.com/openresty/lua-resty-string" target="_blank" rel="external noopener noreferrer">lua-resty-string</a></li>
+<li><a href="http://github.com/openresty/memc-nginx-module" target="_blank" rel="external noopener noreferrer">ngx_memc</a></li>
+<li><a href="https://github.com/FRiCKLE/ngx_postgres" target="_blank" rel="external noopener noreferrer">ngx_postgres</a></li>
+<li><a href="http://github.com/openresty/redis2-nginx-module" target="_blank" rel="external noopener noreferrer">ngx_redis2</a></li>
+<li><a href="http://wiki.nginx.org/HttpRedisModule" target="_blank" rel="external noopener noreferrer">ngx_redis</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html" target="_blank" rel="external noopener noreferrer">ngx_proxy</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html" target="_blank" rel="external noopener noreferrer">ngx_fastcgi</a></li>
+</ul>
+<p>通过<a href="https://github.com/openresty/lua-nginx-module#ngxlocationcapture" target="_blank" rel="external noopener noreferrer">ngx.location.capture</a>或者<a href="https://github.com/openresty/lua-nginx-module#ngxlocationcapture_multi" target="_blank" rel="external noopener noreferrer">ngx.location.capture_multi</a>，几乎所有的Ngnix模块都可以与ngx_lua模块一起使用，但是我们建议使用lua-resty-*代替创建子请求去访问Nginx upstream模块，因为前者更加灵活且存储效率更高。</p>
+<p>在一个单独的nginx worker进程中，所有的请求共享一个Lua解释器或LuaJIT实例，但是请求上下文却是使用轻量级的Lua协程隔离。</p>
+<p>被加载的Lua模块保持在nginx worker级别使得只占用极小内存，即使在重负载下也是如此。</p>
+<p>这个模块被插入NGINX的“http”子系统，所以它仅仅支持Http家族中的晚期通信协议（例如HTTP0.9/1.0/1.1/2.0，WebSockets等等）。如果你想使用TCP协议与晚期版本客户端通信，你应该使用兼容Lua APi的<a href="https://github.com/openresty/stream-lua-nginx-module#readme" target="_blank" rel="external noopener noreferrer">ngx_stream_lua</a>模块。</p>
+<p><a href="#内容列表">回到TOC</a></p>
+<h2 id="典型应用"><a href="#典型应用" class="headerlink" title="典型应用"></a>典型应用</h2>
+<p>仅仅列举一些:</p>
+<ul>
+<li>使用Lua处理各种nginx upstream输出(代理，dirzzle, postgres,redis, memcached,等等)</li>
+<li>在请求真正到达upstream后端之前，使用处理任意复杂的访问控制和安全检查</li>
+<li>使用随意方式操纵响应头</li>
+<li>从外部存储(例如redis, memcached,mysql,postgresql)获取后端信息,从而即时根据那些信息来选择访问哪个upstream后端</li>
+<li>在一个content handler中使用同步方式编写任意复杂的web应用，但是仍然使用非阻塞方式访问数据库后端和其他存储。</li>
+<li>使用Lua在重写阶段做非常复杂的URL调度</li>
+<li>使用Lua为Nginx的子请求和任意的location实现高级的缓存机制。</li>
+</ul>
+<p>作为模块，他允许将Nginx内的各种元素聚集在一起，并将Lua的优势暴露给用户，这种可能性是无限的。该模块提供了脚本的全部灵活性，同时在cpu时间以及内存占用方面，提供了与C语言同等级别的性能水平。当LusJIT2.x可用后尤其是如此。</p>
+<p>而其他的脚本语言通常难以实现此性能级别。</p>
+<p>Lua状态(Lua虚拟机实例)跨所有请求共享，通过一个单独的nginx worker进程处理以最小化内存占用。</p>
+<p><a href="#内容列表">回到TOC</a></p>
+<h2 id="Nginx兼容性"><a href="#Nginx兼容性" class="headerlink" title="Nginx兼容性"></a>Nginx兼容性</h2>
+<p>该模块最新的版本兼容一下Nginx版本：</p>
+<ul>
+<li>1.11.x (last tested: 1.11.2)</li>
+<li>1.10.x</li>
+<li>1.9.x (last tested: 1.9.15)</li>
+<li>1.8.x</li>
+<li>1.7.x (last tested: 1.7.10)</li>
+<li>1.6.x</li>
+</ul>
+<p>Nginx cores低于1.6.0(包含)版本不再支持。</p>
+<p><a href="#内容列表">回到TOC</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-5_-SQL-%E5%8D%87%E7%BA%A7SQL-Server-Evaluation-%E7%89%88%E6%9C%AC%E6%88%90%E4%B8%BA%E6%AD%A3%E5%BC%8F%E7%89%88%E6%9C%AC/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-5_-SQL-%E5%8D%87%E7%BA%A7SQL-Server-Evaluation-%E7%89%88%E6%9C%AC%E6%88%90%E4%B8%BA%E6%AD%A3%E5%BC%8F%E7%89%88%E6%9C%AC/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-5_-SQL-%E5%8D%87%E7%BA%A7SQL-Server-Evaluation-%E7%89%88%E6%9C%AC%E6%88%90%E4%B8%BA%E6%AD%A3%E5%BC%8F%E7%89%88%E6%9C%AC/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/600_Lua/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/600_Lua/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/600_Lua/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-5_-SQL-%E5%8D%87%E7%BA%A7SQL-Server-Evaluation-%E7%89%88%E6%9C%AC%E6%88%90%E4%B8%BA%E6%AD%A3%E5%BC%8F%E7%89%88%E6%9C%AC/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,1893 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>LUA基础入门教程 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua, lua语言零基础教程, lua入门, 机械键盘, 静电容键盘, 码农, lua教程, lua入门教程, lua基础, lua基础教程, lua基础入门教程, 友情岁月, lua.ren">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LUA基础入门教程">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/page827/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/page827/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post-index">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>LUA基础入门教程</h1>
+      
+        <h2><span class="entry-date"><time>&nbsp;</time></span></h2>
+      
+
+      
+          <p class="entry-reading-time">
+            &nbsp;
+          </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  window.onload = function(){
+    new SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('results-container'),
+      json: 'http://0.0.0.0:8081/search.json',
+      searchResultTemplate: '<li class="entry-title"><a href="{url}" title="{title}">{title}</a></li>'
+    });
+  };
+</script>
+
+
+
+
+
+<div id="main" role="main">
+  <!--
+    <h3>lua</h3>
+  -->
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/tags/" class="read-more-btn">搜索</a>
+    </div><!-- /.read-more-header -->
+
+      
+      
+
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#CJSON" class="tag"><span class="term">CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#ES" class="tag"><span class="term">ES</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog" class="tag"><span class="term">Graylog</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Graylog SDK" class="tag"><span class="term">Graylog SDK</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#HiLua" class="tag"><span class="term">HiLua</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#JSON" class="tag"><span class="term">JSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA" class="tag"><span class="term">LUA</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA-CJSON" class="tag"><span class="term">LUA-CJSON</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#Lapis" class="tag"><span class="term">Lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LazyTable" class="tag"><span class="term">LazyTable</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Map排序" class="tag"><span class="term">Map排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#MoonScript官方文档" class="tag"><span class="term">MoonScript官方文档</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript简介" class="tag"><span class="term">MoonScript简介</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#OpenResty Timer" class="tag"><span class="term">OpenResty Timer</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#RESTY-HTTP" class="tag"><span class="term">RESTY-HTTP</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#RESTY-REDIS" class="tag"><span class="term">RESTY-REDIS</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#abc" class="tag"><span class="term">abc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#apisix" class="tag"><span class="term">apisix</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#basic" class="tag"><span class="term">basic</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#c" class="tag"><span class="term">c</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#dashboard" class="tag"><span class="term">dashboard</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#datetime" class="tag"><span class="term">datetime</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#django" class="tag"><span class="term">django</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#fuser" class="tag"><span class="term">fuser</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#gateway" class="tag"><span class="term">gateway</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#lapis" class="tag"><span class="term">lapis</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua" class="tag"><span class="term">lua</span> <span class="count">124</span></a></li>
+        
+          
+          <li><a href="#lua json" class="tag"><span class="term">lua json</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua二分查找" class="tag"><span class="term">lua二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环" class="tag"><span class="term">lua循环</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua循环遍历" class="tag"><span class="term">lua循环遍历</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#lua文章" class="tag"><span class="term">lua文章</span> <span class="count">1126</span></a></li>
+        
+          
+          <li><a href="#moonscript" class="tag"><span class="term">moonscript</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nc" class="tag"><span class="term">nc</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#nginx" class="tag"><span class="term">nginx</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#niz" class="tag"><span class="term">niz</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty" class="tag"><span class="term">openresty</span> <span class="count">28</span></a></li>
+        
+          
+          <li><a href="#tengine" class="tag"><span class="term">tengine</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#二分查找" class="tag"><span class="term">二分查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#库" class="tag"><span class="term">库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#折半查找" class="tag"><span class="term">折半查找</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#深度学习" class="tag"><span class="term">深度学习</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农" class="tag"><span class="term">码农</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#码农键盘，键盘入坑" class="tag"><span class="term">码农键盘，键盘入坑</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#神经网络" class="tag"><span class="term">神经网络</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员机械键盘" class="tag"><span class="term">程序员机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员薄膜键盘" class="tag"><span class="term">程序员薄膜键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员键盘" class="tag"><span class="term">程序员键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#程序员静电容键盘" class="tag"><span class="term">程序员静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#选择排序" class="tag"><span class="term">选择排序</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#静电容键盘，plum" class="tag"><span class="term">静电容键盘，plum</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#风控笔记" class="tag"><span class="term">风控笔记</span> <span class="count">29</span></a></li>
+        
+      </ul>
+   
+      
+    <!--
+      <ul class="entry-meta inline-list">
+        
+          
+          <li><a href="#      .md" class="tag"><span class="term">      .md</span> <span class="count"></span></a></li>
+        
+          
+          <li><a href="#AI" class="tag"><span class="term">AI</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#Documents" class="tag"><span class="term">Documents</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#HiLua框架" class="tag"><span class="term">HiLua框架</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#LUA教程" class="tag"><span class="term">LUA教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#Lapis框架" class="tag"><span class="term">Lapis框架</span> <span class="count">5</span></a></li>
+        
+          
+          <li><a href="#MoonScript语法" class="tag"><span class="term">MoonScript语法</span> <span class="count">4</span></a></li>
+        
+          
+          <li><a href="#MoonScript项目" class="tag"><span class="term">MoonScript项目</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#OPENRESTY" class="tag"><span class="term">OPENRESTY</span> <span class="count">6</span></a></li>
+        
+          
+          <li><a href="#lua_guide" class="tag"><span class="term">lua_guide</span> <span class="count">34</span></a></li>
+        
+          
+          <li><a href="#lua教程" class="tag"><span class="term">lua教程</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#mysql" class="tag"><span class="term">mysql</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#openresty最佳实践" class="tag"><span class="term">openresty最佳实践</span> <span class="count">17</span></a></li>
+        
+          
+          <li><a href="#python" class="tag"><span class="term">python</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#tools" class="tag"><span class="term">tools</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#topic" class="tag"><span class="term">topic</span> <span class="count">1438</span></a></li>
+        
+          
+          <li><a href="#动态库" class="tag"><span class="term">动态库</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#安全" class="tag"><span class="term">安全</span> <span class="count">29</span></a></li>
+        
+          
+          <li><a href="#机械键盘" class="tag"><span class="term">机械键盘</span> <span class="count">1</span></a></li>
+        
+          
+          <li><a href="#网关" class="tag"><span class="term">网关</span> <span class="count">3</span></a></li>
+        
+          
+          <li><a href="#键盘" class="tag"><span class="term">键盘</span> <span class="count">2</span></a></li>
+        
+          
+          <li><a href="#静电容键盘" class="tag"><span class="term">静电容键盘</span> <span class="count">1</span></a></li>
+        
+      </ul>
+    -->
+
+
+
+      <div style="text-align: center">
+        <h3>按回车确认检索</h3>
+        <input type="text" placeholder="输入关键字并按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+
+    </section>
+
+</div><!-- /#main -->
+
+
+<!--
+
+<div id="main" role="main">
+    <section id="disqus_thread" class="read-more">            
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081" class="read-more-btn">检索</a>
+    </div>
+      <div style="text-align: center">
+          <h3>关键字: 标题、标签、分类等。</h3>
+        <input type="text" placeholder="输入标题、标签、按回车。" id="search-input"/>
+      </div>
+
+      <ul id="results-container">
+      </ul>
+    </section>
+</div>
+-->
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">置顶</a>
+  </div><!-- /.read-more-header -->
+  
+      <h1><li><a href="http://0.0.0.0:8081/静电容键盘/niz静电容键盘怎么样/" >程序员神器</a></li></h1>
+  
+      <h1><li><a href="http://0.0.0.0:8081/images/download/lua.pdf" >Lua基础入门教程（PDF）</a></li></h1>
+  
+</div><!-- /#main -->
+
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第一部分：变量与基础</h4>
+    <p>Lua的基础知识</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/variables/" title="">1.变量</a></h3>
+        <span>variables</span>
+        <h3><a href="/lua_guide/strings/" title="">2.字符串</a></h3>
+        <span>strings</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/tables/" title="">3.表</a></h3>
+        <span>tables</span>
+        <h3><a href="/lua_guide/operators/" title="">4.操作符</a></h3>
+        <span>operators</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/" class="read-more-btn">判断</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第二部分：判断控制</h4>
+    <p>Lua的判断控制操作</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/decision-making/" title="">1.Lua判断</a></h3>
+        <span>decision making</span>
+        <h3><a href="/lua_guide/if-statement/" title="">2.if语句</a></h3>
+        <span>if</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/if-else-if-statement/" title="">3.if...else 语句</a></h3>
+        <span>if else</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">循环</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第三部分：循环控制</h4>
+    <p><h5>while 循环	先检测条件，条件为真时再执行循环体，直到条件为假时结束。</h5></p>
+    <p><h5>for 循环	执行一个语句序列多次，可以简化管理循环变量的代码。</h5></p>
+    <p><h5>repeat...until 循环	重复执行一组代码语句，直到 until 条件为真为止。</h5></p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/lua教程/for/" title="">1.for循环</a></h3>
+        <span>for循环几使用</span>
+        <h3><a href="/lua_guide/lua教程/while/" title="">2.while循环</a></h3>
+        <span>while循环使用</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/loop/" title="">3.loop循环</a></h3>
+        <span>loop循环使用</span>
+        <h3><a href="/lua_guide/repeat-until/" title="">4.repeat...until</a></h3>
+        <span>repeat...until循环使用</span>
+        <h3><a href="/lua_guide/iterators/" title="">5.iterators</a></h3>
+        <span>Lua迭代器</span>
+      </div><!-- /.list-item -->
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="/lua_guide/if-else-if-statement/" class="read-more-btn">高级</a>
+  </div><!-- /.read-more-header -->
+ 
+  <div class="read-more-content">
+    <h4>第四部分：高级功能</h4>
+    <p>介绍几种的Lua高级功能</p>
+  </div><!-- /.read-more-content -->
+
+  <div class="read-more-list">
+      <div class="list-item">
+        <h3><a href="/lua_guide/error-handling/" title="">1.Lua错误处理</a></h3>
+        <span>error-handling</span>
+        <h3><a href="/lua_guide/coroutines/" title="">2.Lua 协程</a></h3>
+        <span>coroutines</span>
+      </div><!-- /.list-item -->
+      <div class="list-item">
+        <h3><a href="/lua_guide/metatables/" title="">3.Lua元表</a></h3>
+        <span>metatables</span>
+        <h3><a href="/lua_guide/garbage-collection/" title="">4.Lua垃圾回收机制</a></h3>
+        <span>garbage-collection</span>
+      </div><!-- /.list-item -->
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+
+<div id="main" role="main">
+  <section id="disqus_thread" class="read-more">            
+  <div class="read-more-header">
+    <a href="http://0.0.0.0:8081" class="read-more-btn">基础</a>
+  </div><!-- /.read-more-header -->
+
+        
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/for/" title="Lua中的for循环">Lua中的for循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/while/" title="Lua的while循环">Lua的while循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/lua%E6%95%99%E7%A8%8B/variables/" title="Lua的变量">Lua的变量</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/tables/" title="Lua表">Lua表</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/strings/" title="Lua字符串">Lua字符串</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/standard-libraries/" title="Lua标准库">Lua标准库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/repeat-until/" title="repeat...until 循环">repeat...until 循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/overview/" title="概述">概述</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operators/" title="操作符">操作符</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/operating-system-facilities/" title="Lua操作系统工具库">Lua操作系统工具库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/object-oriented/" title="Lua面向对象">Lua面向对象</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-loop/" title="Lua循环嵌套">Lua循环嵌套</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/nested-if-statement/" title="Lua中的嵌套 if 语句">Lua中的嵌套 if 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/modules/" title="Lua模块">Lua模块</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/metatables/" title="Metatables">Metatables</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/math-library/" title="Lua数学函数库">Lua数学函数库</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/loop/" title="LUA的Loop循环">LUA的Loop循环</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/iterators/" title="Lua迭代器">Lua迭代器</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-statement/" title="Lua中的if语句">Lua中的if语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/if-else-if-statement/" title="Lua中的 if...else 语句">Lua中的 if...else 语句</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/garbage-collection/" title="Lua垃圾回收机制">Lua垃圾回收机制</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/game-programming/" title="Lua游戏开发">Lua游戏开发</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/functions/" title="Lua函数">Lua函数</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/file-io/" title="Lua文件I/O">Lua文件I/O</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/error-handling/" title="Lua错误处理">Lua错误处理</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/environment/" title="Lua运行环境">Lua运行环境</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/decision-making/" title="Lua判断">Lua判断</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/debugging/" title="Lua调试">Lua调试</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/database-access/" title="Lua数据库访问">Lua数据库访问</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/data-types/" title="数据类型">数据类型</a></li>
+            
+         
+            
+                <li class="entry-title"><a href="/lua_guide/coroutines/" title="Lua协程">Lua协程</a></li>
+            
+         
+
+</div><!-- /#main -->
+
+
+<div id="main" role="main">
+  
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00"><a href="http://0.0.0.0:8081/topic/644_%E9%80%86%E5%90%91%E5%88%86%E6%9E%90Lua%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B%E5%A4%96%E6%8C%82/">January 01, 2016</a></time></span><span class="author vcard"><span class="fn"><a href="http://0.0.0.0:8081/about/" title="About 糖果">糖果</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~21 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://0.0.0.0:8081/topic/644_%E9%80%86%E5%90%91%E5%88%86%E6%9E%90Lua%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B%E5%A4%96%E6%8C%82/" rel="bookmark" title="逆向分析Lua注入类型外挂" itemprop="url">逆向分析Lua注入类型外挂</a></h1>
+    
+  </header>
+  <div class="entry-content">
+<!--
+      <div class="post-content_wrapper">
+            
+            <h2 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h2><p>该网游类型为横版过关类角色扮演游戏，之前在这上面花了不少时间。刚接触逆向分析，所以比较好奇外挂以及游戏漏洞的原理，故写此记录一下分析过程。  </p>
+<h2 id="找寻样本"><a href="#找寻样本" class="headerlink" title="找寻样本"></a>找寻样本</h2><p>该游戏近年在国内市场效应不佳，所以游戏工作室以及外挂制作等业务逐渐退出国服范围。在谷歌搜索后，发现存在许多类型为<code>Lua 注入</code>的外挂–也就是向游戏注入Lua脚本代码，执行实现非法行为的手段。而其中支持国服的，只有一款，下载后对其进行分析。  </p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>下载下来后，发现该外挂为单文件，对其进行查壳操作。<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224145535.png" alt="" /><br />为.NET程序，并且无壳，这就相当于开源了。使用Reflector反编译：<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224145648.png" alt="" /><br />无混淆，直接导出源码，丢入vs2017，方便阅读代码。  </p>
+<h3 id="加载器目录结构："><a href="#加载器目录结构：" class="headerlink" title="加载器目录结构："></a>加载器目录结构：</h3><p><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224150333.png" alt="" />  </p>
+<h3 id="加载器功能函数："><a href="#加载器功能函数：" class="headerlink" title="加载器功能函数："></a>加载器功能函数：</h3><p><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224150226.png" alt="" />  </p>
+<h3 id="加载器主要逻辑"><a href="#加载器主要逻辑" class="headerlink" title="加载器主要逻辑"></a>加载器主要逻辑</h3><p>WPF程序启动函数:  </p>
+<pre><code class="C#">        private void Application_Startup(object sender, System.Windows.StartupEventArgs e)  
+        {  
+            this.DeleteOld();  
+            this.CreateNew();  
+            Environment.Exit(0);  
+        }  
+
+        private void CreateNew()  
+        {  
+            string location = Assembly.GetExecutingAssembly().Location;  
+            string directoryName = MyWpfExtension.Computer.FileSystem.GetFileInfo(location).DirectoryName;  
+            byte[] lunaLoader = LunaLoader_Launcher.My.Resources.Resources.LunaLoader;  
+            string right = Functions.Random(5).ToString().ToLower();  
+            object obj2 = Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(this.localDirectory, @&#34;&#34;), right), &#34;.exe&#34;);  
+            Functions.RegistryWrite(&#34;LastExecutable_Path&#34;, Conversions.ToString(obj2));  
+            try  
+            {  
+                File.WriteAllBytes(Conversions.ToString(obj2), lunaLoader);  
+            }  
+            catch (Exception exception1)  
+            {  
+                ProjectData.SetProjectError(exception1);  
+                Functions.Message(&#34;Can&#39;t write new program files.&#34;, Conversions.ToString(3));  
+                ProjectData.ClearProjectError();  
+            }  
+            try  
+            {  
+                Process.Start(right, &#34;&#34;&#34; + directoryName + &#34;&#34;&#34;);  
+            }  
+            catch (Exception exception2)  
+            {  
+                ProjectData.SetProjectError(exception2);  
+                Functions.Message(&#34;The application files are corrupted, please disable your anti-virus.&#34;, Conversions.ToString(3));  
+                ProjectData.ClearProjectError();  
+            }  
+        }  
+
+        private void DeleteOld()  
+        {  
+            object obj2 = Functions.RegistryRead(&#34;LastExecutable_Path&#34;);  
+            try  
+            {  
+                if (File.Exists(Conversions.ToString(obj2)))  
+                {  
+                    File.Delete(Conversions.ToString(obj2));  
+                }  
+            }  
+            catch (Exception exception1)  
+            {  
+                ProjectData.SetProjectError(exception1);  
+                Functions.Message(&#34;Can&#39;t delete old program files.&#34;, Conversions.ToString(3));  
+                ProjectData.ClearProjectError();  
+            }  
+        }  
+
+</code></pre>
+<p>整体逻辑非常清晰，删除上一条注册表<code>LastExecutable_Path</code> (<code>SoftwareLunaLoader</code>)的值，随机生成文件名，然后向其写入新文件名，然后在<code>Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)</code>目录中生成程序内的压缩资源。可以肯定此单文件程序为主程序释放器。让我们对释放出来的资源进行分析，由于释放后程序必须由启动器启动，为了调试方便我直接将程序源码修改，PATCH掉了随机文件名部分，指定固定的文件名，方便启动以及调试。  </p>
+<h3 id="登录器分析"><a href="#登录器分析" class="headerlink" title="登录器分析"></a>登录器分析</h3><p>首先先查询壳信息<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224151404.png" alt="" /><br />显示为<code>ConfuserEx(1.0.0)[-]</code><br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224151329.png" alt="" /><br />丢入反编译工具中，发现特征，以及字符串等信息都被混淆了。<br />尝试带壳调试，但是整体堆栈调用太复杂了，并且通信使用了ssl，Hook了发包收包函数也无法获取信息，遂放弃。<br />此壳为魔改版，原版是开源的，所以原版脱壳工具都无法使用。硬实力还是弱了，拖不下来这个壳。<br />开始找寻旁路，对该进程进行行为监控。  </p>
+<p>发现其有多次写入文件以及注册表操作：<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224152731.png" alt="" />  </p>
+<p>挨个分析，由于文件名也是随机生成的，我这里简单定义一下各个dll作用，方便辨识。  </p>
+<h4 id="4pcl9-dll"><a href="#4pcl9-dll" class="headerlink" title="4pcl9.dll"></a>4pcl9.dll</h4><p>功能函数，提供导出函数，为外挂的核心功能dll<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224152908.png" alt="" />  </p>
+<h4 id="amdd3drt-dll"><a href="#amdd3drt-dll" class="headerlink" title="amdd3drt.dll"></a>amdd3drt.dll</h4><p>无导出函数<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224153056.png" alt="" /><br />猜测功能为DLL注入，查看DLLMain函数  </p>
+<pre><code class="C">BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)  
+{  
+  int v3; // eax  
+  int v5; // [esp+4h] [ebp-20Ch]  
+  CHAR Filename; // [esp+108h] [ebp-108h]  
+
+  if ( fdwReason == 1 &amp;&amp; !dword_10019238 )  
+  {  
+    dword_10019238 = 1;  
+    GetModuleFileNameA(0, &amp;Filename, 0x104u);  
+    sub_10003628(&amp;Filename, 0, 0, (int)&amp;v5, 0);  
+    v3 = strcmp((const char *)&amp;v5, (const char *)&amp;unk_10016488);  
+    if ( v3 )  
+      v3 = -(v3 &lt; 0) | 1;  
+    if ( v3 )  
+      return 0;  
+    sub_10001010((int)&#34;LunaLoader attached!n&#34;);  
+    sub_10001010((int)&#34;nnBy Joni-St, and Ferrums.&#34;);  
+    dword_1001924C = (int)GetCurrentProcess();  
+    dword_10019250 = (int)hinstDLL;  
+    CreateThread(0, 0, StartAddress, &amp;dword_1001924C, 0, 0);  
+  }  
+  return 1;  
+}  
+</code></pre>
+<p>可以看到逻辑为，通过dll劫持后，比对进程名字是否为游戏进程，是的话就在游戏（自身）进程内存中创建新的进程并执行<code>StartAddress</code>函数。  </p>
+<p>StartAddress:<br />主要逻辑用注释标识了。  </p>
+<pre><code class="c">DWORD __stdcall StartAddress(LPVOID lpThreadParameter)  
+{  
+  HMODULE v2; // eax  
+  HMODULE v3; // edi  
+  FARPROC v4; // eax  
+  FARPROC v5; // ebx  
+  FARPROC v6; // eax  
+  HANDLE v7; // eax  
+  HANDLE v8; // ebx  
+  char *v9; // esi  
+  DWORD v10; // ecx  
+  char v11; // ah  
+  DWORD v12; // edx  
+  char *v13; // edi  
+  char v14; // al  
+  char v15; // al  
+  CHAR *v16; // edi  
+  DWORD v17; // edi  
+  int v18; // ecx  
+  char *v19; // edx  
+  LPCSTR v20; // ebx  
+  CHAR *v21; // eax  
+  CHAR *v22; // edi  
+  CHAR *v23; // edi  
+  char *v24; // eax  
+  CHAR v25; // cl  
+  const char *i; // ebx  
+  LPCSTR v27; // edi  
+  int v28; // eax  
+  int *v29; // eax  
+  int v30; // eax  
+  int v31; // ecx  
+  unsigned int v32; // edx  
+  int v33; // ecx  
+  void *v34; // eax  
+  HANDLE v35; // edi  
+  void *v36; // ebx  
+  _DWORD *v37; // esi  
+  int v38; // ST14_4  
+  struct _SYSTEM_INFO SystemInfo; // [esp+0h] [ebp-106ACh]  
+  struct _MEMORY_BASIC_INFORMATION Buffer; // [esp+24h] [ebp-10688h]  
+  DWORD v41; // [esp+40h] [ebp-1066Ch]  
+  DWORD v42; // [esp+44h] [ebp-10668h]  
+  DWORD v43; // [esp+48h] [ebp-10664h]  
+  LPCWSTR lpWideCharStr; // [esp+4Ch] [ebp-10660h]  
+  HANDLE hFile; // [esp+50h] [ebp-1065Ch]  
+  DWORD NumberOfBytesRead; // [esp+54h] [ebp-10658h]  
+  HANDLE *v47; // [esp+58h] [ebp-10654h]  
+  LPCSTR lpszVolumeMountPoint; // [esp+5Ch] [ebp-10650h]  
+  int v49; // [esp+60h] [ebp-1064Ch]  
+  char v50; // [esp+64h] [ebp-10648h]  
+  __int16 v51; // [esp+390h] [ebp-1031Ch]  
+  char v52; // [esp+10064h] [ebp-648h]  
+  CHAR LibFileName; // [esp+10168h] [ebp-544h]  
+  CHAR MultiByteStr; // [esp+1026Ch] [ebp-440h]  
+  __int128 v55; // [esp+10370h] [ebp-33Ch]  
+  __int128 v56; // [esp+10380h] [ebp-32Ch]  
+  __int128 v57; // [esp+10390h] [ebp-31Ch]  
+  __int128 v58; // [esp+103A0h] [ebp-30Ch]  
+  __int128 v59; // [esp+103B0h] [ebp-2FCh]  
+  __int128 v60; // [esp+103C0h] [ebp-2ECh]  
+  __int128 v61; // [esp+103D0h] [ebp-2DCh]  
+  __int128 v62; // [esp+103E0h] [ebp-2CCh]  
+  __int128 v63; // [esp+103F0h] [ebp-2BCh]  
+  __int128 v64; // [esp+10400h] [ebp-2ACh]  
+  __int128 v65; // [esp+10410h] [ebp-29Ch]  
+  __int128 v66; // [esp+10420h] [ebp-28Ch]  
+  __int128 v67; // [esp+10430h] [ebp-27Ch]  
+  __int128 v68; // [esp+10440h] [ebp-26Ch]  
+  __int128 v69; // [esp+10450h] [ebp-25Ch]  
+  __int128 v70; // [esp+10460h] [ebp-24Ch]  
+  __int128 v71; // [esp+10470h] [ebp-23Ch]  
+  __int128 v72; // [esp+10480h] [ebp-22Ch]  
+  __int128 v73; // [esp+10490h] [ebp-21Ch]  
+  __int128 v74; // [esp+104A0h] [ebp-20Ch]  
+  __int128 v75; // [esp+104B0h] [ebp-1FCh]  
+  __int128 v76; // [esp+104C0h] [ebp-1ECh]  
+  __int128 v77; // [esp+104D0h] [ebp-1DCh]  
+  __int128 v78; // [esp+104E0h] [ebp-1CCh]  
+  __int128 v79; // [esp+104F0h] [ebp-1BCh]  
+  __int128 v80; // [esp+10500h] [ebp-1ACh]  
+  __int128 v81; // [esp+10510h] [ebp-19Ch]  
+  __int128 v82; // [esp+10520h] [ebp-18Ch]  
+  __int128 v83; // [esp+10530h] [ebp-17Ch]  
+  __int128 v84; // [esp+10540h] [ebp-16Ch]  
+  __int128 v85; // [esp+10550h] [ebp-15Ch]  
+  __int128 v86; // [esp+10560h] [ebp-14Ch]  
+  __int128 v87; // [esp+10570h] [ebp-13Ch]  
+  __int128 v88; // [esp+10580h] [ebp-12Ch]  
+  __int128 v89; // [esp+10590h] [ebp-11Ch]  
+  __int128 v90; // [esp+105A0h] [ebp-10Ch]  
+  __int128 v91; // [esp+105B0h] [ebp-FCh]  
+  __int128 v92; // [esp+105C0h] [ebp-ECh]  
+  __int128 v93; // [esp+105D0h] [ebp-DCh]  
+  __int128 v94; // [esp+105E0h] [ebp-CCh]  
+  __int128 v95; // [esp+105F0h] [ebp-BCh]  
+  __int128 v96; // [esp+10600h] [ebp-ACh]  
+  __int128 v97; // [esp+10610h] [ebp-9Ch]  
+  __int128 v98; // [esp+10620h] [ebp-8Ch]  
+  __int128 v99; // [esp+10630h] [ebp-7Ch]  
+  __int128 v100; // [esp+10640h] [ebp-6Ch]  
+  __int128 v101; // [esp+10650h] [ebp-5Ch]  
+  __int128 v102; // [esp+10660h] [ebp-4Ch]  
+  __int128 v103; // [esp+10670h] [ebp-3Ch]  
+  __int128 v104; // [esp+10680h] [ebp-2Ch]  
+  int v105; // [esp+10690h] [ebp-1Ch]  
+  int v106; // [esp+10694h] [ebp-18h]  
+  int v107; // [esp+10698h] [ebp-14h]  
+  __int16 v108; // [esp+1069Ch] [ebp-10h]  
+  int (*v109)(void); // [esp+106A0h] [ebp-Ch]  
+  __int16 v110; // [esp+106A4h] [ebp-8h]  
+  char v111; // [esp+106A6h] [ebp-6h]  
+
+  v47 = (HANDLE *)lpThreadParameter;  
+  CoInitialize(0);  
+  if ( SHGetKnownFolderPath(&amp;unk_10011190, 0, 0, &amp;lpWideCharStr) )  
+    return 1;  
+  MultiByteStr = 0;  
+  WideCharToMultiByte(0, 0, lpWideCharStr, -1, &amp;MultiByteStr, 260, 0, 0);  
+  CoTaskMemFree((LPVOID)lpWideCharStr);  
+  sub_10003628(&amp;MultiByteStr, (int)&amp;v52, 0, 0, 0);  
+  _makepath(&amp;LibFileName, 0, &amp;v52, &#34;4pcl9.dll&#34;, 0);  //获取4pcl9.dll绝对路径  
+  v2 = LoadLibraryA(&amp;LibFileName);  //动态加载4pcl9.dll  
+  v3 = v2;  
+  if ( !v2 )  
+  {  
+    MessageBoxA(0, &#34;Lua initialization failed.&#34;, &#34;LunaLoader&#34;, 0);  
+    MessageBoxA((HWND)v3, &amp;LibFileName, &#34;LunaLoader&#34;, (UINT)v3);  
+    return 0;  
+  }  
+  v4 = GetProcAddress(v2, &#34;luaL_newstate&#34;);  //初始化lua加载器  
+  v5 = v4;  
+  v109 = (int (*)(void))v4;  
+  dword_10019248 = (int (__cdecl *)(_DWORD, _DWORD))GetProcAddress(v3, &#34;luaL_loadstring&#34;); //获取函数地址  
+  dword_10019244 = (int (__cdecl *)(_DWORD, _DWORD, _DWORD))GetProcAddress(v3, &#34;lua_dump&#34;);  
+  v6 = GetProcAddress(v3, &#34;lua_settop&#34;);  
+  dword_1001923C = (int (__cdecl *)(_DWORD, _DWORD))v6;  
+  if ( v5 &amp;&amp; dword_10019248 &amp;&amp; dword_10019244 &amp;&amp; v6 )  
+  {  
+    GetFileAttributesA(&#34;.\..\elsword.exe&#34;);  
+    v7 = CreateNamedPipeA(&#34;\\.\pipe\LunaLoaderCommandPipe&#34;, 3u, 4u, 1u, 0, 0, 0, 0); //创建命名管道与登录器进行交互，获取用户传递的脚本字符串内容并且执行  
+    v8 = v7;  
+    hFile = v7;  
+    if ( v7 &amp;&amp; v7 != (HANDLE)-1 )  
+    {  
+      if ( ConnectNamedPipe(v7, 0) )  
+      {  
+        v9 = (char *)malloc(0x400u);  
+        memset(v9, 0, 0x400u);  
+        if ( !ReadFile(v8, v9, 0x3FFu, &amp;NumberOfBytesRead, 0) )  
+          goto LABEL_71;  
+        v10 = NumberOfBytesRead;  
+        if ( NumberOfBytesRead &lt;= 1 )  
+          goto LABEL_71;  
+        v11 = *v9;  
+        v12 = NumberOfBytesRead - 1;  
+        v13 = v9;  
+        if ( NumberOfBytesRead != 1 )  
+        {  
+          do  
+          {  
+            v14 = (v13++)[1];  
+            v15 = v11++ ^ v14;  
+            *(v13 - 1) = v15;  
+            --v12;  
+          }  
+          while ( v12 );  
+          v10 = NumberOfBytesRead;  
+        }  
+        NumberOfBytesRead = v10 - 1;  
+        v9[NumberOfBytesRead] = 0;  
+        v16 = (CHAR *)malloc(0x400u);  
+        lpszVolumeMountPoint = v16;  
+        memset(v16, 0, 0x400u);  
+        if ( !ReadFile(v8, v16, 0x3FFu, &amp;v42, 0) )  
+          goto LABEL_71;  
+        v17 = NumberOfBytesRead;  
+        v18 = 0;  
+        v19 = v9;  
+        if ( NumberOfBytesRead )  
+        {  
+          v20 = lpszVolumeMountPoint;  
+          do  
+          {  
+            *v19 ^= v20[v18];  
+            ++v19;  
+            v18 = v18 + 1 &lt; v42 ? v18 + 1 : 0;  
+            --v17;  
+          }  
+          while ( v17 );  
+          v8 = hFile;  
+        }  
+        v21 = (CHAR *)malloc(0x10u);  
+        lpszVolumeMountPoint = v21;  
+        *(_OWORD *)v21 = 0i64;  
+        if ( ReadFile(v8, v21, 0xFu, &amp;v41, 0) )  
+        {  
+          v22 = (CHAR *)malloc(0x41u);  
+          memset(v22, 0, 0x41u);  
+          v23 = v22 + 1;  
+          GetVolumeNameForVolumeMountPointA(lpszVolumeMountPoint, v23, 0x40u);  
+          v24 = (char *)malloc(0x40u);  
+          v25 = *v23;  
+          for ( i = v24; v25; ++v23 )  
+          {  
+            if ( (v25 &gt;= 97 &amp;&amp; v25 &lt;= 102 || v25 &gt;= 65 &amp;&amp; v25 &lt;= 70 || v25 &gt;= 48 &amp;&amp; v25 &lt;= 57) &amp;&amp; *(v23 - 1) != 109 )  
+              *v24++ = v25;  
+            v25 = v23[1];  
+          }  
+          *v24 = 0;  
+          GetSystemInfo(&amp;SystemInfo);  
+          v27 = (LPCSTR)SystemInfo.lpMinimumApplicationAddress;  
+          for ( lpszVolumeMountPoint = (LPCSTR)SystemInfo.lpMaximumApplicationAddress;  
+                v27 &lt; lpszVolumeMountPoint;  
+                v27 += Buffer.RegionSize )  
+          {  
+            VirtualQueryEx(*v47, v27, &amp;Buffer, 0x1Cu);  
+            if ( (Buffer.Protect == 2 || Buffer.Protect == 4 || Buffer.Protect == 32 || Buffer.Protect == 64)  
+              &amp;&amp; Buffer.State == 4096 )  
+            {  
+              v28 = strcmp(v9, i);  
+              if ( v28 )  
+                v28 = -(v28 &lt; 0) | 1;  
+              if ( !v28 )  
+                sub_10001150((int)Buffer.BaseAddress, Buffer.RegionSize);  
+            }  
+          }  
+          CloseHandle(*v47);  
+          v29 = &amp;dword_100187C4;  
+          if ( off_100187C8 )  
+          {  
+            while ( *v29 )  
+            {  
+              v29 += 3;  
+              if ( !v29[1] )  
+                goto LABEL_49;  
+            }  
+          }  
+          else  
+          {  
+LABEL_49:  
+            v30 = strcmp(v9, i);  
+            if ( v30 )  
+              v30 = -(v30 &lt; 0) | 1;  
+            if ( !v30 )  
+            {  
+              lpszVolumeMountPoint = *(LPCSTR *)(**(_DWORD **)(dword_100187D0 + 1) + 4);  
+              v47 = (HANDLE *)dword_100187C4;  
+              dword_10019240 = v109();  
+              if ( dword_10019240 )  
+              {  
+                v55 = xmmword_10016850;  
+                v56 = xmmword_100166A0;  
+                v57 = xmmword_10016910;  
+                v58 = xmmword_10016770;  
+                v59 = xmmword_100167D0;  
+                v60 = xmmword_10016960;  
+                v61 = xmmword_10016660;  
+                v62 = xmmword_10016840;  
+                v63 = xmmword_100166B0;  
+                v64 = xmmword_100168F0;  
+                v65 = xmmword_10016740;  
+                v66 = xmmword_100167C0;  
+                v67 = xmmword_10016930;  
+                v68 = xmmword_10016680;  
+                v69 = xmmword_10016820;  
+                v70 = xmmword_100166D0;  
+                v71 = xmmword_100168C0;  
+                v72 = xmmword_10016730;  
+                v73 = xmmword_100167F0;  
+                v74 = xmmword_10016940;  
+                v75 = xmmword_10016670;  
+                v76 = xmmword_10016860;  
+                v77 = xmmword_100166E0;  
+                v78 = xmmword_10016900;  
+                v79 = xmmword_10016760;  
+                v80 = xmmword_10016800;  
+                v81 = xmmword_10016950;  
+                v82 = xmmword_10016650;  
+                v83 = xmmword_10016870;  
+                v84 = xmmword_100166C0;  
+                v85 = xmmword_100168E0;  
+                v86 = xmmword_10016780;  
+                v87 = xmmword_100167E0;  
+                v88 = xmmword_10016790;  
+                v89 = xmmword_10016700;  
+                v90 = xmmword_10016830;  
+                v91 = xmmword_10016710;  
+                v92 = xmmword_100167B0;  
+                v93 = xmmword_10016810;  
+                v94 = xmmword_10016920;  
+                v95 = xmmword_10016890;  
+                v31 = 0;  
+                v105 = -2004716861;  
+                v32 = 0;  
+                v96 = xmmword_100166F0;  
+                v106 = -1359952088;  
+                v97 = xmmword_100168A0;  
+                v107 = 1973920377;  
+                v98 = xmmword_10016720;  
+                v108 = -22329;  
+                v99 = xmmword_10016880;  
+                v109 = (int (*)(void))1050454148;  
+                v100 = xmmword_10016750;  
+                v110 = -5641;  
+                v101 = xmmword_100168B0;  
+                v111 = 37;  
+                v102 = xmmword_100167A0;  
+                v103 = xmmword_10016690;  
+                v104 = xmmword_100168D0;  
+                do  
+                {  
+                  *((_BYTE *)&amp;v55 + v32) ^= *((_BYTE *)&amp;v109 + v31);  
+                  v33 = (unsigned int)(v31 + 1) &lt; 7 ? v31 + 1 : 0;  
+                  *((_BYTE *)&amp;v55 + v32 + 1) ^= *((_BYTE *)&amp;v109 + v33);  
+                  v32 += 2;  
+                  v31 = (unsigned int)(v33 + 1) &lt; 7 ? v33 + 1 : 0;  
+                }  
+                while ( v32 &lt; 0x32E );  
+                v49 = 814;  
+                qmemcpy(&amp;v50, &amp;v55, 0x32Cu);  
+                v51 = v108;  
+                v34 = malloc(0x100000u);  
+                v35 = hFile;  
+                v36 = v34;  
+                v43 = 0;  
+                while ( 1 )  
+                {  
+                  memset(v36, 0, 0x100000u);  
+                  if ( ReadFile(v35, v36, 0xFFFFFu, &amp;v43, 0) &amp;&amp; v43 )  
+                  {  
+                    v37 = 0;  
+                    if ( !dword_10019248(dword_10019240, v36) )  
+                    {  
+                      v37 = malloc(0x10004u);  
+                      v38 = dword_10019240;  
+                      *v37 = 0;  
+                      if ( dword_10019244(v38, sub_10001200, v37) )  
+                      {  
+                        j___free_base(v37);  
+                        v37 = 0;  
+                      }  
+                    }  
+                    dword_1001923C(dword_10019240, -2);  
+                    if ( v37 )  
+                    {  
+                      ((void (__cdecl *)(LPCSTR, _DWORD *, _DWORD))v47)(lpszVolumeMountPoint, v37 + 1, *v37);  
+                      j___free_base(v37);  
+                    }  
+                  }  
+                  Sleep(0x32u);  
+                }  
+              }  
+              MessageBoxA(0, &#34;Lua init error.&#34;, &#34;LunaLoader&#34;, 0);  
+              return 0;  
+            }  
+          }  
+          MessageBoxA(0, &#34;LunaLoader startup failed.&#34;, &#34;LunaLoader&#34;, 0);  
+        }  
+        else  
+        {  
+LABEL_71:  
+          MessageBoxA(0, &#34;Pipe read error.&#34;, &#34;LunaLoader&#34;, 0);  
+          CloseHandle(v8);  
+        }  
+      }  
+      else  
+      {  
+        MessageBoxA(0, &#34;Unable to connect to communication pipe.&#34;, &#34;LunaLoader&#34;, 0);  
+        CloseHandle(v8);  
+      }  
+    }  
+    else  
+    {  
+      MessageBoxA(0, &#34;Unable to open communication pipe.&#34;, &#34;LunaLoader&#34;, 0);  
+    }  
+  }  
+  else  
+  {  
+    MessageBoxA(0, &#34;Internal error.&#34;, &#34;LunaLoader&#34;, 0);  
+  }  
+  return 0;  
+}  
+</code></pre>
+<h3 id="dinput8-dll"><a href="#dinput8-dll" class="headerlink" title="dinput8.dll"></a>dinput8.dll</h3><p>Dll劫持<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224154040.png" alt="" />  </p>
+<p>查看导出函数<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224154107.png" alt="" />  </p>
+<p>随便查看一个，DllRegisterServer：  </p>
+<pre><code class="c">HRESULT __stdcall DllRegisterServer()  
+{  
+  int (*v1)(void); // [esp+D0h] [ebp-8h]  
+
+  if ( !hModule )  
+    sub_10002670();  
+  v1 = (int (*)(void))GetProcAddress(hModule, &#34;DllRegisterServer&#34;);  
+  if ( !v1 )  
+    ExitProcess(0);  
+  return v1();  
+}  
+</code></pre>
+<p>可以看到很明显的Hook了DllRegisterServer函数，但是并未修改行为。  </p>
+<p>查看到<code>DirectInput8Create</code>函数：  </p>
+<pre><code class="c">__int64 __stdcall DirectInput8Create(int a1, int a2, int a3, _DWORD *a4, int a5)  
+{  
+  int v5; // edx  
+  __int64 v6; // ST10_8  
+  int v8; // [esp+Ch] [ebp-100h]  
+  void *v9; // [esp+14h] [ebp-F8h]  
+  int v10; // [esp+20h] [ebp-ECh]  
+  int v11; // [esp+ECh] [ebp-20h]  
+  int v12; // [esp+F8h] [ebp-14h]  
+  FARPROC v13; // [esp+104h] [ebp-8h]  
+  int savedregs; // [esp+10Ch] [ebp+0h]  
+
+  if ( !hModule )  
+    sub_10002670();  
+  v13 = GetProcAddress(hModule, &#34;DirectInput8Create&#34;);  
+  if ( !v13 )  
+    ExitProcess(0);  
+  if ( dword_100B9CE0 )  
+  {  
+    (*(void (__stdcall **)(int))(*(_DWORD *)dword_100B9CE0 + 4))(dword_100B9CE0);  
+    v12 = 0;  
+  }  
+  else  
+  {  
+    v12 = ((int (__stdcall *)(int, int, int, int *, int))v13)(a1, a2, a3, &amp;v11, a5);  
+    if ( !v12 )  
+    {  
+      v9 = operator new(8u);  
+      if ( v9 )  
+        v8 = sub_10002BA0(v11);  
+      else  
+        v8 = 0;  
+      v10 = v8;  
+      dword_100B9CE0 = v8;  
+      (*(void (__stdcall **)(int))(*(_DWORD *)v8 + 4))(v8);  
+    }  
+    CreateThread(0, 0, (LPTHREAD_START_ROUTINE)StartAddress, 0, 0, 0);//主要操作  
+  }  
+  *a4 = dword_100B9CE0;  
+  sub_10004C30(&amp;savedregs, &amp;dword_1000291C, v12, v5);  
+  return v6;  
+}  
+</code></pre>
+<p>StartAddress:  </p>
+<pre><code>DWORD __stdcall StartAddress()  
+{  
+  LoadLibraryA(&#34;amdd3drt.dll&#34;);  
+  return 0;  
+}  
+</code></pre><p>加载了amdd3drt.dll。  </p>
+<h3 id="整体逻辑"><a href="#整体逻辑" class="headerlink" title="整体逻辑"></a>整体逻辑</h3><p>至此，整个调用逻辑就已经理清楚了。首先释放器(LunaLoader-Launcher.exe)释放并启动登录器，然后登录器获取游戏进程并且找到其目录，释放dinput8.dll(DLL劫持)到该目录，劫持后，加载amdd3drt.dll（DLL注入），并创建命名管道与登录器进行通信，接收字符串并调用4pcl9.dll（Lua C库）中的方法。  </p>
+<p>搞了半天，其实就是将自己的Lua代码注入到游戏中执行。<br />然后来看一看提供的外挂脚本是如何实现的。<br />外挂的主要基于Hook游戏的函数，但是如何获取游戏中的函数以及参数呢？<br />作者提供了如下脚本:  </p>
+<pre><code class="lua">--{ &#34;Name&#34;:&#34;Multi Function Dumper&#34;, &#34;Type&#34;:&#34;Login/Loading Screen&#34;, &#34;Version&#34;: &#34;1.0.0.0&#34; }  
+function file_exists(file)  
+  local f = io.open(file, &#34;rb&#34;)  
+  if f then f:close() end  
+  return f ~= nil  
+end  
+function lines_from(file)  
+  if not file_exists(file) then return {} end  
+  lines = {}  
+  for line in io.lines(file) do  
+    lines[#lines + 1] = line  
+  end  
+  return lines  
+end  
+local lines = lines_from(&#34;_functions.txt&#34;)  
+
+local outfile = &#34;_fdResult_clean.txt&#34;  
+local f       = io.open(outfile, &#34;wb&#34;)  
+local outfunc = function(text)  
+    f:write(text)  
+    f:flush()  
+end  
+local funclist = {  
+    {&#34;CX2ItemManager&#34;, &#34;AddShopItemList_LUA&#34;}  
+}  
+local fromfile = false  
+if fromfile then  
+    for k,v in pairs(lines) do  
+        one, two = lines[k]:match(&#34;([^.]+).([^.]+)&#34;)  
+        table.insert(funclist, { one, two })  
+        outfunc(&#34;Found: [&#34; .. two .. &#34;]rn&#34;)  
+    end  
+end  
+
+local dump = true  
+if dump then  
+local pack0  
+pack0 = function(tbl, idx, a, ...)  
+    tbl[idx] = a  
+    if a then pack0(tbl, idx + 1, ...) end  
+    return tbl  
+end  
+local function pack(...)  
+    return pack0({}, 1, ...)  
+end  
+
+local tbldump  
+tbldump = function(tbl, outfunc)  
+    if type(tbl) == &#34;string&#34; then  
+        outfunc(&#34;&#34;&#34;)  
+        outfunc(tbl)  
+        outfunc(&#34;&#34;&#34;)  
+    elseif type(tbl) == &#34;table&#34; then  
+        outfunc(&#34;{&#34;)  
+        for k, v in pairs(tbl) do  
+            outfunc(&#34;[&#34;)  
+            tbldump(k, outfunc)  
+            outfunc(&#34;] = &#34;)  
+            tbldump(v, outfunc)  
+            outfunc(&#34;, &#34;)  
+        end  
+        outfunc(&#34;}&#34;)  
+    else  
+        outfunc(tostring(tbl))  
+    end  
+end  
+
+
+outfunc(&#34;Starting.rn&#34;)  
+
+for k, v in pairs(funclist) do  
+    local func = _G  
+    local enclosing = nil  
+    local enclosingKey = nil  
+    for meh, fname in ipairs(v) do  
+        enclosing = func  
+        enclosingKey = fname  
+        func = func[fname]  
+    end  
+
+    enclosing[enclosingKey] = function(...)  
+        outfunc(tostring(enclosingKey) .. &#34;(&#34;)  
+        local makecomma = false  
+        for k, v in ipairs(pack(...)) do  
+            if makecomma then outfunc(&#34;, &#34;) end  
+            makecomma = true  
+            tbldump(v, outfunc)  
+        end  
+        outfunc(&#34;)rn&#34;)  
+        return func(...)  
+    end  
+
+    outfunc(&#34;Installed for &#34; .. tostring(enclosingKey) .. &#34;rn&#34;)  
+end  
+end  
+</code></pre>
+<p>首先可以从全局变量表<code>_G</code>中获取内存中的所有类以及方法名，然后通过上述脚本对该函数进行Hook:  </p>
+<pre><code class="lua">    enclosing[enclosingKey] = function(...)  
+        outfunc(tostring(enclosingKey) .. &#34;(&#34;)  
+        local makecomma = false  
+        for k, v in ipairs(pack(...)) do  
+            if makecomma then outfunc(&#34;, &#34;) end  
+            makecomma = true  
+            tbldump(v, outfunc)  
+        end  
+        outfunc(&#34;)rn&#34;)  
+        return func(...)  
+    end  
+</code></pre>
+<p>通过迭代变长参数<code>for k, v in ipairs(pack(...))</code>获取到参数类型以及参数名，最后再传参调用原函数即可。  </p>
+<h2 id="结"><a href="#结" class="headerlink" title="结"></a>结</h2><p>整体思路比较简单，游戏的反作弊系统几乎没有起到任何作用，除了DLL劫持还有许多方法可以bypass，此游戏之前甚至将明文Lua脚本放置于用户端，当时导致了大批用户使用非法手段影响游戏公平性。而这个外挂利用的是同种方法，基于游戏引擎特性的外挂，稳定性相较于直接修改内存时好了不止一星半点。  </p>
+<pre><code>当前热门游戏中有使用XIGNCODE3的有:  
+
+新玛奇英雄传  
+SF Online  
+黑色沙漠  
+跑跑卡丁车  
+冒险岛ㄧ  
+艾尔之光  
+《反恐精英Online》（游戏橘子）于2018年3月16日移除使用XIGNCODE3  
+</code></pre><p>怪不得这些游戏都死的差不多了<br /><img src="https://raw.githubusercontent.com/Lz1y/imggo/master/20190224161009.png" alt="" />  </p>
+
+            
+        </div>
+
+-->
+      
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+
+
+<div class="pagination">
+  <ul class="inline-list">
+    
+    
+      
+        <li><a href="http://0.0.0.0:8081/page826/" class="btn">Previous</a></li>
+      
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/">1</a></li>
+    
+
+    
+    
+      
+      
+      <li>…</li>
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page825/">825</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page826/">826</a></li>
+      
+    
+      
+        <li><strong class="current-page">827</strong></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page828/">828</a></li>
+      
+    
+      
+        
+        
+        
+        <li><a href="http://0.0.0.0:8081/page829/">829</a></li>
+      
+    
+
+    
+    
+      <li>…</li>
+    
+
+    
+      <li><a href="http://0.0.0.0:8081/page1611/">1611</a></li>
+    
+
+    
+    
+      <li><a href="http://0.0.0.0:8081/page828/" class="btn">Next</a></li>
+    
+  </ul>
+</div>
+
+
+
+
+
+</div><!-- /#main -->
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

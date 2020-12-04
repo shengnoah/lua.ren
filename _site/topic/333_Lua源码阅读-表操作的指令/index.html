@@ -1,0 +1,832 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lua源码阅读：表操作的指令 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua源码阅读：表操作的指令">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/333_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E8%A1%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8C%87%E4%BB%A4/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/333_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E8%A1%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8C%87%E4%BB%A4/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Lua源码阅读：表操作的指令</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~10 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Lua源码阅读：表操作的指令</h1>
+      <p>表操作的相关指令。</p>
+
+<h3 id="创建表："><a href="#创建表：" class="headerlink" title="创建表："></a>创建表：</h3>
+<p>创建一个空表，代码：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> p = {}</span><br /></pre></td></tr></tbody></table></figure>
+<p>对应的OPCODE为OP_NEWTABLE，用于创建一个表，将结果存入寄存器。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">OP_NEWTABLE,</span><br /></pre></td></tr></tbody></table></figure>
+<p>simpleexp最终调用Constructor 函数，这个函数专门负责构造表。</p>
+<p>解析表的信息会存放在 ConsControl 结构体中：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>  {</span></span><br /><span class="line">  expdesc v;  <span class="comment">/* last list item read 存储表构造过程中最后一个表达式的信息 */</span> </span><br /><span class="line">  expdesc *t;  <span class="comment">/* table descriptor 构造表相关的表达式信息，因为是外部传入的字段所以使用指针 */</span></span><br /><span class="line">  <span class="keyword">int</span> nh;  <span class="comment">/* total number of &#39;record&#39; elements 初始化表时，散列部分数据的数量 */</span></span><br /><span class="line">  <span class="keyword">int</span> na;  <span class="comment">/* total number of array elements 初始化表时，数组部分数据的数量 */</span></span><br /><span class="line">  <span class="keyword">int</span> tostore;  <span class="comment">/* number of array elements pending to be stored 当前构造表时内部的数组部分的数据如果超过这个值，就首先调用一次 OP_SETLIST 函数写入寄存器中 */</span></span><br /><span class="line">};</span><br /></pre></td></tr></tbody></table></figure>
+<p>接下来进入 Constructor 函数：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">constructor</span> <span class="params">(LexState *ls, expdesc *t)</span> </span>{</span><br /><span class="line">  <span class="comment">/* constructor -&gt; &#39;{&#39; [ field { sep field } [sep] ] &#39;}&#39;</span></span><br /><span class="line"><span class="comment">     sep -&gt; &#39;,&#39; | &#39;;&#39; */</span></span><br /><span class="line">  FuncState *fs = ls-&gt;fs;</span><br /><span class="line">  <span class="keyword">int</span> line = ls-&gt;linenumber;</span><br /><span class="line">  <span class="keyword">int</span> pc = luaK_codeABC(fs, OP_NEWTABLE, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br /><span class="line">  <span class="class"><span class="keyword">struct</span>  <span class="title">cc</span>;</span></span><br /><span class="line">  cc.na = cc.nh = cc.tostore = <span class="number">0</span>;</span><br /><span class="line">  cc.t = t;</span><br /><span class="line">  init_exp(t, VRELOCABLE, pc);</span><br /><span class="line">  init_exp(&amp;cc.v, VVOID, <span class="number">0</span>);  <span class="comment">/* no value (yet) */</span></span><br /><span class="line">  luaK_exp2nextreg(ls-&gt;fs, t);  <span class="comment">/* fix it at stack top */</span></span><br /><span class="line">  checknext(ls, <span class="string">&#39;{&#39;</span>);</span><br /><span class="line">  <span class="keyword">do</span> {</span><br /><span class="line">    lua_assert(cc.v.k == VVOID || cc.tostore &gt; <span class="number">0</span>);</span><br /><span class="line">    <span class="keyword">if</span> (ls-&gt;t.token == <span class="string">&#39;}&#39;</span>) <span class="keyword">break</span>;</span><br /><span class="line">    closelistfield(fs, &amp;cc);</span><br /><span class="line">    field(ls, &amp;cc);</span><br /><span class="line">  } <span class="keyword">while</span> (testnext(ls, <span class="string">&#39;,&#39;</span>) || testnext(ls, <span class="string">&#39;;&#39;</span>));</span><br /><span class="line">  check_match(ls, <span class="string">&#39;}&#39;</span>, <span class="string">&#39;{&#39;</span>, line);</span><br /><span class="line">  lastlistfield(fs, &amp;cc);</span><br /><span class="line">  SETARG_B(fs-&gt;f-&gt;code[pc], luaO_int2fb(cc.na)); <span class="comment">/* set initial array size */</span></span><br /><span class="line">  SETARG_C(fs-&gt;f-&gt;code[pc], luaO_int2fb(cc.nh));  <span class="comment">/* set initial table size */</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<ul>
+<li>第六行：生成一条 OP_NEWTABLE 指令，这条指令创建的表最终会根据指令中的参数 A 存储的寄存器地址，赋值给本函数栈内的寄存器，所以这条指令是需要重定向的。</li>
+<li>第七行到第十一行：初始化 ConsControl 结构体。需要说明的是第 11 行，此时将ConsControl 结构体中的对象 v 初始化为 VVOID。前面说过这个数据存储的是表构造过程中最后一个表达式的信息，因为这里还没有解析到表构造中的信息，所以这个表达式的类型为 VVOID。</li>
+<li>第十二行：调用前面提到的解析表达式到寄存器的函数 luaK_exp2nextreg，将寄存器地址修正为前面创建的 OP_NEWTABLE的指令 A。</li>
+<li>第 22 行~23 行：将 ConsControl 结构体中存放的散列和数组部分的大小，写入前面生成的 OP_NEWTABLE 指令的 B 和 C 部分。</li>
+</ul>
+<p>上面创建了一个简单的空表，如果添加上数组部分：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> p = {<span class="number">1</span>,<span class="number">2</span>}</span><br /></pre></td></tr></tbody></table></figure>
+<p>与前面相比，多了两条 loadk 指令以及一条setlist 指令。loadk 指令用于把表构造表达式中的常量 1 和 2 加载到函数栈中，而紧跟着的 setlist 指令则使用这两个常量初始化表的数组部分。</p>
+<p>setlist 指令的格式如下，对应 OP_SETLIST 指令，用于以一个基地址和数量来将数据写入表的数组部分：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">OP_SETLIST,<span class="comment">/*	A B C	R(A)[(C-1)*FPF+i] := R(A+i), 1 &lt;= i &lt;= B	*/</span></span><br /></pre></td></tr></tbody></table></figure>
+<ul>
+<li>A：OP_NEWTABLE 指令中创建好的表所在的寄存器，它后面紧跟着待写入的数据</li>
+<li>B：待写入数据的数量</li>
+<li>C：FPF 索引，即每次写入最多的是 LFIELDS_PER_FLUSH</li>
+</ul>
+<p>在 Lua5.3中，使用<code>field(ls, &amp;cc);</code>函数对散列、数组部分解析构造：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">field</span> <span class="params">(LexState *ls, struct ConsControl *cc)</span> </span>{</span><br /><span class="line">  <span class="comment">/* field -&gt; listfield | recfield */</span></span><br /><span class="line">  <span class="keyword">switch</span>(ls-&gt;t.token) {</span><br /><span class="line">    <span class="keyword">case</span> TK_NAME: {  <span class="comment">/* may be &#39;listfield&#39; or &#39;recfield&#39; */</span></span><br /><span class="line">      <span class="keyword">if</span> (luaX_lookahead(ls) != <span class="string">&#39;=&#39;</span>)  <span class="comment">/* expression? */</span></span><br /><span class="line">        listfield(ls, cc);</span><br /><span class="line">      <span class="keyword">else</span></span><br /><span class="line">        recfield(ls, cc);</span><br /><span class="line">      <span class="keyword">break</span>;</span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">case</span> <span class="string">&#39;[&#39;</span>: {</span><br /><span class="line">      recfield(ls, cc);</span><br /><span class="line">      <span class="keyword">break</span>;</span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">default</span>: {</span><br /><span class="line">      listfield(ls, cc);</span><br /><span class="line">      <span class="keyword">break</span>;</span><br /><span class="line">    }</span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<ol>
+<li>当没有解析到符号<code>}</code>时，有一个解析表达式的循环会一直执行（上层函数constructor执行）。</li>
+<li>调用closelistfield 函数生成上一个表达式的相关指令。这里调用了<code>luaK_exp2nextreg(fs, &amp;cc-&gt;v);</code>，注意上面提到过，最开始初始化 ConsControl 表达式时，其成员变量 v 的表达式类型是 VVOID，因此这种情况下进入这个函数并不会有什么效果，这就把循环和前面的初始化语句衔接在了一起。</li>
+<li>针对具体的类型来做解析：<ol>
+<li>如果解析到一个变量，那么看紧跟着这个符号的是不是<code>=</code>，如果不是，就是一个数组方式的赋值，否则就是散列方式的赋值。</li>
+<li>如果看到的是<code>[</code>符号，就认为这是一个散列部分的构造。</li>
+<li>否则就是数组部分的构造了。如果是数组部分的构造，那么进入的是listfiled函数，否则就是 recfield 函数了。</li>
+</ol>
+</li>
+</ol>
+<p>关于 listfiled 函数：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">listfield</span> <span class="params">(LexState *ls, struct ConsControl *cc)</span> </span>{</span><br /><span class="line">  <span class="comment">/* listfield -&gt; exp */</span></span><br /><span class="line">  expr(ls, &amp;cc-&gt;v);</span><br /><span class="line">  checklimit(ls-&gt;fs, cc-&gt;na, MAX_INT, <span class="string">&#34;items in a constructor&#34;</span>);</span><br /><span class="line">  cc-&gt;na++;</span><br /><span class="line">  cc-&gt;tostore++;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<ul>
+<li>调用 expr 函数解析这个表达式，得到对应的 ConsControl 结构体中成员 v 的数据。前面提过，这个对象会暂存表构造过程中当前表达式的结果。</li>
+<li>检查当前表中数组部分的数据梳理是否超过限制了。</li>
+<li>依次将 ConsControl 结构体中的成员 na 和 toshore 加 1。</li>
+</ul>
+<p>每解析完一个表达式，会调用 closelistfield，它的工作是针对数组部分的。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">closelistfield</span> <span class="params">(FuncState *fs, struct ConsControl *cc)</span> </span>{</span><br /><span class="line">  <span class="keyword">if</span> (cc-&gt;v.k == VVOID) <span class="keyword">return</span>;  <span class="comment">/* there is no list item */</span></span><br /><span class="line">  luaK_exp2nextreg(fs, &amp;cc-&gt;v);</span><br /><span class="line">  cc-&gt;v.k = VVOID;</span><br /><span class="line">  <span class="keyword">if</span> (cc-&gt;tostore == LFIELDS_PER_FLUSH) {</span><br /><span class="line">    luaK_setlist(fs, cc-&gt;t-&gt;u.info, cc-&gt;na, cc-&gt;tostore);  <span class="comment">/* flush */</span></span><br /><span class="line">    cc-&gt;tostore = <span class="number">0</span>;  <span class="comment">/* no more items pending */</span></span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<ul>
+<li>调用 luaK_exp2nextreg 函数将前面得到的 ConsControl 结构体中成员 v 的信息存入寄存器中。</li>
+<li>如果此时 tostroe 成员的值等于 LFIELDS_PER_FLUSH，那么生成一个 OP_SETLIST 指令，用于将当前寄存器上的数据写入表的数组部分。需要注意的是，这个地方存取的数据在栈上的位置是紧跟着 OP_NEWTABLE 指令中的参数 A 在栈上的位置，这样的话使用一个参数既可以得到表的地址，又可以知道待存入的数据是哪些。之所以需要限制每次调用 OP_SETLIST 指令中的数据量不超过 LFIELDS_PER_FLUSH，是因为如果不做这个限制，会导致数组部分数据过多时，占用过多的寄存器，而 Lua 栈对寄存器数量是有限制的。</li>
+</ul>
+<p>如果是散列表部分：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">local p = {[<span class="string">&#34;a&#34;</span>] = <span class="number">1</span>}</span><br /></pre></td></tr></tbody></table></figure>
+<p>紧跟着 newtable 的是 settable，这个指令用来完成散列部分的初始化，格式如下：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">OP_SETTABLE,<span class="comment">/*	A B C	R(A)[RK(B)] := RK(C)				*/</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>作用是向一个表的散列部分赋值，其中各个参数：</p>
+<ul>
+<li>A：表所在的寄存器。</li>
+<li>B：key 存放的位置，注意其格式是 RK，也就是说这个值可能来自寄存器，也可能来自常量数组。</li>
+<li>C：value 存放的位置，注意其格式是 RK，也就是说这个值可能来自寄存器，也可能来自常量数组。</li>
+</ul>
+<p>初始化散列部分的代码会走入 recfield 中，需要注意：</p>
+<ol>
+<li>key 是一个常量。</li>
+<li>key 是一个变量，需要首先去获取这个变量的值。</li>
+</ol>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">recfield</span> <span class="params">(LexState *ls, struct ConsControl *cc)</span> </span>{</span><br /><span class="line">  <span class="comment">/* recfield -&gt; (NAME | &#39;[&#39;exp1&#39;]&#39;) = exp1 */</span></span><br /><span class="line">  FuncState *fs = ls-&gt;fs;</span><br /><span class="line">  <span class="keyword">int</span> reg = ls-&gt;fs-&gt;freereg;</span><br /><span class="line">  expdesc key, val;</span><br /><span class="line">  <span class="keyword">int</span> rkkey;</span><br /><span class="line">  <span class="keyword">if</span> (ls-&gt;t.token == TK_NAME) {</span><br /><span class="line">    checklimit(fs, cc-&gt;nh, MAX_INT, <span class="string">&#34;items in a constructor&#34;</span>);</span><br /><span class="line">    checkname(ls, &amp;key);</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">else</span>  <span class="comment">/* ls-&gt;t.token == &#39;[&#39; */</span></span><br /><span class="line">    yindex(ls, &amp;key);</span><br /><span class="line">  cc-&gt;nh++;</span><br /><span class="line">  checknext(ls, <span class="string">&#39;=&#39;</span>);</span><br /><span class="line">  rkkey = luaK_exp2RK(fs, &amp;key);</span><br /><span class="line">  expr(ls, &amp;val);</span><br /><span class="line">  luaK_codeABC(fs, OP_SETTABLE, cc-&gt;t-&gt;u.info, rkkey, luaK_exp2RK(fs, &amp;val));</span><br /><span class="line">  fs-&gt;freereg = reg;  <span class="comment">/* free registers */</span></span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p>上面的 lua 代码是第一种情况，具体如下：</p>
+<ol>
+<li>得到 key 常量在常量数组中的索引，根据这个值调用 luaK_exp2RK 函数生成 RK 值。</li>
+<li>得到 value 表达式的索引，根据这个值调用 luaK_exp2RK 函数生成 RK 值。</li>
+<li>将前两步的值以及表在寄存器中的索引，写入 OP_SETTABLE 的参数中。</li>
+</ol>
+<p>主要的步骤就是查找表达式，然后转换为对应的RK值写入OPCODE中。</p>
+<p>当键是变量时，情况如下：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> a = <span class="string">&#34;a&#34;</span></span><br /><span class="line"><span class="keyword">local</span> p = {[a] = <span class="number">1</span>}</span><br /></pre></td></tr></tbody></table></figure>
+<p>首先需要一条语句将常量“a”加载到局部变量a中，这里需要一条loadk指令。此外，这里的键来自局部变量，那么对应的RK格式也会有差异，因为此时不是从常量数组中获取key的数据，而是从寄存器中：</p>
+<ul>
+<li>解析变量形成表达式相关的expdesc结构体；</li>
+<li>根据不同的表达式类型将表达式大的值存入寄存器。</li>
+</ul>
+<h3 id="查询表："><a href="#查询表：" class="headerlink" title="查询表："></a>查询表：</h3>
+<p>最后一个表相关的指令：OP_GETTABLE，其格式如下：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">OP_GETTABLE,<span class="comment">/*	A B C	R(A) := R(B)[RK(C)]				*/</span></span><br /></pre></td></tr></tbody></table></figure>
+<p>其作用是根据key从表中获取数据存入寄存器中，各参数如下：</p>
+<ul>
+<li>A：存放结果的寄存器</li>
+<li>B：表所在的寄存器</li>
+<li>C：key存放的位置，其格式为RK，意味着这个值可能来自寄存器，也可能来自常量数组</li>
+</ul>
+<p>查询表中的数据分为以下两步：</p>
+<ol>
+<li>将待查询的字符串变量赋值到栈上的一个位置中。</li>
+<li>以第一步中已经存储了该变量字符串值的数据作为键，在表中进行查询。</li>
+</ol>
+<h3 id="元表的实现原理："><a href="#元表的实现原理：" class="headerlink" title="元表的实现原理："></a>元表的实现原理：</h3>
+<p>在lua 初始化时，首先会调用 luaT_init 函数初始化其中定义的几种元方法对应的字符串。这些都是全局共用的，在初始化完毕之后只可读不可写，也不能回收：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">luaT_init</span> <span class="params">(lua_State *L)</span> </span>{</span><br /><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> luaT_eventname[] = {  <span class="comment">/* ORDER TM */</span></span><br /><span class="line">    <span class="string">&#34;__index&#34;</span>, <span class="string">&#34;__newindex&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__gc&#34;</span>, <span class="string">&#34;__mode&#34;</span>, <span class="string">&#34;__len&#34;</span>, <span class="string">&#34;__eq&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__add&#34;</span>, <span class="string">&#34;__sub&#34;</span>, <span class="string">&#34;__mul&#34;</span>, <span class="string">&#34;__mod&#34;</span>, <span class="string">&#34;__pow&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__div&#34;</span>, <span class="string">&#34;__idiv&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__band&#34;</span>, <span class="string">&#34;__bor&#34;</span>, <span class="string">&#34;__bxor&#34;</span>, <span class="string">&#34;__shl&#34;</span>, <span class="string">&#34;__shr&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__unm&#34;</span>, <span class="string">&#34;__bnot&#34;</span>, <span class="string">&#34;__lt&#34;</span>, <span class="string">&#34;__le&#34;</span>,</span><br /><span class="line">    <span class="string">&#34;__concat&#34;</span>, <span class="string">&#34;__call&#34;</span></span><br /><span class="line">  };</span><br /><span class="line">  <span class="keyword">int</span> i;</span><br /><span class="line">  <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;TM_N; i++) {</span><br /><span class="line">    G(L)-&gt;tmname[i] = luaS_new(L, luaT_eventname[i]);</span><br /><span class="line">    luaC_fix(L, obj2gco(G(L)-&gt;tmname[i]));  <span class="comment">/* never collect these names */</span></span><br /><span class="line">  }</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p>这里将遍历前面定义的枚举类型 TMS，将每一个类型对应的字符串赋值给 global_State 结构体中的 tmname，同时调用函数 luaC_fix 将这些字符串设置为不可回收的。因为在这个系统运行的过程中，这些字符串会一直用到，至于如何让它们变成不可回收的，后面 GC 的部分会做分析。</p>
+<p>Lua 虚拟机从一个表中查询数据的过程如下：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br /><span class="line"><span class="comment">** Main function for table access (invoking metamethods if needed).</span></span><br /><span class="line"><span class="comment">** Compute &#39;val = t[key]&#39;</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">luaV_gettable</span> <span class="params">(lua_State *L, <span class="keyword">const</span> TValue *t, TValue *key, StkId val)</span> </span>{</span><br /><span class="line">  <span class="keyword">int</span> loop;  <span class="comment">/* counter to avoid infinite loops */</span></span><br /><span class="line">  <span class="keyword">for</span> (loop = <span class="number">0</span>; loop &lt; MAXTAGLOOP; loop++) {</span><br /><span class="line">    <span class="keyword">const</span> TValue *tm;</span><br /><span class="line">    <span class="keyword">if</span> (ttistable(t)) {  <span class="comment">/* &#39;t&#39; is a table? */</span></span><br /><span class="line">      Table *h = hvalue(t);</span><br /><span class="line">      <span class="keyword">const</span> TValue *res = luaH_get(h, key); <span class="comment">/* do a primitive get */</span></span><br /><span class="line">      <span class="keyword">if</span> (!ttisnil(res) ||  <span class="comment">/* result is not nil? */</span></span><br /><span class="line">          (tm = fasttm(L, h-&gt;metatable, TM_INDEX)) == <span class="literal">NULL</span>) { <span class="comment">/* or no TM? */</span></span><br /><span class="line">        setobj2s(L, val, res);  <span class="comment">/* result is the raw get */</span></span><br /><span class="line">        <span class="keyword">return</span>;</span><br /><span class="line">      }</span><br /><span class="line">      <span class="comment">/* else will try metamethod */</span></span><br /><span class="line">    }</span><br /><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (ttisnil(tm = luaT_gettmbyobj(L, t, TM_INDEX)))</span><br /><span class="line">      luaG_typeerror(L, t, <span class="string">&#34;index&#34;</span>);  <span class="comment">/* no metamethod */</span></span><br /><span class="line">    <span class="keyword">if</span> (ttisfunction(tm)) {  <span class="comment">/* metamethod is a function */</span></span><br /><span class="line">      luaT_callTM(L, tm, t, key, val, <span class="number">1</span>);</span><br /><span class="line">      <span class="keyword">return</span>;</span><br /><span class="line">    }</span><br /><span class="line">    t = tm;  <span class="comment">/* else repeat access over &#39;tm&#39; */</span></span><br /><span class="line">  }</span><br /><span class="line">  luaG_runerror(L, <span class="string">&#34;gettable chain too long; possible loop&#34;</span>);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p>这个函数根据该对象的元方法表中的_index 表逐层向上查找：</p>
+<ul>
+<li>第 9 行~第 16 行：如果 t 是表，则尝试根据 key 在该表中查找数据，如果找到了非空数据，或者找到该表的元方法表中_index 为空，都返回查找结果。反之，如果不返回查找结果，只可能是上面两个条件的反面情况，即在原表中查找的数据为空，同时原表的元方法表存在 _index成员，而且此时该成员已经赋值给了 tm。</li>
+<li>第 19 行~第 20 行：这说明前面判断 t 不是一个表，于是调用 luaT_gettmbyobj 函数，尝试拿到这个数据的 metatable[“__index”]，如果返回空，那么报错并返回。</li>
+<li>第 21 行~第 24 行：此时 tm 不是一个空值，于是判断它是不是函数，如果是，就通过 luaT_callTM函数来调用它，然后返回。</li>
+<li>第 25 行：来到这里，说明前面得到的 tm，既不是空值，也不是函数，而是 t-&gt;metatable[“__index”]，此时将这个值赋值为下一个循环中处理的 t，继续前面的操作。</li>
+<li>第 27 行：如果这个逐层查找过程的层次过多，超过了 MAXTAGLOOP，就终止循环，报错并返回。</li>
+</ul>
+<p>关于 luaT_gettmbyobj 函数，它的作用是根据一个数据的类型返回它的元表：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> TValue *<span class="title">luaT_gettmbyobj</span> <span class="params">(lua_State *L, <span class="keyword">const</span> TValue *o, TMS event)</span> </span>{</span><br /><span class="line">  Table *mt;</span><br /><span class="line">  <span class="keyword">switch</span> (ttnov(o)) {</span><br /><span class="line">    <span class="keyword">case</span> LUA_TTABLE:</span><br /><span class="line">      mt = hvalue(o)-&gt;metatable;</span><br /><span class="line">      <span class="keyword">break</span>;</span><br /><span class="line">    <span class="keyword">case</span> LUA_TUSERDATA:</span><br /><span class="line">      mt = uvalue(o)-&gt;metatable;</span><br /><span class="line">      <span class="keyword">break</span>;</span><br /><span class="line">    <span class="keyword">default</span>:</span><br /><span class="line">      mt = G(L)-&gt;mt[ttnov(o)];</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">return</span> (mt ? luaH_getstr(mt, G(L)-&gt;tmname[event]) : luaO_nilobject);</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+<p>只有在数据类型为 Table 和 udata 的时候，才能拿到对象的 metatable 表，其他时候是到 global_State结构体的成员 mt 中获取的，但是这对于其他数据类型而言，一直是空值。</p>
+<p>fasttm宏的作用是从这个数据的元表中查询相应的对象返回：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line">  ((et)-&gt;flags &amp; (<span class="number">1u</span>&lt;&lt;(e))) ? <span class="literal">NULL</span> : luaT_gettm(et, e, (g)-&gt;tmname[e]))</span><br /><span class="line"></span><br /><span class="line"><span class="meta">#<span class="meta-keyword">define</span> fasttm(l,et,e)	gfasttm(G(l), et, e)</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">/*</span></span><br /><span class="line"><span class="comment">** function to be used with macro &#34;fasttm&#34;: optimized for absence of</span></span><br /><span class="line"><span class="comment">** tag methods</span></span><br /><span class="line"><span class="comment">*/</span></span><br /><span class="line"><span class="function"><span class="keyword">const</span> TValue *<span class="title">luaT_gettm</span> <span class="params">(Table *events, TMS event, TString *ename)</span> </span>{</span><br /><span class="line">  <span class="keyword">const</span> TValue *tm = luaH_getstr(events, ename);</span><br /><span class="line">  lua_assert(event &lt;= TM_EQ);</span><br /><span class="line">  <span class="keyword">if</span> (ttisnil(tm)) {  <span class="comment">/* no tag method? */</span></span><br /><span class="line">    events-&gt;flags |= cast_byte(<span class="number">1u</span>&lt;&lt;event);  <span class="comment">/* cache this fact */</span></span><br /><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br /><span class="line">  }</span><br /><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> tm;</span><br /><span class="line">}</span><br /></pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/332_FSM-Lua/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/332_FSM-Lua/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/332_FSM-Lua/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/333_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E8%A1%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8C%87%E4%BB%A4/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/333_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E8%A1%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8C%87%E4%BB%A4/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/333_Lua%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E8%A1%A8%E6%93%8D%E4%BD%9C%E7%9A%84%E6%8C%87%E4%BB%A4/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/332_FSM-Lua/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

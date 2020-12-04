@@ -1,0 +1,836 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Java中内嵌Lua脚本 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中内嵌Lua脚本">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/698_Java%E4%B8%AD%E5%86%85%E5%B5%8CLua%E8%84%9A%E6%9C%AC/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/698_Java%E4%B8%AD%E5%86%85%E5%B5%8CLua%E8%84%9A%E6%9C%AC/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Java中内嵌Lua脚本</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~2 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Java中内嵌Lua脚本</h1>
+      <p><code>Lua</code>是一种小巧的脚本语言，如今常用于游戏开发，特别是客户端开发，基本上都是基于Lua来实现热更新，在Unity开发中更有<code>uLua</code>（最新版改名为<code>toLua</code>）这样成熟的热更框架。这里我设想用<code>Lua</code>+<code>Java</code>来实现服务器的热更，不成熟的想法，这里想尝试一下<code>Lua</code>和<code>Java</code>如何互相调用。</p>
+
+<h3 id="插件选择："><a href="#插件选择：" class="headerlink" title="插件选择："></a><strong>插件选择：</strong></h3>
+<p>假如引入第三方库，可以找到比较常用的两个选择：<code>LuaJava</code>和<code>LuaJ</code>，简单做一下对比：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">第三方库</th>
+<th style="text-align:center">实现</th>
+<th style="text-align:center">特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">LuaJava</td>
+<td style="text-align:center">非纯Java实现，需要通过native方法调用C库，依赖于Lua 5.1</td>
+<td style="text-align:center">会导致JVM崩溃，不再更新，没人维护</td>
+</tr>
+<tr>
+<td style="text-align:center">LuaJ（LuaJavaBridge）</td>
+<td style="text-align:center">纯Java实现的Lua解析器，无需使用native</td>
+<td style="text-align:center">不会因错误导致JVM crash，支持JSR-223</td>
+</tr>
+</tbody>
+</table>
+<h4 id="LuaJava简介："><a href="#LuaJava简介：" class="headerlink" title="LuaJava简介："></a><strong>LuaJava简介：</strong></h4>
+<p>Lua是支持内嵌在C程序中的，但是官方不支持Java，所以我们只能寻找第三方插件了，找到了一个<code>LuaJava</code>，这是一个开源项目，实现方式：LuaJava实际上就是按照Lua官方文档，把Lua的C接口通过<code>JNI</code>包装成Java的库。下载资源，里面是一个<code>.dll</code>和 一个<code>.jar</code>。把<code>.dll</code>放到<code>java.library.path</code>下，再把<code>.lib</code>放到<code>classpath</code>中。</p>
+<h4 id="LuaJ简介："><a href="#LuaJ简介：" class="headerlink" title="LuaJ简介："></a><strong>LuaJ简介：</strong></h4>
+<p><strong>主要特征：</strong></p>
+<ul>
+<li>可以从 <code>Lua</code> 调用 <code>Java Class Static Method</code>（Java的静态方法）；</li>
+<li>调用 <code>Java</code> 方法时，支持 <code>int/float/boolean/String/Lua function</code> 五种参数类型；</li>
+<li>可以将 <code>Lua function</code> 作为参数传递给 <code>Java</code>，并让 <code>Java</code> 保存 <code>Lua function</code> 的引用；</li>
+<li>可以从 <code>Java</code> 调用 <code>Lua</code> 的全局函数，或者调用引用指向的 <code>Lua function</code>。</li>
+</ul>
+<h4 id="LuaJ核心原理："><a href="#LuaJ核心原理：" class="headerlink" title="LuaJ核心原理："></a><strong>LuaJ核心原理：</strong></h4>
+<p><code>LuaJ</code>的核心其实就是：从<code>Lua</code>调用<code>Java</code>和从<code>Java</code>调用<code>Lua</code>。</p>
+<p>经过上述对比，最终我还是选择纯Java实现，且仍然有人维护更新的<code>LuaJ</code>解析器，而且它也支持<code>LuaJava API</code>。</p>
+<hr />
+
+<h3 id="LuaJ的下载使用："><a href="#LuaJ的下载使用：" class="headerlink" title="LuaJ的下载使用："></a><strong>LuaJ的下载使用：</strong></h3>
+<h4 id="下载："><a href="#下载：" class="headerlink" title="下载："></a><strong>下载：</strong></h4>
+<ul>
+<li>方式一：直接到<a href="http://www.luaj.org/luaj/3.0/README.html" target="_blank" rel="external noopener noreferrer">LuaJ官网</a>下载，选择相对较新的版本<a href="https://nchc.dl.sourceforge.net/project/luaj/luaj-3.0/3.0.1/luaj-3.0.1.zip" target="_blank" rel="external noopener noreferrer">LuaJ 3.0.1</a>，将解压后的<code>lib</code>目录下的<code>luaj-jse-3.0.1.jar</code>导入项目中使用。</li>
+<li><p>方式二：当然加入是使用Maven来管理项目的就不用这么麻烦了，直接在<code>pom.xml</code>中添加库依赖内容：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.luaj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>luaj-jse<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>方式三：直接下载<a href="https://sourceforge.net/projects/luaj/" target="_blank" rel="external noopener noreferrer">LuaJ源码</a>，添加到项目中，这种方法可以进行Debug，将源码中<code>src</code>目录下的<code>core</code>和<code>jse</code>目录中的代码复制到项目中。</p>
+</li>
+</ul>
+<hr />
+
+<h3 id="实战："><a href="#实战：" class="headerlink" title="实战："></a><strong>实战：</strong></h3>
+<h4 id="在Java中调用Lua："><a href="#在Java中调用Lua：" class="headerlink" title="在Java中调用Lua："></a><strong>在Java中调用Lua：</strong></h4>
+<ul>
+<li><p>直接把lua代码当做String字符串内嵌到Java代码中：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">String luaStr = <span class="string">&#34;print &#39;hello,world!&#39;&#34;</span>;</div><div class="line">Globals globals = JsePlatform.standardGlobals();</div><div class="line">LuaValue chunk = globals.load(luaStr);</div><div class="line">chunk.call();</div></pre></td></tr></tbody></table></figure>
+<p>此处luaStr中只能放一个lua的方法，或者是一句lua语句，不可以出现多个function放在同一个String中使用此方法来调用。</p>
+</li>
+<li><p>将Lua代码都写在<code>.lua</code>脚本文件中，在Java中调用Lua脚本文件，指定要执行的<code>lua function</code>，可以直接如下：</p>
+<ul>
+<li><p>创建一个<code>login.lua</code>脚本，内容如下：</p>
+ <figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   <span class="comment">--无参函数</span></div><div class="line">   <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></div><div class="line">      <span class="built_in">print</span> <span class="string">&#39;hello&#39;</span></div><div class="line">   <span class="keyword">end</span></div><div class="line"><span class="comment">--带参函数</span></div><div class="line">   <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">(str)</span></span></div><div class="line">      <span class="built_in">print</span>(<span class="string">&#39;data from java is:&#39;</span>..str)</div><div class="line">      <span class="keyword">return</span> <span class="string">&#39;haha&#39;</span></div><div class="line">   <span class="keyword">end</span></div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Java先载入<code>login.lua</code>脚本并编译，然后再获取指定名称的函数，无参的直接使用<code>call()</code>方法调用，带参的需要通过<code>invoke(LuaValue[])</code>传入参数表：</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">   String luaPath = <span class="string">&#34;res/lua/login.lua&#34;</span>;	<span class="comment">//lua脚本文件所在路径</span></div><div class="line">   Globals globals = JsePlatform.standardGlobals();</div><div class="line"><span class="comment">//加载脚本文件login.lua，并编译</span></div><div class="line">globals.loadfile(luaPath).call();</div><div class="line"><span class="comment">//获取无参函数hello</span></div><div class="line">LuaValue func = globals.get(LuaValue.valueOf(<span class="string">&#34;hello&#34;</span>));</div><div class="line"><span class="comment">//执行hello方法</span></div><div class="line">func.call();</div><div class="line"><span class="comment">//获取带参函数test</span></div><div class="line">LuaValue func1 = globals.get(LuaValue.valueOf(<span class="string">&#34;test&#34;</span>));</div><div class="line"><span class="comment">//执行test方法,传入String类型的参数参数</span></div><div class="line">String data = func1.call(LuaValue.valueOf(<span class="string">&#34;I&#39;am from Java!&#34;</span>)).toString();</div><div class="line">   <span class="comment">//打印lua函数回传的数据</span></div><div class="line">   Logger.info(<span class="string">&#34;data return from lua is:&#34;</span>+data);</div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>运行结果如下：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hello</div><div class="line">data from java is:I&#39;am from Java!</div><div class="line">四月 07, 2017 5:31:25 下午 com.tw.login.tools.Logger info</div><div class="line">信息: lua return data：haha</div></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</li>
+<li><p>这里需要理解<code>LuaValue</code>和<code>Globals</code>的含义：<br /><code>Globals</code>继承<code>LuaValue</code>对象，<code>LuaValue</code>对象用来表示在Lua语言的基本数据类型，比如:<code>Nil</code>,<code>Number</code>,<code>String</code>,<code>Table</code>,<code>userdata</code>,<code>Function</code>等。<strong>尤其要注意<code>LuaValue</code>也表示了Lua语言中的函数</strong>。所以,对于Lua语言中的函数操作都是通过<code>LuaValue</code>来实现的。</p>
+</li>
+</ul>
+<h4 id="在Lua中调用Java"><a href="#在Lua中调用Java" class="headerlink" title="在Lua中调用Java:"></a><strong>在Lua中调用Java:</strong></h4>
+<ul>
+<li><p><strong>创建Java类：</strong><br />假设在Java中有这样的一个日志类<code>Logger.java</code>：</p>
+  <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.tw.login.tools;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</div><div class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String TAG = <span class="string">&#34;Logger&#34;</span>;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Log logger = LogFactory.getLog(Logger.class);;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Logger</span><span class="params">()</span></span>{</div><div class="line">        <span class="keyword">if</span>(logger == <span class="keyword">null</span>){</div><div class="line">            logger = LogFactory.getLog(Logger.class);</div><div class="line">        }</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TestLogger</span><span class="params">(String str)</span> </span>{</div><div class="line">        logger.info(str);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">(String content)</span></span>{</div><div class="line">        logger.info(content);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><strong>创建一个lua脚本：</strong><br />命名为<code>test.lua</code>，存放在当前项目根目录下的<code>res/lua</code>目录下，详细代码如下：</p>
+<ul>
+<li><p>在Lua中直接创建Java类的实例的方法：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--使用luajava创建java类的实例（对象）</span></div><div class="line"><span class="keyword">local</span> logger = luajava.newInstance(<span class="string">&#34;com.tw.login.tools.Logger&#34;</span>)</div><div class="line"><span class="comment">--调用对象方法</span></div><div class="line">logger:TestLogger(<span class="string">&#34;Test call java in lua0&#34;</span>)</div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>在Lua中绑定Java类：</p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">--使用luajava绑定一个java类</span></div><div class="line"><span class="keyword">local</span> logger_method = luajava.bindClass(<span class="string">&#34;com.tw.login.tools.Logger&#34;</span>);</div><div class="line"><span class="comment">--调用类的静态方法/变量</span></div><div class="line">logger_method:info(<span class="string">&#34;test call static java function in lua&#34;</span>)</div><div class="line"><span class="built_in">print</span>(logger_method.TAG)</div><div class="line"><span class="comment">-- 使用绑定类创建类的实例（对象）</span></div><div class="line"><span class="keyword">local</span> logger_instance = luajava.new(logger_method)</div><div class="line"><span class="comment">-- 调用对象方法</span></div><div class="line">logger_instance:TestLogger(<span class="string">&#34;Test call java in lua1&#34;</span>)</div></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>当前我们只是实现了Lua中调用Java的逻辑，但是作为一种脚本语言，Lua没办法脱离高级语言而独立运行起来，所以要测试Lua是否能正常实现对Java的调用，还是需要在Java中运行此Lua脚本，参考之前在Java调用<code>.lua</code>脚本文件的方法，在Java中的main入口函数中添加一下内容：</p>
+  <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Globals globals = JsePlatform.standardGlobals();</div><div class="line">globals.loadfile(<span class="string">&#34;res/lua/test.lua&#34;</span>).call();</div></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><strong>结果输出日志：</strong></p>
+  <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">四月 07, 2017 2:17:04 下午 com.tw.login.tools.Logger TestLogger</div><div class="line">信息: Test call java in lua0</div><div class="line">四月 07, 2017 2:17:04 下午 com.tw.login.tools.Logger info</div><div class="line">信息: test call static java function in lua</div><div class="line">Logger</div><div class="line">四月 07, 2017 2:17:04 下午 com.tw.login.tools.Logger TestLogger</div><div class="line">信息: Test call java in lua1</div></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<hr />
+
+<h3 id="其他："><a href="#其他：" class="headerlink" title="其他："></a><strong>其他：</strong></h3>
+<ul>
+<li><code>LuaJ</code>直到代码运行结束前都会阻塞线程，这时候开启一个新的线程专门运行即可，但是<code>LuaJ</code>运行以后无法中断（即使你中断了它所在的线程），比如你的.lua中有一个<code>while true do end</code>循环，那么你将永远无法中断它，除非退出你的整个Java应用。</li>
+<li>在<code>LuaJava</code>上，发现调用了<code>L.close()</code>方法也是不能中断执行。</li>
+</ul>
+<hr />
+
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a><strong>参考：</strong></h3>
+<ul>
+<li><a href="http://yangzb.iteye.com/blog/560299" target="_blank" rel="external noopener noreferrer">在Java中使用Lua脚本语言</a></li>
+<li><a href="http://www.360doc.com/content/15/0117/17/9200790_441588770.shtml" target="_blank" rel="external noopener noreferrer">关于在java上使用lua脚本</a></li>
+<li><a href="http://blog.csdn.net/mislead/article/details/51657477" target="_blank" rel="external noopener noreferrer">luaj——java程序中运行lua</a></li>
+<li><a href="http://www.cnblogs.com/mingwuyun/p/5924911.html" target="_blank" rel="external noopener noreferrer">LuaJ 调用java方法性能研究</a></li>
+<li><a href="http://www.cnblogs.com/mokey/p/4443561.html" target="_blank" rel="external noopener noreferrer">lua调用java java调用lua</a></li>
+<li><a href="http://blog.csdn.net/mislead/article/details/51657493" target="_blank" rel="external noopener noreferrer">luaj-lua中实例化JavaClass</a></li>
+</ul>
+<hr />
+
+<ul>
+<li><a href="http://hovertree.com/h/bjaf/wcxci250.htm" target="_blank" rel="external noopener noreferrer">在JAVA中使用LUA脚本记,javaj调用lua脚本的函数</a></li>
+<li><a href="http://blog.csdn.net/sunning9001/article/details/50471740" target="_blank" rel="external noopener noreferrer">luaj:初探</a></li>
+</ul>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/697_%E5%88%9D%E8%AF%86lua/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/697_%E5%88%9D%E8%AF%86lua/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/697_%E5%88%9D%E8%AF%86lua/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/698_Java%E4%B8%AD%E5%86%85%E5%B5%8CLua%E8%84%9A%E6%9C%AC/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/698_Java%E4%B8%AD%E5%86%85%E5%B5%8CLua%E8%84%9A%E6%9C%AC/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/698_Java%E4%B8%AD%E5%86%85%E5%B5%8CLua%E8%84%9A%E6%9C%AC/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/697_%E5%88%9D%E8%AF%86lua/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

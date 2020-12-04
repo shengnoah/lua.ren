@@ -1,0 +1,774 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Suricata + Lua实现本地情报对接 &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Suricata + Lua实现本地情报对接">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/118_Suricata-+-Lua%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%83%85%E6%8A%A5%E5%AF%B9%E6%8E%A5/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/118_Suricata-+-Lua%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%83%85%E6%8A%A5%E5%AF%B9%E6%8E%A5/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>Suricata + Lua实现本地情报对接</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~6 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">Suricata + Lua实现本地情报对接</h1>
+      <p>​        由于近期网站遭受恶意攻击, 通过对于登录接口的审计与分析, 现已确定了一批可疑账号。既然之前写过一个登录接口的审计脚本, 那么完全可以通过扩展这个脚本来实现对于可疑账号的比对。主要思路: 通过将可疑账号存进Redis中, 再利用Lua脚本调用Redis接口进行账号的比对。</p>
+<p>先说一下<strong>Suricata</strong>默认是存在黑名单机制的, 如下:</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line"></span><br /><span class="line"><span class="comment">#reputation-categories-file: /etc/suricata/iprep/categories.txt</span></span><br /><span class="line"><span class="comment">#default-reputation-path: /etc/suricata/iprep</span></span><br /><span class="line"><span class="comment">#reputation-files:</span></span><br /><span class="line"><span class="comment"># - reputation.list</span></span><br /></pre></td></tr></tbody></table></figure>
+
+<p>在<strong>Suricata 5.0</strong> 版本中更是增加了新的功能<strong><a href="https://suricata.readthedocs.io/en/suricata-5.0.0/rules/datasets.html" target="_blank" rel="noopener noreferrer">Datasets</a></strong>。大概看了一下, 可以通过在规则中使用<code>dataset</code>和<code>datarep</code>关键字将大量数据与<code>sticky buffer</code>进行匹配。确实是个很赞的功能!</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line">alert http any any -&gt; any any (http.user_agent; dataset:<span class="built_in">set</span>, ua-seen, <span class="built_in">type</span> string, save ua-seen.lst; sid:1;)</span><br /><span class="line"></span><br /><span class="line">alert dns any any -&gt; any any (dns.query; to_sha256; dataset:<span class="built_in">set</span>, dns-sha256-seen, <span class="built_in">type</span> sha256, save dns-sha256-seen.lst; sid:2;)</span><br /><span class="line"></span><br /><span class="line">alert http any any -&gt; any any (http.uri; to_md5; dataset:isset, http-uri-md5-seen, <span class="built_in">type</span> md5, load http-uri-md5-seen.lst; sid:3;)</span><br /></pre></td></tr></tbody></table></figure>
+
+<p><strong>但是</strong>… 这并不适用我现在的场景, 因为在我的场景中, 用户的登录请求存在于POST请求中, 默认的Suricata方法并不能准确定位到我们需要的账号。这个时候我们就只能依赖于<strong>Lua</strong>脚本来扩展。当然这些需求<strong>Zeek</strong>也可以满足, 只是…<strong>Zeek</strong>的脚本真是难写…不忍吐槽~</p>
+<h1 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h1>
+<p><strong>安装环境</strong> </p>
+<p>​    <strong>OS</strong>: <em>Ubuntu 18.04</em></p>
+<p>​    <strong>Suricata</strong>: <em>Suricata 5.0.0 RELEASE</em>        </p>
+<ol>
+<li>由于Ubuntu默认没有安装<strong><a href="https://luarocks.org/" target="_blank" rel="noopener noreferrer">LuaRocks</a></strong> (<em>LuaRocks is the package manager for Lua modules</em>), 这里需要我们手动安装。</li>
+</ol>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过apt直接安装, 简单省事儿。</span></span><br /><span class="line">$ apt-get install luarocks</span><br /></pre></td></tr></tbody></table></figure>
+
+<hr />
+
+<ol start="2">
+<li>通过<code>luarocks</code>安装我们所需要的<code>lua</code>模块, 这里我们需要用到<code>redis-lua</code>、<code>luasocket</code>这两个模块。</li>
+</ol>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install Modules</span></span><br /><span class="line">$ luarocks install luasocket</span><br /><span class="line">$ luarocks install redis-lua</span><br /><span class="line"></span><br /><span class="line">$ ll /usr/<span class="built_in">local</span>/share/lua/5.1/</span><br /><span class="line">total 72</span><br /><span class="line">drwxr-xr-x 3 root root  4096 Oct 25 03:35 ./</span><br /><span class="line">drwxr-xr-x 3 root root  4096 Sep 17 14:14 ../</span><br /><span class="line">-rw-r--r-- 1 root root  8331 Oct 25 03:34 ltn12.lua</span><br /><span class="line">-rw-r--r-- 1 root root  2487 Oct 25 03:34 mime.lua</span><br /><span class="line">-rw-r--r-- 1 root root 35599 Oct 25 03:35 redis.lua</span><br /><span class="line">drwxr-xr-x 2 root root  4096 Oct 25 03:34 socket/</span><br /><span class="line">-rw-r--r-- 1 root root  4451 Oct 25 03:34 socket.lua</span><br /></pre></td></tr></tbody></table></figure>
+
+<hr />
+
+<ol start="3">
+<li>安装成功后,  可以简单的测试一下。</li>
+</ol>
+<ul>
+<li>利用<strong>Docker</strong>启动<strong>Redis</strong>容器</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /></pre></td><td class="code"><pre><span class="line">$ docker run -ti -d -p 6379:6379 redis</span><br /></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>测试脚本<code>hello_redis.lua</code></li>
+</ul>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> redis = <span class="built_in">require</span> <span class="string">&#34;redis&#34;</span></span><br /><span class="line"></span><br /><span class="line"><span class="keyword">local</span> client = redis.connect(<span class="string">&#34;127.0.0.1&#34;</span>, <span class="number">6379</span>)</span><br /><span class="line"></span><br /><span class="line"><span class="keyword">local</span> response = client:ping()</span><br /><span class="line"><span class="keyword">if</span> response == <span class="literal">false</span> <span class="keyword">then</span></span><br /><span class="line">	<span class="keyword">return</span> <span class="number">0</span></span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line">client:set(<span class="string">&#34;hello&#34;</span>, <span class="string">&#34;world&#34;</span>)</span><br /><span class="line"></span><br /><span class="line"><span class="keyword">local</span> var = client:get(<span class="string">&#34;hello&#34;</span>)</span><br /><span class="line"><span class="built_in">print</span>(var)</span><br /></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>可能会存在环境变量不对导致的报错</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /></pre></td><td class="code"><pre><span class="line">$ luajit hello_redis.lua</span><br /><span class="line">	luajit: /usr/<span class="built_in">local</span>/share/lua/5.1/redis.lua:793: module <span class="string">&#39;socket&#39;</span> not found:</span><br /><span class="line">	no field package.preload[<span class="string">&#39;socket&#39;</span>]</span><br /><span class="line">	no file <span class="string">&#39;./socket.lua&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;/usr/local/share/luajit-2.0.5/socket.lua&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;/usr/local/share/lua/5.1/socket.lua&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;/usr/local/share/lua/5.1/socket/init.lua&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;./socket.so&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;/usr/local/lib/lua/5.1/socket.so&#39;</span></span><br /><span class="line">	no file <span class="string">&#39;/usr/local/lib/lua/5.1/loadall.so&#39;</span></span><br /><span class="line">stack traceback:</span><br /><span class="line">	[C]: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">&#39;require&#39;</span></span><br /><span class="line">	/usr/<span class="built_in">local</span>/share/lua/5.1/redis.lua:793: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">&#39;create_connection&#39;</span></span><br /><span class="line">	/usr/<span class="built_in">local</span>/share/lua/5.1/redis.lua:836: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">&#39;connect&#39;</span></span><br /><span class="line">	a.lua:3: <span class="keyword">in</span> main chunk</span><br /><span class="line">	[C]: at 0x56508049e440</span><br /></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>执行<code>luarocks path --bin</code> 并将结果输入</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /></pre></td><td class="code"><pre><span class="line">$ luarocks path --bin</span><br /><span class="line">Warning: The directory <span class="string">&#39;/home/canon/.cache/luarocks&#39;</span> or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing /usr/<span class="built_in">local</span>/bin/luarocks with sudo, you may want sudo<span class="string">&#39;s -H flag.</span></span><br /><span class="line"><span class="string">export LUA_PATH=&#39;</span>/home/canon/.luarocks/share/lua/5.1/?.lua;/home/canon/.luarocks/share/lua/5.1/?/init.lua;/usr/<span class="built_in">local</span>/share/lua/5.1/?.lua;/usr/<span class="built_in">local</span>/share/lua/5.1/?/init.lua;./?.lua;/usr/<span class="built_in">local</span>/share/luajit-2.0.5/?.lua<span class="string">&#39;</span></span><br /><span class="line"><span class="string">export LUA_CPATH=&#39;</span>/home/canon/.luarocks/lib/lua/5.1/?.so;/usr/<span class="built_in">local</span>/lib/lua/5.1/?.so;./?.so;/usr/<span class="built_in">local</span>/lib/lua/5.1/loadall.so<span class="string">&#39;</span></span><br /><span class="line"><span class="string">export PATH=&#39;</span>/home/canon/.luarocks/bin:/usr/<span class="built_in">local</span>/bin:/home/canon/anaconda3/bin:/home/canon/anaconda3/condabin:/usr/<span class="built_in">local</span>/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin<span class="string">&#39;</span></span><br /></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li>执行脚本, 将会看到如下输出:</li>
+</ul>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /></pre></td><td class="code"><pre><span class="line">$ luajit hello_redis.lua</span><br /><span class="line">world</span><br /></pre></td></tr></tbody></table></figure>
+
+<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1>
+<p>扩展登录接口审计脚本: <code>http_audit.lua</code></p>
+<figure class="highlight lua"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br /><span class="line">2</span><br /><span class="line">3</span><br /><span class="line">4</span><br /><span class="line">5</span><br /><span class="line">6</span><br /><span class="line">7</span><br /><span class="line">8</span><br /><span class="line">9</span><br /><span class="line">10</span><br /><span class="line">11</span><br /><span class="line">12</span><br /><span class="line">13</span><br /><span class="line">14</span><br /><span class="line">15</span><br /><span class="line">16</span><br /><span class="line">17</span><br /><span class="line">18</span><br /><span class="line">19</span><br /><span class="line">20</span><br /><span class="line">21</span><br /><span class="line">22</span><br /><span class="line">23</span><br /><span class="line">24</span><br /><span class="line">25</span><br /><span class="line">26</span><br /><span class="line">27</span><br /><span class="line">28</span><br /><span class="line">29</span><br /><span class="line">30</span><br /><span class="line">31</span><br /><span class="line">32</span><br /><span class="line">33</span><br /><span class="line">34</span><br /><span class="line">35</span><br /><span class="line">36</span><br /><span class="line">37</span><br /><span class="line">38</span><br /><span class="line">39</span><br /><span class="line">40</span><br /><span class="line">41</span><br /><span class="line">42</span><br /><span class="line">43</span><br /><span class="line">44</span><br /><span class="line">45</span><br /><span class="line">46</span><br /><span class="line">47</span><br /><span class="line">48</span><br /><span class="line">49</span><br /><span class="line">50</span><br /><span class="line">51</span><br /><span class="line">52</span><br /><span class="line">53</span><br /><span class="line">54</span><br /><span class="line">55</span><br /><span class="line">56</span><br /><span class="line">57</span><br /><span class="line">58</span><br /><span class="line">59</span><br /><span class="line">60</span><br /><span class="line">61</span><br /><span class="line">62</span><br /><span class="line">63</span><br /><span class="line">64</span><br /><span class="line">65</span><br /><span class="line">66</span><br /><span class="line">67</span><br /><span class="line">68</span><br /><span class="line">69</span><br /><span class="line">70</span><br /><span class="line">71</span><br /><span class="line">72</span><br /><span class="line">73</span><br /><span class="line">74</span><br /><span class="line">75</span><br /><span class="line">76</span><br /><span class="line">77</span><br /><span class="line">78</span><br /><span class="line">79</span><br /><span class="line">80</span><br /><span class="line">81</span><br /><span class="line">82</span><br /><span class="line">83</span><br /><span class="line">84</span><br /><span class="line">85</span><br /><span class="line">86</span><br /><span class="line">87</span><br /><span class="line">88</span><br /><span class="line">89</span><br /><span class="line">90</span><br /><span class="line">91</span><br /><span class="line">92</span><br /><span class="line">93</span><br /><span class="line">94</span><br /><span class="line">95</span><br /><span class="line">96</span><br /><span class="line">97</span><br /><span class="line">98</span><br /><span class="line">99</span><br /><span class="line">100</span><br /><span class="line">101</span><br /><span class="line">102</span><br /><span class="line">103</span><br /><span class="line">104</span><br /><span class="line">105</span><br /><span class="line">106</span><br /><span class="line">107</span><br /><span class="line">108</span><br /><span class="line">109</span><br /><span class="line">110</span><br /><span class="line">111</span><br /><span class="line">112</span><br /><span class="line">113</span><br /><span class="line">114</span><br /><span class="line">115</span><br /><span class="line">116</span><br /><span class="line">117</span><br /><span class="line">118</span><br /><span class="line">119</span><br /><span class="line">120</span><br /><span class="line">121</span><br /><span class="line">122</span><br /><span class="line">123</span><br /><span class="line">124</span><br /><span class="line">125</span><br /><span class="line">126</span><br /><span class="line">127</span><br /><span class="line">128</span><br /><span class="line">129</span><br /><span class="line">130</span><br /><span class="line">131</span><br /><span class="line">132</span><br /><span class="line">133</span><br /><span class="line">134</span><br /><span class="line">135</span><br /><span class="line">136</span><br /><span class="line">137</span><br /><span class="line">138</span><br /><span class="line">139</span><br /><span class="line">140</span><br /><span class="line">141</span><br /><span class="line">142</span><br /><span class="line">143</span><br /><span class="line">144</span><br /><span class="line">145</span><br /><span class="line">146</span><br /><span class="line">147</span><br /><span class="line">148</span><br /><span class="line">149</span><br /><span class="line">150</span><br /><span class="line">151</span><br /><span class="line">152</span><br /><span class="line">153</span><br /><span class="line">154</span><br /><span class="line">155</span><br /><span class="line">156</span><br /><span class="line">157</span><br /><span class="line">158</span><br /><span class="line">159</span><br /><span class="line">160</span><br /><span class="line">161</span><br /><span class="line">162</span><br /><span class="line">163</span><br /><span class="line">164</span><br /><span class="line">165</span><br /><span class="line">166</span><br /><span class="line">167</span><br /><span class="line">168</span><br /><span class="line">169</span><br /><span class="line">170</span><br /><span class="line">171</span><br /><span class="line">172</span><br /><span class="line">173</span><br /><span class="line">174</span><br /><span class="line">175</span><br /><span class="line">176</span><br /><span class="line">177</span><br /><span class="line">178</span><br /><span class="line">179</span><br /><span class="line">180</span><br /><span class="line">181</span><br /><span class="line">182</span><br /><span class="line">183</span><br /><span class="line">184</span><br /><span class="line">185</span><br /><span class="line">186</span><br /><span class="line">187</span><br /><span class="line">188</span><br /><span class="line">189</span><br /><span class="line">190</span><br /><span class="line">191</span><br /><span class="line">192</span><br /><span class="line">193</span><br /><span class="line">194</span><br /><span class="line">195</span><br /><span class="line">196</span><br /><span class="line">197</span><br /><span class="line">198</span><br /><span class="line">199</span><br /><span class="line">200</span><br /><span class="line">201</span><br /><span class="line">202</span><br /><span class="line">203</span><br /><span class="line">204</span><br /><span class="line">205</span><br /><span class="line">206</span><br /><span class="line">207</span><br /><span class="line">208</span><br /><span class="line">209</span><br /><span class="line">210</span><br /><span class="line">211</span><br /><span class="line">212</span><br /><span class="line">213</span><br /><span class="line">214</span><br /><span class="line">215</span><br /><span class="line">216</span><br /><span class="line">217</span><br /><span class="line">218</span><br /><span class="line">219</span><br /><span class="line">220</span><br /><span class="line">221</span><br /><span class="line">222</span><br /><span class="line">223</span><br /><span class="line">224</span><br /><span class="line">225</span><br /><span class="line">226</span><br /><span class="line">227</span><br /><span class="line">228</span><br /><span class="line">229</span><br /><span class="line">230</span><br /><span class="line">231</span><br /><span class="line">232</span><br /><span class="line">233</span><br /><span class="line">234</span><br /><span class="line">235</span><br /><span class="line">236</span><br /><span class="line">237</span><br /><span class="line">238</span><br /><span class="line">239</span><br /><span class="line">240</span><br /><span class="line">241</span><br /><span class="line">242</span><br /><span class="line">243</span><br /><span class="line">244</span><br /><span class="line">245</span><br /><span class="line">246</span><br /><span class="line">247</span><br /><span class="line">248</span><br /><span class="line">249</span><br /></pre></td><td class="code"><pre><span class="line">json = <span class="built_in">require</span> <span class="string">&#34;json&#34;</span></span><br /><span class="line">md5 = <span class="built_in">require</span> <span class="string">&#34;md5&#34;</span></span><br /><span class="line">redis = <span class="built_in">require</span> <span class="string">&#34;redis&#34;</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">-- 登录接口</span></span><br /><span class="line">login_url = <span class="string">&#34;/login&#34;</span></span><br /><span class="line"><span class="comment">-- 登录错误提示</span></span><br /><span class="line">success_code = <span class="number">0</span></span><br /><span class="line"><span class="comment">-- event_name</span></span><br /><span class="line">event_name = <span class="string">&#34;login_audit&#34;</span></span><br /><span class="line"><span class="comment">-- event_type</span></span><br /><span class="line">event_type = <span class="string">&#34;lua&#34;</span></span><br /><span class="line"><span class="comment">-- logs</span></span><br /><span class="line">name = <span class="string">&#34;login_audit.json&#34;</span></span><br /><span class="line"><span class="comment">-- 协议</span></span><br /><span class="line">proto = <span class="string">&#34;TCP&#34;</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">-- redis_config</span></span><br /><span class="line">host = <span class="string">&#34;127.0.0.1&#34;</span></span><br /><span class="line">port = <span class="number">6379</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">-- common_mapping</span></span><br /><span class="line">http_common_mapping = <span class="string">&#39;{&#34;accept&#34;:&#34;accept&#34;,&#34;accept-charset&#34;:&#34;accept_charset&#34;,&#34;accept-encoding&#34;:&#34;accept_encoding&#34;,&#34;accept-language&#34;:&#34;accept_language&#34;,&#34;user-agent&#34;:&#34;user_agent&#34;}&#39;</span></span><br /><span class="line">common_mapping_table = json.decode(http_common_mapping)</span><br /><span class="line"></span><br /><span class="line"></span><br /><span class="line"><span class="comment">-- defind functioin</span></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">(args)</span></span></span><br /><span class="line">    m = md5.new()</span><br /><span class="line">    m:update(args)</span><br /><span class="line">    <span class="keyword">return</span> md5.tohex(m:finish())</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatStr</span><span class="params">(args)</span></span></span><br /><span class="line">    t = {}</span><br /><span class="line">    ios = <span class="built_in">string</span>.<span class="built_in">match</span>(args, <span class="string">&#39;canon&#39;</span>)</span><br /><span class="line">    <span class="keyword">if</span> ios ~= <span class="literal">nil</span> <span class="keyword">then</span></span><br /><span class="line">        mail = <span class="string">&#39;email&#34;%s+(.-)%s&#39;</span></span><br /><span class="line">        t[<span class="string">&#39;email&#39;</span>] = <span class="built_in">string</span>.<span class="built_in">match</span>(args, mail)</span><br /><span class="line">    <span class="keyword">else</span></span><br /><span class="line">        data = <span class="built_in">string</span>.split(args, <span class="string">&#39;&amp;&#39;</span>)</span><br /><span class="line">        <span class="keyword">for</span> n, v <span class="keyword">in</span> <span class="built_in">ipairs</span>(data) <span class="keyword">do</span></span><br /><span class="line">            d = <span class="built_in">string</span>.split(v, <span class="string">&#39;=&#39;</span>)</span><br /><span class="line">            t[d[<span class="number">1</span>]] = d[<span class="number">2</span>]</span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">return</span> t</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">string.split</span><span class="params">(s, p)</span></span></span><br /><span class="line">    rt = {}</span><br /><span class="line">    <span class="built_in">string</span>.<span class="built_in">gsub</span>(s, <span class="string">&#39;[^&#39;</span>..p..<span class="string">&#39;]+&#39;</span>, <span class="function"><span class="keyword">function</span><span class="params">(w)</span></span> <span class="built_in">table</span>.<span class="built_in">insert</span>(rt, w) <span class="keyword">end</span> )</span><br /><span class="line">    <span class="keyword">return</span> rt</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="comment">-- default function</span></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span> <span class="params">(args)</span></span></span><br /><span class="line">    <span class="keyword">local</span> needs = {}</span><br /><span class="line">    needs[<span class="string">&#34;protocol&#34;</span>] = <span class="string">&#34;http&#34;</span></span><br /><span class="line">    <span class="keyword">return</span> needs</span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setup</span> <span class="params">(args)</span></span></span><br /><span class="line">    filename = SCLogPath() .. <span class="string">&#34;/&#34;</span> .. name</span><br /><span class="line">    file = <span class="built_in">assert</span>(<span class="built_in">io</span>.<span class="built_in">open</span>(filename, <span class="string">&#34;a&#34;</span>))</span><br /><span class="line">    SCLogInfo(<span class="string">&#34;app_login_audit filename: &#34;</span> .. filename)</span><br /><span class="line">    http = <span class="number">0</span></span><br /><span class="line">  </span><br /><span class="line">    <span class="comment">-- Connect Redis Server</span></span><br /><span class="line">    SCLogInfo(<span class="string">&#34;Connect Redis Server...&#34;</span>)</span><br /><span class="line">    client = redis.connect(host, port)</span><br /><span class="line">    response = client:ping()</span><br /><span class="line">    <span class="keyword">if</span> response <span class="keyword">then</span></span><br /><span class="line">        SCLogInfo(<span class="string">&#34;Redis Server connection succeeded.&#34;</span>)</span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line"><span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span><span class="params">(args)</span></span></span><br /><span class="line">    <span class="comment">-- init tables</span></span><br /><span class="line">    http_table = {</span><br /><span class="line">        hostname = <span class="literal">nil</span>,</span><br /><span class="line">        url = <span class="literal">nil</span>,</span><br /><span class="line">        url_path = <span class="literal">nil</span>,</span><br /><span class="line">        method = <span class="literal">nil</span>,</span><br /><span class="line">        <span class="built_in">status</span> = <span class="literal">nil</span>,</span><br /><span class="line">        protocol = <span class="literal">nil</span>,</span><br /><span class="line">        email = <span class="literal">nil</span>,</span><br /><span class="line">        results = <span class="literal">nil</span>,</span><br /><span class="line">        results_code = <span class="literal">nil</span></span><br /><span class="line">    }</span><br /><span class="line"></span><br /><span class="line">    <span class="comment">-- ti tables</span></span><br /><span class="line">    ti = {</span><br /><span class="line">        tags = {},</span><br /><span class="line">        provider = <span class="literal">nil</span>,</span><br /><span class="line">        producer = <span class="literal">nil</span></span><br /><span class="line">    }</span><br /><span class="line"></span><br /><span class="line">    <span class="comment">-- init score</span></span><br /><span class="line">    score = <span class="number">50</span></span><br /><span class="line"></span><br /><span class="line">    <span class="comment">-- http_hostname &amp; http_url</span></span><br /><span class="line">    http_hostname = HttpGetRequestHost()</span><br /><span class="line">    http_url = HttpGetRequestUriNormalized()</span><br /><span class="line">    </span><br /><span class="line">    <span class="comment">-- http_method</span></span><br /><span class="line">    rl = HttpGetRequestLine()</span><br /><span class="line">    <span class="keyword">if</span> rl <span class="keyword">then</span></span><br /><span class="line">        http_method = <span class="built_in">string</span>.<span class="built_in">match</span>(rl, <span class="string">&#34;%w+&#34;</span>)</span><br /><span class="line">        <span class="keyword">if</span> http_method <span class="keyword">then</span></span><br /><span class="line">            http_table[<span class="string">&#34;method&#34;</span>] = http_method</span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line">    <span class="keyword">end</span></span><br /><span class="line">	</span><br /><span class="line">	  <span class="comment">-- 为了保证 Suricata 的性能不受影响, 严格控制过滤条件</span></span><br /><span class="line">    <span class="keyword">if</span> http_url == login_url <span class="keyword">and</span> http_method == <span class="string">&#34;POST&#34;</span> <span class="keyword">then</span></span><br /><span class="line">        http_table[<span class="string">&#34;hostname&#34;</span>] = http_hostname</span><br /><span class="line">        http_table[<span class="string">&#34;url&#34;</span>] = http_url</span><br /><span class="line">        http_table[<span class="string">&#34;url_path&#34;</span>] = http_url</span><br /><span class="line">        </span><br /><span class="line">        <span class="comment">-- http_status &amp; http_protocol</span></span><br /><span class="line">        rsl = HttpGetResponseLine()</span><br /><span class="line">        <span class="keyword">if</span> rsl <span class="keyword">then</span></span><br /><span class="line">            status_code = <span class="built_in">string</span>.<span class="built_in">match</span>(rsl, <span class="string">&#34;%s(%d+)%s&#34;</span>)</span><br /><span class="line">            <span class="keyword">if</span> status_code <span class="keyword">then</span></span><br /><span class="line">                http_table[<span class="string">&#34;status&#34;</span>] = <span class="built_in">tonumber</span>(status_code)</span><br /><span class="line">            <span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line">            http_protocol = <span class="built_in">string</span>.<span class="built_in">match</span>(rsl, <span class="string">&#34;(.-)%s&#34;</span>)</span><br /><span class="line">            <span class="keyword">if</span> http_protocol <span class="keyword">then</span></span><br /><span class="line">                http_table[<span class="string">&#34;protocol&#34;</span>] = http_protocol</span><br /><span class="line">            <span class="keyword">end</span></span><br /><span class="line">        <span class="keyword">end</span></span><br /><span class="line"></span><br /><span class="line">        <span class="comment">-- login_results</span></span><br /><span class="line">        a, o, e = HttpGetResponseBody()</span><br /><span class="line">        <span class="keyword">if</span> a <span class="keyword">then</span></span><br /><span class="line">            &lt;spa
+</span></pre></td></tr></tbody></table></figure>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-1185_-cocos2d-x-3.x-%E6%9C%AA%E5%AE%89%E8%A3%85%E6%9C%AA%E7%9F%A5%E7%9A%84luajit%E5%91%BD%E4%BB%A4%E6%88%96jit-%E6%A8%A1%E5%9D%97-tsang-si/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-1185_-cocos2d-x-3.x-%E6%9C%AA%E5%AE%89%E8%A3%85%E6%9C%AA%E7%9F%A5%E7%9A%84luajit%E5%91%BD%E4%BB%A4%E6%88%96jit-%E6%A8%A1%E5%9D%97-tsang-si/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-1185_-cocos2d-x-3.x-%E6%9C%AA%E5%AE%89%E8%A3%85%E6%9C%AA%E7%9F%A5%E7%9A%84luajit%E5%91%BD%E4%BB%A4%E6%88%96jit-%E6%A8%A1%E5%9D%97-tsang-si/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/118_Suricata-+-Lua%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%83%85%E6%8A%A5%E5%AF%B9%E6%8E%A5/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/118_Suricata-+-Lua%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%83%85%E6%8A%A5%E5%AF%B9%E6%8E%A5/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/118_Suricata-+-Lua%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%83%85%E6%8A%A5%E5%AF%B9%E6%8E%A5/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/2016-01-01-1185_-cocos2d-x-3.x-%E6%9C%AA%E5%AE%89%E8%A3%85%E6%9C%AA%E7%9F%A5%E7%9A%84luajit%E5%91%BD%E4%BB%A4%E6%88%96jit-%E6%A8%A1%E5%9D%97-tsang-si/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

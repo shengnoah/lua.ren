@@ -1,0 +1,1186 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>ConcurrentLua &#8211; LUA教程</title>
+<meta name="description" content="ConcurrentLua">
+<meta name="keywords" content="">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ConcurrentLua">
+<meta property="og:description" content="ConcurrentLua">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/213/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/213/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>ConcurrentLua</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-09-17T22:50:18+08:00">September 17, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~8 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">ConcurrentLua</h1>
+      <h3>介绍</h3>
+
+<p>ConcurrentLua 是一个无共享异步消息传递模型的实现.该模型来自Erlang语言.
+她改编了Erlang的并发元素并整合进Lua里.</p>
+
+<p>ConcurrentLua的一个核心元素是 process(进程).一个进程是一个轻量级
+虚拟机</p>
+
+<p>线程,扮演和操作系统的进程同样的角色;他们不共享内存而是使用某这进程间通讯
+机制.这些进程能够根据需要被创建和销毁,并通过一个简单的环罗宾(轮训)算法来
+调度他们.</p>
+
+<p>每一个进程关联到一个邮箱(临时存储消息的队列),通过邮箱来接受别的进程发来
+的消息.进程可以在任何时候检查自己的邮箱有没有新消息抵达,如果有,进程可以
+按照抵达的顺序依次读取.</p>
+
+<p>每个进程都有一个唯一的数字作为进程标识,叫 PID(process identifier).也可以
+给进程取一个名字,并用名字来指代进程.进程名和进程的对应关系被保存到一个
+中心储藏室–registry(注册表).进程可以编辑注册表,添加或者删除表项.</p>
+
+<p>错误捕捉机制也被实现成 monitors 和 links .通过 monitors 进程能够监视其他
+进程,并在被监视进程异常终止的时候获得通知.通过 linker 进程绑定进程到一起,
+当一个进程异常终止的时候,其他进程也被通知并终止.</p>
+
+<p>本系统还支持分布式编程和所有相关的组件.分布式的进程通过和本地进程一样的
+方式来通讯.</p>
+
+<p>分布是基于 node(节点) 组件的.一个节点代表一个运行着很多进程的运行时环境.
+节点们可以相互连接和通讯,于是建立了一个虚拟网络.分布的进程使用这个网络来
+顺序交换信息.</p>
+
+<p>每个节点有个名字.其他的节点可以通过这个名字来连接.一个端口映射器精灵进程
+(译注:就是服务进程,类似Erlang提供的名字服务)提供了名字解析服务.端口映射器
+知晓虚拟网络中所有的节点的信息.</p>
+
+<p>正如进程可以在本地创建,进程已可以在远端节点被创建.一个远程进程能够被视同
+为一个本地进程来操作.</p>
+
+<p>如果虚拟网络中的节点是全互联的(每一个节点双向连接其他的节点),那么可以使用
+全局进程名.节点们相互交流和保养虚拟全局注册表并保持自己本地的注册表时时
+更新.</p>
+
+<p>monitors 和 links 以同样的语义支持分布进程和本地进程.节点可以透明的处理
+分布进程的错误.另外,进程可以像监视整个节点.</p>
+
+<p>节点可以在通讯前进行鉴权.一个已鉴权的节点才可以成为虚拟网络的一部分.这些
+策略通过一个简单安全机制来保证.</p>
+
+<h3>实现</h3>
+
+<p>ConcurrentLua的实现是基于Lua组件系统实现的.这个系统负责组织和管理Lua的模块和子模块.主模块有两个,分别提供了并发功能和分布式编程功能.并发模块可以单独加载,每个模块都可以选择性加载需要使用的子模块.独立的端口映射器精灵进程也是实现的一部分.
+系统中的进程是通过Lua的协程机制来实现的.一个进程其实就是一个Lua协程,
+通过 yield 来挂起一个进程,通过 resume 来继续执行一个进程.</p>
+
+<p>进程的调度机制仍然是基于Lua使用的 协作式多线程模型. 进程自愿挂起自己,
+从而让其它的进程获得运行的机会.然而,挂起和恢复进程被部分隐藏于高层机制
+之下;当一个进程去等待消息抵达的时候挂起,而在消息抵达进程邮箱后准备恢复.
+一个简单的环罗宾(轮训)调度器用来恢复进程的执行.</p>
+
+<p>任何类型的Lua数据,除了内存引用外,都可以通过消息来发送.消息可以是布尔值,
+数字,字符串,表或者函数,或者他们的混合.数据自动在发送时被序列化,并在接受
+时反序列化,所以的数据都是值传递.</p>
+
+<p>节点间的分布式进程间通讯机制是基于异步socket的.映射到网络层是非阻塞
+socket和定时轮训.这是如今大部分Lua模块采用的方法,非阻塞语义也应该被用
+在例如文件和管道的IO操作上.</p>
+
+<h3>用法</h3>
+
+<p>一些例子提供了系统不要组件的用法,例如,创建进程,分布式进程的消息传递和错误捕获.
+创建进程</p>
+
+<p>spawn()函数可以创建进程.spawn()函数接受至少一个参数,该参数标志进程的入口函数.其它附加参数则被直接转交给入口函数.
+下面的例子示范创建一个进程.该进程输出指定次数的消息:</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">times</span> <span class="k">do</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'hello world'</span><span class="p">)</span> <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'done'</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">hello_world</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>输出应该是:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello world
+hello world
+hello world
+done
+</code></pre></div></div>
+
+<h4>首先加载系统:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+</code></pre></div></div>
+
+<h4>进程入口函数:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">times</span> <span class="k">do</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'hello world'</span><span class="p">)</span> <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'done'</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h4>创建一个新进程:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">hello_world</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>最后调用系统无限循环:</h4>
+
+<p>concurrent.loop()消息交互进程通过 send() 和 receive() 函数来交换消息.同样,self()函数也被用来获取本进程ID.
+下面的程序实现了两个进程交换消息然后终止:</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">pong</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'finished'</span> <span class="k">then</span>
+            <span class="k">break</span>
+        <span class="k">elseif</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'ping'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'pong received ping'</span><span class="p">)</span>
+            <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'pong finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">ping</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span>
+        <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+        <span class="p">})</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'pong'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'ping received pong'</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s1">'finished'</span>
+    <span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'ping finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>输出应该是:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong finished
+ping finished
+</code></pre></div></div>
+
+<h4>在 pong 进程被创建后, ping 进程获得了 pong 进程的 PID:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>ping 进程发送一个消息:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4>pong 进程等待消息抵达,然后把接收到的消息保存到一个变量中:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>pong 进程回复:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>pong 进程在接收到 ping 进程发来的一个提示后终结.
+注册进程名可以用进程名替代PID来指定消息接收方. register() 函数可以用来在注册表
+(译注:指系统的名字对应表,而不是Windows的注册表,顺便鄙视一下Windows. :) )</p>
+<h4>创建一个进程的名字:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">pong</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'finished'</span> <span class="k">then</span>
+            <span class="k">break</span>
+        <span class="k">elseif</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'ping'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'pong received ping'</span><span class="p">)</span>
+            <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'pong finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">ping</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span>
+        <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+        <span class="p">})</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'pong'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'ping received pong'</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="p">{</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s1">'finished'</span>
+    <span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'ping finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>相对前一个版本的改变就是 ping 进程发送消息的地方:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4>和:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'finished'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4>以及现在 pong 进程注册了它的名字:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>因此 ping 进程不需要知道 pong 进程的 PID 了.
+分布式消息传递不同节点上的进程仍然可以使用同样的消息传递机制.远程进程通过 PID或进程名 加上
+节点名来指定.先前的例子可以改造成两个程序,分别是一个独立进程.</p>
+<h4>pong 进程的代码如下:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">pong</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'finished'</span> <span class="k">then</span>
+            <span class="k">break</span>
+        <span class="k">elseif</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'ping'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'pong received ping'</span><span class="p">)</span>
+            <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'pong finished'</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="s1">'pong@gaia'</span><span class="p">)</span>
+<span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s1">'pong'</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>ping 进程的代码如下:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">ping</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span>
+        <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">({</span> <span class="s1">'pong'</span><span class="p">,</span> <span class="s1">'pong@gaia'</span> <span class="p">},</span> <span class="p">{</span>
+            <span class="n">from</span> <span class="o">=</span> <span class="p">{</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">node</span><span class="p">()</span> <span class="p">},</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+        <span class="p">})</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'pong'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'ping received pong'</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">({</span> <span class="s1">'pong'</span><span class="p">,</span> <span class="s1">'pong@gaia'</span> <span class="p">},</span> <span class="p">{</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="p">{</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">node</span><span class="p">()</span> <span class="p">},</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="s1">'finished'</span>
+    <span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'ping finished'</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="s1">'ping@selene'</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>(译注: 如果你想自己跑这个例子需要修改上面的节点名后半部分的机器名部分,使之和你的网络环境相匹配.)pong 进程的输出应该是:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pong received ping
+pong received ping
+pong received ping
+pong finished
+</code></pre></div></div>
+
+<h4>ping 进程的输出应该是:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping received pong
+ping received pong
+ping received pong
+ping finished
+</code></pre></div></div>
+
+<h4>在这个例子里,运行时系统运行在分布式模式.为了看到结果,端口映射器必须先运行:</h4>
+
+<p>$ clpmd</p>
+
+<h4>初始化 pong 进程所在节点的代码:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="s1">'pong@gaia'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>初始化 ping 进程所在节点的代码:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="s1">'ping@selene'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>上面两句代码注册节点到端口映射器.去注册是通过:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>这个例子的唯一改动是消息发送的目的地.node()函数会返回调用进程坐在节点的名字:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">({</span> <span class="s1">'pong'</span><span class="p">,</span> <span class="s1">'pong@gaia'</span> <span class="p">},</span> <span class="p">{</span>
+    <span class="n">from</span> <span class="o">=</span> <span class="p">{</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">node</span><span class="p">()</span> <span class="p">},</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4>接下来:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">({</span> <span class="s1">'pong'</span><span class="p">,</span> <span class="s1">'pong@gaia'</span> <span class="p">},</span> <span class="p">{</span>
+    <span class="n">from</span> <span class="o">=</span> <span class="p">{</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">node</span><span class="p">()</span> <span class="p">},</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="s1">'finished'</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h4>错误处理一个捕获进程间错误的方法是连接进程.两个进程被绑定到一起,一个异常终止的后另一个也会终止.link()函数用来绑定进程:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="k">function</span> <span class="nf">ping</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">link</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span>
+        <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+        <span class="p">})</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'pong'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'ping received pong'</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'ping finished'</span><span class="p">)</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">'finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">pong</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'ping'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'pong received ping'</span><span class="p">)</span>
+            <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'pong finished'</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4>输出应该是:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong finished 
+</code></pre></div></div>
+
+<p>– 译注:这里应该是: ping fininshedpong 进程永远不会运行到最后一行,因为他在接收到 ping 进程退出信号的时候会终止.</p>
+<h4>连接进程的代码如下:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">link</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>也可以捕获进程终止导致的exit信号.被捕获的exit信号会转换成一个特殊的消息:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'concurrent'</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">setoption</span><span class="p">(</span><span class="s1">'trapexit'</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+<span class="k">function</span> <span class="nf">pong</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">true</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">signal</span> <span class="o">==</span> <span class="s1">'EXIT'</span> <span class="k">then</span>
+            <span class="k">break</span>
+        <span class="k">elseif</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'ping'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'pong received ping'</span><span class="p">)</span>
+            <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">from</span><span class="p">,</span> <span class="p">{</span> <span class="n">body</span> <span class="o">=</span> <span class="s1">'pong'</span> <span class="p">})</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'pong finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">ping</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">link</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span>
+        <span class="n">concurrent</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="p">{</span>
+            <span class="n">from</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">self</span><span class="p">(),</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="s1">'ping'</span>
+        <span class="p">})</span>
+        <span class="kd">local</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">receive</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">body</span> <span class="o">==</span> <span class="s1">'pong'</span> <span class="k">then</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'ping received pong'</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'ping finished'</span><span class="p">)</span>
+    <span class="n">concurrent</span><span class="p">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">'finished'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+<span class="n">concurrent</span><span class="p">.</span><span class="n">loop</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<h4>输出应该是:</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong received ping
+ping received pong
+pong finished
+</code></pre></div></div>
+
+<h4>ping finished可以通过 setoption() 函数来设置进程链接的选项,这里是 trapexit 选项:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">concurrent</span><span class="p">.</span><span class="n">setoption</span><span class="p">(</span><span class="s1">'trapexit'</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4>pong 进程会接收到一个退出消息:</h4>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">signal</span> <span class="o">==</span> <span class="s1">'EXIT'</span> <span class="k">then</span>
+    <span class="k">break</span>
+</code></pre></div></div>
+
+<p>基于提示消息的monitor, 也可以用来处理错误.</p>
+
+<p>原文连接：
+http://floss.qiniucdn.com/data/20110831112702/index.html</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/212/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/212/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/212/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/213/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/213/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/213/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/212/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

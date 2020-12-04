@@ -1,0 +1,902 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>An Empirical Evaluation of In &#8211; LUA教程</title>
+<meta name="description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta name="keywords" content="lua文章">
+
+
+<!-- Baidu ZZ www.lua.ren-->
+<meta name="baidu-site-verification" content="code-mUfTLvBErv" />
+<!-- Baidu ZZ lua.ren-->
+<meta name="baidu-site-verification" content="code-1frv44bXq0" />
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An Empirical Evaluation of In">
+<meta property="og:description" content="LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。">
+<meta property="og:url" content="http://0.0.0.0:8081/topic/190_An-Empirical-Evaluation-of-In/">
+<meta property="og:site_name" content="LUA教程">
+<meta property="og:image" content="http://0.0.0.0:8081/images/images/logo.png">
+
+
+
+
+
+<link rel="canonical" href="http://0.0.0.0:8081/topic/190_An-Empirical-Evaluation-of-In/">
+<link href="http://0.0.0.0:8081/feed.xml" type="application/atom+xml" rel="alternate" title="LUA教程 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/main.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.mmenu.all.css">
+<link rel="stylesheet" href="http://0.0.0.0:8081/assets/css/jquery.floating-social-share.min.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://0.0.0.0:8081/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://0.0.0.0:8081/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://0.0.0.0:8081/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://0.0.0.0:8081/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://0.0.0.0:8081/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+   r
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+
+
+<div class="header-menu header-menu-top">
+    <ul class="header-item-container">
+      <li class="header-item-title header-toggle "><a href="#menu"><h2><i class="fa fa-bars"></i></h2></a></li>
+      <li class="header-item-title">
+        <a href="http://0.0.0.0:8081/">
+          
+            <img class="logo" src="http://0.0.0.0:8081/images/logo.png" alt="LUA教程">
+          
+          <a href="http://0.0.0.0:8081/" class="title"> LUA教程</a>
+        </a>
+      </li>
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+            <ul class="header-submenu">
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+              
+                
+                  <li class="sub-item"><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+            
+                <li class="header-item "><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+            
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+              
+            </ul>
+          </li>
+        
+      
+        
+        
+
+        
+          <li class="header-item "><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+            <ul class="header-submenu">
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+              
+                <li class="sub-item"><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+              
+            </ul>
+          </li>
+        
+      
+      <li class="header-item"><a href="http://0.0.0.0:8081/search"><h3><i class="fa fa-search"></i></h3></a></li>
+    </ul>
+  </div>
+
+<div class="entry-header">
+  <div class="header-title">
+    <div class="header-title-wrap">
+      <h1>An Empirical Evaluation of In</h1>
+      
+        <h2><span class="entry-date date published updated"><time datetime="2016-01-01T00:00:00+08:00">January 01, 2016</time></span></h2>
+      
+
+      
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~5 minutes
+        </p>
+      
+    </div>
+  </div>
+</div>
+
+<nav id="menu" style="display: none">
+  <ul>
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua基础语法</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/variables/">变量</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/strings/">字符串</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/tables/">表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/operators/">操作符</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua判断</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/decision-making/">Lua判断</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-statement/">If语句</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/if-else-if-statement/">If else语句</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua循环</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/for/">for循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/lua教程/while/">while循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/loop/">loop循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/repeat-until/">repeat until循环</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/iterators/">iterators迭代器</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/"><h3>Lua高级</h3></a>
+          <ul>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/error-handling/">Lua错语处理</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/coroutines/">Lua协程</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/metatables/">Lua元表</a></li>
+            
+              <li><a href="http://0.0.0.0:8081/lua_guide/garbage-collection/">Lua垃圾回收机制</a></li>
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/tags"><h3>标签</h3></a></li>
+      
+    
+      
+        <li><a href="http://0.0.0.0:8081/categories"><h3>分类</h3></a>
+          <ul>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#      .md">      .md</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#AI">AI</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Documents">Documents</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#HiLua框架">HiLua框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#LUA教程">LUA教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#Lapis框架">Lapis框架</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript语法">MoonScript语法</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#MoonScript项目">MoonScript项目</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#OPENRESTY">OPENRESTY</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua_guide">lua_guide</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#lua教程">lua教程</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#mysql">mysql</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#openresty最佳实践">openresty最佳实践</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#python">python</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#tools">tools</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#topic">topic</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#动态库">动态库</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#安全">安全</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#机械键盘">机械键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#网关">网关</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#键盘">键盘</a></li>
+            
+              
+                <li><a href="http://0.0.0.0:8081/categories/#静电容键盘">静电容键盘</a></li>
+            
+          </ul>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <div class="entry-content">
+        
+      <h1 class="post-title entry-title">An Empirical Evaluation of In</h1>
+      <p><span class="post-text">&lt;h2 id="an-empirical-evaluation-of-in-memory-multi-version-concurrency-control"&gt;An Empirical Evaluation of In-Memory Multi-Version Concurrency Control&lt;/h2&gt;</span></p>
+
+<h3 id="引言">引言</h3>
+
+<p>In-Memory的数据库也最近的一个研究的热点，此外，MVCC相对于其它存在的Concurrency Control方法，相对来说是最均衡的，新设计的In-Memory绝大部分采用的是MVCC的方法(OCC的缺点太明显了，write一多就abort)。基于MVCC的DBMS允许一个只读事务在读取一个较老版本的同时另外一个事务更新相同的一个对象，能获取更加好的并发程度。此外，如果DBMS没有移除对象的就版本，这个系统就可以支持读取过去一个时间点的快照。虽然有诸多的DBMS使用了MVCC，但是它们之间的MVCC的方式很多不同的地方。这篇论文主要分析不同MVCC在这些方面方面上的一个特点:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 并发控制协议；
+2. 版本存储；
+3. 垃圾回收；
+4. 索引管理。
+</code></pre></div></div>
+
+<p>(更新)强烈推荐的一片论文。</p>
+
+<h3 id="mvcc-overview">MVCC Overview</h3>
+
+<p>表1给出了常见数据4个方面的对比:</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/ee-mvcc-compare.png" alt="ee-mvcc-compare" /></p>
+
+<p>忽略其一些具体实现的差异，一个基于MVCC的DBMS一般有相同的一些用于事务和数据元组的元数据: <strong>Transactions</strong>: DBMS会赋予一个事务一个递增的时间戳作为事务id，用于表示这个事务。并发控制协议使用这个标识符标识一个事务可以访问的元组。<strong>Tuples</strong>: 一个物理上的版本的数据包含了4个元数据字段(具体的可能有些区别)，如下图所示:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+--------+-----------+---------+---------+------+-------------------------------+
+|        |           |         |         |      |                               |
+| txn-id | begain-ts |  end-ts | pointer | ...  |       cloumns...              |
+|        |           |         |         |      |                               |
++--------+-----------+---------+---------+------+-------------------------------+
++                                               +                               +
+| &lt;----------------  Header  -----------------&gt; | &lt;--------- Content ---------&gt; |
++                                               +                               +
+</code></pre></div></div>
+<p>txn-id字段作为这个版本的写锁，当一个元组没有被上写锁的时候，这个字段就是0。大部分的DBMS使用一个64bit的整形作为txn-id，这样就是可以使用一个CAS就可以原子地更新txn-id的值。如果一个事务T(事务id为T(id))，想要更新这个元组，它会先检查txn-id的值，如果是0，那么它就会使用CAS操作将txn-id设置为T(id)。当一个事务尝试更新一个txn-id字段不为0且不等于自身T(id)的时候，这个事务就是abort。Begain-ts和end-ts代表了这个元组的生存期，都被初始化为0，将begain-ts设置为INF代表一个事务将其删除。最后的pointer字段保存了相邻的的版本的地址。</p>
+
+<h3 id="concurrency-control-protocol">Concurrency Control Protocol</h3>
+
+<h4 id="timestamp-ordering-mvto">Timestamp Ordering (MVTO)</h4>
+
+<p>MVTO是最初的MVCC的Concurrency Control Protocol(CCP)，tuple的header中还保存了最近的事务读取它的时间。MVTO其基本思路就是使用tid提前计算它们序列化的顺序。当一个txn尝试读取or更新一个已经上了write lock的一个版本，这个txn就会abort。当一个txn准备读取一个tuple时，会根据begin-ts和end-ts和tid来找到具体要读取的tuple的版本。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-to.png" alt="im-mvcc-to" /></p>
+
+<p>上图中，tuple的txn-id为0 or这个txn自己的id时，代表没有被其它事务上write lock，可以正常操作。MVTO不允许读未提交，这里使用的方式就是一个txn读取一个tuple的时候，如何read-ts小于自己的tid，就将其设为tid，如果大于，则选择一个更旧的版本。MVTO中，txn总是更新最近的一个版本，当满足一个tuple: 1.没有其它事务获取了write lock，2.txn的tid大于tuple的read-ts，则可以更新一个新版本。在更新之后，tuple的txn-id设置为txn的tid，txn提交的时候，设置新的版本的begin-ts为tid，end-ts为无穷大，最近的一个旧的的版本的end-ts为txn的id。</p>
+
+<h4 id="optimistic-concurrency-control-mvocc">Optimistic Concurrency Control (MVOCC)</h4>
+
+<p>从上面的表中可以发现，使用MVOCC的基本时内存数据库。MVOCC结合了MVCC和OCC的一些特点。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This reduces the amount of time that a transaction holds locks. There are changes to the original OCC protocol to adapt it for multi-versioning [27]. Foremost is that the DBMS does not maintain a private workspace for transactions, since the tuples’ versioning information already prevents transactions from reading or updating versions that should not be visible to them.
+</code></pre></div></div>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-occ.png" alt="im-mvcc-occ" /></p>
+
+<p>MVOCC将txn分为3个阶段:</p>
+
+<ul>
+  <li>
+    <p>read phase，MVOCC通过begin-ts 和 end-ts 来决定一个一个tuple的可见性。</p>
+  </li>
+  <li>
+    <p>alidation phase，在这个阶段，数据库会赋予txn一个时间差，叫做t-commit，使用这个时间戳来检查这个事务read-set中哪些tuples被提交更新了。</p>
+  </li>
+  <li>
+    <p>write phase ，如果第2步通过，进入第3步，更新一个新版本的数据，begin-ts设计为tid，end-ts设置为INF。</p>
+
+    <div class="highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>Transactions can only update the latest version of a tuple. But a transaction cannot read a new version until the other transaction that created it commits. A transaction that reads an outdated version will only find out that it should abort in the validation phase.
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="two-phase-locking-mv2pl">Two-phase Locking (MV2PL)</h4>
+
+<p>前面的表中，MV2PL最多被传统的数据库使用，使用2PL来实现serializability。txn读取or更新都需要加适当的lock，lock和tuple时分开的，lock不会被置换到磁盘上。tuple的lock就是tuple的txn-id字段，对于读锁，使用一个read-cnt字段来表示目前的reader的数量。txn使用tid和tuple的begain-ts字段决定一个tuple的可见性。只有在read-cnt和txn-id都为0的时候才能更新操作。当一个txn提交的时候，数据库赋予其一个唯一的t-commit时间戳来设置tuple的begin-ts字段，然后释放lock(s)。 这个版本的MVCC中，一个重要的问题就是如何避免deadlock。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-2pl.png" alt="im-mvcc-2pl" /></p>
+
+<h4 id="serialization-certifier">Serialization Certifier</h4>
+
+<p>最后一个protocol出现的目的时为了解决SI的isolation level不能完全满足serializability的要求，出现的时间也比较晚。MVCC能满足的隔离级别一般时SI，最大的一个问题就是write skew。常见的思路是维护一个serialization graph来检测可能导致write skew问题的情况，最近还出现了serial safety net不同于serialization graph的方法。这里涉及的比较多，可以参考相关论文。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-ssi.png" alt="im-mvcc-ssi" /></p>
+
+<h3 id="version-storage">Version Storage</h3>
+
+<p>MVCC每次更新都会产生一个tuple的新版本，如果将这些版本组织在一起呢？</p>
+
+<h4 id="oldest-to-newest-o2n">Oldest-to-Newest (O2N)</h4>
+
+<p>这个是Append-only Storage中的一种。不同的版本组织成list，最旧的版本在最前面。优点是添加新版本的时候不需要更新索引，缺点就是要查找合适的版本的时候可能要搜索较长的链。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-o2n.png" alt="im-mvcc-o2n" /></p>
+
+<h4 id="newest-to-oldest-n2o">Newest-to-Oldest (N2O)</h4>
+
+<p>和上面的一个一样，这个也是Append-only Storage中的一种。不同的在于新的版本在最前面，旧的在后面。优缺点也和上面的想法，大部分的txn都是访问最新的版本，所以直接找第1个版本的数据就可以了，缺点就是添加版本的时候需要更新索引。一个解决更新索引问题的办法就是使用一个间接层(又是添加间接层)。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-n2o.png" alt="im-mvcc-n2o" /></p>
+
+<p>Append-only Storage存在的另外一个问题就是对于非内联的字段，直接拷贝的话可能造成不必要的overhead。可以使用的解决办法就是允许不同版本的tuple保存指向同一个非内联字段的指针。对于这些字段，则需要保存一个ref count。</p>
+
+<h4 id="time-travel-storage">Time-Travel Storage</h4>
+
+<p>在这种方式中，DB保存一个master版本在一个main table中，然后在time-travel table中保存其它的版本，这些版本直接也组织成list。在main table中的版本不一定就是当前的版本。对于将当前版本保存在main table里面的，更新的时候需要在time-travel table里面申请一个新的空间，将main table里面的版本拷贝过去，然后在main table 里面更新新的版本。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-tts.png" alt="im-mvcc-tts" /></p>
+
+<p>这种方式也同样存在上面提到非内联的字段的问题，解决方案也一样。</p>
+
+<h4 id="delta-storage">Delta Storage</h4>
+
+<p>这种方式是两大最常用的数据库Oracle 和 MySQL(InnoDB)使用的方法。大部分都是在main table中保存当前的版本，然后在一个与main table分离的地方保存delta数据。 delta，顾名思义，就是只会保存更新记录的部分。这种方式的优点在与更新的时候不需要完全新建立一个tuple，缺点就是对于读密集的常见可能造成比较高的overhead，因为每次都要处理delta。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-ds.png" alt="im-mvcc-ds" /></p>
+
+<h3 id="garbage-collection">Garbage Collection</h3>
+
+<p>MVCC的更新方式就会使得系统产生很多的(过了一段时间之后就)不需要的数据，回收这些有GC模块进行。一般而言，这部分的工作都是分为3步：</p>
+
+<ul>
+  <li>探明过期的数据；</li>
+  <li>将这个版本的数据从tm的list和indexs中剥离；</li>
+  <li>回收；这里的第一个问题就是如何确定一个版本的数据已经过期了，这里的一个部分就是：如何数据是由abort了的txn产生的，那么这些数据就是无效的，or 如果这个数据的end-ts比现在的最小的txn的tid还要小，那么这个数据也是过期的。对于内存数据库了，很多使用了机遇epoch的内存回收方式。</li>
+</ul>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-gc.png" alt="im-mvcc-gc" /></p>
+
+<h4 id="background-vacuuming-vac">Background Vacuuming (VAC)</h4>
+
+<p>VAC是Tuple-level Garbage Collection的一种。在这种方法中，DB使用后台threads，周期性的扫描过期的tuples。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...transactions register the invalidated versions in a latch-free data structure. The GC threads then reclaim these expired versions using the epoch-based scheme described above. Another optimization is where the DBMS maintains a bitmap of dirty blocks so that the vacuum threads do not examine blocks that were not modified since the last GC pass.
+</code></pre></div></div>
+
+<h4 id="cooperative-cleaning-coop">Cooperative Cleaning (COOP)</h4>
+
+<p>这种方式也是Tuple-level Garbage Collection的一种，一个txn在执行的时候，将发现的过期的tuples记录在一个全局的结构之中，这样对于GC thread来说，它们就不需要主动去探测过期的数据了。不过一个缺点就是只适合O2N append-only storage 的模式。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>One additional challenge is that if transactions do not traverse a version chain for a particular tuple, then the system will never remove its expired versions. This problem is called “dusty corners” in Hekaton. The DBMS overcomes this by periodically performing a complete GC pass with a separate thread like in VAC.
+</code></pre></div></div>
+
+<h4 id="transaction-level-garbage-collection">Transaction-level Garbage Collection</h4>
+
+<p>Transaction-level的GC以Transaction为粒度，和上面所有的存储方式都兼容。当一个txn产生的数据被所有的txn不可见是，DB认为这些数据就是过期的了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>After an epoch ends, all of the versions that were generated by the transactions belonging to that epoch can be safely removed. This is simpler than the tuple-level GC scheme, and thus it works well with the transaction-local storage optimization.
+</code></pre></div></div>
+
+<h3 id="index-management">Index Management</h3>
+
+<p>Index Management值得是如何组织index和tuple直接的联系，可以通过index找到对应的tuple。所有的MVCC的实现都将index和版本的信息分离开。主键的index总是指向目前tuple的版本。如果更新主键index和tuple直接的联系就和具体的实现相关。上面提到过，Oracle MySQL使用的delta的方式，主键就中是直达master记录；对于append only的方式， N2O就要求在tuple更新的时候也更新index。对于次级index，情况更加复杂。这里主要有两种类型的方式，第一种就是使用逻辑指针，第二种就是使用物理指针。</p>
+
+<p><img src="https://nan01ab.github.io/assets/img/im-mvcc-index.png" alt="im-mvcc-index" /></p>
+
+<h4 id="primary-key-pkey">Primary Key (PKey)</h4>
+
+<p>PKey是逻辑指针的一种，次级索引的key可以理解为就是主键，从次级index查找是，要先找到主键，如何从主键index中执行另外一次查找，找到对应的数据。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>If a secondary index’s attributes overlap with the primary key, then the DBMS does not have to store the entire primary key in each entry.
+</code></pre></div></div>
+
+<h4 id="tuple-id-tupleid">Tuple Id (TupleId)</h4>
+
+<p>上面一种方式的缺点就是可能会占用比较大的空间，因为将主键保存了很多次。这里的一个解决办法就是保存一个tuple-id，这个id一般是DB内部管理的，一般为一个64bit的整数。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>An alternative is to use a unique 64-bit tuple identifier instead of the primary key and a separate latch-free hash table to maintain the mapping information to the tuple’s version chain HEAD.
+</code></pre></div></div>
+
+<h4 id="physical-pointers">Physical Pointers</h4>
+
+<p>​    处理逻辑指针，还可以直接就保存指向tuple的物理指针。不过这种方式只适用于append only的模式，因为DB将这些数据保存在同一个table中，所有的index都可以指向它们。更新的时候，则需要更新所有的idnex。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> In this manner, the DBMS can search for a tuple from a secondary index without comparing the secondary key with all of the indexed versions. Several MVCC DBMSs, including MemSQL and Hekaton, employ this scheme.
+</code></pre></div></div>
+
+<h3 id="评估与论述">评估与论述</h3>
+
+<p>参考论文[1].</p>
+
+<h2 id="参考">参考</h2>
+
+<ol>
+  <li>An Empirical Evaluation of In-Memory Multi-Version Concurrency Control, VLDB 2017.</li>
+  <li>H. Berenson and et al. A Critique of ANSI SQL Isolation Levels. SIGMOD’95.</li>
+</ol>
+
+<p>&lt;/span&gt;</p>
+
+
+
+
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/plugins/jekyll-search.js"></script>
+<!--
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript" async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript" src="http://0.0.0.0:8081/assets/js/scripts.min.js"></script>
+-->
+
+
+
+
+<!--
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+-->
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+   var hm = document.createElement("script");
+     hm.src = "//hm.baidu.com/hm.js?14cc93bf3f08d31c458639d309dde522";
+       var s = document.getElementsByTagName("script")[0]; 
+         s.parentNode.insertBefore(hm, s);
+         })();
+</script>
+
+
+
+
+
+
+
+<div class="read-more">
+    <!--
+    <script type="text/javascript">var jd_union_pid="3001579677";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script>    
+    <script type="text/javascript">var jd_union_pid="3001580358";var jd_union_euid="";</script><script type="text/javascript" src="//ads-union.jd.com/static/js/union.js"></script<script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>>
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="513:6",jd_union_pid="CKjUrvevLhCC9PTcAxoAIL/G35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfIlURRQdeZXdPNmQ5cnRCWFV6PmlCYHdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsQBBYAXRtbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    -->
+    <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/18_NINEPERCENT-PERFORMANCE-EVALUATION/" class="read-more-btn">装备</a>
+    </div><!-- /.read-more-header -->
+</div>
+
+
+<div class="read-more">
+    <div class="read-more-header">
+        <a href="https://www.west.cn?ReferenceID=833653" target=_blank><img src="https://www.west.cn/vcp/vcp_img/free6/A/100x100_A.jpg" border=0></a>
+    </div><!-- /.read-more-header -->
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/18_NINEPERCENT-PERFORMANCE-EVALUATION/" class="read-more-btn">公众号</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
+</div>
+
+<div class="read-more">
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/18_NINEPERCENT-PERFORMANCE-EVALUATION/" class="read-more-btn">知识星球</a>
+    </div><!-- /.read-more-header -->
+    <p><img src="/images/media/openresty.png" alt="知识星球"/></p>
+</div>
+        <section id="disqus_thread" class="animated fadeInUp">            
+
+            <div id="container"></div>
+            <!--
+            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+            <script src="https://jjeejj.github.io/js/gitment.js"></script>
+            <link rel="stylesheet" href="/assets/css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="https://billts.site/js/gitment.js"></script>
+            -->
+
+            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+            <script src="/assets/js/gitment.js"></script>
+
+
+            <script>
+              const myTheme = {
+              render(state, instance) {
+                const container = document.createElement('div')
+                container.lang = "en-US"
+                container.className = 'gitment-container gitment-root-container'
+                container.appendChild(instance.renderHeader(state, instance))
+                container.appendChild(instance.renderEditor(state, instance))
+                container.appendChild(instance.renderComments(state, instance))
+                container.appendChild(instance.renderFooter(state, instance))
+                return container
+              },
+            }
+            
+            var gitment = new Gitment({
+                owner: 'shengnoah',
+                repo: 'candylab',
+                oauth: {
+                    client_id: 'a189c4862b8c5026fb74',
+                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
+                },
+                theme: myTheme,
+            });
+            gitment.render('container');
+            </script>
+            <!--
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
+            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
+            <script>
+                var gitment = new Gitment({
+                    owner: "shengyang",
+                    repo: "moonscript_comments",
+                    oauth: {
+                        client_id: "9461c58665db4c248dd9f36b2280cc98",
+                        client_secret: "00760f885aafa0dbb7789b365468177305293c95",
+                    },
+                });
+                document.getElementById('container').appendChild(gitment.render())
+            </script>
+            -->
+        </section>
+
+
+
+
+
+<script type="text/javascript">
+    sharing();
+</script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $(".term").on("click", function (event) {
+            var searchInput = $("#search-input");
+            searchInput.val($(this).text());
+            searchInput.trigger("change keyup");
+            searchInput.keyup();
+            searchInput.change();
+        })
+    })
+</script>
+
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https'){
+   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'container',
+        blogId: '18349-1575875948454-349',
+        name: '糖果的实验室',
+        qrcode: '/images/media/wechat_subscription.png',
+        keyword: 'lua',
+    });
+</script>
+
+
+
+
+
+
+      
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://0.0.0.0:8081/tags#lua文章" title="Pages tagged lua文章" class="tag"><span class="term">lua文章</span></a></span>
+        
+        <span class="author vcard"><span class="fn">糖果</span></span>
+        <div class="social-share">
+
+<!--
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="twitter">test</li>
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://0.0.0.0:8081/topic/190_An-Empirical-Evaluation-of-In/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://0.0.0.0:8081/topic/190_An-Empirical-Evaluation-of-In/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=http://0.0.0.0:8081/topic/190_An-Empirical-Evaluation-of-In/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+    </ul>
+
+ -->
+
+</div><!-- /.social-share -->
+
+      </footer>
+    </div><!-- /.entry-content -->
+    <div class="read-more">
+  <div class="read-more-header">
+    <a href="https://lua.ren" class="read-more-btn">关于</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <h3>糖果</h3>
+    <div class="author-container">
+      <img class="author-img" src="http://0.0.0.0:8081/images/avatar.jpg" alt="糖果" />
+      <div class="author-bio">LUA教程</div>
+    </div>
+    <div class="author-share">
+      <ul class="list-inline social-buttons">
+        
+          <li><a href="https://github.com/shengnoah/luaren" target="_blank"><i class="fa fa-github fa-fw"></i></a></li>
+        
+      </ul>
+      
+        <a aria-label="Follow @shengnoah on GitHub" data-style="mega" href="https://github.com/shengnoah" class="github-button">Follow @shengnoah</a>
+      
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+    
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="http://0.0.0.0:8081/topic/18_NINEPERCENT-PERFORMANCE-EVALUATION/" class="read-more-btn">更多</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/" title=""></a></h3>
+      <p>在lua开发中我们经常会混淆这两者之间的区别，下面通过一个示例来解释：12345678910111213141516171819202122Class = {}Class.__index = Class function (x,y)    local cls = {}   ...&hellip; <a href="http://0.0.0.0:8081/2016-01-01-994_Lua%E4%B8%AD.%E5%92%8C-%E8%8A%B1%E7%94%9F%E8%82%89%E6%B3%A5/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-987_Video-Description-A-Survey-of-Methods,-Datasets-a/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="http://0.0.0.0:8081/2016-01-01-902_VA_2-A-Visual-Analytics-Approach-for-_Evaluating/" title=""></a></h4>
+        <span>Published on </span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+
+
+  </article>
+</div><!-- /#main -->
+
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2020 糖果 </span>
+<span>ICP证:<a href="http://www.beian.miit.gov.cn/">辽ICP备16003836号-2</a> </span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+</body>
+</html>

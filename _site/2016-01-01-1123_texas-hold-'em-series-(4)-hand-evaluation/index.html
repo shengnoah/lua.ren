@@ -1,0 +1,216 @@
+<nav>
+
+<ul>
+<li><a href="#toc_0">Hand Values</a></li>
+
+<li><a href="#toc_1">Evaluation</a></li>
+
+<li><a href="#toc_2">Simulation</a></li>
+
+<li><a href="#toc_3">Example</a></li>
+</ul>
+
+</nav>
+<p>In the previous post, we considered the probabilities of making one specific hand with the turn/river card. This can be rather useful in specific situations, but still cannot apply thoughout a game. Poker is essentially an incomplete information game. Different from Go, where you can see all stones placed on the chessboard and thereby “solve” an optimal move, you never know you opponents’ pocket cards until showdown (yet even then, people mucks). Also, you have little clue on the unshown community cards. Therefore, in order to evaluate a hand during a poker game, we’d better opt for a online evaluation algorithm instead of considering this as a DP-like problem.</p>
+
+<h1 id="toc_0">Hand Values</h1>
+
+<p>For the sake of convenience, the table of hand values is shown again below.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Description</th>
+<th align="center">Example</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">High Card</td>
+<td align="center">Simple value of the card. Lowest: deuce; highest: ace.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>2c</code></td>
+</tr>
+
+<tr>
+<td align="center">Pair</td>
+<td align="center">Two cards with the same value.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>7h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+
+<tr>
+<td align="center">Two Pairs</td>
+<td align="center">Two pairs where each pair of cards have the same value.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>4h</code> <code>Td</code> <code>Ac</code></td>
+</tr>
+
+<tr>
+<td align="center">Three of a Kind</td>
+<td align="center">Three cards with the same value.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>2c</code></td>
+</tr>
+
+<tr>
+<td align="center">Straight</td>
+<td align="center">Five cards in consecutive values (ace can precede deuce or follow up king).</td>
+<td align="center"><code>9s</code> <code>Ts</code> <code>Jh</code> <code>Qd</code> <code>Kc</code></td>
+</tr>
+
+<tr>
+<td align="center">Flush</td>
+<td align="center">Five cards of the same suit.</td>
+<td align="center"><code>Ah</code> <code>4h</code> <code>7h</code> <code>Th</code> <code>2h</code></td>
+</tr>
+
+<tr>
+<td align="center">Full House</td>
+<td align="center">Three of a kind with the rest two making a pair.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>Ac</code></td>
+</tr>
+
+<tr>
+<td align="center">Four of a Kind</td>
+<td align="center">Four cards of the same value.</td>
+<td align="center"><code>As</code> <code>4s</code> <code>4h</code> <code>4d</code> <code>4c</code></td>
+</tr>
+
+<tr>
+<td align="center">Straight Flush</td>
+<td align="center">Straight of the same suit.</td>
+<td align="center"><code>9h</code> <code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code></td>
+</tr>
+
+<tr>
+<td align="center">Royal Flush</td>
+<td align="center">Straight flush from ten to ace.</td>
+<td align="center"><code>Th</code> <code>Jh</code> <code>Qh</code> <code>Kh</code> <code>Ah</code></td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_1">Evaluation</h1>
+
+<p>Our ultimate goal is to be able to evaluate the probability of a win (and tie), i.e. the relative strength of our hand. However, let’s just try to get one step back and consider evaluating the absolute strengths. Here we denote it as the <strong>hand value</strong>. Ideally, there are <span class="math inline">(binom{52}{5}=2,598,960)</span> possible hands but much less valid values. An intuitive idea to match all these hands to their values, which is also what I did, is to first generate a sparse mapping from hands to values, and then condense it. First we need a function that identifies hand types. Then, for hands within the same type, we encode them like a carry system (e.g. decimal); for hands across different types, we manually add offsets so that higher hand types always yield higher values. The final results are stored in the dictionary <code>hv</code> and serialized locally. The highest value is 6144 and here is a glance of <code>hv</code>:</p>
+
+<pre><code class="language-py">{
+    &#39;2s3s4s5s7h&#39; : 0,
+    &#39;2s3s4s5s7c&#39; : 0,
+    &#39;2s3s4s5s7d&#39; : 0,
+    &#39;2s3s4s5h7s&#39; : 0,
+    &#39;2s3s4s5h7h&#39; : 0,
+    ...
+    &#39;9dTdJdQdKd&#39; : 6143,
+    &#39;TsJsQsKsAs&#39; : 6144,
+    &#39;ThJhQhKhAh&#39; : 6144,
+    &#39;TcJcQcKcAc&#39; : 6144,
+    &#39;TdJdQdKdAd&#39; : 6144,
+}
+</code></pre>
+
+<h1 id="toc_2">Simulation</h1>
+
+<p>Now that we have the full mapping from hands to values, there are two things we can do to calculate the probabilities:</p>
+
+<ol>
+<li>Enumerate all opponent hands exhaustively, and compare hand values</li>
+<li>Simulate certain number of opponent hands, and then compare</li>
+</ol>
+
+<p>Things are gonna be much easier when we only consider the two-player case (a.k.a. heads-up games). In that case, we can literally count and evaluate all scenarios — when there’re 2 pocket cards for me and 3 community cards shown, we only need to enumerate <span class="math inline">(binom{52-5}{2}=1,081)</span> opponent hands, which is lightning fast to finish with modern programming languages like Python or C++. However, when we have more players, like 5, the first method gets nasty. The hands of each opponent are not independent, so we have to go through <span class="math inline">(binom{52-5}{2times 4} &gt; 3times 10^8)</span> situations and that, different to the heads-up scenario, would be unacceptably slow no matter which language we use. Therefore, we opt for the second method at some cost of precision. The code (partial) is shared below.</p>
+
+<pre><code class="language-py">def handEval(my_pocket, community, n_players, hv,
+             n_tot=1024, ranges=None, verbose=False):
+    &#39;&#39;&#39;
+    PARAMETERS:
+        my_pocket: list of 2 strings
+        community: list of 3-5 strings
+        n_players: integer
+        hv: hand_value dictionary
+        n_tot: integer
+        ranges: list of (n_players - 1) floats (default: None)
+        verbose: boolean
+
+    RETURN: (float, float)
+    &#39;&#39;&#39;
+    assert len(set(my_pocket + community)) == len(my_pocket + community) and 
+           all(card in deck for card in my_pocket + community), &#39;invalid cards&#39;
+    assert n_players &lt; 10, &#39;too many players&#39;
+    n_unshown = 5 - len(community)
+    np.random.seed(123)
+    if ranges is None: ranges = [1] * (n_players - 1)
+    simulation = []
+    for j in range(n_tot):
+        available = [c for c in deck if (c not in my_pocket + community)]
+        sim = np.random.choice(available, n_unshown, replace=False).tolist()
+        available = [c for c in available if c not in sim]
+        for i in range(n_players - 1):
+            pf_range = [pf for k, pf in enumerate(pf_full) if
+                        pf[0] in available and pf[1] in available and
+                        k &lt; len(pf_full) * ranges[i]]
+            idx = np.random.choice(range(len(pf_range)))
+            cards = pf_range[idx]
+            sim += cards
+            available = [c for c in available if c not in cards]
+        simulation.append(sim)
+        if verbose:
+            print(&#39;{}/{} ({:.2%})&#39;.format(j + 1, n_tot, (j + 1) / n_tot), end=&#39;r&#39;)
+    n_win = n_tie = 0
+    if not n_tot: n_tot = len(simulation)
+    for i, cards in enumerate(simulation):
+        cards = list(cards)
+        new_community = cards[:n_unshown]
+        my_full_hand = my_pocket + community + new_community
+        op_full_hands = []
+        for j in range(n_players - 1):
+            op_pocket = cards[n_unshown + j * 2:n_unshown + j * 2 + 2]
+            op_full_hands.append(op_pocket + community + new_community)
+        my_value = value(my_full_hand, hv)[0]
+        op_values = [value(op_full_hand, hv)[0] for op_full_hand in op_full_hands]
+        op_value = max(op_values)
+        # print(value(my_full_hand, hv)[1])
+        # for op_full_hand in op_full_hands:
+        #     print(value(op_full_hand, hv)[1])
+        # print()
+        n_win += (my_value &gt; op_value)
+        n_tie += (my_value == op_value)
+    if verbose: print(&#39; &#39; * 50, end=&#39;r&#39;)
+    return n_win / n_tot, n_tie / n_tot
+
+
+if __name__ == &#39;__main__&#39;:
+    with open(&#39;hv.json&#39;, &#39;r&#39;) as f: hv = json.load(f)
+    my_pocket = input(&#39;Pocket: &#39;).split()
+    community = input(&#39;Community: &#39;).split()
+    n_players = int(input(&#39;Players: &#39;))
+    ranges = input(&#39;Opponent Ranges: &#39;).split()
+    ranges = [float(i) for i in ranges] if ranges else None
+    p_win, p_tie = handEval(my_pocket, community, n_players, hv, ranges=ranges, verbose=True)
+    print(&#39;P(win) = {:.4%}nP(tie) = {:.4%}&#39;.format(p_win, p_tie))
+</code></pre>
+
+<h1 id="toc_3">Example</h1>
+
+<p>Below are two example tests.</p>
+
+<pre><code class="language-bash">Pocket: Tc Jd
+Community: 4h 5h 6d 2h Kh
+Players: 2
+Opponent Ranges: 
+</code></pre>
+
+<pre><code>P(win) = 5.4688%                                  
+P(tie) = 0.4883%
+</code></pre>
+
+<pre><code class="language-bash">Pocket: Tc Jd
+Community: 4h 5h 6d 2h Kh
+Players: 2
+Opponent Ranges: 0.1
+</code></pre>
+
+<pre><code>P(win) = 1.9531%                                  
+P(tie) = 0.7812%
+</code></pre>
+
+<p>Note here I also implement an interesting parameter called <code>ranges</code> which represents the opponents prior ranges at pre-flop. When passing an empty value, all combinations of two cards are considered. When we specify a list of ranges (numbers from 0 to 1, say <span class="math inline">(x%)</span>), then the opponents are assumed to only play when their pocket cards are at least in the top <span class="math inline">(x%)</span> pairs of all pairs. See this <a href="http://holdemtight.com/pgs/od/oddpgs/3-169holdemhands.htm">table</a> for more reasoning.</p>
