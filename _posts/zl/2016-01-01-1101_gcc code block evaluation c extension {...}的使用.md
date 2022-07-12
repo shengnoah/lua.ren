@@ -1,9 +1,0 @@
----
-layout: post
-title: gcc code block evaluation c extension {...}的使用 
-tags: [lua文章]
-categories: [topic]
----
-<p>重写UI的getter方法，把初始化方法放在getter中，可以有效的较少viewDidLoad的负荷，也能使整个页面变得清晰。同时，可以利用GCC Code Block Evaluation C Extension ({…})的语法，结构化局部变量的初始化和逻辑处理，增加了代码的可读性。</p>
-<p>例子:</p>
-<figure class="highlight objc"><table><tbody><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIView</span> *)demoView{</div><div class="line">        <span class="keyword">if</span> (!_demoView) {</div><div class="line">            _demoView = ({</div><div class="line">                    <span class="built_in">UIView</span> *demoView = [[<span class="built_in">UIView</span> alloc] initWithFrame:({</div><div class="line">                    <span class="built_in">CGRect</span> rect = <span class="built_in">CGRectMake</span>(SCREEN_WIDTH/<span class="number">2</span><span class="number">-50</span>, SCREEN_HEIGHT/  <span class="number">2</span><span class="number">-100</span>,<span class="number">100</span> ,<span class="number">100</span> );</div><div class="line">                    rect;</div><div class="line">                })];</div><div class="line">                demoView.backgroundColor = [<span class="built_in">UIColor</span> redColor];</div><div class="line">                demoView;</div><div class="line">            });</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> _demoView;</div><div class="line">    }</div></pre></td></tr></tbody></table></figure>
