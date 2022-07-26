@@ -37,64 +37,30 @@
 
         <section id="disqus_thread" class="animated fadeInUp">            
 
-            <div id="container"></div>
-            <!--
-            <link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
-            <script src="https://jjeejj.github.io/js/gitment.js"></script>
-            <link rel="stylesheet" href="/assets/css/gitment.css">
-            <script src="/assets/js/gitment.js"></script>
-            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-            <script src="https://billts.site/js/gitment.js"></script>
-            <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-            -->
+        <div id="container"></div>
 
-            <link rel="stylesheet" href="/assets/css/gitment.css">
-
-
-            <script src="/assets/js/gitment.js"></script>
-
-
-            <script>
-              const myTheme = {
-              render(state, instance) {
-                const container = document.createElement('div')
-                container.lang = "en-US"
-                container.className = 'gitment-container gitment-root-container'
-                container.appendChild(instance.renderHeader(state, instance))
-                container.appendChild(instance.renderEditor(state, instance))
-                container.appendChild(instance.renderComments(state, instance))
-                container.appendChild(instance.renderFooter(state, instance))
-                return container
-              },
-            }
-            
-            var gitment = new Gitment({
-                owner: 'shengnoah',
-                repo: 'candylab',
-                oauth: {
-                    client_id: 'a189c4862b8c5026fb74',
-                    client_secret: '1fe138982bac2f6ba74a18e4f312b6832e6bea4c',
-                },
-                theme: myTheme,
-            });
-            gitment.render('container');
-            </script>
-            <!--
-            <div id="container"></div>
-            <link rel="stylesheet" href="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/default.css">
-            <script src="https://dn-coding-net-public-file.qbox.me/Coding-Comments/v0.0.3/gitment.min.js"></script>
-            <script>
-                var gitment = new Gitment({
-                    owner: "{{ site.coding_comments.owner }}",
-                    repo: "{{ site.coding_comments.repo }}",
-                    oauth: {
-                        client_id: "{{ site.coding_comments.oauth.client_id }}",
-                        client_secret: "{{ site.coding_comments.oauth.client_secret }}",
-                    },
-                });
-                document.getElementById('container').appendChild(gitment.render())
-            </script>
-            -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+        <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+          
+          <div id="gitalk-container"></div>
+          <script type="text/javascript">            
+          var gitalk = new Gitalk({
+            clientID: '601f0250730f0edd4dad', //Client ID
+          
+            clientSecret: '28884c786439c5e0b65288dd7743f4a7a231f136', //Client Secret
+          
+            repo: 'secbooks.cn',//仓库名称
+            owner: 'shengnoah',//仓库拥有者
+            admin: ['shengnoah'],
+            //id: 'SecBooks',      // Ensure uniqueness and length less than 50
+            id: window.location.pathname,      // Ensure uniqueness and length less than 50              
+            distractionFreeMode: false,  // Facebook-like distraction free mode
+            title: 'Discussion'
+          })
+          
+          gitalk.render('gitalk-container')
+          </script>
+      
         </section>
 
 {% if site.disqus_shortname %}
