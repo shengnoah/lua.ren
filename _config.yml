@@ -200,5 +200,5 @@ plugins:
 #  - jekyll-remote-theme
 
 
-theme: neo-hpstr-jekyll-theme
+#theme: neo-hpstr-jekyll-theme
 #remote_theme: benbalter/retlab
