@@ -1,4 +1,6 @@
 
+
+
 <!--
 <div class="read-more">
     <script type="text/javascript">var jd_union_unid="1000159746",jd_ad_ids="1455:6",jd_union_pid="CLzuy/evLhCC9PTcAxoAIO/F35cLKgA=";var jd_width=0;var jd_height=0;var jd_union_euid="";var p="AhIOUxJYHAcVDmVEH0hfIlgRRgYlXVZaCCsfSlpMWGVEH0hfImcTYFJPXkhnNXoLZWIWWiduG0cKDGdZF2sTAxIFURxYEAAiB1QaWhUGGgFQHGslXVZaCCsQewMiWBFGBiUCFg9XHlsRARADVxNbJQMiN2U%3D";</script><script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>
@@ -18,13 +20,6 @@
 
 -->
 
-<div class="read-more">
-    <div class="read-more-header">
-      <a href="{{ site.url }}{{ page.previous.url }}" class="read-more-btn">公众号</a>
-    </div>
-    <p><img src="/images/media/wechat_subscription.png" alt="公众号"/></p>
-</div>
-
 
 <!--
 
@@ -38,32 +33,6 @@
 -->
 
 
-        <section id="disqus_thread" class="animated fadeInUp">            
-
-        <div id="container"></div>
-
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-        <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-          
-          <div id="gitalk-container"></div>
-          <script type="text/javascript">            
-          var gitalk = new Gitalk({
-            clientID: '2795b4c1f65d53754571', //Client ID
-            clientSecret: '9ddfaacf06ef9c1a9b2aa37f4cffc0fc3da98552', //Client Secret
-            repo: 'lua.ren',//仓库名称
-            owner: 'shengnoah',//仓库拥有者
-            admin: ['shengnoah'],
-            //id: 'lua.ren',      // Ensure uniqueness and length less than 50
-            id: window.location.pathname,      // Ensure uniqueness and length less than 50              
-            distractionFreeMode: false,  // Facebook-like distraction free mode
-            title: '{% if page.title %}{{ page.title }} {% endif %}',
-            proxy: 'https://nameless-depths-50459.herokuapp.com/https://github.com/login/oauth/access_token'
-          })
-          
-          gitalk.render('gitalk-container')
-          </script>
-      
-        </section>
 
 {% if site.disqus_shortname %}
     <script type="text/javascript">

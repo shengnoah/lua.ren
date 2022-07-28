@@ -2,8 +2,8 @@ title:            LUA教程
 description:      LUA教程:Lua是一门精巧的语言，与其它语言配合使用，发挥更高的效能。特别是与C和C++语言的配合。著名的项目Openresty就是使用了Lua。
 
 
-host: 0.0.0.0
-#host: 127.0.0.1
+#host: 0.0.0.0
+host: 127.0.0.1
 # the preview server used. Leave as is.
 port: 8081
 
@@ -138,7 +138,7 @@ owner:
 # Social networking links used in author block underneath posts. Update and remove as you like.
 social:
   - title: "github"
-    url: "https://github.com/shengnoah/luaren"
+    url: "https://github.com/shengnoah/lua.ren"
   #- title: "linkedin"
   #  url: "https://br.linkedin.com/in/aronbordin"
   #- title: "youtube"
@@ -187,7 +187,7 @@ page_layout: page
 titlecase: true
 
 include: [".htaccess"]
-exclude: ["demo/*", "lib", "config.rb", "Capfile", "config", "Gemfile", "Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
+exclude: ["demo/*", "lib", "config.rb", "Capfile", "config", "Gemfile",Gemfile.lock", "README.md", "LICENSE", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
 #gems: [jekyll-paginate]
 
 plugins:

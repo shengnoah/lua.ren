@@ -1,31 +1,72 @@
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="{{ site.owner.site }}" class="read-more-btn">评论</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+
+    <div id="container"></div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+      
+      <div id="gitalk-container"></div>
+      <script type="text/javascript">            
+      var gitalk = new Gitalk({
+        clientID: '2795b4c1f65d53754571', //Client ID
+        clientSecret: '9ddfaacf06ef9c1a9b2aa37f4cffc0fc3da98552', //Client Secret
+        repo: 'lua.ren',//仓库名称
+        owner: 'shengnoah',//仓库拥有者
+        admin: ['shengnoah'],
+        //id: 'lua.ren',      // Ensure uniqueness and length less than 50
+        id: window.location.pathname,      // Ensure uniqueness and length less than 50              
+        distractionFreeMode: false,  // Facebook-like distraction free mode
+        title: '{% if page.title %}{{ page.title }} {% endif %}',
+        proxy: 'https://nameless-depths-50459.herokuapp.com/https://github.com/login/oauth/access_token'
+      })
+      
+      gitalk.render('gitalk-container')
+      </script>
+  
+  </div>
+</div>
+
+
+<div class="read-more">
+  <div class="read-more-header">
+    <a href="{{ site.owner.site }}" class="read-more-btn">公众号</a>
+  </div><!-- /.read-more-header -->
+  <div class="read-more-content author-info">
+    <img class="author-img" src="/images/qrcode.png" alt="{{site.owner.name}}" />
+  </div>
+</div>    
+
+
 <div class="read-more">
   <div class="read-more-header">
     <a href="{{ site.owner.site }}" class="read-more-btn">关于</a>
   </div><!-- /.read-more-header -->
   <div class="read-more-content author-info">
-    <h3>{{site.owner.name}}</h3>
-
-    <div class="author-container">
-      <img class="author-img" src="{{site.url}}/{{site.owner.avatar}}" alt="{{site.owner.name}}" />
-      <div class="author-bio">
-        <h3>{{site.owner.bio}}</h3>
-        <h3>Lua语言是一种非常灵的活高级语言。</h3>
-      </div>
-      
-    </div>
-    <div class="author-share">
-      <ul class="list-inline social-buttons">
-        {% for network in site.social %}
-          <li><a href="{{ network.url }}" target="_blank"><i class="fa fa-{{ network.title }} fa-fw"></i></a></li>
-        {% endfor %}
-      </ul>
-      {% if site.owner.github %}
-        <a aria-label="Follow @{{site.owner.github}} on GitHub" data-style="mega" href="https://github.com/{{site.owner.github}}" class="github-button">Follow @{{site.owner.github}}</a>
-      {% endif %}
-      <br>
-      {% if site.owner.twitter %}
-        <a href="https://twitter.com/{{site.owner.twitter}}" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @{{site.owner.twitter}}</a>
-      {% endif %}
-    </div>
+    <img class="author-img" src="{{site.url}}/{{site.owner.avatar}}" alt="{{site.owner.name}}" />
   </div>
-</div>
+
+
+  <div class="author-share">
+    <ul class="list-inline social-buttons">
+      {% for network in site.social %}
+        <li><a href="{{ network.url }}" target="_blank"><i class="fa fa-{{ network.title }} fa-fw"></i></a></li>
+      {% endfor %}
+    </ul>
+    {% if site.owner.github %}
+      <a aria-label="Follow @{{site.owner.github}} on GitHub" data-style="mega" href="https://github.com/{{site.owner.github}}" class="github-button">Follow @{{site.owner.github}}</a>
+    {% endif %}
+    <br>
+    {% if site.owner.twitter %}
+      <a href="https://twitter.com/{{site.owner.twitter}}" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @{{site.owner.twitter}}</a>
+    {% endif %}
+  </div>
+</div>    
+
+
+
+
