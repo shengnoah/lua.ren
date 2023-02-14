@@ -167,7 +167,7 @@ variables is that you can analyize the code ahead of time without the need to
 execute it to find references to undeclared variables.
 
 MoonScript makes it difficult to declare global variables by forcing you to be
-explicit with the `export` keyword, so it's a good candidate for doing this
+explicit with the `export` keyword , so it's a good candidate for doing this
 kind of linting.
 
 Consider the following program with a typo: (`my_number` is spelled wrong as

@@ -192,6 +192,9 @@ exclude: ["demo/*", "lib", "config.rb", "Capfile", "config", "Gemfile",Gemfile.l
 
 plugins:
   - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap  
+#  - jekyll-mentions
 #  - jekyll-mentions
 #  - jekyll-feed
 #  - jekyll-sitemap

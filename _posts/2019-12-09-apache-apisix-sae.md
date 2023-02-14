@@ -64,3 +64,14 @@ curl  -H "Content-Type: application/json"   -X POST -d '{"uris":["asdf"],"plugin
 以上略过大量安装细节，有问题大家可以留言，或是在Q群里直接喊，但想想各位老师都是人材， 说话还都好听，估计也不会有啥大问题。
 
 看最新的消息，关注公众号：[糖果的实验室](https://mp.weixin.qq.com/s?__biz=MjM5NjEzNzU5OQ==&mid=2247483961&idx=1&sn=283949ff5a78292c7506fa019a0ebd1f&chksm=a6ec9d29919b143fec6b7b64bcfb7c3589705563fccb16a713b7a6a2d62372fe1099b49e27a1&token=163358827&lang=zh_CN#rd)
+
+
+
+i
+
+
+1
+1
+1
+1
+
