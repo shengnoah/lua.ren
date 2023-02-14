@@ -96,7 +96,9 @@ menu:
 classical:
   #- title: 'LUA基础入门教程'
   #  url: '/categories/#lua_guide'
-  - title: '程序员神器'
+  - title: '用ChatGPT生成Lua单体测试代码'
+    url: '/topic/ChatGPT-lua-unit/'
+  - title: '什么样的键盘长时间打字不累。'
     url: '/静电容键盘/niz静电容键盘怎么样/'
   - title: 'Lua基础入门教程（PDF）'
     url: '/images/download/lua.pdf'
